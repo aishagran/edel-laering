@@ -1,0 +1,899 @@
+<!DOCTYPE html>
+<html lang="no">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+<title>Edel i friminuttet</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800;900&family=Fredoka+One&display=swap');
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  :root {
+    --green: #5a9e6f;
+    --green-light: #e8f5ec;
+    --green-dark: #3d7a52;
+    --warm: #f9f4ed;
+    --pink: #f4a0b0;
+    --pink-light: #fdeef1;
+    --blue: #7ab8d4;
+    --blue-light: #e8f4fa;
+    --yellow: #f7d97a;
+    --yellow-light: #fef9e7;
+    --text: #3a3228;
+    --text-soft: #7a6e64;
+    --radius: 20px;
+    --shadow: 0 4px 20px rgba(0,0,0,0.1);
+  }
+
+  body {
+    font-family: 'Nunito', sans-serif;
+    background: var(--warm);
+    color: var(--text);
+    min-height: 100vh;
+    padding: 0;
+    overflow-x: hidden;
+  }
+
+  /* SCREENS */
+  .screen { display: none; min-height: 100vh; flex-direction: column; }
+  .screen.active { display: flex; }
+
+  /* ===== START SCREEN ===== */
+  #start {
+    background: linear-gradient(160deg, #e8f5ec 0%, #fdeef1 50%, #e8f4fa 100%);
+    align-items: center;
+    justify-content: center;
+    padding: 40px 24px;
+    text-align: center;
+  }
+
+  .start-emoji { font-size: 72px; margin-bottom: 8px; animation: bounce 2s infinite; }
+  @keyframes bounce {
+    0%,100% { transform: translateY(0); }
+    50% { transform: translateY(-10px); }
+  }
+
+  .start-title {
+    font-family: 'Fredoka One', cursive;
+    font-size: 36px;
+    color: var(--green-dark);
+    line-height: 1.1;
+    margin-bottom: 8px;
+  }
+
+  .start-sub {
+    font-size: 18px;
+    color: var(--text-soft);
+    margin-bottom: 32px;
+  }
+
+  .words-preview {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    justify-content: center;
+    margin-bottom: 40px;
+    max-width: 400px;
+  }
+
+  .word-chip {
+    padding: 8px 16px;
+    border-radius: 50px;
+    font-size: 15px;
+    font-weight: 700;
+  }
+  .word-chip.hard { background: var(--pink-light); color: #c0566a; border: 2px solid var(--pink); }
+  .word-chip.good { background: var(--green-light); color: var(--green-dark); border: 2px solid #a8d5b5; }
+
+  .btn-start {
+    background: var(--green);
+    color: white;
+    border: none;
+    border-radius: 50px;
+    padding: 18px 48px;
+    font-family: 'Fredoka One', cursive;
+    font-size: 24px;
+    cursor: pointer;
+    box-shadow: 0 6px 0 var(--green-dark);
+    transition: all 0.1s;
+    width: 100%;
+    max-width: 320px;
+  }
+  .btn-start:active { transform: translateY(3px); box-shadow: 0 3px 0 var(--green-dark); }
+
+  /* ===== LESSON SCREEN ===== */
+  #lesson {
+    padding: 0;
+    background: var(--warm);
+  }
+
+  .lesson-header {
+    background: white;
+    padding: 16px 20px 12px;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.06);
+    position: sticky;
+    top: 0;
+    z-index: 10;
+  }
+
+  .progress-row {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin-bottom: 8px;
+  }
+
+  .progress-bar {
+    flex: 1;
+    height: 10px;
+    background: #e8e0d8;
+    border-radius: 10px;
+    overflow: hidden;
+  }
+
+  .progress-fill {
+    height: 100%;
+    background: linear-gradient(90deg, var(--green), #7ec898);
+    border-radius: 10px;
+    transition: width 0.4s ease;
+  }
+
+  .progress-text {
+    font-size: 13px;
+    font-weight: 700;
+    color: var(--text-soft);
+    white-space: nowrap;
+  }
+
+  .step-title {
+    font-family: 'Fredoka One', cursive;
+    font-size: 18px;
+    color: var(--green-dark);
+  }
+
+  .lesson-body {
+    padding: 20px 20px 100px;
+    flex: 1;
+  }
+
+  /* SCENE CARD */
+  .scene-card {
+    background: white;
+    border-radius: var(--radius);
+    box-shadow: var(--shadow);
+    overflow: hidden;
+    margin-bottom: 20px;
+  }
+
+  .scene-number {
+    background: var(--green);
+    color: white;
+    font-family: 'Fredoka One', cursive;
+    font-size: 14px;
+    padding: 8px 16px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+
+  .scene-text {
+    font-size: 18px;
+    font-weight: 700;
+    padding: 16px 20px;
+    line-height: 1.4;
+    color: var(--text);
+  }
+
+  .scene-speech {
+    background: var(--green-light);
+    margin: 0 16px 16px;
+    border-radius: 12px;
+    padding: 12px 16px;
+    font-size: 16px;
+    font-weight: 600;
+    color: var(--green-dark);
+    border-left: 4px solid var(--green);
+  }
+
+  /* QUESTION */
+  .question-card {
+    background: white;
+    border-radius: var(--radius);
+    box-shadow: var(--shadow);
+    padding: 20px;
+    margin-bottom: 20px;
+  }
+
+  .question-label {
+    font-size: 12px;
+    font-weight: 800;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    color: var(--text-soft);
+    margin-bottom: 10px;
+  }
+
+  .question-text {
+    font-size: 19px;
+    font-weight: 700;
+    color: var(--text);
+    margin-bottom: 18px;
+    line-height: 1.4;
+  }
+
+  /* OPTIONS */
+  .options { display: flex; flex-direction: column; gap: 10px; }
+
+  .option-btn {
+    background: var(--warm);
+    border: 2.5px solid #e0d8d0;
+    border-radius: 14px;
+    padding: 14px 18px;
+    font-family: 'Nunito', sans-serif;
+    font-size: 16px;
+    font-weight: 700;
+    color: var(--text);
+    cursor: pointer;
+    text-align: left;
+    transition: all 0.15s;
+    line-height: 1.3;
+  }
+
+  .option-btn:active { transform: scale(0.98); }
+  .option-btn.correct { background: var(--green-light); border-color: var(--green); color: var(--green-dark); }
+  .option-btn.wrong { background: var(--pink-light); border-color: var(--pink); color: #c0566a; }
+  .option-btn.disabled { pointer-events: none; opacity: 0.5; }
+
+  /* FILL IN */
+  .fill-options { display: flex; flex-wrap: wrap; gap: 10px; margin-bottom: 16px; }
+
+  .fill-chip {
+    background: white;
+    border: 2.5px solid #c5dfc0;
+    border-radius: 50px;
+    padding: 10px 20px;
+    font-size: 16px;
+    font-weight: 700;
+    color: var(--green-dark);
+    cursor: pointer;
+    transition: all 0.15s;
+  }
+  .fill-chip:active { transform: scale(0.95); }
+  .fill-chip.used { opacity: 0.3; pointer-events: none; }
+  .fill-chip.correct { background: var(--green-light); border-color: var(--green); }
+  .fill-chip.wrong { background: var(--pink-light); border-color: var(--pink); color: #c0566a; }
+
+  .fill-sentence {
+    font-size: 18px;
+    font-weight: 700;
+    color: var(--text);
+    line-height: 1.6;
+    padding: 14px 16px;
+    background: var(--yellow-light);
+    border-radius: 12px;
+    border: 2px dashed var(--yellow);
+    margin-bottom: 12px;
+    min-height: 56px;
+  }
+
+  .blank {
+    display: inline-block;
+    min-width: 120px;
+    border-bottom: 3px solid var(--green);
+    color: var(--green-dark);
+    font-weight: 800;
+  }
+
+  /* FEEDBACK */
+  .feedback {
+    border-radius: 14px;
+    padding: 14px 18px;
+    font-size: 15px;
+    font-weight: 700;
+    margin-top: 12px;
+    display: none;
+    line-height: 1.4;
+  }
+  .feedback.show { display: block; }
+  .feedback.correct { background: var(--green-light); color: var(--green-dark); border: 2px solid #a8d5b5; }
+  .feedback.wrong { background: var(--pink-light); color: #c0566a; border: 2px solid var(--pink); }
+
+  /* WORD CARD */
+  .word-card {
+    background: white;
+    border-radius: var(--radius);
+    box-shadow: var(--shadow);
+    padding: 20px;
+    margin-bottom: 16px;
+    border-left: 6px solid var(--green);
+  }
+  .word-card.negative { border-left-color: var(--pink); }
+
+  .word-main {
+    font-family: 'Fredoka One', cursive;
+    font-size: 26px;
+    color: var(--green-dark);
+    margin-bottom: 4px;
+  }
+  .word-card.negative .word-main { color: #c0566a; }
+
+  .word-meaning {
+    font-size: 15px;
+    color: var(--text-soft);
+    margin-bottom: 10px;
+  }
+
+  .word-example {
+    font-size: 15px;
+    font-weight: 600;
+    color: var(--text);
+    background: var(--warm);
+    padding: 10px 14px;
+    border-radius: 10px;
+    line-height: 1.5;
+  }
+
+  /* NEXT BUTTON */
+  .btn-next {
+    position: fixed;
+    bottom: 24px;
+    left: 50%;
+    transform: translateX(-50%);
+    background: var(--green);
+    color: white;
+    border: none;
+    border-radius: 50px;
+    padding: 16px 40px;
+    font-family: 'Fredoka One', cursive;
+    font-size: 20px;
+    cursor: pointer;
+    box-shadow: 0 5px 0 var(--green-dark);
+    transition: all 0.1s;
+    width: calc(100% - 40px);
+    max-width: 400px;
+    display: none;
+  }
+  .btn-next.show { display: block; }
+  .btn-next:active { transform: translateX(-50%) translateY(3px); box-shadow: 0 2px 0 var(--green-dark); }
+
+  /* ===== END SCREEN ===== */
+  #end {
+    background: linear-gradient(160deg, #e8f5ec 0%, #fdeef1 100%);
+    align-items: center;
+    justify-content: center;
+    padding: 40px 24px;
+    text-align: center;
+  }
+
+  .end-emoji { font-size: 80px; margin-bottom: 16px; animation: spin 0.5s ease; }
+  @keyframes spin { from { transform: rotate(-10deg) scale(0.5); } to { transform: rotate(0) scale(1); } }
+
+  .end-title {
+    font-family: 'Fredoka One', cursive;
+    font-size: 34px;
+    color: var(--green-dark);
+    margin-bottom: 8px;
+  }
+
+  .end-sub {
+    font-size: 18px;
+    color: var(--text-soft);
+    margin-bottom: 32px;
+    line-height: 1.5;
+  }
+
+  .words-learned {
+    background: white;
+    border-radius: var(--radius);
+    padding: 20px;
+    margin-bottom: 32px;
+    box-shadow: var(--shadow);
+    width: 100%;
+    max-width: 400px;
+    text-align: left;
+  }
+
+  .words-learned h3 {
+    font-family: 'Fredoka One', cursive;
+    font-size: 18px;
+    color: var(--green-dark);
+    margin-bottom: 14px;
+  }
+
+  .learned-word {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 8px 0;
+    border-bottom: 1px solid #f0ebe4;
+    font-weight: 700;
+    font-size: 15px;
+  }
+  .learned-word:last-child { border-bottom: none; }
+
+  .score-display {
+    font-family: 'Fredoka One', cursive;
+    font-size: 48px;
+    color: var(--green-dark);
+    margin-bottom: 8px;
+  }
+
+  .btn-again {
+    background: var(--green);
+    color: white;
+    border: none;
+    border-radius: 50px;
+    padding: 16px 40px;
+    font-family: 'Fredoka One', cursive;
+    font-size: 20px;
+    cursor: pointer;
+    box-shadow: 0 5px 0 var(--green-dark);
+    width: 100%;
+    max-width: 320px;
+  }
+
+  .confetti { font-size: 28px; display: inline-block; }
+</style>
+</head>
+<body>
+
+<!-- START SCREEN -->
+<div id="start" class="screen active">
+  <div class="start-emoji">🌵</div>
+  <div class="start-title">Edel i friminuttet</div>
+  <div class="start-sub">Ukens ord og setninger</div>
+  <div class="words-preview">
+    <span class="word-chip hard">ekskludert</span>
+    <span class="word-chip hard">utenforskap</span>
+    <span class="word-chip hard">avvist</span>
+    <span class="word-chip hard">oversett</span>
+    <span class="word-chip good">inkludert</span>
+    <span class="word-chip good">tilhørighet</span>
+    <span class="word-chip good">fellesskap</span>
+  </div>
+  <button class="btn-start" onclick="startLesson()">Start! 🚀</button>
+</div>
+
+<!-- LESSON SCREEN -->
+<div id="lesson" class="screen">
+  <div class="lesson-header">
+    <div class="progress-row">
+      <div class="progress-bar"><div class="progress-fill" id="progressFill" style="width:0%"></div></div>
+      <div class="progress-text" id="progressText">1 / 8</div>
+    </div>
+    <div class="step-title" id="stepTitle">Les historien</div>
+  </div>
+  <div class="lesson-body" id="lessonBody"></div>
+  <button class="btn-next" id="btnNext" onclick="nextStep()">Neste →</button>
+</div>
+
+<!-- END SCREEN -->
+<div id="end" class="screen">
+  <div class="end-emoji">⭐</div>
+  <div class="end-title">Kjempebra, Edel!</div>
+  <div class="end-sub">Du lærte 7 nye ord i dag!<br>Du er så flink! 💚</div>
+  <div class="score-display" id="scoreDisplay">0 / 0</div>
+  <div style="font-size:15px; color:var(--text-soft); margin-bottom:24px;">riktige svar</div>
+  <div class="words-learned">
+    <h3>Ord du øvde på denne uken:</h3>
+    <div class="learned-word">❌ <span><b>ekskludert</b> – ikke få være med</span></div>
+    <div class="learned-word">😔 <span><b>utenforskap</b> – følelsen av å stå utenfor</span></div>
+    <div class="learned-word">😞 <span><b>avvist</b> – når ingen svarer deg</span></div>
+    <div class="learned-word">👻 <span><b>oversett</b> – når ingen ser deg</span></div>
+    <div class="learned-word">✅ <span><b>inkludert</b> – få være med</span></div>
+    <div class="learned-word">🤗 <span><b>tilhørighet</b> – følelsen av å høre til</span></div>
+    <div class="learned-word">👫 <span><b>fellesskap</b> – være en del av gruppen</span></div>
+  </div>
+  <button class="btn-again" onclick="restartLesson()">Øv igjen 🔄</button>
+</div>
+
+<script>
+let currentStep = 0;
+let score = 0;
+let totalQuestions = 0;
+let answered = false;
+
+const steps = [
+  // STEP 1: Scene 1-2
+  {
+    type: 'scene',
+    title: 'Les historien 📖',
+    scenes: [
+      { num: 1, text: 'Familien sa at Edel måtte være sterk.', speech: '– Du må være sterk.' },
+      { num: 2, text: 'I friminuttet ville Edel være med de andre.' }
+    ]
+  },
+  // STEP 2: Question about scene 1-2
+  {
+    type: 'multiple',
+    title: 'Spørsmål ❓',
+    question: 'Hva sa familien til Edel?',
+    options: ['Du må gå hjem.', 'Du må være sterk.', 'Du må sitte stille.', 'Du må leke alene.'],
+    correct: 1,
+    feedback: '✅ Riktig! Familien sa: "Du må være sterk."'
+  },
+  // STEP 3: Scene 3-4
+  {
+    type: 'scene',
+    title: 'Les historien 📖',
+    scenes: [
+      { num: 3, text: 'Edel gikk bort og spurte.', speech: '– Kan jeg være med?' },
+      { num: 4, text: 'Ingen svarte ordentlig.' }
+    ]
+  },
+  // STEP 4: Word intro - negative words
+  {
+    type: 'words',
+    title: 'Lær ordene 📚',
+    subtitle: 'Vanskelige følelser',
+    words: [
+      { word: 'ekskludert', meaning: 'når du ikke får være med', example: 'Edel følte seg ekskludert da ingen svarte.', negative: true },
+      { word: 'avvist', meaning: 'når ingen vil svare deg', example: 'Hun ble avvist da hun spurte om å få være med.', negative: true },
+      { word: 'oversett', meaning: 'når ingen ser deg', example: 'Edel ble oversett i friminuttet.', negative: true }
+    ]
+  },
+  // STEP 5: Fill in
+  {
+    type: 'fillin',
+    title: 'Fyll inn ordet ✏️',
+    sentence: 'Ingen svarte Edel. Hun følte seg ___.',
+    options: ['ekskludert', 'inkludert', 'glad', 'sterk'],
+    correct: 'ekskludert',
+    feedback: '✅ Riktig! Edel følte seg ekskludert fordi ingen svarte.'
+  },
+  // STEP 6: Scene 5-6
+  {
+    type: 'scene',
+    title: 'Les historien 📖',
+    scenes: [
+      { num: 5, text: 'Edel følte seg ekskludert.' },
+      { num: 6, text: 'Etter mange friminutt kjente hun på utenforskap.', words: ['utenforskap', 'avvist', 'oversett'] }
+    ]
+  },
+  // STEP 7: Word intro - positive words
+  {
+    type: 'words',
+    title: 'Lær ordene 📚',
+    subtitle: 'Gode følelser',
+    words: [
+      { word: 'inkludert', meaning: 'når du får være med', example: 'Edel ble inkludert da barna lot henne være med.', negative: false },
+      { word: 'tilhørighet', meaning: 'følelsen av å høre til et sted', example: 'Hun følte tilhørighet da hun lekte med vennene sine.', negative: false },
+      { word: 'fellesskap', meaning: 'å være en del av en gruppe', example: 'I friminuttet er det viktig med fellesskap.', negative: false }
+    ]
+  },
+  // STEP 8: Multiple choice - positive
+  {
+    type: 'multiple',
+    title: 'Spørsmål ❓',
+    question: 'Hva heter følelsen av å høre til et sted?',
+    options: ['utenforskap', 'tilhørighet', 'avvist', 'ekskludert'],
+    correct: 1,
+    feedback: '✅ Riktig! Tilhørighet er følelsen av å høre til.'
+  },
+  // STEP 9: Fill in positive
+  {
+    type: 'fillin',
+    title: 'Fyll inn ordet ✏️',
+    sentence: 'Til slutt fikk Edel være med. Hun følte ___ og ___.',
+    options: ['tilhørighet', 'fellesskap', 'utenforskap', 'avvist'],
+    correct: 'tilhørighet',
+    correct2: 'fellesskap',
+    multi: true,
+    feedback: '✅ Bra! Edel følte tilhørighet og fellesskap!'
+  },
+  // STEP 10: Final question
+  {
+    type: 'multiple',
+    title: 'Siste spørsmål ⭐',
+    question: 'Hva er forskjellen mellom ekskludert og inkludert?',
+    options: [
+      'Det er ingen forskjell.',
+      'Ekskludert = ikke få være med. Inkludert = få være med.',
+      'Inkludert = ikke få være med.',
+      'Ekskludert = være glad.'
+    ],
+    correct: 1,
+    feedback: '✅ Perfekt! Du forstår forskjellen veldig bra!'
+  }
+];
+
+function startLesson() {
+  showScreen('lesson');
+  currentStep = 0;
+  score = 0;
+  totalQuestions = 0;
+  answered = false;
+  renderStep();
+}
+
+function showScreen(id) {
+  document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
+  document.getElementById(id).classList.add('active');
+}
+
+function updateProgress() {
+  const pct = Math.round((currentStep / steps.length) * 100);
+  document.getElementById('progressFill').style.width = pct + '%';
+  document.getElementById('progressText').textContent = (currentStep + 1) + ' / ' + steps.length;
+}
+
+function renderStep() {
+  const step = steps[currentStep];
+  answered = false;
+  updateProgress();
+  document.getElementById('stepTitle').textContent = step.title;
+  document.getElementById('btnNext').classList.remove('show');
+
+  const body = document.getElementById('lessonBody');
+  body.innerHTML = '';
+  body.scrollTop = 0;
+  window.scrollTo(0, 0);
+
+  if (step.type === 'scene') renderScene(step, body);
+  else if (step.type === 'multiple') renderMultiple(step, body);
+  else if (step.type === 'words') renderWords(step, body);
+  else if (step.type === 'fillin') renderFillIn(step, body);
+}
+
+function renderScene(step, body) {
+  step.scenes.forEach(scene => {
+    const card = document.createElement('div');
+    card.className = 'scene-card';
+    let html = `<div class="scene-number">🌵 Scene ${scene.num}</div>
+                <div class="scene-text">${scene.text}</div>`;
+    if (scene.speech) {
+      html += `<div class="scene-speech">${scene.speech}</div>`;
+    }
+    if (scene.words) {
+      html += `<div style="display:flex;gap:8px;flex-wrap:wrap;padding:0 16px 16px;">`;
+      scene.words.forEach(w => {
+        html += `<span class="word-chip hard" style="font-size:13px;">${w}</span>`;
+      });
+      html += `</div>`;
+    }
+    card.innerHTML = html;
+    body.appendChild(card);
+  });
+
+  // Show next automatically for scenes
+  const btn = document.getElementById('btnNext');
+  btn.textContent = 'Neste →';
+  btn.classList.add('show');
+}
+
+function renderWords(step, body) {
+  const subtitle = document.createElement('div');
+  subtitle.style.cssText = 'font-size:14px;font-weight:800;text-transform:uppercase;letter-spacing:1px;color:var(--text-soft);margin-bottom:14px;';
+  subtitle.textContent = step.subtitle;
+  body.appendChild(subtitle);
+
+  step.words.forEach(w => {
+    const card = document.createElement('div');
+    card.className = 'word-card' + (w.negative ? ' negative' : '');
+    card.innerHTML = `
+      <div class="word-main">${w.negative ? '😔' : '😊'} ${w.word}</div>
+      <div class="word-meaning">${w.meaning}</div>
+      <div class="word-example">"${w.example}"</div>
+    `;
+    body.appendChild(card);
+  });
+
+  const btn = document.getElementById('btnNext');
+  btn.textContent = 'Jeg forstår! ✓';
+  btn.classList.add('show');
+}
+
+function renderMultiple(step, body) {
+  totalQuestions++;
+  const qcard = document.createElement('div');
+  qcard.className = 'question-card';
+
+  let html = `<div class="question-label">Spørsmål</div>
+              <div class="question-text">${step.question}</div>
+              <div class="options">`;
+
+  step.options.forEach((opt, i) => {
+    html += `<button class="option-btn" onclick="checkMultiple(${i}, ${step.correct}, this)">${opt}</button>`;
+  });
+
+  html += `</div><div class="feedback" id="feedback"></div>`;
+  qcard.innerHTML = html;
+  body.appendChild(qcard);
+}
+
+function checkMultiple(chosen, correct, btn) {
+  if (answered) return;
+  answered = true;
+  const step = steps[currentStep];
+
+  const allBtns = btn.parentElement.querySelectorAll('.option-btn');
+  allBtns.forEach(b => b.classList.add('disabled'));
+
+  const fb = document.getElementById('feedback');
+
+  if (chosen === correct) {
+    btn.classList.add('correct');
+    score++;
+    fb.textContent = step.feedback;
+    fb.className = 'feedback show correct';
+  } else {
+    btn.classList.add('wrong');
+    allBtns[correct].classList.add('correct');
+    fb.textContent = '❌ Prøv igjen neste gang! ' + step.feedback;
+    fb.className = 'feedback show wrong';
+  }
+
+  const nextBtn = document.getElementById('btnNext');
+  nextBtn.textContent = 'Neste →';
+  nextBtn.classList.add('show');
+}
+
+function renderFillIn(step, body) {
+  totalQuestions++;
+
+  if (step.multi) {
+    renderMultiFill(step, body);
+    return;
+  }
+
+  const qcard = document.createElement('div');
+  qcard.className = 'question-card';
+
+  const sentenceParts = step.sentence.split('___');
+
+  let html = `<div class="question-label">Fyll inn riktig ord</div>
+              <div class="fill-sentence" id="fillSentence">${sentenceParts[0]}<span class="blank" id="blankSpan">___</span>${sentenceParts[1] || ''}</div>
+              <div class="fill-options">`;
+
+  step.options.forEach(opt => {
+    html += `<button class="fill-chip" onclick="checkFill('${opt}', '${step.correct}', this)">${opt}</button>`;
+  });
+
+  html += `</div><div class="feedback" id="feedback"></div>`;
+  qcard.innerHTML = html;
+  body.appendChild(qcard);
+}
+
+function checkFill(chosen, correct, btn) {
+  if (answered) return;
+  answered = true;
+  const step = steps[currentStep];
+
+  document.querySelectorAll('.fill-chip').forEach(b => b.classList.add('used'));
+
+  const blank = document.getElementById('blankSpan');
+  const fb = document.getElementById('feedback');
+
+  if (chosen === correct) {
+    blank.textContent = chosen;
+    btn.classList.remove('used');
+    btn.classList.add('correct');
+    score++;
+    fb.textContent = step.feedback;
+    fb.className = 'feedback show correct';
+  } else {
+    btn.classList.remove('used');
+    btn.classList.add('wrong');
+    blank.textContent = correct;
+    fb.textContent = '❌ Riktig svar er: ' + correct + '. ' + step.feedback;
+    fb.className = 'feedback show wrong';
+  }
+
+  const nextBtn = document.getElementById('btnNext');
+  nextBtn.textContent = 'Neste →';
+  nextBtn.classList.add('show');
+}
+
+function renderMultiFill(step, body) {
+  const qcard = document.createElement('div');
+  qcard.className = 'question-card';
+
+  let html = `<div class="question-label">Fyll inn to ord</div>
+              <div class="fill-sentence" id="fillSentence">
+                Til slutt fikk Edel være med. Hun følte 
+                <span class="blank" id="blank1">___</span> og 
+                <span class="blank" id="blank2">___</span>.
+              </div>
+              <div class="fill-options" id="fillOptions">`;
+
+  step.options.forEach(opt => {
+    html += `<button class="fill-chip" onclick="checkMultiFill('${opt}', this)">${opt}</button>`;
+  });
+
+  html += `</div><div class="feedback" id="feedback"></div>`;
+  qcard.innerHTML = html;
+  body.appendChild(qcard);
+
+  window._multiSelected = [];
+}
+
+function checkMultiFill(word, btn) {
+  if (window._multiSelected.length >= 2) return;
+
+  const step = steps[currentStep];
+  window._multiSelected.push(word);
+  btn.classList.add('used');
+
+  const blank1 = document.getElementById('blank1');
+  const blank2 = document.getElementById('blank2');
+
+  if (window._multiSelected.length === 1) {
+    blank1.textContent = word;
+  } else {
+    blank2.textContent = word;
+
+    // Check
+    const sel = window._multiSelected;
+    const correct = [step.correct, step.correct2];
+    const isCorrect = sel.includes(correct[0]) && sel.includes(correct[1]);
+
+    answered = true;
+    const fb = document.getElementById('feedback');
+
+    if (isCorrect) {
+      score++;
+      fb.textContent = step.feedback;
+      fb.className = 'feedback show correct';
+      document.querySelectorAll('.fill-chip.used').forEach(b => b.classList.add('correct'));
+    } else {
+      blank1.textContent = correct[0];
+      blank2.textContent = correct[1];
+      fb.textContent = '❌ Riktig svar: tilhørighet og fellesskap. ' + step.feedback;
+      fb.className = 'feedback show wrong';
+    }
+
+    const nextBtn = document.getElementById('btnNext');
+    nextBtn.textContent = 'Neste →';
+    nextBtn.classList.add('show');
+  }
+}
+
+function nextStep() {
+  currentStep++;
+  if (currentStep >= steps.length) {
+    showEnd();
+  } else {
+    renderStep();
+  }
+}
+
+function showEnd() {
+  showScreen('end');
+  document.getElementById('scoreDisplay').textContent = score + ' / ' + totalQuestions;
+  sendResults();
+}
+
+async function sendResults() {
+  const now = new Date();
+  const dato = now.toLocaleDateString('no-NO', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' });
+  const tid = now.toLocaleTimeString('no-NO', { hour: '2-digit', minute: '2-digit' });
+
+  const prosent = Math.round((score / totalQuestions) * 100);
+  const melding = prosent === 100 ? '🌟 Perfekt resultat!' : prosent >= 70 ? '✅ Veldig bra!' : '💪 Fortsett å øve!';
+
+  try {
+    await fetch('https://formspree.io/f/mqeolldg', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        _subject: `Edel – Resultat ${dato}`,
+        Dato: dato,
+        Tidspunkt: tid,
+        Oppgave: 'Edel i friminuttet',
+        Resultat: `${score} av ${totalQuestions} riktige (${prosent}%)`,
+        Vurdering: melding,
+        Ord_denne_uken: 'ekskludert, utenforskap, avvist, oversett, inkludert, tilhørighet, fellesskap'
+      })
+    });
+  } catch(e) {
+    console.log('Kunne ikke sende resultat:', e);
+  }
+}
+
+function restartLesson() {
+  startLesson();
+}
+</script>
+</body>
+</html>
