@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="no">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Edels Verden 🌍</title>
+<link href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@500;600;700;800&family=Nunito:wght@400;600;700;800&display=swap" rel="stylesheet">
+<style>
+:root{
+  --p1:#FF6B9D; --p2:#FFC75F; --p3:#6BCB77; --p4:#4D96FF; --p5:#C780E8;
+  --ink:#2D2A4A; --shadow:rgba(45,42,74,0.14);
+}
+*{box-sizing:border-box;margin:0;padding:0;}
+body{font-family:'Nunito',sans-serif;background:linear-gradient(160deg,#FFF6FB,#F0F8FF 60%,#E8F5EC);min-height:100vh;color:var(--ink);}
+
+/* Banner da família */
+.hero{max-width:720px;margin:0 auto;padding:14px 14px 0;}
+.hero img{width:100%;height:auto;display:block;border-radius:24px;box-shadow:0 6px 24px var(--shadow);}
+.hero .fallback{background:linear-gradient(135deg,var(--p1),var(--p5));border-radius:24px;padding:40px 20px;text-align:center;color:white;font-family:'Baloo 2',cursive;font-size:2rem;display:none;}
+
+.welcome{text-align:center;padding:14px 24px 4px;}
+.welcome p{color:#777;font-size:1rem;font-weight:600;}
+
+/* Menu */
+.menu{max-width:520px;margin:0 auto;padding:18px 18px 50px;display:flex;flex-direction:column;gap:15px;}
+.menu-card{display:flex;align-items:center;gap:16px;background:white;border-radius:24px;padding:18px;text-decoration:none;color:var(--ink);box-shadow:0 5px 18px var(--shadow);border:3px solid transparent;transition:all 0.15s;position:relative;}
+.menu-card:active{transform:scale(0.97);}
+.mc-emoji{font-size:42px;min-width:62px;height:62px;border-radius:18px;display:flex;align-items:center;justify-content:center;}
+.c-verden .mc-emoji{background:#E8F5EC;} .c-verden{border-color:#d4eeda;}
+.c-sprak .mc-emoji{background:#FFE0EC;} .c-sprak{border-color:#ffd6e4;}
+.c-tegn .mc-emoji{background:#FFF3D6;} .c-tegn{border-color:#ffe9b8;}
+.mc-info{flex:1;}
+.mc-title{font-family:'Baloo 2',cursive;font-size:1.2rem;font-weight:700;}
+.mc-desc{font-size:0.83rem;color:#888;line-height:1.4;}
+.mc-arrow{font-size:1.4rem;color:#ccc;}
+.mc-tag{position:absolute;top:10px;right:14px;background:var(--p2);color:#7A5A00;font-size:0.62rem;font-weight:800;padding:3px 9px;border-radius:20px;text-transform:uppercase;}
+
+.footer{text-align:center;padding:0 20px 36px;color:#999;font-size:0.85rem;}
+.footer .dog{font-size:1.6rem;display:block;margin-bottom:4px;animation:bounce 2.5s infinite;}
+@keyframes bounce{0%,100%{transform:translateY(0)}50%{transform:translateY(-6px)}}
+</style>
+</head>
+<body>
+
+<!-- Banner: faz upload da imagem como "familie.png" -->
+<div class="hero">
+  <img src="familie.png" alt="Edels Verden – familien"
+       onerror="this.style.display='none';this.nextElementSibling.style.display='block'">
+  <div class="fallback">🌍 Edels Verden</div>
+</div>
+
+<div class="welcome">
+  <p>Velkommen tilbake, Edel! Hva vil du gjøre i dag? 💚</p>
+</div>
+
+<div class="menu">
+
+  <a class="menu-card c-verden" href="verden.html">
+    <div class="mc-emoji">📚</div>
+    <div class="mc-info">
+      <div class="mc-title">Ukens ord</div>
+      <div class="mc-desc">Historier om Edel og Felipe — lær ukens 7 ord</div>
+    </div>
+    <div class="mc-arrow">›</div>
+    <div class="mc-tag">Uke 1</div>
+  </a>
+
+  <a class="menu-card c-sprak" href="spraakreise.html">
+    <div class="mc-emoji">🦜</div>
+    <div class="mc-info">
+      <div class="mc-title">Språkreisen</div>
+      <div class="mc-desc">Bygg setninger med bindeord — 10 dager</div>
+    </div>
+    <div class="mc-arrow">›</div>
+    <div class="mc-tag">2 uker</div>
+  </a>
+
+  <a class="menu-card c-folelser" href="folelser.html" style="border-color:#FFD6E4;">
+    <div class="mc-emoji" style="background:#FFE8F1;">💗</div>
+    <div class="mc-info">
+      <div class="mc-title">Følelser</div>
+      <div class="mc-desc">Følelseshjulet — finn ord for det du kjenner</div>
+    </div>
+    <div class="mc-arrow">›</div>
+    <div class="mc-tag">Familie</div>
+  </a>
+
+  <a class="menu-card c-tegn" href="tegneserier.html">
+    <div class="mc-emoji">📖</div>
+    <div class="mc-info">
+      <div class="mc-title">Tegneserier</div>
+      <div class="mc-desc">Les alle historiene — Edel, Mesteren og kaktusene</div>
+    </div>
+    <div class="mc-arrow">›</div>
+    <div class="mc-tag">Bibliotek</div>
+  </a>
+
+</div>
+
+<div class="footer">
+  <span class="dog">🐕</span>
+  Pipoka heier på deg! 💚
+</div>
+
+</body>
+</html>
