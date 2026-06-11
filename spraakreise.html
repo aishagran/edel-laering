@@ -4,449 +4,343 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Edels Språkreise 🦜</title>
-<link href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@500;600;700;800&family=Nunito:wght@400;600;700;800&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@600;700;800&family=Nunito:wght@400;600;700;800&display=swap" rel="stylesheet">
 <style>
-  :root{
-    --p1:#FF6B9D; --p2:#FFC75F; --p3:#6BCB77; --p4:#4D96FF; --p5:#C780E8;
-    --ink:#2D2A4A; --soft:#FFF6FB; --card:#FFFFFF;
-    --yellow:#FFE873; --shadow:rgba(45,42,74,0.12);
-  }
-  *{box-sizing:border-box;margin:0;padding:0;}
-  body{font-family:'Nunito',sans-serif;background:linear-gradient(160deg,#FFF6FB,#F0F8FF);min-height:100vh;color:var(--ink);}
-
-  .topbar{background:white;padding:14px 18px;display:flex;align-items:center;justify-content:space-between;box-shadow:0 2px 12px var(--shadow);position:sticky;top:0;z-index:50;}
-  .logo{font-family:'Baloo 2',cursive;font-weight:800;font-size:1.3rem;display:flex;align-items:center;gap:8px;}
-  .logo .bird{font-size:1.6rem;}
-  .streak{background:var(--yellow);border-radius:20px;padding:5px 14px;font-weight:800;font-size:0.9rem;display:flex;align-items:center;gap:5px;}
-
-  .container{max-width:560px;margin:0 auto;padding:18px 16px 80px;}
-
-  /* Day selector */
-  .day-pills{display:flex;gap:8px;overflow-x:auto;padding:6px 0 12px;margin-bottom:8px;}
-  .day-pill{flex-shrink:0;background:white;border:2px solid #eee;border-radius:16px;padding:10px 14px;text-align:center;cursor:pointer;font-weight:700;font-size:0.8rem;min-width:62px;transition:all 0.2s;}
-  .day-pill .d-icon{font-size:1.3rem;display:block;margin-bottom:2px;}
-  .day-pill.active{border-color:var(--p1);background:var(--p1);color:white;transform:translateY(-2px);}
-  .day-pill.done{border-color:var(--p3);}
-  .day-pill.done .d-icon::after{content:" ✓";}
-
-  /* Intro card */
-  .intro{background:linear-gradient(135deg,var(--p1),var(--p5));color:white;border-radius:22px;padding:22px;margin-bottom:18px;box-shadow:0 6px 20px var(--shadow);}
-  .intro h2{font-family:'Baloo 2',cursive;font-size:1.4rem;margin-bottom:4px;}
-  .intro p{font-size:0.92rem;opacity:0.95;}
-  .intro .meta{margin-top:10px;font-size:0.82rem;background:rgba(255,255,255,0.25);display:inline-block;padding:4px 12px;border-radius:14px;}
-
-  /* Exercise cards */
-  .step{background:var(--card);border-radius:22px;padding:0;margin-bottom:16px;box-shadow:0 4px 16px var(--shadow);overflow:hidden;}
-  .step-head{padding:14px 18px;display:flex;align-items:center;gap:10px;color:white;font-family:'Baloo 2',cursive;font-weight:700;font-size:1.05rem;}
-  .step-head .num{background:rgba(255,255,255,0.3);width:30px;height:30px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:0.95rem;}
-  .h-card{background:var(--p4);} .h-rep{background:var(--p2);} .h-speak{background:var(--p3);} .h-build{background:var(--p5);} .h-game{background:var(--p1);}
-  .step-body{padding:18px;}
-  .step-instruction{font-size:0.9rem;color:#666;margin-bottom:14px;}
-
-  /* Big visual card (Ebbe&Nebb style) */
-  .visual-card{background:var(--yellow);border-radius:18px;padding:20px;text-align:center;margin-bottom:14px;border:3px solid #F4D03F;}
-  .visual-card .big-emoji{font-size:3.5rem;line-height:1;margin-bottom:8px;display:block;}
-  .visual-card .vc-text{font-family:'Baloo 2',cursive;font-size:1.3rem;font-weight:700;}
-  .visual-card .vc-text .hl{color:var(--p1);}
-  .visual-card.c2{background:#D6F5E3;border-color:#6BCB77;}
-  .visual-card.c3{background:#D6E9FF;border-color:#4D96FF;}
-  .visual-card.c4{background:#F3E0FF;border-color:#C780E8;}
-  .visual-card.c5{background:#FFE0EC;border-color:#FF6B9D;}
-
-  /* Repetition rows */
-  .rep-row{display:flex;align-items:center;gap:12px;padding:12px;background:#FAFAFA;border-radius:14px;margin-bottom:8px;}
-  .rep-row .r-emoji{font-size:2rem;flex-shrink:0;}
-  .rep-row .r-text{font-size:1rem;font-weight:600;flex:1;}
-  .rep-row .r-blank{border-bottom:3px dotted #bbb;min-width:80px;display:inline-block;}
-
-  /* Speak box */
-  .speak-box{background:#D6F5E3;border-radius:16px;padding:18px;text-align:center;}
-  .speak-box .mic{font-size:2.5rem;margin-bottom:8px;}
-  .speak-prompt{font-size:1.05rem;font-weight:700;margin-bottom:10px;}
-  .speak-help{font-size:0.85rem;color:#557;background:white;border-radius:12px;padding:10px;margin-top:10px;}
-
-  /* Buttons / inputs */
-  .opt-grid{display:flex;flex-direction:column;gap:8px;}
-  .opt{background:#F4F4FB;border:2px solid transparent;border-radius:14px;padding:12px 16px;font-size:0.98rem;font-weight:600;cursor:pointer;text-align:left;transition:all 0.15s;}
-  .opt:active{transform:scale(0.98);}
-  .opt.correct{background:#D6F5E3;border-color:var(--p3);color:#1B7A3D;}
-  .opt.wrong{background:#FFE0E0;border-color:#E85D5D;color:#B22;}
-
-  .txt-in{width:100%;border:2px solid #ddd;border-radius:14px;padding:12px;font-size:0.98rem;font-family:'Nunito',sans-serif;resize:vertical;outline:none;}
-  .txt-in:focus{border-color:var(--p4);}
-
-  .done-btn{width:100%;background:var(--p3);color:white;border:none;border-radius:16px;padding:14px;font-family:'Baloo 2',cursive;font-weight:700;font-size:1.05rem;cursor:pointer;margin-top:8px;transition:all 0.2s;}
-  .done-btn:active{transform:scale(0.98);}
-  .done-btn.completed{background:#bbb;}
-
-  .reward{text-align:center;padding:30px 20px;background:linear-gradient(135deg,var(--p2),var(--p1));border-radius:22px;color:white;display:none;margin-top:10px;}
-  .reward.show{display:block;animation:pop 0.5s;}
-  @keyframes pop{0%{transform:scale(0.8);opacity:0;}100%{transform:scale(1);opacity:1;}}
-  .reward .big{font-size:3rem;}
-  .reward h2{font-family:'Baloo 2',cursive;font-size:1.6rem;margin:6px 0;}
-
-  .parent-tip{background:#FFF3D6;border-radius:12px;padding:10px 14px;font-size:0.82rem;color:#7A5A00;margin-top:12px;display:flex;gap:8px;}
-  .parent-tip .pt-icon{flex-shrink:0;}
-
-  .flip{perspective:600px;cursor:pointer;}
-  .flip-inner{transition:transform 0.5s;transform-style:preserve-3d;position:relative;}
-  .flip.flipped .flip-inner{transform:rotateY(180deg);}
-  .flip-front,.flip-back{backface-visibility:hidden;}
-  .flip-back{position:absolute;top:0;left:0;width:100%;height:100%;transform:rotateY(180deg);display:flex;align-items:center;justify-content:center;}
+:root{--p1:#FF6B9D;--p2:#FFC75F;--p3:#6BCB77;--p4:#4D96FF;--p5:#C780E8;--ink:#2D2A4A;--shadow:rgba(45,42,74,0.14);}
+*{box-sizing:border-box;margin:0;padding:0;}
+body{font-family:'Nunito',sans-serif;background:linear-gradient(160deg,#FFF6FB,#FFF9EC);min-height:100vh;color:var(--ink);}
+.logo{font-family:'Baloo 2',cursive;font-weight:800;font-size:1.2rem;}
+.topbar{background:white;padding:14px 18px;display:flex;align-items:center;gap:12px;box-shadow:0 2px 12px var(--shadow);position:sticky;top:0;z-index:50;}
+.home-btn{text-decoration:none;font-size:1.4rem;background:#F4F4FB;border-radius:12px;padding:6px 12px;}
+.fire{font-size:1.4rem;margin-left:auto;}
+.container{max-width:560px;margin:0 auto;padding:20px 18px 80px;}
+.intro{background:white;border-radius:16px;padding:16px;margin-bottom:20px;box-shadow:0 3px 12px var(--shadow);line-height:1.6;color:#666;}
+.day-pills{display:flex;gap:8px;overflow-x:auto;padding:0 0 12px;margin-bottom:16px;}
+.day-pill{flex-shrink:0;background:white;border:2.5px solid #e8e0d8;border-radius:50px;padding:10px 16px;font-weight:700;font-size:0.9rem;cursor:pointer;transition:all 0.15s;}
+.day-pill.active{background:var(--p3);color:white;border-color:var(--p3);}
+.day-pill:active{transform:scale(0.96);}
+.content{background:white;border-radius:18px;overflow:hidden;box-shadow:0 5px 18px var(--shadow);display:none;}
+.content.active{display:block;}
+.day-header{background:linear-gradient(135deg,var(--p3),#7ec898);padding:20px;color:white;}
+.day-num{font-family:'Baloo 2',cursive;font-size:2rem;margin-bottom:4px;}
+.day-theme{font-size:1.1rem;font-weight:700;}
+.section{padding:18px;border-bottom:1px solid #f0ebe4;}
+.section:last-child{border-bottom:none;}
+.section-title{font-family:'Baloo 2',cursive;font-size:0.95rem;font-weight:800;color:var(--p3);margin-bottom:12px;text-transform:uppercase;letter-spacing:0.5px;}
+.example-box{background:var(--p3);background:rgba(107,203,119,0.1);border-left:4px solid var(--p3);padding:12px 14px;border-radius:8px;margin-bottom:10px;line-height:1.6;font-size:0.95rem;}
+.sentence-build{display:flex;flex-direction:column;gap:10px;}
+.build-step{background:#f9f9f9;padding:12px;border-radius:10px;border-left:4px solid var(--p2);font-size:0.95rem;line-height:1.5;}
+.build-step .num{display:inline-block;background:var(--p2);color:#7A5A00;font-weight:800;padding:3px 9px;border-radius:20px;font-size:0.8rem;margin-right:8px;}
+.input-box{background:#f9f9f9;border:2px dashed var(--p3);border-radius:12px;padding:14px;margin-top:12px;}
+.input-box textarea{width:100%;border:none;background:transparent;font-family:'Nunito',sans-serif;font-size:0.95rem;resize:vertical;min-height:80px;color:var(--ink);}
+.input-box textarea::placeholder{color:#bbb;}
+.btn-complete{width:100%;margin-top:16px;padding:16px;background:var(--p3);color:white;border:none;border-radius:50px;font-family:'Baloo 2',cursive;font-size:1rem;font-weight:700;cursor:pointer;box-shadow:0 4px 0 #4d8a52;transition:all 0.1s;}
+.btn-complete:active{transform:translateY(3px);box-shadow:0 1px 0 #4d8a52;}
+.tip{background:#FFF9E0;border-left:4px solid var(--p2);padding:12px 14px;border-radius:8px;margin-top:12px;font-size:0.9rem;line-height:1.5;color:#7A5A00;}
 </style>
 </head>
 <body>
 
 <div class="topbar">
-  <div style="display:flex;align-items:center;gap:10px;"><a href="index.html" style="text-decoration:none;font-size:1.3rem;background:#F4F4FB;border-radius:12px;padding:4px 10px;">🏠</a><div class="logo"><span class="bird">🦜</span> Edels Språkreise</div></div>
-  <div class="streak">🔥 <span id="streakNum">0</span></div>
+  <a class="home-btn" href="index.html">🏠</a>
+  <div style="display:flex;align-items:center;gap:10px;">
+    <span class="bird">🦜</span><div class="logo">Edels Språkreise</div>
+  </div>
+  <div class="fire" id="fireCount">🔥 0</div>
 </div>
 
 <div class="container">
+  <div class="intro">
+    <strong>Hei, Edel!</strong> Hver dag øver du på nye bindeord — ord som kobler setninger sammen. Les, gjenta, snakk høyt, og skriv din egen! 💚
+  </div>
 
   <div class="day-pills" id="dayPills"></div>
-
-  <div id="lessonArea"></div>
-
+  <div id="daysContent"></div>
 </div>
 
 <script>
-// ============ LESSON DATA ============
-// Each day = one 10-15 min session. 5 steps: visual card → repetition → build → speak → mini-game
-// Mixes Edel's real day + everyday themes. TDL-focused: same structure, varied content.
-
 const DAYS = [
   {
-    icon:"🌸", name:"Dag 1", theme:"Min dag på skolen",
-    color:"var(--p1)",
-    intro:{title:"Min dag på skolen 🏫", text:"I dag øver vi på å fortelle hva som skjedde — i riktig rekkefølge."},
+    icon:"🏫", name:"Dag 1", theme:"Min dag på skolen",
+    intro:{title:"Først… Etterpå… Senere… Til slutt…", text:"Disse ordene forteller hva som skjedde først, så, og til slutt."},
     steps:[
-      {type:"visual", head:"Se og les", emoji:"🏫", text:"Jeg gikk til <span class='hl'>skolen</span>.", cardClass:""},
+      {type:"visual", head:"Se og les", emoji:"🏫", text:"<b>Først</b> gikk jeg til skolen. <b>Etterpå</b> hadde vi gym."},
       {type:"rep", head:"Les høyt – 3 ganger", rows:[
-        {emoji:"1️⃣", text:"<b>Først</b> gikk jeg til skolen."},
-        {emoji:"2️⃣", text:"<b>Etterpå</b> hadde vi gym."},
-        {emoji:"3️⃣", text:"<b>Senere</b> spilte vi kanonball."},
-        {emoji:"4️⃣", text:"<b>Til slutt</b> syklet jeg hjem."},
-      ], tip:"La henne lese hele rekka høyt tre ganger. Repetisjon bygger automatikk."},
-      {type:"choice", head:"Hva kommer først?", q:"Hvilket ord betyr at noe skjer i begynnelsen?",
-        opts:[{t:"Til slutt",c:false},{t:"Først",c:true},{t:"Etterpå",c:false}],
-        tip:"Hvis hun nøler, pek på 1️⃣ over."},
-      {type:"speak", head:"Si det selv", emoji:"🗣️", prompt:"Fortell om DIN dag på skolen i dag.",
-        help:"Bruk: Først… Etterpå… Senere… Til slutt…",
-        tip:"Lytt uten å rette med en gang. La henne snakke ferdig. Still ETT spørsmål etterpå: «Hva skjedde så?»"},
-      {type:"build", head:"Bygg setningen", steps:["Jeg spilte.","Jeg spilte kanonball.","Jeg spilte kanonball med Eyla.","Jeg spilte kanonball med Eyla, og det var gøy."],
-        tip:"Les hvert trinn høyt. Setningen vokser litt og litt."},
+        "Først gikk jeg til skolen.",
+        "Etterpå hadde vi gym.",
+        "Senere spilte vi kanonball.",
+        "Til slutt syklet jeg hjem.",
+      ], tip:"Repetisjon bygger automatikk. Les raskere hver gang!"},
+      {type:"speak", head:"Si det høyt selv", emoji:"🗣️", prompt:"Fortell om DIN dag på skolen i dag!",
+        help:"Først… Etterpå… Senere… Til slutt…"},
+      {type:"build", head:"Bygg setningen", steps:["Jeg spilte.","Jeg spilte kanonball.","Jeg spilte kanonball med Eyla.","Jeg spilte kanonball med Eyla, og det var gøy."]},
     ]
   },
   {
-    icon:"⚽", name:"Dag 2", theme:"Kanonball",
-    color:"var(--p4)",
-    intro:{title:"Kanonball ⚽", text:"I dag øver vi på HVEM, HVA og HVOR."},
+    icon:"🤾", name:"Dag 2", theme:"Kanonball",
+    intro:{title:"Hvem? Hvor? Hva? Hva skjedde?", text:"Disse spørsmålene hjelper deg å fortelle en god historie."},
     steps:[
-      {type:"visual", head:"Se og les", emoji:"⚽", text:"Jeg spilte <span class='hl'>kanonball</span>.", cardClass:"c3"},
+      {type:"visual", head:"Se og les", emoji:"🎯", text:"<b>Hvem?</b> Jeg var med Eyla. <b>Hvor?</b> På banen."},
       {type:"rep", head:"Les høyt – 3 ganger", rows:[
-        {emoji:"👤", text:"<b>Hvem?</b> Jeg var med Eyla."},
-        {emoji:"📍", text:"<b>Hvor?</b> På banen i gymsalen."},
-        {emoji:"⚽", text:"<b>Hva?</b> Vi spilte kanonball."},
-        {emoji:"😮", text:"<b>Hva skjedde?</b> Vi tapte mot 7A."},
-      ], tip:"De fire spørsmålsordene er nøkkelen til å fortelle. Øv på dem hver dag."},
-      {type:"choice", head:"Velg riktig", q:"Hvem spilte Edel kanonball med?",
-        opts:[{t:"Læreren",c:false},{t:"Eyla",c:true},{t:"Mamma",c:false}],
-        tip:""},
-      {type:"speak", head:"Si det selv", emoji:"🗣️", prompt:"Fortell om en gang du lekte eller spilte noe.",
-        help:"Hvem var du med? Hvor? Hva gjorde dere?",
-        tip:"De tre spørsmålene gir henne en ramme. Hvis hun sier bare ett ord, spør vennlig videre."},
-      {type:"build", head:"Bygg setningen", steps:["Vi tapte.","Vi tapte kampen.","Vi tapte kampen mot 7A.","Vi tapte kampen mot 7A, men vi hadde det gøy."],
-        tip:"Legg merke til «men» på slutten — det binder to tanker sammen."},
+        "Hvem? Jeg var med Eyla.",
+        "Hvor? På banen i gymsalen.",
+        "Hva? Vi spilte kanonball.",
+        "Hva skjedde? Vi tapte mot 7A.",
+      ]},
+      {type:"speak", head:"Si det høyt selv", emoji:"🗣️", prompt:"Fortell om en gang du lekte eller spilte noe!",
+        help:"Hvem var du med? Hvor? Hva gjorde dere?"},
+      {type:"build", head:"Bygg setningen", steps:["Vi tapte.","Vi tapte kampen.","Vi tapte kampen mot 7A.","Vi tapte kampen mot 7A, men vi hadde det gøy."]},
     ]
   },
   {
-    icon:"🤾", name:"Dag 3", theme:"Håndball",
-    color:"var(--p3)",
-    intro:{title:"Håndball 🤾", text:"I dag øver vi på å spørre om noe og forklare HVORFOR."},
+    icon:"🏓", name:"Dag 3", theme:"Håndball",
+    intro:{title:"Fordi – forklarer grunnen!", text:"Når du sier «fordi» viser du HVORFOR noe skjedde."},
     steps:[
-      {type:"visual", head:"Se og les", emoji:"🤾", text:"Jeg spurte om å <span class='hl'>spille</span>.", cardClass:"c2"},
+      {type:"visual", head:"Se og les", emoji:"🏓", text:"Jeg spurte Unna om å spille. Hun sa ja <b>fordi</b> det er gøy."},
       {type:"rep", head:"Les høyt – 3 ganger", rows:[
-        {emoji:"🙋", text:"Jeg <b>spurte</b> Unna om jeg kunne spille."},
-        {emoji:"✅", text:"Unna sa <b>ja</b>."},
-        {emoji:"❓", text:"<b>Hvorfor?</b> Fordi det er gøy."},
-        {emoji:"🍫", text:"Vi fikk brownies <b>fordi</b> vi trente hardt."},
-      ], tip:"«Fordi» er et viktig ord. Det forklarer grunnen til noe."},
-      {type:"choice", head:"Velg riktig", q:"Vi fikk brownies ____ vi trente hardt.",
-        opts:[{t:"men",c:false},{t:"fordi",c:true},{t:"eller",c:false}],
-        tip:"«Fordi» gir grunnen — hvorfor noe skjedde."},
-      {type:"speak", head:"Si det selv", emoji:"🗣️", prompt:"Fortell om noe du liker å gjøre — og HVORFOR du liker det.",
-        help:"Jeg liker ___ fordi ___",
-        tip:"Målet er at hun bruker ordet «fordi». Det trener på å forklare, som er vanskelig ved språkvansker."},
-      {type:"build", head:"Bygg setningen", steps:["Jeg spurte.","Jeg spurte Unna.","Jeg spurte Unna om å spille.","Jeg spurte Unna om å spille, og hun sa ja fordi det er gøy."],
-        tip:"Den siste setningen har både «og» og «fordi» — to bindeord!"},
+        "Jeg spurte Unna om jeg kunne spille.",
+        "Unna sa ja.",
+        "Hvorfor? Fordi det er gøy.",
+        "Vi fikk brownies fordi vi trente hardt.",
+      ]},
+      {type:"speak", head:"Si det høyt selv", emoji:"🗣️", prompt:"Hva liker du å gjøre — og HVORFOR?",
+        help:"Jeg liker ___ fordi ___"},
+      {type:"build", head:"Bygg setningen", steps:["Jeg spurte.","Jeg spurte Unna.","Jeg spurte Unna om å spille.","Jeg spurte Unna om å spille, og hun sa ja forbi det er gøy."]},
     ]
   },
   {
-    icon:"🛒", name:"Dag 4", theme:"På senteret",
-    color:"var(--p2)",
-    intro:{title:"På Manglerud senter 🛒", text:"I dag øver vi på å fortelle om et problem og en løsning."},
+    icon:"🛍️", name:"Dag 4", theme:"På Manglerud senter",
+    intro:{title:"Men – og Derfor – problem og løsning!", text:"«Men» viser at noe gikk galt. «Derfor» viser hva du gjorde."},
     steps:[
-      {type:"visual", head:"Se og les", emoji:"👓", text:"Jeg <span class='hl'>glemte</span> brillene.", cardClass:"c4"},
+      {type:"visual", head:"Se og les", emoji:"🛍️", text:"Vi fant en gul t-skjorte. <b>Men</b> jeg glemte brillene. <b>Derfor</b> måtte vi dra tilbake."},
       {type:"rep", head:"Les høyt – 3 ganger", rows:[
-        {emoji:"🎯", text:"Vi skulle finne et <b>kostyme</b>."},
-        {emoji:"👕", text:"Vi fant en gul <b>t-skjorte</b>."},
-        {emoji:"😟", text:"Men jeg <b>glemte</b> brillene mine."},
-        {emoji:"💡", text:"<b>Derfor</b> måtte vi dra tilbake."},
-      ], tip:"«Men» og «derfor» viser problem og løsning."},
-      {type:"choice", head:"Velg riktig", q:"Hva glemte Edel på senteret?",
-        opts:[{t:"Ryggsekken",c:false},{t:"Brillene",c:true},{t:"Mobilen",c:false}],
-        tip:""},
-      {type:"speak", head:"Si det selv", emoji:"🗣️", prompt:"Fortell om en gang du glemte noe. Hva skjedde?",
-        help:"Jeg glemte ___ . Derfor måtte jeg ___",
-        tip:"«Derfor» viser konsekvensen. Hjelp henne å koble: glemte → derfor → hva skjedde."},
-      {type:"build", head:"Bygg setningen", steps:["Jeg glemte.","Jeg glemte brillene.","Jeg glemte brillene på senteret.","Jeg glemte brillene på senteret, derfor måtte mamma hjelpe meg."],
-        tip:""},
+        "Vi skulle finne et kostyme.",
+        "Vi fant en gul t-skjorte.",
+        "Men jeg glemte brillene mine.",
+        "Derfor måtte vi dra tilbake.",
+      ]},
+      {type:"speak", head:"Si det høyt selv", emoji:"🗣️", prompt:"Fortell om en gang du glemte noe!",
+        help:"Jeg glemte ___. Derfor måtte jeg ___"},
+      {type:"build", head:"Bygg setningen", steps:["Jeg glemte.","Jeg glemte brillene.","Jeg glemte brillene på senteret.","Jeg glemte brillene på senteret, derfor måtte mamma hjelpe meg."]},
     ]
   },
   {
     icon:"🎬", name:"Dag 5", theme:"K-drama & musikk",
-    color:"var(--p5)",
-    intro:{title:"K-drama & musikk 🎬", text:"I dag øver vi på følelser og å beskrive det du liker."},
+    intro:{title:"Følelsesord – ord som beskriver hvordan du føler", text:"K-drama er fullt av følelser! Perfekt for å øve på nye ord."},
     steps:[
-      {type:"visual", head:"Se og les", emoji:"🎬", text:"Jeg elsker <span class='hl'>K-drama</span>!", cardClass:"c5"},
+      {type:"visual", head:"Se og les", emoji:"🎬", text:"Karakteren var <b>forelsket</b>. Hun var <b>trist</b> fordi vennen løy."},
       {type:"rep", head:"Les høyt – 3 ganger", rows:[
-        {emoji:"😍", text:"Karakteren var <b>forelsket</b>."},
-        {emoji:"😢", text:"Hun var <b>trist</b> fordi vennen løy."},
-        {emoji:"😱", text:"Det var en stor <b>hemmelighet</b>."},
-        {emoji:"😤", text:"Han ville ha <b>hevn</b>."},
-      ], tip:"Følelsesord er ofte vanskelige. K-drama er full av dem — perfekt for å øve!"},
-      {type:"choice", head:"Velg riktig", q:"Hva betyr «hemmelighet»?",
-        opts:[{t:"Noe alle vet",c:false},{t:"Noe man ikke skal fortelle",c:true},{t:"En gave",c:false}],
-        tip:""},
-      {type:"speak", head:"Si det selv", emoji:"🗣️", prompt:"Fortell om en serie eller sang du liker. Hvilken følelse gir den deg?",
-        help:"Jeg liker ___ fordi det gjør meg ___ (glad / rørt / spent)",
-        tip:"Å koble noe man liker til en følelse er avansert språk. Ros hvert forsøk."},
-      {type:"build", head:"Bygg setningen", steps:["Jeg så på.","Jeg så på et K-drama.","Jeg så på et K-drama i går.","Jeg så på et K-drama i går, og det gjorde meg både glad og trist."],
-        tip:"«Både … og» er et fint mønster for å uttrykke to følelser samtidig."},
+        "Karakteren var forelsket.",
+        "Hun var trist fordi vennen løy.",
+        "Det var en stor hemmelighet.",
+        "Han ville ha hevn.",
+      ]},
+      {type:"speak", head:"Si det høyt selv", emoji:"🗣️", prompt:"Hvilken følelse gir din favoritt-serie deg?",
+        help:"Jeg liker ___ fordi det gjør meg ___ (glad / rørt / spent)"},
+      {type:"build", head:"Bygg setningen", steps:["Jeg så på.","Jeg så på et K-drama.","Jeg så på et K-drama i går.","Jeg så på et K-drama i går, og det gjorde meg både glad og trist."]},
     ]
   },
-  // ============ UKE 2 ============
   {
     icon:"🐕", name:"Dag 6", theme:"Pipocão",
-    color:"var(--p2)",
-    intro:{title:"Pipocão 🐕", text:"Uke 2! I dag øver vi på «da» og «når» — ord som forteller om tid."},
+    intro:{title:"Da – og Når – tid!", text:"«Da» = en gang. «Når» = hver gang."},
     steps:[
-      {type:"visual", head:"Se og les", emoji:"🐕", text:"Pipocão ble <span class='hl'>glad</span> da jeg kom hjem.", cardClass:"c2"},
+      {type:"visual", head:"Se og les", emoji:"🐕", text:"<b>Da</b> jeg kom hjem, logret Pipocão med halen. <b>Når</b> jeg er trist, sitter han hos meg."},
       {type:"rep", head:"Les høyt – 3 ganger", rows:[
-        {emoji:"🏠", text:"<b>Da</b> jeg kom hjem, logret Pipocão med halen."},
-        {emoji:"😢", text:"<b>Når</b> jeg er trist, sitter Pipocão hos meg."},
-        {emoji:"🚶", text:"<b>Da</b> vi gikk tur, møtte vi en katt."},
-        {emoji:"🍖", text:"<b>Når</b> Pipocão er sulten, bjeffer han."},
-      ], tip:"«Da» = én gang i fortiden. «Når» = hver gang / i fremtiden. Ikke rett feil — bare les riktig modell mange ganger."},
-      {type:"choice", head:"Velg riktig", q:"___ jeg kom hjem i går, ble Pipocão glad.",
-        opts:[{t:"Når",c:false},{t:"Da",c:true},{t:"Hvis",c:false}],
-        tip:"Det skjedde ÉN gang i går — da bruker vi «da»."},
-      {type:"speak", head:"Si det selv", emoji:"🗣️", prompt:"Fortell om Pipocão! Hva skjer NÅR du kommer hjem?",
-        help:"Når jeg kommer hjem, ___ . Da vi gikk tur, ___",
-        tip:"Lytt etter om hun bruker «da» eller «når». Begge er flott — målet er at hun kobler tid og hendelse."},
-      {type:"build", head:"Bygg setningen", steps:["Pipocão logret.","Pipocão logret med halen.","Pipocão logret med halen da jeg kom hjem.","Pipocão logret med halen da jeg kom hjem, fordi han var glad for å se meg."],
-        tip:"Den siste setningen har både «da» og «fordi» — to bindeord!"},
+        "Da jeg kom hjem, logret Pipocão med halen.",
+        "Når jeg er trist, sitter Pipocão hos meg.",
+        "Da vi gikk tur, møtte vi en katt.",
+        "Når Pipocão er sulten, bjeffer han.",
+      ]},
+      {type:"speak", head:"Si det høyt selv", emoji:"🗣️", prompt:"Hva skjer NÅR eller DA med Pipocão?",
+        help:"Når jeg kommer hjem, ___. Da vi gikk tur, ___"},
+      {type:"build", head:"Bygg setningen", steps:["Pipocão logret.","Pipocão logret med halen.","Pipocão logret med halen da jeg kom hjem.","Pipocão logret med halen da jeg kom hjem, fordi han var glad for å se meg."]},
     ]
   },
   {
     icon:"🤾", name:"Dag 7", theme:"Håndballkamp",
-    color:"var(--p4)",
-    intro:{title:"Håndballkamp 🤾", text:"I dag øver vi på «hvis» — ordet som forteller hva som KAN skje."},
+    intro:{title:"Hvis – tanke på fremtiden!", text:"«Hvis» betyr: «det som KAN skje hvis du gjør noe»."},
     steps:[
-      {type:"visual", head:"Se og les", emoji:"🏆", text:"Hvis vi trener, blir vi <span class='hl'>bedre</span>.", cardClass:"c3"},
+      {type:"visual", head:"Se og les", emoji:"🏆", text:"<b>Hvis</b> jeg øver, blir jeg bedre. <b>Hvis</b> vi vinner, blir jeg glad."},
       {type:"rep", head:"Les høyt – 3 ganger", rows:[
-        {emoji:"💪", text:"<b>Hvis</b> jeg øver, blir jeg bedre."},
-        {emoji:"🏆", text:"<b>Hvis</b> vi vinner, blir jeg glad."},
-        {emoji:"😴", text:"<b>Hvis</b> jeg er sliten, hviler jeg."},
-        {emoji:"🤝", text:"<b>Hvis</b> noen er alene, kan jeg spørre: Vil du være med?"},
-      ], tip:"«Hvis» starter en tenkt situasjon. Den siste setningen kobler til friminutt-temaet fra uke 1."},
-      {type:"choice", head:"Velg riktig", q:"___ jeg øver mye, blir jeg bedre i håndball.",
-        opts:[{t:"Hvis",c:true},{t:"Men",c:false},{t:"Fordi",c:false}],
-        tip:"«Hvis» = en betingelse. Først hvis-delen, så det som skjer."},
-      {type:"speak", head:"Si det selv", emoji:"🗣️", prompt:"Hva skjer HVIS du trener hver dag? Fortell!",
-        help:"Hvis jeg ___ , så ___",
-        tip:"Hjelp henne å fullføre begge delene: hvis-delen OG hva som skjer da."},
-      {type:"build", head:"Bygg setningen", steps:["Vi vant.","Vi vant kampen.","Vi vant kampen i går.","Vi vant kampen i går, og hvis vi fortsetter å trene, vinner vi igjen."],
-        tip:"Setningen peker fremover — «hvis» åpner for fremtiden."},
+        "Hvis jeg øver, blir jeg bedre.",
+        "Hvis vi vinner, blir jeg glad.",
+        "Hvis jeg er sliten, hviler jeg.",
+        "Hvis noen er alene, kan jeg spørre: Vil du være med?",
+      ]},
+      {type:"speak", head:"Si det høyt selv", emoji:"🗣️", prompt:"Hva skjer HVIS du trener hver dag?",
+        help:"Hvis jeg ___, så ___"},
+      {type:"build", head:"Bygg setningen", steps:["Vi vant.","Vi vant kampen.","Vi vant kampen i går.","Vi vant kampen i går, og hvis vi fortsetter å trene, vinner vi igjen."]},
     ]
   },
   {
     icon:"🏫", name:"Dag 8", theme:"Friminuttet",
-    color:"var(--p1)",
-    intro:{title:"Friminuttet 🏫", text:"Husker du ukens ord fra Edels Verden? I dag bruker vi dem i setninger!"},
+    intro:{title:"Spaced retrieval – alle ordene fra uke 1!", text:"Nå bruker vi ukens ord fra Edels Verden i nye setninger!"},
     steps:[
-      {type:"visual", head:"Se og les", emoji:"🤗", text:"Alle skal bli <span class='hl'>inkludert</span>.", cardClass:"c5"},
+      {type:"visual", head:"Se og les", emoji:"🤗", text:"Edel ble <b>ekskludert</b> da ingen svarte. Hun følte <b>avvist</b> og <b>oversett</b>."},
       {type:"rep", head:"Les høyt – 3 ganger", rows:[
-        {emoji:"😔", text:"Edel ble <b>ekskludert</b> da ingen svarte."},
-        {emoji:"😞", text:"Hun følte seg <b>avvist</b> og <b>oversett</b>."},
-        {emoji:"🧑‍🏫", text:"En voksen hjalp barna med å <b>inkludere</b> henne."},
-        {emoji:"💚", text:"Til slutt følte hun <b>tilhørighet</b> og <b>fellesskap</b>."},
-      ], tip:"Dette er ukens ord i nye setninger — repetisjon i ny kontekst er gull for ordlæring."},
-      {type:"choice", head:"Velg riktig", q:"Når du IKKE får være med, blir du ___",
-        opts:[{t:"inkludert",c:false},{t:"ekskludert",c:true},{t:"glad",c:false}],
-        tip:"Ekskludert = stengt ute. Inkludert = få være med."},
-      {type:"speak", head:"Si det selv", emoji:"🗣️", prompt:"Hva kan DU si hvis noen står alene i friminuttet?",
-        help:"Vil du være med? / Kom og spill med oss!",
-        tip:"Dette kobler språk til handling — å inkludere noen i praksis. Rollespill gjerne!"},
-      {type:"build", head:"Bygg setningen", steps:["Hun spurte.","Hun spurte om å være med.","Hun spurte om å være med, men ingen svarte.","Hun spurte om å være med, men ingen svarte, derfor følte hun seg ekskludert."],
-        tip:"«Men» + «derfor» + ukens ord — alt sammen i én setning!"},
+        "Edel ble ekskludert da ingen svarte.",
+        "Hun følte seg avvist og oversett.",
+        "En voksen hjalp barna med å inkludere henne.",
+        "Til slutt følte hun tilhørighet og fellesskap.",
+      ]},
+      {type:"speak", head:"Si det høyt selv", emoji:"🗣️", prompt:"Hva kan DU si hvis noen står alene?",
+        help:"Vil du være med? / Kom og spill med oss!"},
+      {type:"build", head:"Bygg setningen", steps:["Hun spurte.","Hun spurte om å være med.","Hun spurte om å være med, men ingen svarte.","Hun spurte om å være med, men ingen svarte, derfor følte hun seg ekskludert."]},
     ]
   },
   {
     icon:"🥋", name:"Dag 9", theme:"Taekwondo",
-    color:"var(--p3)",
-    intro:{title:"Taekwondo 🥋", text:"I dag øver vi på «før» og «etter at» — rekkefølge på en ny måte."},
+    intro:{title:"Før – og Etter at – rekkefølge!", text:"Disse ordene viser hva som kommer først og hva som kommer etterpå."},
     steps:[
-      {type:"visual", head:"Se og les", emoji:"🥋", text:"Jeg bukker <span class='hl'>før</span> jeg starter.", cardClass:"c4"},
+      {type:"visual", head:"Se og les", emoji:"🥋", text:"<b>Før</b> treningen tar vi på drakten. <b>Etter at</b> vi har bukket, starter treningen."},
       {type:"rep", head:"Les høyt – 3 ganger", rows:[
-        {emoji:"👕", text:"<b>Før</b> treningen tar vi på drakten."},
-        {emoji:"🙇", text:"<b>Etter at</b> vi har bukket, starter treningen."},
-        {emoji:"😬", text:"<b>Før</b> kampen er jeg spent."},
-        {emoji:"😊", text:"<b>Etter</b> treningen er jeg sliten, men glad."},
-      ], tip:"«Før» og «etter at» plasserer ting i tid — som «først» og «etterpå», men mer presist."},
-      {type:"choice", head:"Velg riktig", q:"___ treningen tar vi på drakten.",
-        opts:[{t:"Etter at",c:false},{t:"Før",c:true},{t:"Hvis",c:false}],
-        tip:"Drakten kommer FØR treningen starter."},
-      {type:"speak", head:"Si det selv", emoji:"🗣️", prompt:"Hva gjør du FØR skolen? Og ETTER skolen?",
-        help:"Før skolen ___ . Etter skolen ___",
-        tip:"To korte setninger holder. Strukturen før/etter gir henne et trygt rammeverk."},
-      {type:"build", head:"Bygg setningen", steps:["Jeg trente.","Jeg trente taekwondo.","Jeg trente taekwondo etter skolen.","Etter at jeg hadde trent taekwondo, var jeg sliten, men stolt."],
-        tip:"Legg merke til at setningen kan STARTE med «etter at» — det er avansert!"},
+        "Før treningen tar vi på drakten.",
+        "Etter at vi har bukket, starter treningen.",
+        "Før kampen er jeg spent.",
+        "Etter treningen er jeg sliten, men glad.",
+      ]},
+      {type:"speak", head:"Si det høyt selv", emoji:"🗣️", prompt:"Hva gjør du FØR og ETTER skolen?",
+        help:"Før skolen ___. Etter skolen ___"},
+      {type:"build", head:"Bygg setningen", steps:["Jeg trente.","Jeg trente taekwondo.","Jeg trente taekwondo etter skolen.","Etter at jeg hadde trent taekwondo, var jeg sliten, men stolt."]},
     ]
   },
   {
     icon:"🌟", name:"Dag 10", theme:"Min uke",
-    color:"var(--p5)",
-    intro:{title:"Min uke 🌟", text:"Siste dag! I dag bruker vi ALLE bindeordene og forteller om hele uken."},
+    intro:{title:"Alle bindeordene sammen! 🎉", text:"Nå bruker du ALLE bindeordene fra to uker! Du er en språkmester!"},
     steps:[
-      {type:"visual", head:"Se og les", emoji:"🌟", text:"Jeg kan fortelle om <span class='hl'>hele uken</span>!", cardClass:""},
+      {type:"visual", head:"Se og les", emoji:"🌟", text:"<b>Først, etterpå, til slutt</b> — <b>fordi</b> — <b>men, derfor</b> — <b>da, når, hvis, før, etter at</b> — alle sammen!"},
       {type:"rep", head:"Les høyt – 3 ganger", rows:[
-        {emoji:"1️⃣", text:"<b>Først, etterpå, til slutt</b> — rekkefølge."},
-        {emoji:"❓", text:"<b>Fordi</b> — forklarer hvorfor."},
-        {emoji:"💡", text:"<b>Men, derfor</b> — problem og løsning."},
-        {emoji:"⏰", text:"<b>Da, når, hvis, før, etter at</b> — tid."},
-      ], tip:"Dette er verktøykassen hennes! Alle bindeordene fra to uker samlet."},
-      {type:"choice", head:"Velg riktig", q:"Hvilket ord forklarer HVORFOR noe skjedde?",
-        opts:[{t:"men",c:false},{t:"fordi",c:true},{t:"før",c:false}],
-        tip:""},
-      {type:"speak", head:"Si det selv", emoji:"🗣️", prompt:"Fortell om HELE uken din! Bruk så mange bindeord du klarer.",
-        help:"Først… etterpå… fordi… men… derfor… til slutt…",
-        tip:"Dette er den store testen — fri fortelling med struktur. Tell gjerne bindeordene sammen etterpå og feir hvert eneste ett!"},
-      {type:"build", head:"Bygg setningen", steps:["Jeg lærte.","Jeg lærte nye ord.","Jeg lærte nye ord denne uken.","Jeg lærte nye ord denne uken, og nå føler jeg tilhørighet fordi jeg kan fortelle mer."],
-        tip:"Ukens ord «tilhørighet» + «fordi» — en perfekt avslutning! 💚"},
+        "Først, etterpå, til slutt — rekkefølge.",
+        "Fordi — forklarer hvorfor.",
+        "Men, derfor — problem og løsning.",
+        "Da, når, hvis, før, etter at — tid og betingelse.",
+      ]},
+      {type:"speak", head:"Si det høyt selv", emoji:"🗣️", prompt:"Fortell om HELE uken din! Bruk så mange bindeord som du klarer.",
+        help:"Først… etterpå… fordi… men… derfor… til slutt…"},
+      {type:"build", head:"Bygg setningen", steps:["Jeg lærte.","Jeg lærte nye ord.","Jeg lærte nye ord denne uken.","Jeg lærte nye ord denne uken, og nå føler jeg tilhørighet fordi jeg kan fortelle mer."]},
     ]
   },
 ];
 
-// ============ STATE ============
 let currentDay = 0;
-let completed = JSON.parse('{}'); // can't use localStorage; in-memory only
-let dayDone = {};
+const storageKey = "edels_spraakreise_fire";
 
-// ============ RENDER ============
-function renderPills(){
-  const wrap = document.getElementById('dayPills');
-  wrap.innerHTML = '';
-  DAYS.forEach((d,i)=>{
-    const pill = document.createElement('div');
-    pill.className = 'day-pill' + (i===currentDay?' active':'') + (dayDone[i]?' done':'');
-    pill.innerHTML = `<span class="d-icon">${d.icon}</span>${d.name}`;
-    pill.onclick = ()=>{ currentDay=i; render(); };
-    wrap.appendChild(pill);
-  });
-}
-
-function render(){
+function init(){
   renderPills();
+  renderContent();
+  loadFireCount();
+  updateFireCount();
+}
+
+function renderPills(){
+  const pills = document.getElementById('dayPills');
+  pills.innerHTML = DAYS.map((d,i) => `
+    <button class="day-pill ${i===currentDay?'active':''}" onclick="switchDay(${i})">${d.name}</button>
+  `).join('');
+}
+
+function renderContent(){
+  const content = document.getElementById('daysContent');
   const day = DAYS[currentDay];
-  const area = document.getElementById('lessonArea');
-  let html = `<div class="intro" style="background:linear-gradient(135deg,${day.color},var(--p5))">
-    <h2>${day.intro.title}</h2>
-    <p>${day.intro.text}</p>
-    <div class="meta">⏱️ 10–15 minutter • 5 steg</div>
-  </div>`;
-
-  day.steps.forEach((step,si)=>{
-    const stepId = `d${currentDay}s${si}`;
-    html += `<div class="step"><div class="step-head ${headClass(step.type)}"><span class="num">${si+1}</span> ${step.head}</div><div class="step-body">`;
-
-    if(step.type==='visual'){
-      html += `<div class="visual-card ${step.cardClass}">
-        <span class="big-emoji">${step.emoji}</span>
-        <div class="vc-text">${step.text}</div>
-      </div>
-      <p class="step-instruction">👀 Se på bildet og les setningen høyt sammen.</p>`;
+  let html = `<div class="content active">
+    <div class="day-header">
+      <div class="day-num">${day.icon}</div>
+      <div class="day-theme">${day.theme}</div>
+    </div>`;
+  
+  day.steps.forEach((s,si) => {
+    html += `<div class="section">`;
+    if(s.type === 'visual'){
+      html += `<div class="section-title">${s.head}</div>
+        <div class="example-box">${s.text}</div>`;
+    } else if(s.type === 'rep'){
+      html += `<div class="section-title">${s.head}</div>`;
+      s.rows.forEach(r => html += `<div class="example-box">${r}</div>`);
+      html += `<div class="tip">💡 ${s.tip}</div>`;
+    } else if(s.type === 'speak'){
+      html += `<div class="section-title">${s.head}</div>
+        <div class="example-box"><strong>Spørsmål:</strong> ${s.prompt}</div>
+        <div class="tip">💬 ${s.help}</div>`;
+    } else if(s.type === 'build'){
+      html += `<div class="section-title">${s.head}</div><div class="sentence-build">`;
+      s.steps.forEach((st,i) => html += `<div class="build-step"><span class="num">${i+1}</span>${st}</div>`);
+      html += `</div>
+        <div class="input-box">
+          <textarea placeholder="Lag din egen setning her..." id="input${si}"></textarea>
+        </div>`;
     }
-    else if(step.type==='rep'){
-      step.rows.forEach(r=>{
-        html += `<div class="rep-row"><span class="r-emoji">${r.emoji}</span><span class="r-text">${r.text}</span></div>`;
-      });
-      if(step.tip) html += parentTip(step.tip);
-    }
-    else if(step.type==='choice'){
-      html += `<p class="step-instruction">${step.q}</p><div class="opt-grid">`;
-      step.opts.forEach((o,oi)=>{
-        html += `<button class="opt" onclick="pickOpt(this,${o.c})">${o.t}</button>`;
-      });
-      html += `</div>`;
-      if(step.tip) html += parentTip(step.tip);
-    }
-    else if(step.type==='speak'){
-      html += `<div class="speak-box">
-        <div class="mic">🎤</div>
-        <div class="speak-prompt">${step.prompt}</div>
-        <div class="speak-help">💬 ${step.help}</div>
-      </div>`;
-      if(step.tip) html += parentTip(step.tip);
-    }
-    else if(step.type==='build'){
-      step.steps.forEach((s,bi)=>{
-        const bold = bi===step.steps.length-1?'font-weight:800;':'';
-        html += `<div class="rep-row" style="${bold}"><span class="r-emoji">${bi+1}️⃣</span><span class="r-text">${s}</span></div>`;
-        if(bi<step.steps.length-1) html += `<div style="text-align:center;color:var(--p5);font-size:1.2rem;margin:-2px 0;">↓</div>`;
-      });
-      html += `<textarea class="txt-in" rows="2" placeholder="Lag din egen lange setning her..."></textarea>`;
-      if(step.tip) html += parentTip(step.tip);
-    }
-
-    html += `</div></div>`;
+    html += `</div>`;
   });
-
-  html += `<button class="done-btn ${dayDone[currentDay]?'completed':''}" onclick="finishDay()">${dayDone[currentDay]?'✓ Fullført!':'Jeg er ferdig for i dag! 🎉'}</button>`;
-  html += `<div class="reward" id="reward"><div class="big">🦜🌟</div><h2>Bra jobbet, Edel!</h2><p>Du fullførte dagens språkreise!</p></div>`;
-
-  area.innerHTML = html;
-  window.scrollTo({top:0,behavior:'smooth'});
+  
+  html += `<div style="padding:18px;text-align:center;">
+    <button class="btn-complete" onclick="completeDay()">Jeg er ferdig for i dag! 🎉</button>
+  </div></div>`;
+  
+  content.innerHTML = html;
 }
 
-function headClass(type){
-  return {visual:'h-card',rep:'h-rep',choice:'h-build',speak:'h-speak',build:'h-build',game:'h-game'}[type]||'h-card';
+function switchDay(i){
+  currentDay = i;
+  document.querySelectorAll('.day-pill').forEach((p,idx) => {
+    p.classList.toggle('active', idx === i);
+  });
+  renderContent();
 }
-function parentTip(text){
-  return `<div class="parent-tip"><span class="pt-icon">💡</span><span><b>Til forelder:</b> ${text}</span></div>`;
-}
-function pickOpt(btn,correct){
-  const grid = btn.parentNode;
-  if(grid.querySelector('.correct,.wrong')) return;
-  if(correct){ btn.classList.add('correct'); btn.innerHTML='✓ '+btn.innerHTML; }
-  else{
-    btn.classList.add('wrong');
-    [...grid.children].forEach(b=>{ if(b!==btn) b.disabled=true; });
+
+function completeDay(){
+  const day = DAYS[currentDay];
+  const inputs = document.querySelectorAll('textarea');
+  const userTexts = Array.from(inputs).map(t => t.value).filter(v => v.trim());
+  const userText = userTexts.length > 0 ? userTexts.join(' — ') : '(ingen skrevet)';
+  
+  // Send email
+  sendEmail(day, userText);
+  
+  // Update fire
+  const fire = parseInt(localStorage.getItem(storageKey) || '0') + 1;
+  localStorage.setItem(storageKey, fire);
+  updateFireCount();
+  
+  // Next day
+  if(currentDay < DAYS.length - 1){
+    setTimeout(() => switchDay(currentDay + 1), 800);
+  } else {
+    alert('🎉 Du har fullført hele Språkreisen! Du er fantastisk, Edel!');
   }
 }
-function finishDay(){
-  dayDone[currentDay]=true;
-  const streak = Object.keys(dayDone).length;
-  document.getElementById('streakNum').textContent = streak;
-  document.getElementById('reward').classList.add('show');
-  renderPills();
-  document.querySelector('.done-btn').classList.add('completed');
-  document.querySelector('.done-btn').textContent='✓ Fullført!';
-  setTimeout(()=>document.getElementById('reward').scrollIntoView({behavior:'smooth'}),100);
+
+async function sendEmail(day, userText){
+  const now = new Date();
+  const dato = now.toLocaleDateString('no-NO',{weekday:'long',year:'numeric',month:'long',day:'numeric'});
+  const tid = now.toLocaleTimeString('no-NO',{hour:'2-digit',minute:'2-digit'});
+  
+  try{
+    await fetch('https://formspree.io/f/mqeolldg',{
+      method:'POST',
+      headers:{'Content-Type':'application/json'},
+      body: JSON.stringify({
+        _subject: `Edels Språkreise – ${day.name} – ${dato}`,
+        Dato: dato,
+        Tidspunkt: tid,
+        Dag: day.name,
+        Tema: day.theme,
+        Tekst_hun_skrev: userText,
+        Bindeord_fokus: day.intro.title,
+      })
+    });
+  } catch(e){ console.log(e); }
 }
 
-render();
+function loadFireCount(){
+  const fire = localStorage.getItem(storageKey) || '0';
+  document.getElementById('fireCount').textContent = '🔥 ' + fire;
+}
+
+function updateFireCount(){
+  loadFireCount();
+}
+
+init();
 </script>
 </body>
 </html>
