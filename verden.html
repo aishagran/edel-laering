@@ -2,407 +2,484 @@
 <html lang="no">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Ukens ord 📚 – Edels Verden</title>
+<link href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@600;700;800&family=Nunito:wght@400;600;700;800&display=swap" rel="stylesheet">
 <style>
-@import url('https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800;900&family=Fredoka+One&display=swap');
+:root{--p1:#FF6B9D;--p2:#FFC75F;--p3:#6BCB77;--p4:#4D96FF;--p5:#C780E8;--ink:#2D2A4A;--shadow:rgba(45,42,74,0.14);}
 *{box-sizing:border-box;margin:0;padding:0;}
-:root{
-  --green:#5a9e6f;--green-light:#e8f5ec;--green-dark:#3d7a52;
-  --warm:#f9f4ed;--pink:#f4a0b0;--pink-light:#fdeef1;
-  --yellow:#f7d97a;--yellow-light:#fef9e7;
-  --text:#3a3228;--text-soft:#7a6e64;
-  --radius:20px;--shadow:0 4px 20px rgba(0,0,0,0.10);
-}
-body{font-family:'Nunito',sans-serif;background:var(--warm);color:var(--text);min-height:100vh;}
-.screen{display:none;min-height:100vh;flex-direction:column;}
-.screen.active{display:flex;}
-
-/* HOME */
-#home{background:linear-gradient(160deg,#e8f5ec 0%,#fdeef1 55%,#e8f4fa 100%);padding-bottom:40px;}
-.home-header{text-align:center;padding:36px 24px 20px;}
-.home-logo{font-size:60px;margin-bottom:4px;animation:float 3s ease-in-out infinite;}
-@keyframes float{0%,100%{transform:translateY(0)}50%{transform:translateY(-8px)}}
-.home-title{font-family:'Fredoka One',cursive;font-size:36px;color:var(--green-dark);margin-bottom:4px;}
-.home-sub{font-size:15px;color:var(--text-soft);}
-.words-banner{background:white;border-radius:var(--radius);box-shadow:var(--shadow);margin:16px 20px;padding:16px 18px;}
-.banner-title{font-size:12px;font-weight:800;text-transform:uppercase;letter-spacing:1px;color:var(--text-soft);margin-bottom:10px;}
-.words-row{display:flex;flex-wrap:wrap;gap:8px;}
-.word-chip{padding:6px 13px;border-radius:50px;font-size:13px;font-weight:700;}
-.word-chip.hard{background:var(--pink-light);color:#c0566a;border:2px solid var(--pink);}
-.word-chip.good{background:var(--green-light);color:var(--green-dark);border:2px solid #a8d5b5;}
-.week-section{padding:0 20px 8px;}
-.week-label{font-size:12px;font-weight:800;text-transform:uppercase;letter-spacing:1.5px;color:var(--text-soft);margin-bottom:12px;padding-left:2px;}
-.chapter-card{background:white;border-radius:var(--radius);box-shadow:var(--shadow);padding:16px 18px;margin-bottom:12px;display:flex;align-items:center;gap:14px;cursor:pointer;transition:all 0.15s;border:2.5px solid #e8e0d8;}
-.chapter-card:active{transform:scale(0.98);}
-.chapter-card.done{border-color:var(--green);background:var(--green-light);}
-.chapter-card.locked{opacity:0.45;cursor:not-allowed;}
-.ch-emoji{font-size:38px;min-width:50px;text-align:center;}
+body{font-family:'Nunito',sans-serif;background:linear-gradient(160deg,#E8F5EC,#F0F8FF);min-height:100vh;color:var(--ink);}
+.topbar{background:white;padding:14px 18px;display:flex;align-items:center;gap:12px;box-shadow:0 2px 12px var(--shadow);position:sticky;top:0;z-index:50;}
+.home-btn{text-decoration:none;font-size:1.4rem;background:#F4F4FB;border-radius:12px;padding:6px 12px;}
+.logo{font-family:'Baloo 2',cursive;font-weight:800;font-size:1.2rem;}
+.score{margin-left:auto;font-size:1.4rem;}
+.container{max-width:560px;margin:0 auto;padding:20px 18px 100px;}
+.week-label{font-size:0.8rem;font-weight:800;text-transform:uppercase;letter-spacing:1px;color:#888;margin:24px 0 12px;padding-left:4px;}
+.chapters{display:flex;flex-direction:column;gap:12px;margin-bottom:20px;}
+.chapter-card{background:white;border-radius:18px;overflow:hidden;box-shadow:0 4px 16px var(--shadow);border:3px solid #d4eeda;cursor:pointer;transition:all 0.15s;}
+.chapter-card:active{transform:scale(0.97);}
+.chapter-card.completed{border-color:var(--p3);background:rgba(107,203,119,0.05);}
+.ch-header{background:var(--p3);padding:16px;display:flex;align-items:center;gap:14px;color:white;}
+.ch-emoji{font-size:36px;}
 .ch-info{flex:1;}
-.ch-day{font-size:11px;font-weight:800;text-transform:uppercase;letter-spacing:1px;color:var(--text-soft);margin-bottom:2px;}
-.ch-title{font-family:'Fredoka One',cursive;font-size:17px;color:var(--text);margin-bottom:3px;}
-.ch-desc{font-size:12px;color:var(--text-soft);line-height:1.4;}
-.ch-badge{font-size:20px;}
-.coming-soon{background:white;border-radius:var(--radius);margin:4px 20px 0;padding:14px 16px;text-align:center;color:var(--text-soft);font-size:13px;font-weight:600;border:2px dashed #e0d8d0;}
-
-/* LESSON */
-.lesson-wrap{background:var(--warm);}
-.lesson-header{background:white;padding:12px 18px 10px;box-shadow:0 2px 8px rgba(0,0,0,0.06);position:sticky;top:0;z-index:10;}
-.header-row{display:flex;align-items:center;gap:12px;margin-bottom:7px;}
-.btn-back{background:none;border:none;font-size:22px;cursor:pointer;color:var(--text-soft);padding:2px 6px;border-radius:10px;}
-.progress-bar{flex:1;height:10px;background:#e8e0d8;border-radius:10px;overflow:hidden;}
-.progress-fill{height:100%;background:linear-gradient(90deg,var(--green),#7ec898);border-radius:10px;transition:width 0.4s ease;}
-.progress-text{font-size:12px;font-weight:700;color:var(--text-soft);white-space:nowrap;}
-.step-title{font-family:'Fredoka One',cursive;font-size:16px;color:var(--green-dark);}
-.lesson-body{padding:18px 18px 120px;flex:1;}
-
-/* SCENE */
-.scene-card{background:white;border-radius:var(--radius);box-shadow:var(--shadow);overflow:hidden;margin-bottom:12px;}
-.scene-num{background:var(--green);color:white;font-family:'Fredoka One',cursive;font-size:12px;padding:6px 14px;}
-.scene-text{font-size:16px;font-weight:700;padding:13px 16px;line-height:1.4;}
-.scene-speech{background:var(--green-light);margin:0 12px 12px;border-radius:11px;padding:9px 13px;font-size:14px;font-weight:600;color:var(--green-dark);border-left:4px solid var(--green);}
-.scene-chips{display:flex;gap:7px;flex-wrap:wrap;padding:0 12px 12px;}
-
-/* WORD */
-.word-card{background:white;border-radius:var(--radius);box-shadow:var(--shadow);padding:16px;margin-bottom:11px;border-left:6px solid var(--green);}
-.word-card.neg{border-left-color:var(--pink);}
-.word-main{font-family:'Fredoka One',cursive;font-size:22px;color:var(--green-dark);margin-bottom:3px;}
+.ch-day{font-size:0.8rem;font-weight:800;text-transform:uppercase;letter-spacing:0.5px;opacity:0.9;}
+.ch-title{font-family:'Baloo 2',cursive;font-size:1.1rem;font-weight:700;margin:2px 0;}
+.ch-desc{font-size:0.85rem;opacity:0.9;line-height:1.3;}
+.ch-badge{font-size:1.2rem;}
+.lesson-wrap{background:white;border-radius:18px;overflow:hidden;box-shadow:0 5px 18px var(--shadow);display:none;margin-bottom:20px;}
+.lesson-wrap.active{display:block;}
+.lesson-header{background:var(--p3);padding:18px;color:white;}
+.lesson-title{font-family:'Baloo 2',cursive;font-size:1.2rem;margin-bottom:8px;}
+.progress-bar{height:8px;background:rgba(255,255,255,0.3);border-radius:10px;overflow:hidden;margin-top:10px;}
+.progress-fill{height:100%;background:white;border-radius:10px;transition:width 0.3s;}
+.lesson-body{padding:18px;max-height:600px;overflow-y:auto;}
+.step{display:none;margin-bottom:18px;}
+.step.active{display:block;animation:fadeIn 0.3s;}
+@keyframes fadeIn{from{opacity:0}to{opacity:1}}
+.step-label{font-size:0.8rem;font-weight:800;text-transform:uppercase;color:#888;margin-bottom:8px;}
+.scene-card{background:#f9f9f9;border-radius:12px;padding:14px;margin-bottom:12px;border-left:4px solid var(--p3);}
+.scene-num{display:inline-block;background:var(--p3);color:white;font-weight:800;padding:3px 9px;border-radius:20px;font-size:0.8rem;margin-bottom:6px;}
+.scene-text{font-size:0.95rem;font-weight:700;line-height:1.5;margin:8px 0;}
+.scene-speech{background:#E8F5EC;border-left:4px solid var(--p3);padding:10px 12px;border-radius:8px;font-size:0.9rem;font-weight:600;color:var(--p3);margin:8px 0;}
+.word-card{background:#f9f9f9;border-radius:12px;padding:14px;margin-bottom:12px;border-left:4px solid var(--p3);}
+.word-card.neg{border-left-color:var(--p1);}
+.word-main{font-family:'Baloo 2',cursive;font-size:1.1rem;color:var(--p3);margin-bottom:4px;font-weight:700;}
 .word-card.neg .word-main{color:#c0566a;}
-.word-meaning{font-size:13px;color:var(--text-soft);margin-bottom:7px;}
-.word-example{font-size:13px;font-weight:600;color:var(--text);background:var(--warm);padding:9px 11px;border-radius:9px;line-height:1.5;}
-
-/* QUESTION */
-.question-card{background:white;border-radius:var(--radius);box-shadow:var(--shadow);padding:17px;margin-bottom:12px;}
-.q-label{font-size:11px;font-weight:800;text-transform:uppercase;letter-spacing:1px;color:var(--text-soft);margin-bottom:8px;}
-.q-text{font-size:16px;font-weight:700;color:var(--text);margin-bottom:14px;line-height:1.4;}
+.word-meaning{font-size:0.85rem;color:#888;margin-bottom:8px;}
+.word-example{font-size:0.9rem;font-weight:600;background:white;padding:9px 12px;border-radius:8px;line-height:1.4;margin:6px 0;}
+.question-card{background:#f9f9f9;border-radius:12px;padding:14px;margin-bottom:12px;}
+.q-text{font-size:0.95rem;font-weight:700;margin-bottom:12px;line-height:1.4;}
 .options{display:flex;flex-direction:column;gap:8px;}
-.opt-btn{background:var(--warm);border:2.5px solid #e0d8d0;border-radius:13px;padding:12px 14px;font-family:'Nunito',sans-serif;font-size:14px;font-weight:700;color:var(--text);cursor:pointer;text-align:left;transition:all 0.15s;line-height:1.3;}
-.opt-btn.correct{background:var(--green-light);border-color:var(--green);color:var(--green-dark);}
-.opt-btn.wrong{background:var(--pink-light);border-color:var(--pink);color:#c0566a;}
+.opt-btn{background:white;border:2px solid #e0d8d0;border-radius:10px;padding:11px 12px;font-size:0.9rem;font-weight:700;color:var(--ink);cursor:pointer;text-align:left;transition:all 0.15s;}
+.opt-btn.correct{background:var(--p3);color:white;border-color:var(--p3);}
+.opt-btn.wrong{background:#FFE0E8;color:#c0566a;border-color:var(--p1);}
 .opt-btn.disabled{pointer-events:none;opacity:0.5;}
-.fill-sentence{font-size:16px;font-weight:700;color:var(--text);line-height:1.6;padding:12px 14px;background:var(--yellow-light);border-radius:11px;border:2px dashed var(--yellow);margin-bottom:11px;min-height:52px;}
-.blank{display:inline-block;min-width:100px;border-bottom:3px solid var(--green);color:var(--green-dark);font-weight:800;}
-.fill-opts{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:11px;}
-.fill-chip{background:white;border:2.5px solid #c5dfc0;border-radius:50px;padding:8px 16px;font-size:14px;font-weight:700;color:var(--green-dark);cursor:pointer;transition:all 0.15s;}
+.fill-sentence{font-size:0.95rem;font-weight:700;padding:12px;background:#FFF9E0;border:2px dashed var(--p2);border-radius:10px;line-height:1.5;margin-bottom:12px;}
+.blank{display:inline-block;min-width:80px;border-bottom:3px solid var(--p3);color:var(--p3);font-weight:800;}
+.fill-opts{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:12px;}
+.fill-chip{background:white;border:2px solid #c5dfc0;border-radius:50px;padding:7px 14px;font-size:0.85rem;font-weight:700;color:var(--p3);cursor:pointer;transition:all 0.15s;}
 .fill-chip.used{opacity:0.3;pointer-events:none;}
-.fill-chip.correct{background:var(--green-light);border-color:var(--green);}
-.fill-chip.wrong{background:var(--pink-light);border-color:var(--pink);color:#c0566a;}
-.feedback{border-radius:13px;padding:12px 14px;font-size:13px;font-weight:700;margin-top:9px;display:none;line-height:1.4;}
+.fill-chip.correct{background:var(--p3);color:white;border-color:var(--p3);}
+.feedback{border-radius:10px;padding:11px 12px;font-size:0.85rem;font-weight:700;margin-top:8px;display:none;line-height:1.4;}
 .feedback.show{display:block;}
-.feedback.correct{background:var(--green-light);color:var(--green-dark);border:2px solid #a8d5b5;}
-.feedback.wrong{background:var(--pink-light);color:#c0566a;border:2px solid var(--pink);}
-.btn-next{position:fixed;bottom:22px;left:50%;transform:translateX(-50%);background:var(--green);color:white;border:none;border-radius:50px;padding:14px 36px;font-family:'Fredoka One',cursive;font-size:18px;cursor:pointer;box-shadow:0 5px 0 var(--green-dark);width:calc(100% - 36px);max-width:400px;display:none;}
-.btn-next.show{display:block;}
-.btn-next:active{transform:translateX(-50%) translateY(3px);box-shadow:0 2px 0 var(--green-dark);}
-
-/* END */
-.end-wrap{background:linear-gradient(160deg,#e8f5ec 0%,#fdeef1 100%);align-items:center;justify-content:center;padding:40px 22px;text-align:center;}
-.end-emoji{font-size:76px;margin-bottom:12px;animation:spin 0.5s ease;}
-@keyframes spin{from{transform:rotate(-10deg) scale(0.5)}to{transform:rotate(0) scale(1)}}
-.end-title{font-family:'Fredoka One',cursive;font-size:30px;color:var(--green-dark);margin-bottom:6px;}
-.end-sub{font-size:15px;color:var(--text-soft);margin-bottom:20px;line-height:1.5;}
-.score-big{font-family:'Fredoka One',cursive;font-size:52px;color:var(--green-dark);margin-bottom:4px;}
-.words-recap{background:white;border-radius:var(--radius);padding:16px;margin-bottom:22px;box-shadow:var(--shadow);width:100%;max-width:400px;text-align:left;}
-.words-recap h3{font-family:'Fredoka One',cursive;font-size:15px;color:var(--green-dark);margin-bottom:11px;}
-.recap-word{display:flex;align-items:flex-start;gap:8px;padding:6px 0;border-bottom:1px solid #f0ebe4;font-weight:700;font-size:13px;line-height:1.4;}
-.recap-word:last-child{border-bottom:none;}
-.btn-home{background:white;color:var(--green-dark);border:2.5px solid var(--green);border-radius:50px;padding:13px 34px;font-family:'Fredoka One',cursive;font-size:17px;cursor:pointer;width:100%;max-width:320px;margin-bottom:10px;}
-.btn-retry{background:var(--green);color:white;border:none;border-radius:50px;padding:13px 34px;font-family:'Fredoka One',cursive;font-size:17px;cursor:pointer;box-shadow:0 4px 0 var(--green-dark);width:100%;max-width:320px;}
+.feedback.correct{background:var(--p3);color:white;border:2px solid #a8d5b5;}
+.feedback.wrong{background:#FFE0E8;color:#c0566a;border:2px solid var(--p1);}
+.btn-next{width:100%;padding:12px;background:var(--p3);color:white;border:none;border-radius:50px;font-family:'Baloo 2',cursive;font-size:0.95rem;font-weight:700;cursor:pointer;box-shadow:0 3px 0 #4d8a52;transition:all 0.1s;margin-top:12px;}
+.btn-next:active{transform:translateY(2px);box-shadow:0 1px 0 #4d8a52;}
+.end-screen{background:linear-gradient(160deg,#E8F5EC,#F0FFFE);padding:40px 24px;text-align:center;border-radius:18px;margin-bottom:20px;display:none;}
+.end-screen.active{display:block;}
+.end-emoji{font-size:64px;margin-bottom:12px;}
+.end-title{font-family:'Baloo 2',cursive;font-size:1.5rem;color:var(--p3);margin-bottom:6px;}
+.end-sub{font-size:0.95rem;color:#666;margin-bottom:16px;}
+.score-big{font-family:'Baloo 2',cursive;font-size:2.2rem;color:var(--p3);margin-bottom:4px;}
+.btn-home{background:white;color:var(--p3);border:2px solid var(--p3);border-radius:50px;padding:11px 32px;font-family:'Baloo 2',cursive;font-size:0.95rem;font-weight:700;cursor:pointer;width:100%;margin-bottom:8px;}
+.btn-retry{background:var(--p3);color:white;border:none;border-radius:50px;padding:11px 32px;font-family:'Baloo 2',cursive;font-size:0.95rem;font-weight:700;cursor:pointer;box-shadow:0 3px 0 #4d8a52;width:100%;}
 </style>
 </head>
 <body>
 
-<div id="home" class="screen active">
-  <div class="home-header" style="position:relative;">
-    <a href="index.html" style="position:absolute;left:18px;top:18px;text-decoration:none;font-size:1.5rem;background:white;border-radius:12px;padding:5px 12px;box-shadow:0 3px 10px rgba(0,0,0,0.1);">🏠</a>
-    <div class="home-logo">🌍</div>
-    <div class="home-title">Ukens ord</div>
-    <div class="home-sub">Velg en oppgave og lær nye ord! 🌱</div>
-  </div>
-  <div class="words-banner">
-    <div class="banner-title">📚 Ukens ord – Uke 1</div>
-    <div class="words-row">
-      <span class="word-chip hard">ekskludert</span>
-      <span class="word-chip hard">utenforskap</span>
-      <span class="word-chip hard">avvist</span>
-      <span class="word-chip hard">oversett</span>
-      <span class="word-chip good">inkludert</span>
-      <span class="word-chip good">tilhørighet</span>
-      <span class="word-chip good">fellesskap</span>
-    </div>
-  </div>
-  <div class="week-section">
-    <div class="week-label">🗓 Uke 1 – Edel og Felipe</div>
-    <div class="chapter-card" id="card0" onclick="startChapter(0)">
-      <div class="ch-emoji">🏫</div>
-      <div class="ch-info">
-        <div class="ch-day">Dag 1</div>
-        <div class="ch-title">Edel i friminuttet</div>
-        <div class="ch-desc">Les om Edel og lær 7 nye ord</div>
-      </div>
-      <div class="ch-badge" id="badge0">▶️</div>
-    </div>
-    <div class="chapter-card" id="card1" onclick="startChapter(1)">
-      <div class="ch-emoji">🌵</div>
-      <div class="ch-info">
-        <div class="ch-day">Dag 2</div>
-        <div class="ch-title">Felipe vil ha en klem</div>
-        <div class="ch-desc">Samme ord, ny historie om kaktus Felipe</div>
-      </div>
-      <div class="ch-badge" id="badge1">▶️</div>
-    </div>
-    <div class="chapter-card locked">
-      <div class="ch-emoji">📝</div>
-      <div class="ch-info">
-        <div class="ch-day">Dag 3</div>
-        <div class="ch-title">Stor repetisjon</div>
-        <div class="ch-desc">Alle 7 ord – klar for uketest!</div>
-      </div>
-      <div class="ch-badge">🔒</div>
-    </div>
-  </div>
-  <div class="coming-soon" style="margin-top:12px;">✨ Uke 2 kommer snart med nye ord og nye historier!</div>
+<div class="topbar">
+  <a class="home-btn" href="index.html">🏠</a>
+  <div class="logo">📚 Ukens ord</div>
+  <div class="score" id="scoreDisplay">0/0</div>
 </div>
 
-<div id="lessonWrap" class="screen lesson-wrap">
-  <div class="lesson-header">
-    <div class="header-row">
-      <button class="btn-back" onclick="goHome()">←</button>
-      <div class="progress-bar"><div class="progress-fill" id="progressFill" style="width:0%"></div></div>
-      <div class="progress-text" id="progressText">1/1</div>
-    </div>
-    <div class="step-title" id="stepTitle"></div>
-  </div>
-  <div class="lesson-body" id="lessonBody"></div>
-  <button class="btn-next" id="btnNext" onclick="nextStep()">Neste →</button>
-</div>
-
-<div id="endScreen" class="screen end-wrap">
-  <div class="end-emoji">⭐</div>
-  <div class="end-title" id="endTitle">Kjempebra!</div>
-  <div class="end-sub" id="endSub">Du er så flink! 💚</div>
-  <div class="score-big" id="scoreBig">0/0</div>
-  <div style="font-size:13px;color:var(--text-soft);margin-bottom:18px;">riktige svar</div>
-  <div class="words-recap">
-    <h3>Ord du øvde på denne uken:</h3>
-    <div class="recap-word">😔 <span><b>ekskludert</b> – ikke få være med</span></div>
-    <div class="recap-word">😞 <span><b>utenforskap</b> – følelsen av å stå utenfor</span></div>
-    <div class="recap-word">😶 <span><b>avvist</b> – når ingen vil svare deg</span></div>
-    <div class="recap-word">👻 <span><b>oversett</b> – når ingen ser deg</span></div>
-    <div class="recap-word">✅ <span><b>inkludert</b> – få være med</span></div>
-    <div class="recap-word">🤗 <span><b>tilhørighet</b> – følelsen av å høre til</span></div>
-    <div class="recap-word">👫 <span><b>fellesskap</b> – være en del av gruppen</span></div>
-  </div>
-  <button class="btn-home" onclick="goHome()">🏠 Tilbake til menyen</button>
-  <button class="btn-retry" onclick="retryChapter()">🔄 Øv igjen</button>
+<div class="container">
+  <div id="chaptersContainer"></div>
+  <div class="lesson-wrap" id="lesson"></div>
+  <div class="end-screen" id="endScreen"></div>
 </div>
 
 <script>
-const chapters=[
-{name:'Edel i friminuttet',label:'Dag 1 – Edel i friminuttet',steps:[
-  {type:'scene',title:'Les historien 📖',scenes:[
-    {num:1,text:'Familien sa at Edel måtte være sterk.',speech:'– Du må være sterk.'},
-    {num:2,text:'I friminuttet ville Edel være med de andre.'}
-  ]},
-  {type:'multiple',title:'Spørsmål ❓',question:'Hva sa familien til Edel?',
-    options:['Du må gå hjem.','Du må være sterk.','Du må sitte stille.','Du må leke alene.'],
-    correct:1,feedback:'✅ Riktig! Familien sa: "Du må være sterk."'},
-  {type:'scene',title:'Les historien 📖',scenes:[
-    {num:3,text:'Edel gikk bort og spurte.',speech:'– Kan jeg være med?'},
-    {num:4,text:'Ingen svarte ordentlig.'}
-  ]},
-  {type:'words',title:'Lær ordene 📚',subtitle:'😔 Vanskelige følelser',words:[
-    {word:'ekskludert',meaning:'når du ikke får være med',example:'Edel følte seg ekskludert da ingen svarte.',neg:true},
-    {word:'avvist',meaning:'når ingen vil svare deg',example:'Hun ble avvist da hun spurte om å få være med.',neg:true},
-    {word:'oversett',meaning:'når ingen ser deg',example:'Edel ble oversett i friminuttet.',neg:true}
-  ]},
-  {type:'fillin',title:'Fyll inn ordet ✏️',sentence:'Ingen svarte Edel. Hun følte seg ___.',
-    options:['ekskludert','inkludert','glad','sterk'],correct:'ekskludert',
-    feedback:'✅ Riktig! Edel følte seg ekskludert fordi ingen svarte.'},
-  {type:'scene',title:'Les historien 📖',scenes:[
-    {num:5,text:'Edel følte seg ekskludert.'},
-    {num:6,text:'Etter mange friminutt kjente hun på utenforskap.',chips:['utenforskap','avvist','oversett']}
-  ]},
-  {type:'words',title:'Lær ordene 📚',subtitle:'😊 Gode følelser',words:[
-    {word:'inkludert',meaning:'når du får være med',example:'Edel ble inkludert da barna lot henne være med.',neg:false},
-    {word:'tilhørighet',meaning:'følelsen av å høre til et sted',example:'Hun følte tilhørighet da hun lekte med vennene sine.',neg:false},
-    {word:'fellesskap',meaning:'å være en del av en gruppe',example:'I friminuttet er det viktig med fellesskap.',neg:false}
-  ]},
-  {type:'multiple',title:'Spørsmål ❓',question:'Hva heter følelsen av å høre til et sted?',
-    options:['utenforskap','tilhørighet','avvist','ekskludert'],
-    correct:1,feedback:'✅ Riktig! Tilhørighet er følelsen av å høre til.'},
-  {type:'fillin',title:'Fyll inn ordet ✏️',sentence:'Til slutt fikk Edel være med. Hun følte ___ og fellesskap.',
-    options:['tilhørighet','utenforskap','avvist','ekskludert'],correct:'tilhørighet',
-    feedback:'✅ Bra! Edel følte tilhørighet og fellesskap!'},
-  {type:'multiple',title:'Siste spørsmål ⭐',question:'Hva er forskjellen mellom ekskludert og inkludert?',
-    options:['Det er ingen forskjell.','Ekskludert = ikke få være med. Inkludert = få være med.','Inkludert = ikke få være med.','Ekskludert = være glad.'],
-    correct:1,feedback:'✅ Perfekt! Du forstår forskjellen veldig bra!'}
-]},
-{name:'Felipe vil ha en klem',label:'Dag 2 – Felipe vil ha en klem',steps:[
-  {type:'scene',title:'Les om Felipe 📖',scenes:[
-    {num:1,text:'Felipe kom fra en stor og stolt familie.'},
-    {num:2,text:'Men familien la ikke merke til det eneste han ville ha – en klem.'}
-  ]},
-  {type:'words',title:'Lær ordene 📚',subtitle:'😔 Når det er vondt',words:[
-    {word:'oversett',meaning:'når ingen ser deg eller legger merke til deg',example:'Felipe følte seg oversett fordi familien ikke la merke til ham.',neg:true},
-    {word:'ekskludert',meaning:'ikke få være med',example:'Han ble ekskludert fra klemmer fordi han hadde pigger.',neg:true}
-  ]},
-  {type:'multiple',title:'Spørsmål ❓',question:'Familien la ikke merke til Felipe. Hvilket ord passer best?',
-    options:['inkludert','oversett','tilhørighet','fellesskap'],
-    correct:1,feedback:'✅ Riktig! Felipe ble oversett – ingen la merke til ham.'},
-  {type:'scene',title:'Les om Felipe 📖',scenes:[
-    {num:3,text:'Felipe håpet at noen skulle komme og holde rundt ham.'},
-    {num:4,text:'Men det var aldri noen som gjorde det.',chips:['avvist','utenforskap']}
-  ]},
-  {type:'fillin',title:'Fyll inn ordet ✏️',sentence:'Ingen ville klemme Felipe. Han følte seg ___.',
-    options:['avvist','inkludert','modig','glad'],correct:'avvist',
-    feedback:'✅ Riktig! Felipe følte seg avvist fordi ingen ville klemme ham.'},
-  {type:'words',title:'Lær ordene 📚',subtitle:'😞 En tung følelse',words:[
-    {word:'utenforskap',meaning:'følelsen av å stå utenfor, ikke høre til',example:'Etter mange dager alene kjente Felipe på utenforskap.',neg:true},
-    {word:'avvist',meaning:'når ingen vil svare deg eller være med deg',example:'Han følte seg avvist da ingen ga ham en klem.',neg:true}
-  ]},
-  {type:'scene',title:'Les om Felipe 📖',scenes:[
-    {num:5,text:'Felipe var veldig ensom hele tiden.'},
-    {num:6,text:'En stund håpet han å finne en ny familie – men han var ikke velkommen noe sted.'}
-  ]},
-  {type:'multiple',title:'Spørsmål ❓',question:'Felipe var ikke velkommen noe sted. Hvordan følte han seg?',
-    options:['inkludert og glad','ekskludert og ensom','modig og sterk','trygg og rolig'],
-    correct:1,feedback:'✅ Riktig! Felipe følte seg ekskludert og ensom.'},
-  {type:'words',title:'Lær ordene 📚',subtitle:'😊 Når det er godt',words:[
-    {word:'tilhørighet',meaning:'følelsen av å høre til et sted',example:'Da Felipe fant en venn, kjente han endelig tilhørighet.',neg:false},
-    {word:'fellesskap',meaning:'å være en del av en gruppe',example:'De to ensomme skapningene dannet sitt eget fellesskap.',neg:false},
-    {word:'inkludert',meaning:'å få være med',example:'For første gang følte Felipe seg inkludert.',neg:false}
-  ]},
-  {type:'scene',title:'Les om Felipe 📖',scenes:[
-    {num:7,text:'En dag møtte Felipe noen som også var ensom.'},
-    {num:8,text:'Den dagen forstod Felipe det – han var ikke alene lenger.',chips:['tilhørighet','fellesskap','inkludert']}
-  ]},
-  {type:'fillin',title:'Fyll inn ordet ✏️',sentence:'Felipe fant endelig en venn. Han kjente på ___.',
-    options:['tilhørighet','utenforskap','avvist','ekskludert'],correct:'tilhørighet',
-    feedback:'✅ Flott! Felipe kjente endelig på tilhørighet – å høre til!'},
-  {type:'multiple',title:'Siste spørsmål ⭐',question:'Hva er det motsatte av utenforskap?',
-    options:['ekskludert','avvist','tilhørighet','oversett'],
-    correct:2,feedback:'✅ Perfekt! Tilhørighet er det motsatte av utenforskap!'}
-]}
+const WEEKS = [
+  {
+    week: 1,
+    title: 'Uke 1 – Eksklusjon & Inklusjon',
+    chapters: [
+      {name: 'Edel i friminuttet', emoji: '🏫', desc: 'Når ingen vil svare', steps: [
+        {type:'scene', scenes:[{num:1, text:'I friminuttet ville Edel være med de andre.', speech:'– Kan jeg være med?'},{num:2, text:'Ingen svarte ordentlig.'}]},
+        {type:'multiple', q:'Hva spurte Edel?', opts:[{t:'Kan jeg spille?',c:true},{t:'Hva er klokken?',c:false}], fb:'✅ Riktig!'},
+        {type:'words', subtitle:'😔 Vanskelige ord', words:[{w:'ekskludert', m:'når du ikke får være med', ex:'Edel følte seg ekskludert.', neg:true},{w:'avvist', m:'når ingen sier ja', ex:'Hun ble avvist.', neg:true}]},
+        {type:'fillin', sentence:'Edel følte seg ___.',opts:['ekskludert','glad'], correct:'ekskludert', fb:'✅!'},
+      ]},
+      {name: 'Felipe og Kaktusen', emoji: '🌵', desc: 'Å være sett', steps: [
+        {type:'scene', scenes:[{num:1, text:'Felipe hadde pigger og ingen ville være nær.', speech:'Jeg bare ønsker en venn.'}]},
+        {type:'multiple', q:'Hva ville Felipe?', opts:[{t:'En venn',c:true},{t:'Pigger',c:false}], fb:'✅!'},
+        {type:'words', subtitle:'😔 Ensomhet', words:[{w:'oversett', m:'når ingen ser deg', ex:'Felipe følte seg oversett.', neg:true}]},
+        {type:'fillin', sentence:'Felipe var ___.',opts:['oversett','glad'], correct:'oversett', fb:'✅!'},
+      ]},
+      {name: 'Når Edel ble inkludert', emoji: '🤝', desc: 'Håpet kommer tilbake', steps: [
+        {type:'scene', scenes:[{num:1, text:'En dag spurte barna Edel om å spille.', speech:'Vil du være med?'},{num:2, text:'Edel sa ja!'}]},
+        {type:'multiple', q:'Hva spurte barna Edel?', opts:[{t:'Hvor bor du?',c:false},{t:'Vil du være med?',c:true}], fb:'✅!'},
+        {type:'words', subtitle:'😊 Gode ord', words:[{w:'inkludert', m:'når du får være med', ex:'Edel ble inkludert.', neg:false},{w:'tilhørighet', m:'å høre til', ex:'Hun følte tilhørighet.', neg:false}]},
+        {type:'fillin', sentence:'Edel ble ___ og følte tilhørighet.',opts:['inkludert','utenfor'], correct:'inkludert', fb:'✅!'},
+      ]}
+    ]
+  },
+  {
+    week: 2,
+    title: 'Uke 2 – Følelser & Styrke',
+    chapters: [
+      {name: 'Edel på Taekwondo', emoji: '🥋', desc: 'Frykt blir styrke', steps: [
+        {type:'scene', scenes:[{num:1, text:'Edel var nervøs på første dag.', speech:'Jeg er redd!'},{num:2, text:'Men hun prøvde likevel.'}]},
+        {type:'multiple', q:'Var Edel redd?', opts:[{t:'Ja',c:true},{t:'Nei',c:false}], fb:'✅!'},
+        {type:'words', subtitle:'💪 Ordene for styrke', words:[{w:'modig', m:'gjøre noe selv om du er redd', ex:'Edel var modig.', neg:false},{w:'sterk', m:'kunne klare ting vanskelig', ex:'Hun ble sterkere.', neg:false}]},
+        {type:'fillin', sentence:'Det var ___ å prøve.',opts:['modig','redd'], correct:'modig', fb:'✅!'},
+      ]},
+      {name: 'Pipoka Lojaliteten', emoji: '🐕', desc: 'Kjærlighet uten ord', steps: [
+        {type:'scene', scenes:[{num:1, text:'Når Edel er trist, Pipoka er alltid der.', speech:'Jeg er hos deg.'},{num:2, text:'Han sitter tett inntil henne.'}]},
+        {type:'multiple', q:'Hva gjør Pipoka?', opts:[{t:'Går bort',c:false},{t:'Sitter nær Edel',c:true}], fb:'✅!'},
+        {type:'words', subtitle:'💚 Kjærlighet', words:[{w:'tro', m:'tru på noen', ex:'Pipoka har tro på Edel.', neg:false},{w:'omsorg', m:'bry seg om', ex:'Han viser omsorg.', neg:false}]},
+        {type:'fillin', sentence:'Pipoka viser ___ hver dag.',opts:['omsorg','frykt'], correct:'omsorg', fb:'✅!'},
+      ]},
+      {name: 'Handball Vinnerlaget', emoji: '🤾', desc: 'Sammen er vi sterke', steps: [
+        {type:'scene', scenes:[{num:1, text:'Edel spiller handball med laget sitt.', speech:'Vi vinner sammen!'},{num:2, text:'De gleder seg som ett lag.'}]},
+        {type:'multiple', q:'Hva gjør de?', opts:[{t:'Spiller alene',c:false},{t:'Spiller som ett lag',c:true}], fb:'✅!'},
+        {type:'words', subtitle:'🤝 Lag & Vennskap', words:[{w:'fellesskap', m:'være sammen', ex:'Handball bygger fellesskap.', neg:false},{w:'samarbeid', m:'arbeide sammen', ex:'Samarbeid gjør dem sterke.', neg:false}]},
+        {type:'fillin', sentence:'___ gjør dem vinnere.',opts:['Samarbeid','Alenetid'], correct:'Samarbeid', fb:'✅!'},
+      ]}
+    ]
+  },
+  {
+    week: 3,
+    title: 'Uke 3 – Familie & Hjem',
+    chapters: [
+      {name: 'Mamma Støtten', emoji: '👩', desc: 'Mamma vet alt', steps: [
+        {type:'scene', scenes:[{num:1, text:'Edel forteller mamma at det er vanskelig.', speech:'Jeg klarer det ikke!'},{num:2, text:'Mamma sier: "Du er sterkere enn du tror."'}]},
+        {type:'multiple', q:'Hva sier mamma?', opts:[{t:'Du er svak',c:false},{t:'Du er sterk',c:true}], fb:'✅!'},
+        {type:'words', subtitle:'❤️ Familie', words:[{w:'trøst', m:'bli gjort bedre når du er trist', ex:'Mamma gir Edel trøst.', neg:false},{w:'tålmodighet', m:'vente og hjelpe', ex:'Mamma har tålmodighet.', neg:false}]},
+        {type:'fillin', sentence:'Mamma gir ___ når Edel er trist.',opts:['trøst','frykt'], correct:'trøst', fb:'✅!'},
+      ]},
+      {name: 'Pappa Eventyrene', emoji: '👨', desc: 'Historier som lærer', steps: [
+        {type:'scene', scenes:[{num:1, text:'Pappa forteller historier om modige mennesker.', speech:'De var ikke redd, de bare gjorde det.'},{num:2, text:'Edel drømmer om å være slik.'}]},
+        {type:'multiple', q:'Hva forteller pappa?', opts:[{t:'Skremmende historier',c:false},{t:'Historier om mot',c:true}], fb:'✅!'},
+        {type:'words', subtitle:'⭐ Inspirasjon', words:[{w:'inspirasjon', m:'få ide fra', ex:'Pappas historier inspirerer Edel.', neg:false},{w:'forventning', m:'håp om noe godt', ex:'Hun har forventning.', neg:false}]},
+        {type:'fillin', sentence:'Pappas historier gir ___ til Edel.',opts:['inspirasjon','frykt'], correct:'inspirasjon', fb:'✅!'},
+      ]},
+      {name: 'Petter Lillebror', emoji: '👦', desc: 'Å verne noen', steps: [
+        {type:'scene', scenes:[{num:1, text:'Petter er mindre enn Edel og trenger hjelp.', speech:'Hjelp meg, søster!'},{num:2, text:'Edel beskytter Petter når han trenger det.'}]},
+        {type:'multiple', q:'Hvem trenger hjelp?', opts:[{t:'Petter',c:true},{t:'Mamma',c:false}], fb:'✅!'},
+        {type:'words', subtitle:'🛡️ Ansvar', words:[{w:'beskyttelse', m:'verne noen', ex:'Edel gir Petter beskyttelse.', neg:false},{w:'ansvar', m:'ha plikt til å passe på', ex:'Hun tar ansvar for ham.', neg:false}]},
+        {type:'fillin', sentence:'Edel tar ___ for Petter.',opts:['ansvar','frykt'], correct:'ansvar', fb:'✅!'},
+      ]}
+    ]
+  },
+  {
+    week: 4,
+    title: 'Uke 4 – Utfordringer & Seier',
+    chapters: [
+      {name: 'Når det er Vanskelig', emoji: '💪', desc: 'Ikke gi opp', steps: [
+        {type:'scene', scenes:[{num:1, text:'Edel kan ikke gjøre noe som det forventes.', speech:'Jeg kan ikke!'},{num:2, text:'Men hun prøver igjen, dag etter dag.'}]},
+        {type:'multiple', q:'Hva gjør Edel?', opts:[{t:'Gir opp',c:false},{t:'Prøver igjen',c:true}], fb:'✅!'},
+        {type:'words', subtitle:'🔥 Vilje', words:[{w:'utholdenhet', m:'ikke gi opp', ex:'Edels utholdenhet var sterk.', neg:false},{w:'vedholdenhet', m:'fortsette å prøve', ex:'Hun hadde vedholdenhet.', neg:false}]},
+        {type:'fillin', sentence:'___ hjelper Edel å fortsette.',opts:['Vedholdenhet','Oppgitthet'], correct:'Vedholdenhet', fb:'✅!'},
+      ]},
+      {name: 'Små Seiere', emoji: '⭐', desc: 'Hver dag er en seier', steps: [
+        {type:'scene', scenes:[{num:1, text:'En dag sier Edel en setning på norsk uten å være redd.', speech:'Jeg klarte det!'},{num:2, text:'Det er en liten seier, men det er HENNES seier.'}]},
+        {type:'multiple', q:'Hva klarte Edel?', opts:[{t:'Åpne munnen og tale',c:true},{t:'Stille helt taust',c:false}], fb:'✅!'},
+        {type:'words', subtitle:'🏆 Seiersord', words:[{w:'prestasjon', m:'å gjøre noe bra', ex:'Å snakke var hennes prestasjon.', neg:false},{w:'triumf', m:'stort hakk', ex:'Det føltes som triumf.', neg:false}]},
+        {type:'fillin', sentence:'For Edel var det en stor ___.',opts:['prestasjon','feil'], correct:'prestasjon', fb:'✅!'},
+      ]},
+      {name: 'Når Andre Ser Det', emoji: '👀', desc: 'Anerkjennelse Betyr Alt', steps: [
+        {type:'scene', scenes:[{num:1, text:'Mamma sier: "Edel, jeg så hvordan du talte i dag!"', speech:'Jeg er så stolt av deg!'},{num:2, text:'Edel fylt opp med stolthet.'}]},
+        {type:'multiple', q:'Hvem så Edels innsats?', opts:[{t:'Mamma',c:true},{t:'En fremmed',c:false}], fb:'✅!'},
+        {type:'words', subtitle:'💎 Å bli sett', words:[{w:'anerkjennelse', m:'å få påskjønnelse', ex:'Edel fikk anerkjennelse.', neg:false},{w:'stolthet', m:'være stolt av seg selv', ex:'Hun følte stolthet.', neg:false}]},
+        {type:'fillin', sentence:'Edels ___ vokste når mamma så innsatsen hennes.',opts:['stolthet','skam'], correct:'stolthet', fb:'✅!'},
+      ]}
+    ]
+  },
+  {
+    week: 5,
+    title: 'Uke 5 – Vennskap & Deling',
+    chapters: [
+      {name: 'Eyla Vennen', emoji: '💜', desc: 'En ekte venn', steps: [
+        {type:'scene', scenes:[{num:1, text:'Eyla og Edel er sammen hver dag.', speech:'Du er min beste venn!'},{num:2, text:'De deler hemmeligheter og latter.'}]},
+        {type:'multiple', q:'Hvem er Edels beste venn?', opts:[{t:'Eyla',c:true},{t:'Pipoka',c:false}], fb:'✅!'},
+        {type:'words', subtitle:'💝 Vennskap', words:[{w:'lojalitet', m:'være tro venn', ex:'Eyla viser lojalitet.', neg:false},{w:'deling', m:'dele med andre', ex:'De deler alt sammen.', neg:false}]},
+        {type:'fillin', sentence:'Eyla viser ___ til Edel.',opts:['lojalitet','avund'], correct:'lojalitet', fb:'✅!'},
+      ]},
+      {name: 'Gruppens Regler', emoji: '👥', desc: 'Inkludering av alle', steps: [
+        {type:'scene', scenes:[{num:1, text:'Gruppen lager en regel: alle må få være med.', speech:'Hvis noen står alene, inviterer vi dem.'},{num:2, text:'Alle synes det er rett.'}]},
+        {type:'multiple', q:'Hva er den nye regelen?', opts:[{t:'Alle må være med',c:true},{t:'Bare de sterke',c:false}], fb:'✅!'},
+        {type:'words', subtitle:'⚖️ Rettferdighet', words:[{w:'rettferdighet', m:'alle får samme mulighet', ex:'Rettferdighet er viktig.', neg:false},{w:'likhet', m:'alle er like verdige', ex:'Likhet i gruppen.', neg:false}]},
+        {type:'fillin', sentence:'___ betyr alle får mulighet.',opts:['Rettferdighet','Favorittisme'], correct:'Rettferdighet', fb:'✅!'},
+      ]},
+      {name: 'Når Noen Trenger Hjelp', emoji: '🤲', desc: 'Empati i Aksjon', steps: [
+        {type:'scene', scenes:[{num:1, text:'En ny jente sitter alene og ser trist ut.', speech:'Jeg tror hun er trist.'},{num:2, text:'Edel og vennene hennes inviterer henne.'}]},
+        {type:'multiple', q:'Hva gjorde Edel og vennene?', opts:[{t:'Inviterte henne',c:true},{t:'Så på henne',c:false}], fb:'✅!'},
+        {type:'words', subtitle:'❤️ Medfølelse', words:[{w:'empati', m:'forstå andres følelser', ex:'Edel hadde empati.', neg:false},{w:'godhjertet', m:'være snill', ex:'Hun var godhjertet.', neg:false}]},
+        {type:'fillin', sentence:'Edels ___ hjalp den nye jenten.',opts:['empati','likegyldighet'], correct:'empati', fb:'✅!'},
+      ]}
+    ]
+  },
+  {
+    week: 6,
+    title: 'Uke 6 – Læring & Vekst',
+    chapters: [
+      {name: 'Nye Ord Hver Dag', emoji: '📖', desc: 'Ordene er verktøy', steps: [
+        {type:'scene', scenes:[{num:1, text:'Edel lærer nye ord hver uke.', speech:'Disse ordene hjelper meg!'},{num:2, text:'Med nye ord, kan hun si mer.'}]},
+        {type:'multiple', q:'Hva lærer Edel?', opts:[{t:'Nye ord',c:true},{t:'Gamle leker',c:false}], fb:'✅!'},
+        {type:'words', subtitle:'🧠 Læring', words:[{w:'vokabular', m:'alle ord man kan', ex:'Edels vokabular vokser.', neg:false},{w:'progresjon', m:'gradvis fremgang', ex:'Hun viser progresjon.', neg:false}]},
+        {type:'fillin', sentence:'___ hjelper Edel å kommunisere bedre.',opts:['Progresjon','Stilstand'], correct:'Progresjon', fb:'✅!'},
+      ]},
+      {name: 'Feil Er Greit', emoji: '✏️', desc: 'Feil = Læring', steps: [
+        {type:'scene', scenes:[{num:1, text:'Edel sier et ord feil.', speech:'Oops, jeg sa det galt!'},{num:2, text:'Mamma sier: "Det er hvordan vi lærer."'}]},
+        {type:'multiple', q:'Hva sa mamma?', opts:[{t:'Det er dårlig',c:false},{t:'Det er hvordan vi lærer',c:true}], fb:'✅!'},
+        {type:'words', subtitle:'🌱 Vekst', words:[{w:'iterasjon', m:'gjøre om og igjen', ex:'Iterasjon gjør henne bedre.', neg:false},{w:'resiliens', m:'tåle motgang', ex:'Hun har resiliens.', neg:false}]},
+        {type:'fillin', sentence:'___ er en del av læringen.',opts:['Resiliens','Oppgitthet'], correct:'Resiliens', fb:'✅!'},
+      ]},
+      {name: 'Når Seg Selv Blir Lærer', emoji: '🎓', desc: 'Hun lærer andre', steps: [
+        {type:'scene', scenes:[{num:1, text:'Edel hjelper Petter med et ord.', speech:'Det ord betyr...'},{num:2, text:'Hun blir lærer for sin lillebror.'}]},
+        {type:'multiple', q:'Hva blir Edel?', opts:[{t:'Lærer',c:true},{t:'Elev',c:false}], fb:'✅!'},
+        {type:'words', subtitle:'🏫 Undervisning', words:[{w:'formidling', m:'dele kunnskap', ex:'Edel gjør formidling.', neg:false},{w:'visdom', m:'klok forståelse', ex:'Hun viser visdom.', neg:false}]},
+        {type:'fillin', sentence:'Edels ___ hjelper Petter å lære.',opts:['visdom','forvirring'], correct:'visdom', fb:'✅!'},
+      ]}
+    ]
+  }
 ];
 
-let curCh=0,curStep=0,score=0,totalQ=0,answered=false;
-const done={};
+let currentChapter = 0;
+let currentStep = 0;
+let score = 0;
+let totalQ = 0;
+let answered = false;
+const completed = {};
 
-function goHome(){showScreen('home');}
-function startChapter(i){curCh=i;curStep=0;score=0;totalQ=0;answered=false;showScreen('lessonWrap');renderStep();}
-function retryChapter(){startChapter(curCh);}
-function showScreen(id){document.querySelectorAll('.screen').forEach(s=>s.classList.remove('active'));document.getElementById(id).classList.add('active');window.scrollTo(0,0);}
-
-function updateProgress(){
-  const ch=chapters[curCh];const tot=ch.steps.length;
-  document.getElementById('progressFill').style.width=Math.round((curStep/tot)*100)+'%';
-  document.getElementById('progressText').textContent=(curStep+1)+'/'+tot;
-  document.getElementById('stepTitle').textContent=ch.steps[curStep].title;
+function getAllChapters(){
+  let all = [];
+  WEEKS.forEach(w => w.chapters.forEach(ch => all.push({...ch, week: w.week})));
+  return all;
 }
 
-function renderStep(){
-  answered=false;updateProgress();
-  const body=document.getElementById('lessonBody');body.innerHTML='';window.scrollTo(0,0);
-  const btn=document.getElementById('btnNext');btn.classList.remove('show');btn.textContent='Neste →';
-  const s=chapters[curCh].steps[curStep];
-  if(s.type==='scene')renderScene(s,body);
-  else if(s.type==='words')renderWords(s,body);
-  else if(s.type==='multiple')renderMultiple(s,body);
-  else if(s.type==='fillin')renderFillIn(s,body);
+function init(){
+  renderChapters();
 }
 
-function renderScene(s,body){
-  s.scenes.forEach(sc=>{
-    const c=document.createElement('div');c.className='scene-card';
-    let h=`<div class="scene-num">Scene ${sc.num}</div><div class="scene-text">${sc.text}</div>`;
-    if(sc.speech)h+=`<div class="scene-speech">${sc.speech}</div>`;
-    if(sc.chips){h+=`<div class="scene-chips">`;sc.chips.forEach(w=>{const g=['tilhørighet','fellesskap','inkludert'].includes(w);h+=`<span class="word-chip ${g?'good':'hard'}">${w}</span>`;});h+=`</div>`;}
-    c.innerHTML=h;body.appendChild(c);
+function renderChapters(){
+  let html = '';
+  WEEKS.forEach(w => {
+    html += `<div class="week-label">📖 ${w.title}</div><div class="chapters">`;
+    w.chapters.forEach((ch, i) => {
+      const allCh = getAllChapters();
+      const globalIdx = allCh.findIndex(c => c.name === ch.name);
+      html += `<div class="chapter-card ${completed[globalIdx]?'completed':''}" onclick="startChapter(${globalIdx})">
+        <div class="ch-header">
+          <div class="ch-emoji">${ch.emoji}</div>
+          <div class="ch-info">
+            <div class="ch-day">Dag ${w.chapters.length*(w.week-1)+i+1}</div>
+            <div class="ch-title">${ch.name}</div>
+            <div class="ch-desc">${ch.desc}</div>
+          </div>
+          <div class="ch-badge">${completed[globalIdx]?'✅':'▶️'}</div>
+        </div>
+      </div>`;
+    });
+    html += '</div>';
   });
-  document.getElementById('btnNext').classList.add('show');
+  document.getElementById('chaptersContainer').innerHTML = html;
 }
 
-function renderWords(s,body){
-  const sub=document.createElement('div');
-  sub.style.cssText='font-size:11px;font-weight:800;text-transform:uppercase;letter-spacing:1px;color:var(--text-soft);margin-bottom:11px;';
-  sub.textContent=s.subtitle;body.appendChild(sub);
-  s.words.forEach(w=>{
-    const c=document.createElement('div');c.className='word-card'+(w.neg?' neg':'');
-    c.innerHTML=`<div class="word-main">${w.neg?'😔':'😊'} ${w.word}</div><div class="word-meaning">${w.meaning}</div><div class="word-example">"${w.example}"</div>`;
-    body.appendChild(c);
-  });
-  const btn=document.getElementById('btnNext');btn.textContent='Jeg forstår! ✓';btn.classList.add('show');
+function startChapter(idx){
+  currentChapter = idx;
+  currentStep = 0;
+  score = 0;
+  totalQ = 0;
+  answered = false;
+  const allCh = getAllChapters();
+  const ch = allCh[idx];
+  renderLesson(ch);
 }
 
-function renderMultiple(s,body){
-  totalQ++;
-  const c=document.createElement('div');c.className='question-card';
-  let h=`<div class="q-label">Spørsmål</div><div class="q-text">${s.question}</div><div class="options">`;
-  s.options.forEach((o,i)=>h+=`<button class="opt-btn" onclick="checkM(${i},${s.correct},this)">${o}</button>`);
-  h+=`</div><div class="feedback" id="feedback"></div>`;
-  c.innerHTML=h;body.appendChild(c);
+function renderLesson(ch){
+  const lessonEl = document.getElementById('lesson');
+  lessonEl.classList.add('active');
+  lessonEl.innerHTML = '';
+  window.scrollTo(0,0);
+  
+  const html = ch.steps.map((step, si) => {
+    let stepHtml = `<div class="step" id="step${si}">`;
+    
+    if(step.type === 'scene'){
+      stepHtml += `<div class="step-label">📖 Les historien</div>`;
+      step.scenes.forEach(s => {
+        stepHtml += `<div class="scene-card">
+          <div class="scene-num">Scene ${s.num}</div>
+          <div class="scene-text">${s.text}</div>
+          ${s.speech?`<div class="scene-speech">${s.speech}</div>`:''}
+        </div>`;
+      });
+    }
+    else if(step.type === 'multiple'){
+      totalQ++;
+      stepHtml += `<div class="step-label">❓ Spørsmål</div>
+        <div class="question-card">
+          <div class="q-text">${step.q}</div>
+          <div class="options">`;
+      step.opts.forEach((o, oi) => {
+        stepHtml += `<button class="opt-btn" onclick="checkMult(${currentChapter},${si},${oi},'${step.fb}')">${o.t}</button>`;
+      });
+      stepHtml += `</div><div class="feedback" id="fb${si}"></div></div>`;
+    }
+    else if(step.type === 'words'){
+      stepHtml += `<div class="step-label">📚 Lær ordene</div><div style="font-size:0.85rem;color:#888;margin-bottom:10px;font-weight:600;">${step.subtitle}</div>`;
+      step.words.forEach(w => {
+        stepHtml += `<div class="word-card ${w.neg?'neg':''}">
+          <div class="word-main">${w.neg?'😔':'😊'} ${w.w}</div>
+          <div class="word-meaning">${w.m}</div>
+          <div class="word-example">"${w.ex}"</div>
+        </div>`;
+      });
+    }
+    else if(step.type === 'fillin'){
+      totalQ++;
+      const parts = step.sentence.split('___');
+      stepHtml += `<div class="step-label">✏️ Fyll inn ordet</div>
+        <div class="question-card">
+          <div class="fill-sentence">${parts[0]}<span class="blank" id="blank${si}">___</span>${parts[1]||''}</div>
+          <div class="fill-opts">`;
+      step.opts.forEach(o => {
+        stepHtml += `<button class="fill-chip" onclick="checkFill(${currentChapter},${si},'${o}','${step.correct}','${step.fb}')">${o}</button>`;
+      });
+      stepHtml += `</div><div class="feedback" id="fb${si}"></div></div>`;
+    }
+    
+    stepHtml += `</div>`;
+    return stepHtml;
+  }).join('');
+  
+  const allCh = getAllChapters();
+  const totalSteps = allCh[currentChapter].steps.length;
+  lessonEl.innerHTML = `<div class="lesson-header">
+    <div class="lesson-title">${ch.name}</div>
+    <div class="progress-bar"><div class="progress-fill" id="progress" style="width:0%"></div></div>
+  </div>
+  <div class="lesson-body">${html}</div>
+  <button class="btn-next" onclick="nextStep()">Neste →</button>`;
+  showStep(0);
 }
 
-function checkM(chosen,correct,btn){
-  if(answered)return;answered=true;
-  btn.parentElement.querySelectorAll('.opt-btn').forEach(b=>b.classList.add('disabled'));
-  const fb=document.getElementById('feedback');
-  const s=chapters[curCh].steps[curStep];
-  if(chosen===correct){btn.classList.add('correct');score++;fb.textContent=s.feedback;fb.className='feedback show correct';}
-  else{btn.classList.add('wrong');btn.parentElement.querySelectorAll('.opt-btn')[correct].classList.add('correct');fb.textContent='❌ '+s.feedback;fb.className='feedback show wrong';}
-  document.getElementById('btnNext').classList.add('show');
+function showStep(idx){
+  document.querySelectorAll('.step').forEach(s => s.classList.remove('active'));
+  document.getElementById(`step${idx}`).classList.add('active');
+  const allCh = getAllChapters();
+  const total = allCh[currentChapter].steps.length;
+  const pct = Math.round(((idx+1) / total) * 100);
+  document.getElementById('progress').style.width = pct + '%';
+  window.scrollTo(0, document.querySelector('.lesson-wrap').offsetTop - 100);
 }
 
-function renderFillIn(s,body){
-  totalQ++;
-  const c=document.createElement('div');c.className='question-card';
-  const parts=s.sentence.split('___');
-  let h=`<div class="q-label">Fyll inn riktig ord</div><div class="fill-sentence">${parts[0]}<span class="blank" id="blankSpan">___</span>${parts[1]||''}</div><div class="fill-opts">`;
-  s.options.forEach(o=>h+=`<button class="fill-chip" onclick="checkF('${o}','${s.correct}',this)">${o}</button>`);
-  h+=`</div><div class="feedback" id="feedback"></div>`;
-  c.innerHTML=h;body.appendChild(c);
+function checkMult(chIdx, stepIdx, optIdx, fb){
+  if(answered) return;
+  answered = true;
+  const allCh = getAllChapters();
+  const step = allCh[chIdx].steps[stepIdx];
+  const isCorrect = step.opts[optIdx].c;
+  const btns = document.querySelectorAll(`#step${stepIdx} .opt-btn`);
+  btns.forEach(b => b.classList.add('disabled'));
+  const fbEl = document.getElementById(`fb${stepIdx}`);
+  
+  if(isCorrect){
+    btns[optIdx].classList.add('correct');
+    score++;
+    fbEl.textContent = fb;
+    fbEl.className = 'feedback show correct';
+  } else {
+    btns[optIdx].classList.add('wrong');
+    btns[step.opts.findIndex(o=>o.c)].classList.add('correct');
+    fbEl.textContent = '❌ ' + fb;
+    fbEl.className = 'feedback show wrong';
+  }
 }
 
-function checkF(chosen,correct,btn){
-  if(answered)return;answered=true;
-  document.querySelectorAll('.fill-chip').forEach(b=>b.classList.add('used'));
-  const blank=document.getElementById('blankSpan');
-  const fb=document.getElementById('feedback');
-  const s=chapters[curCh].steps[curStep];
-  blank.textContent=chosen===correct?chosen:correct;
-  if(chosen===correct){btn.classList.remove('used');btn.classList.add('correct');score++;fb.textContent=s.feedback;fb.className='feedback show correct';}
-  else{btn.classList.remove('used');btn.classList.add('wrong');fb.textContent='❌ Riktig: '+correct+'. '+s.feedback;fb.className='feedback show wrong';}
-  document.getElementById('btnNext').classList.add('show');
+function checkFill(chIdx, stepIdx, chosen, correct, fb){
+  if(answered) return;
+  answered = true;
+  const blank = document.getElementById(`blank${stepIdx}`);
+  const chips = document.querySelectorAll(`#step${stepIdx} .fill-chip`);
+  chips.forEach(c => c.classList.add('used'));
+  const fbEl = document.getElementById(`fb${stepIdx}`);
+  
+  blank.textContent = chosen === correct ? chosen : correct;
+  if(chosen === correct){
+    chips.forEach(c => {if(c.textContent === correct) c.classList.add('correct')});
+    score++;
+    fbEl.textContent = fb;
+    fbEl.className = 'feedback show correct';
+  } else {
+    chips.forEach(c => {
+      if(c.textContent === chosen) c.classList.add('wrong');
+      if(c.textContent === correct) c.classList.add('correct');
+    });
+    fbEl.textContent = '❌ ' + fb;
+    fbEl.className = 'feedback show wrong';
+  }
 }
 
 function nextStep(){
-  curStep++;
-  if(curStep>=chapters[curCh].steps.length){
-    done[curCh]=true;
-    document.getElementById('badge'+curCh).textContent='✅';
-    document.getElementById('card'+curCh).classList.add('done');
-    showEnd();
-  } else renderStep();
+  const allCh = getAllChapters();
+  currentStep++;
+  if(currentStep >= allCh[currentChapter].steps.length){
+    completed[currentChapter] = true;
+    showEnd(allCh[currentChapter]);
+  } else {
+    answered = false;
+    showStep(currentStep);
+  }
 }
 
-function showEnd(){
-  showScreen('endScreen');
-  const ch=chapters[curCh];
-  document.getElementById('endTitle').textContent='Kjempebra, Edel! 🌟';
-  document.getElementById('endSub').textContent=`Du fullførte "${ch.name}"! Du er så flink! 💚`;
-  document.getElementById('scoreBig').textContent=score+'/'+totalQ;
-  sendR();
+function showEnd(ch){
+  const html = `
+    <div class="end-emoji">⭐</div>
+    <div class="end-title">Kjempebra!</div>
+    <div class="end-sub">Du fullførte «${ch.name}»! 💚</div>
+    <div class="score-big">${score}/${totalQ}</div>
+    <div style="font-size:0.85rem;color:#888;margin-bottom:16px;">riktige svar</div>
+    <button class="btn-home" onclick="goHome()">🏠 Tilbake til menyen</button>
+    <button class="btn-retry" onclick="startChapter(${currentChapter})">🔄 Øv igjen</button>
+  `;
+  document.getElementById('lesson').classList.remove('active');
+  const endEl = document.getElementById('endScreen');
+  endEl.innerHTML = html;
+  endEl.classList.add('active');
+  
+  sendEmail(ch);
+  updateScore();
+  renderChapters();
 }
 
-async function sendR(){
-  const ch=chapters[curCh];
-  const now=new Date();
-  const dato=now.toLocaleDateString('no-NO',{weekday:'long',year:'numeric',month:'long',day:'numeric'});
-  const tid=now.toLocaleTimeString('no-NO',{hour:'2-digit',minute:'2-digit'});
-  const pst=Math.round((score/totalQ)*100);
-  try{await fetch('https://formspree.io/f/mqeolldg',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({_subject:`Edels Verden – ${ch.label} – ${dato}`,Dato:dato,Tidspunkt:tid,Kapittel:ch.label,Resultat:`${score} av ${totalQ} riktige (${pst}%)`,Vurdering:pst===100?'🌟 Perfekt!':pst>=70?'✅ Veldig bra!':'💪 Fortsett å øve!'})});}catch(e){}
+async function sendEmail(ch){
+  const now = new Date();
+  const dato = now.toLocaleDateString('no-NO',{weekday:'long',year:'numeric',month:'long',day:'numeric'});
+  const tid = now.toLocaleTimeString('no-NO',{hour:'2-digit',minute:'2-digit'});
+  const pct = Math.round((score / totalQ) * 100);
+  
+  try{
+    await fetch('https://formspree.io/f/mqeolldg',{
+      method:'POST',
+      headers:{'Content-Type':'application/json'},
+      body: JSON.stringify({
+        _subject: `Edels Verden – ${ch.name} – ${dato}`,
+        Dato: dato,
+        Tidspunkt: tid,
+        Kapittel: ch.name,
+        Resultat: `${score} av ${totalQ} riktige (${pct}%)`,
+        Vurdering: pct===100?'🌟 Perfekt!':pct>=70?'✅ Veldig bra!':'💪 Fortsett å øve!'
+      })
+    });
+  } catch(e){ console.log(e); }
 }
+
+function goHome(){
+  document.getElementById('lesson').classList.remove('active');
+  document.getElementById('endScreen').classList.remove('active');
+  window.scrollTo(0,0);
+}
+
+function updateScore(){
+  document.getElementById('scoreDisplay').textContent = `${score}/${totalQ}`;
+}
+
+init();
 </script>
 </body>
 </html>
