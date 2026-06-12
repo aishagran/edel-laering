@@ -13,7 +13,7 @@ body{font-family:'Nunito',sans-serif;background:linear-gradient(160deg,#FFF6FB,#
 .topbar{background:white;padding:14px 18px;display:flex;align-items:center;gap:12px;box-shadow:0 2px 12px var(--shadow);position:sticky;top:0;z-index:50;}
 .home-btn{text-decoration:none;font-size:1.4rem;background:#F4F4FB;border-radius:12px;padding:6px 12px;}
 .fire{font-size:1.4rem;margin-left:auto;}
-.container{max-width:560px;margin:0 auto;padding:20px 18px 80px;}
+.container{max-width:560px;margin:0 auto;padding:20px 18px 100px;}
 .intro{background:white;border-radius:16px;padding:16px;margin-bottom:20px;box-shadow:0 3px 12px var(--shadow);line-height:1.6;color:#666;}
 .day-pills{display:flex;gap:8px;overflow-x:auto;padding:0 0 12px;margin-bottom:16px;}
 .day-pill{flex-shrink:0;background:white;border:2.5px solid #e8e0d8;border-radius:50px;padding:10px 16px;font-weight:700;font-size:0.9rem;cursor:pointer;transition:all 0.15s;}
@@ -27,16 +27,25 @@ body{font-family:'Nunito',sans-serif;background:linear-gradient(160deg,#FFF6FB,#
 .section{padding:18px;border-bottom:1px solid #f0ebe4;}
 .section:last-child{border-bottom:none;}
 .section-title{font-family:'Baloo 2',cursive;font-size:0.95rem;font-weight:800;color:var(--p3);margin-bottom:12px;text-transform:uppercase;letter-spacing:0.5px;}
-.example-box{background:var(--p3);background:rgba(107,203,119,0.1);border-left:4px solid var(--p3);padding:12px 14px;border-radius:8px;margin-bottom:10px;line-height:1.6;font-size:0.95rem;}
+.example-box{background:rgba(107,203,119,0.1);border-left:4px solid var(--p3);padding:12px 14px;border-radius:8px;margin-bottom:10px;line-height:1.6;font-size:0.95rem;}
 .sentence-build{display:flex;flex-direction:column;gap:10px;}
 .build-step{background:#f9f9f9;padding:12px;border-radius:10px;border-left:4px solid var(--p2);font-size:0.95rem;line-height:1.5;}
 .build-step .num{display:inline-block;background:var(--p2);color:#7A5A00;font-weight:800;padding:3px 9px;border-radius:20px;font-size:0.8rem;margin-right:8px;}
 .input-box{background:#f9f9f9;border:2px dashed var(--p3);border-radius:12px;padding:14px;margin-top:12px;}
 .input-box textarea{width:100%;border:none;background:transparent;font-family:'Nunito',sans-serif;font-size:0.95rem;resize:vertical;min-height:80px;color:var(--ink);}
 .input-box textarea::placeholder{color:#bbb;}
-.btn-complete{width:100%;margin-top:16px;padding:16px;background:var(--p3);color:white;border:none;border-radius:50px;font-family:'Baloo 2',cursive;font-size:1rem;font-weight:700;cursor:pointer;box-shadow:0 4px 0 #4d8a52;transition:all 0.1s;}
+.exercise-card{background:#f9f9f9;border-radius:12px;padding:14px;margin-bottom:12px;border-left:4px solid var(--p4);}
+.exercise-title{font-weight:700;color:var(--p4);margin-bottom:8px;}
+.exercise-desc{font-size:0.9rem;color:#666;line-height:1.5;}
+.choice-opts{display:flex;flex-direction:column;gap:8px;margin-top:10px;}
+.choice-btn{background:white;border:2px solid #e0d8d0;border-radius:10px;padding:10px 12px;font-size:0.9rem;font-weight:600;cursor:pointer;text-align:left;transition:all 0.15s;}
+.choice-btn:active{transform:scale(0.98);}
+.choice-btn.correct{background:var(--p3);color:white;border-color:var(--p3);}
+.choice-btn.wrong{background:#FFE0E0;color:#c0392b;border-color:#FF9999;}
+.btn-complete{width:100%;margin-top:20px;padding:16px;background:var(--p3);color:white;border:none;border-radius:50px;font-family:'Baloo 2',cursive;font-size:1rem;font-weight:700;cursor:pointer;box-shadow:0 4px 0 #4d8a52;transition:all 0.1s;}
 .btn-complete:active{transform:translateY(3px);box-shadow:0 1px 0 #4d8a52;}
 .tip{background:#FFF9E0;border-left:4px solid var(--p2);padding:12px 14px;border-radius:8px;margin-top:12px;font-size:0.9rem;line-height:1.5;color:#7A5A00;}
+.word-highlight{background:rgba(107,203,119,0.2);padding:2px 6px;border-radius:4px;font-weight:700;color:var(--p3);}
 </style>
 </head>
 <body>
@@ -51,7 +60,7 @@ body{font-family:'Nunito',sans-serif;background:linear-gradient(160deg,#FFF6FB,#
 
 <div class="container">
   <div class="intro">
-    <strong>Hei, Edel!</strong> Hver dag øver du på nye bindeord — ord som kobler setninger sammen. Les, gjenta, snakk høyt, og skriv din egen! 💚
+    <strong>Hei, Edel!</strong> Hver dag øver du på nye bindeord — ord som kobler setninger sammen. <strong>Les, gjenta, snakk høyt, velg riktig, og skriv din egen!</strong> 💚
   </div>
 
   <div class="day-pills" id="dayPills"></div>
@@ -64,172 +73,242 @@ const DAYS = [
     icon:"🏫", name:"Dag 1", theme:"Min dag på skolen",
     intro:{title:"Først… Etterpå… Senere… Til slutt…", text:"Disse ordene forteller hva som skjedde først, så, og til slutt."},
     steps:[
-      {type:"visual", head:"Se og les", emoji:"🏫", text:"<b>Først</b> gikk jeg til skolen. <b>Etterpå</b> hadde vi gym."},
-      {type:"rep", head:"Les høyt – 3 ganger", rows:[
+      {type:"visual", head:"1️⃣ Se og les", emoji:"🏫", text:"<b>Først</b> gikk jeg til skolen. <b>Etterpå</b> hadde vi gym."},
+      {type:"rep", head:"2️⃣ Les høyt – 3 ganger", rows:[
         "Først gikk jeg til skolen.",
         "Etterpå hadde vi gym.",
         "Senere spilte vi kanonball.",
         "Til slutt syklet jeg hjem.",
       ], tip:"Repetisjon bygger automatikk. Les raskere hver gang!"},
-      {type:"speak", head:"Si det høyt selv", emoji:"🗣️", prompt:"Fortell om DIN dag på skolen i dag!",
+      {type:"choice", head:"3️⃣ Velg riktig", q:"<b>___</b> gikk jeg til skolen.",
+        opts:[{t:"Etterpå",c:false},{t:"Først",c:true},{t:"Til slutt",c:false}],
+        feedback:"✅ Riktig! «Først» kommer først!"},
+      {type:"choice", head:"3️⃣ Velg riktig (2)", q:"<b>___</b> spilte vi kanonball.",
+        opts:[{t:"Først",c:false},{t:"Senere",c:true},{t:"Til slutt",c:false}],
+        feedback:"✅ Riktig! «Senere» er i midten!"},
+      {type:"speak", head:"4️⃣ Si det høyt selv", emoji:"🗣️", prompt:"Fortell om DIN dag på skolen i dag!",
         help:"Først… Etterpå… Senere… Til slutt…"},
-      {type:"build", head:"Bygg setningen", steps:["Jeg spilte.","Jeg spilte kanonball.","Jeg spilte kanonball med Eyla.","Jeg spilte kanonball med Eyla, og det var gøy."]},
+      {type:"build", head:"5️⃣ Bygg setningen", steps:["Jeg spilte.","Jeg spilte kanonball.","Jeg spilte kanonball med Eyla.","Jeg spilte kanonball med Eyla, og det var gøy."]},
+      {type:"open", head:"6️⃣ Skriv din egen", prompt:"Skriv en setning som starter med «Først»", placeholder:"Først..."},
     ]
   },
   {
     icon:"🤾", name:"Dag 2", theme:"Kanonball",
     intro:{title:"Hvem? Hvor? Hva? Hva skjedde?", text:"Disse spørsmålene hjelper deg å fortelle en god historie."},
     steps:[
-      {type:"visual", head:"Se og les", emoji:"🎯", text:"<b>Hvem?</b> Jeg var med Eyla. <b>Hvor?</b> På banen."},
-      {type:"rep", head:"Les høyt – 3 ganger", rows:[
+      {type:"visual", head:"1️⃣ Se og les", emoji:"🎯", text:"<b>Hvem?</b> Jeg var med Eyla. <b>Hvor?</b> På banen."},
+      {type:"rep", head:"2️⃣ Les høyt – 3 ganger", rows:[
         "Hvem? Jeg var med Eyla.",
         "Hvor? På banen i gymsalen.",
         "Hva? Vi spilte kanonball.",
         "Hva skjedde? Vi tapte mot 7A.",
       ]},
-      {type:"speak", head:"Si det høyt selv", emoji:"🗣️", prompt:"Fortell om en gang du lekte eller spilte noe!",
+      {type:"choice", head:"3️⃣ Velg riktig", q:"Hvem var du med i kanonball?",
+        opts:[{t:"Unna",c:false},{t:"Eyla",c:true},{t:"Pappa",c:false}],
+        feedback:"✅ Riktig! Eyla!"},
+      {type:"choice", head:"3️⃣ Velg riktig (2)", q:"Hvor spilte dere kanonball?",
+        opts:[{t:"Hjemme",c:false},{t:"På senteret",c:false},{t:"På banen i gymsalen",c:true}],
+        feedback:"✅ Riktig!"},
+      {type:"speak", head:"4️⃣ Si det høyt selv", emoji:"🗣️", prompt:"Fortell om en gang du lekte eller spilte noe!",
         help:"Hvem var du med? Hvor? Hva gjorde dere?"},
-      {type:"build", head:"Bygg setningen", steps:["Vi tapte.","Vi tapte kampen.","Vi tapte kampen mot 7A.","Vi tapte kampen mot 7A, men vi hadde det gøy."]},
+      {type:"build", head:"5️⃣ Bygg setningen", steps:["Vi tapte.","Vi tapte kampen.","Vi tapte kampen mot 7A.","Vi tapte kampen mot 7A, men vi hadde det gøy."]},
+      {type:"open", head:"6️⃣ Skriv din egen", prompt:"Skriv: Hvem var du med? Hvor? Hva?", placeholder:"Jeg var med... på... og vi..."},
     ]
   },
   {
     icon:"🏓", name:"Dag 3", theme:"Håndball",
     intro:{title:"Fordi – forklarer grunnen!", text:"Når du sier «fordi» viser du HVORFOR noe skjedde."},
     steps:[
-      {type:"visual", head:"Se og les", emoji:"🏓", text:"Jeg spurte Unna om å spille. Hun sa ja <b>fordi</b> det er gøy."},
-      {type:"rep", head:"Les høyt – 3 ganger", rows:[
+      {type:"visual", head:"1️⃣ Se og les", emoji:"🏓", text:"Jeg spurte Unna om å spille. Hun sa ja <b>fordi</b> det er gøy."},
+      {type:"rep", head:"2️⃣ Les høyt – 3 ganger", rows:[
         "Jeg spurte Unna om jeg kunne spille.",
         "Unna sa ja.",
         "Hvorfor? Fordi det er gøy.",
         "Vi fikk brownies fordi vi trente hardt.",
       ]},
-      {type:"speak", head:"Si det høyt selv", emoji:"🗣️", prompt:"Hva liker du å gjøre — og HVORFOR?",
+      {type:"choice", head:"3️⃣ Velg riktig", q:"Hvorfor sa Unna ja?",
+        opts:[{t:"Fordi hun var lei",c:false},{t:"Fordi det er gøy",c:true},{t:"Fordi det var regn",c:false}],
+        feedback:"✅ Riktig! Det er gøy!"},
+      {type:"choice", head:"3️⃣ Velg riktig (2)", q:"Hvorfor fikk de brownies?",
+        opts:[{t:"Fordi de var sultne",c:false},{t:"Fordi de trente hardt",c:true},{t:"Fordi det var fredag",c:false}],
+        feedback:"✅ Riktig!"},
+      {type:"speak", head:"4️⃣ Si det høyt selv", emoji:"🗣️", prompt:"Hva liker du å gjøre — og HVORFOR?",
         help:"Jeg liker ___ fordi ___"},
-      {type:"build", head:"Bygg setningen", steps:["Jeg spurte.","Jeg spurte Unna.","Jeg spurte Unna om å spille.","Jeg spurte Unna om å spille, og hun sa ja forbi det er gøy."]},
+      {type:"build", head:"5️⃣ Bygg setningen", steps:["Jeg spurte.","Jeg spurte Unna.","Jeg spurte Unna om å spille.","Jeg spurte Unna om å spille, og hun sa ja fordi det er gøy."]},
+      {type:"open", head:"6️⃣ Skriv din egen", prompt:"Skriv: Jeg liker ___ fordi ___", placeholder:"Jeg liker...fordi..."},
     ]
   },
   {
     icon:"🛍️", name:"Dag 4", theme:"På Manglerud senter",
     intro:{title:"Men – og Derfor – problem og løsning!", text:"«Men» viser at noe gikk galt. «Derfor» viser hva du gjorde."},
     steps:[
-      {type:"visual", head:"Se og les", emoji:"🛍️", text:"Vi fant en gul t-skjorte. <b>Men</b> jeg glemte brillene. <b>Derfor</b> måtte vi dra tilbake."},
-      {type:"rep", head:"Les høyt – 3 ganger", rows:[
+      {type:"visual", head:"1️⃣ Se og les", emoji:"🛍️", text:"Vi fant en gul t-skjorte. <b>Men</b> jeg glemte brillene. <b>Derfor</b> måtte vi dra tilbake."},
+      {type:"rep", head:"2️⃣ Les høyt – 3 ganger", rows:[
         "Vi skulle finne et kostyme.",
         "Vi fant en gul t-skjorte.",
         "Men jeg glemte brillene mine.",
         "Derfor måtte vi dra tilbake.",
       ]},
-      {type:"speak", head:"Si det høyt selv", emoji:"🗣️", prompt:"Fortell om en gang du glemte noe!",
+      {type:"choice", head:"3️⃣ Velg riktig", q:"Hva glemte hun?",
+        opts:[{t:"Sko",c:false},{t:"Brillene",c:true},{t:"Jacka",c:false}],
+        feedback:"✅ Riktig!"},
+      {type:"choice", head:"3️⃣ Velg riktig (2)", q:"Hva skjedde DERFOR?",
+        opts:[{t:"De dro hjem",c:false},{t:"De ble ved senteret",c:false},{t:"De måtte dra tilbake",c:true}],
+        feedback:"✅ Riktig!"},
+      {type:"speak", head:"4️⃣ Si det høyt selv", emoji:"🗣️", prompt:"Fortell om en gang du glemte noe!",
         help:"Jeg glemte ___. Derfor måtte jeg ___"},
-      {type:"build", head:"Bygg setningen", steps:["Jeg glemte.","Jeg glemte brillene.","Jeg glemte brillene på senteret.","Jeg glemte brillene på senteret, derfor måtte mamma hjelpe meg."]},
+      {type:"build", head:"5️⃣ Bygg setningen", steps:["Jeg glemte.","Jeg glemte brillene.","Jeg glemte brillene på senteret.","Jeg glemte brillene på senteret, derfor måtte mamma hjelpe meg."]},
+      {type:"open", head:"6️⃣ Skriv din egen", prompt:"Skriv: ___ men ___ derfor ___", placeholder:"Jeg ville... men... derfor..."},
     ]
   },
   {
     icon:"🎬", name:"Dag 5", theme:"K-drama & musikk",
     intro:{title:"Følelsesord – ord som beskriver hvordan du føler", text:"K-drama er fullt av følelser! Perfekt for å øve på nye ord."},
     steps:[
-      {type:"visual", head:"Se og les", emoji:"🎬", text:"Karakteren var <b>forelsket</b>. Hun var <b>trist</b> fordi vennen løy."},
-      {type:"rep", head:"Les høyt – 3 ganger", rows:[
+      {type:"visual", head:"1️⃣ Se og les", emoji:"🎬", text:"Karakteren var <b>forelsket</b>. Hun var <b>trist</b> fordi vennen løy."},
+      {type:"rep", head:"2️⃣ Les høyt – 3 ganger", rows:[
         "Karakteren var forelsket.",
         "Hun var trist fordi vennen løy.",
         "Det var en stor hemmelighet.",
         "Han ville ha hevn.",
       ]},
-      {type:"speak", head:"Si det høyt selv", emoji:"🗣️", prompt:"Hvilken følelse gir din favoritt-serie deg?",
+      {type:"choice", head:"3️⃣ Velg riktig", q:"Hvordan følte karakteren seg?",
+        opts:[{t:"Glad",c:false},{t:"Forelsket",c:true},{t:"Sint",c:false}],
+        feedback:"✅ Riktig!"},
+      {type:"choice", head:"3️⃣ Velg riktig (2)", q:"Hvorfor var hun trist?",
+        opts:[{t:"Fordi hun var alene",c:false},{t:"Fordi vennen løy",c:true},{t:"Fordi det var sent",c:false}],
+        feedback:"✅ Riktig!"},
+      {type:"speak", head:"4️⃣ Si det høyt selv", emoji:"🗣️", prompt:"Hvilken følelse gir din favoritt-serie deg?",
         help:"Jeg liker ___ fordi det gjør meg ___ (glad / rørt / spent)"},
-      {type:"build", head:"Bygg setningen", steps:["Jeg så på.","Jeg så på et K-drama.","Jeg så på et K-drama i går.","Jeg så på et K-drama i går, og det gjorde meg både glad og trist."]},
+      {type:"build", head:"5️⃣ Bygg setningen", steps:["Jeg så på.","Jeg så på et K-drama.","Jeg så på et K-drama i går.","Jeg så på et K-drama i går, og det gjorde meg både glad og trist."]},
+      {type:"open", head:"6️⃣ Skriv din egen", prompt:"Skriv: En gang jeg følte meg ___", placeholder:"En gang jeg følte meg... fordi..."},
     ]
   },
   {
     icon:"🐕", name:"Dag 6", theme:"Pipocão",
     intro:{title:"Da – og Når – tid!", text:"«Da» = en gang. «Når» = hver gang."},
     steps:[
-      {type:"visual", head:"Se og les", emoji:"🐕", text:"<b>Da</b> jeg kom hjem, logret Pipocão med halen. <b>Når</b> jeg er trist, sitter han hos meg."},
-      {type:"rep", head:"Les høyt – 3 ganger", rows:[
+      {type:"visual", head:"1️⃣ Se og les", emoji:"🐕", text:"<b>Da</b> jeg kom hjem, logret Pipocão med halen. <b>Når</b> jeg er trist, sitter han hos meg."},
+      {type:"rep", head:"2️⃣ Les høyt – 3 ganger", rows:[
         "Da jeg kom hjem, logret Pipocão med halen.",
         "Når jeg er trist, sitter Pipocão hos meg.",
         "Da vi gikk tur, møtte vi en katt.",
         "Når Pipocão er sulten, bjeffer han.",
       ]},
-      {type:"speak", head:"Si det høyt selv", emoji:"🗣️", prompt:"Hva skjer NÅR eller DA med Pipocão?",
+      {type:"choice", head:"3️⃣ Velg riktig", q:"Hva skjedde DA hun kom hjem?",
+        opts:[{t:"Pipocão sov",c:false},{t:"Pipocão logret med halen",c:true},{t:"Pipocão bjeffer",c:false}],
+        feedback:"✅ Riktig!"},
+      {type:"choice", head:"3️⃣ Velg riktig (2)", q:"Hva gjør Pipocão NÅR hun er trist?",
+        opts:[{t:"Han bjeffer",c:false},{t:"Han sitter hos henne",c:true},{t:"Han sover",c:false}],
+        feedback:"✅ Riktig!"},
+      {type:"speak", head:"4️⃣ Si det høyt selv", emoji:"🗣️", prompt:"Hva skjer NÅR eller DA med Pipocão?",
         help:"Når jeg kommer hjem, ___. Da vi gikk tur, ___"},
-      {type:"build", head:"Bygg setningen", steps:["Pipocão logret.","Pipocão logret med halen.","Pipocão logret med halen da jeg kom hjem.","Pipocão logret med halen da jeg kom hjem, fordi han var glad for å se meg."]},
+      {type:"build", head:"5️⃣ Bygg setningen", steps:["Pipocão logret.","Pipocão logret med halen.","Pipocão logret med halen da jeg kom hjem.","Pipocão logret med halen da jeg kom hjem, fordi han var glad for å se meg."]},
+      {type:"open", head:"6️⃣ Skriv din egen", prompt:"Skriv: Da/Når Pipocão...", placeholder:"Da/Når..."},
     ]
   },
   {
     icon:"🤾", name:"Dag 7", theme:"Håndballkamp",
     intro:{title:"Hvis – tanke på fremtiden!", text:"«Hvis» betyr: «det som KAN skje hvis du gjør noe»."},
     steps:[
-      {type:"visual", head:"Se og les", emoji:"🏆", text:"<b>Hvis</b> jeg øver, blir jeg bedre. <b>Hvis</b> vi vinner, blir jeg glad."},
-      {type:"rep", head:"Les høyt – 3 ganger", rows:[
+      {type:"visual", head:"1️⃣ Se og les", emoji:"🏆", text:"<b>Hvis</b> jeg øver, blir jeg bedre. <b>Hvis</b> vi vinner, blir jeg glad."},
+      {type:"rep", head:"2️⃣ Les høyt – 3 ganger", rows:[
         "Hvis jeg øver, blir jeg bedre.",
         "Hvis vi vinner, blir jeg glad.",
         "Hvis jeg er sliten, hviler jeg.",
         "Hvis noen er alene, kan jeg spørre: Vil du være med?",
       ]},
-      {type:"speak", head:"Si det høyt selv", emoji:"🗣️", prompt:"Hva skjer HVIS du trener hver dag?",
+      {type:"choice", head:"3️⃣ Velg riktig", q:"Hva skjer HVIS du øver?",
+        opts:[{t:"Du blir lei",c:false},{t:"Du blir bedre",c:true},{t:"Du blir sliten",c:false}],
+        feedback:"✅ Riktig!"},
+      {type:"choice", head:"3️⃣ Velg riktig (2)", q:"HVIS vi vinner, blir vi...?",
+        opts:[{t:"Trist",c:false},{t:"Sliten",c:false},{t:"Glad",c:true}],
+        feedback:"✅ Riktig!"},
+      {type:"speak", head:"4️⃣ Si det høyt selv", emoji:"🗣️", prompt:"Hva skjer HVIS du trener hver dag?",
         help:"Hvis jeg ___, så ___"},
-      {type:"build", head:"Bygg setningen", steps:["Vi vant.","Vi vant kampen.","Vi vant kampen i går.","Vi vant kampen i går, og hvis vi fortsetter å trene, vinner vi igjen."]},
+      {type:"build", head:"5️⃣ Bygg setningen", steps:["Vi vant.","Vi vant kampen.","Vi vant kampen i går.","Vi vant kampen i går, og hvis vi fortsetter å trene, vinner vi igjen."]},
+      {type:"open", head:"6️⃣ Skriv din egen", prompt:"Skriv: Hvis... så...", placeholder:"Hvis... så..."},
     ]
   },
   {
     icon:"🏫", name:"Dag 8", theme:"Friminuttet",
     intro:{title:"Spaced retrieval – alle ordene fra uke 1!", text:"Nå bruker vi ukens ord fra Edels Verden i nye setninger!"},
     steps:[
-      {type:"visual", head:"Se og les", emoji:"🤗", text:"Edel ble <b>ekskludert</b> da ingen svarte. Hun følte <b>avvist</b> og <b>oversett</b>."},
-      {type:"rep", head:"Les høyt – 3 ganger", rows:[
+      {type:"visual", head:"1️⃣ Se og les", emoji:"🤗", text:"Edel ble <b>ekskludert</b> da ingen svarte. Hun følte <b>avvist</b> og <b>oversett</b>."},
+      {type:"rep", head:"2️⃣ Les høyt – 3 ganger", rows:[
         "Edel ble ekskludert da ingen svarte.",
         "Hun følte seg avvist og oversett.",
         "En voksen hjalp barna med å inkludere henne.",
         "Til slutt følte hun tilhørighet og fellesskap.",
       ]},
-      {type:"speak", head:"Si det høyt selv", emoji:"🗣️", prompt:"Hva kan DU si hvis noen står alene?",
+      {type:"choice", head:"3️⃣ Velg riktig", q:"Hvordan følte Edel seg først?",
+        opts:[{t:"Glad",c:false},{t:"Ekskludert",c:true},{t:"Rolig",c:false}],
+        feedback:"✅ Riktig! Hun følte seg ekskludert!"},
+      {type:"choice", head:"3️⃣ Velg riktig (2)", q:"Hva følte hun til slutt?",
+        opts:[{t:"Utenforskap",c:false},{t:"Tilhørighet og fellesskap",c:true},{t:"Avvist",c:false}],
+        feedback:"✅ Riktig!"},
+      {type:"speak", head:"4️⃣ Si det høyt selv", emoji:"🗣️", prompt:"Hva kan DU si hvis noen står alene?",
         help:"Vil du være med? / Kom og spill med oss!"},
-      {type:"build", head:"Bygg setningen", steps:["Hun spurte.","Hun spurte om å være med.","Hun spurte om å være med, men ingen svarte.","Hun spurte om å være med, men ingen svarte, derfor følte hun seg ekskludert."]},
+      {type:"build", head:"5️⃣ Bygg setningen", steps:["Hun spurte.","Hun spurte om å være med.","Hun spurte om å være med, men ingen svarte.","Hun spurte om å være med, men ingen svarte, derfor følte hun seg ekskludert."]},
+      {type:"open", head:"6️⃣ Skriv din egen", prompt:"Skriv: Jeg føler tilhørighet når...", placeholder:"Jeg føler tilhørighet når..."},
     ]
   },
   {
     icon:"🥋", name:"Dag 9", theme:"Taekwondo",
     intro:{title:"Før – og Etter at – rekkefølge!", text:"Disse ordene viser hva som kommer først og hva som kommer etterpå."},
     steps:[
-      {type:"visual", head:"Se og les", emoji:"🥋", text:"<b>Før</b> treningen tar vi på drakten. <b>Etter at</b> vi har bukket, starter treningen."},
-      {type:"rep", head:"Les høyt – 3 ganger", rows:[
+      {type:"visual", head:"1️⃣ Se og les", emoji:"🥋", text:"<b>Før</b> treningen tar vi på drakten. <b>Etter at</b> vi har bukket, starter treningen."},
+      {type:"rep", head:"2️⃣ Les høyt – 3 ganger", rows:[
         "Før treningen tar vi på drakten.",
         "Etter at vi har bukket, starter treningen.",
         "Før kampen er jeg spent.",
         "Etter treningen er jeg sliten, men glad.",
       ]},
-      {type:"speak", head:"Si det høyt selv", emoji:"🗣️", prompt:"Hva gjør du FØR og ETTER skolen?",
+      {type:"choice", head:"3️⃣ Velg riktig", q:"Hva skjer FØR treningen?",
+        opts:[{t:"Vi bukker",c:false},{t:"Vi tar på drakten",c:true},{t:"Vi kampkamper",c:false}],
+        feedback:"✅ Riktig!"},
+      {type:"choice", head:"3️⃣ Velg riktig (2)", q:"Hva skjer ETTER treningen?",
+        opts:[{t:"Vi bukker",c:false},{t:"Vi tar på oss",c:false},{t:"Vi er slitne og glad",c:true}],
+        feedback:"✅ Riktig!"},
+      {type:"speak", head:"4️⃣ Si det høyt selv", emoji:"🗣️", prompt:"Hva gjør du FØR og ETTER skolen?",
         help:"Før skolen ___. Etter skolen ___"},
-      {type:"build", head:"Bygg setningen", steps:["Jeg trente.","Jeg trente taekwondo.","Jeg trente taekwondo etter skolen.","Etter at jeg hadde trent taekwondo, var jeg sliten, men stolt."]},
+      {type:"build", head:"5️⃣ Bygg setningen", steps:["Jeg trente.","Jeg trente taekwondo.","Jeg trente taekwondo etter skolen.","Etter at jeg hadde trent taekwondo, var jeg sliten, men stolt."]},
+      {type:"open", head:"6️⃣ Skriv din egen", prompt:"Skriv: Før... etter at...", placeholder:"Før... etter at..."},
     ]
   },
   {
     icon:"🌟", name:"Dag 10", theme:"Min uke",
     intro:{title:"Alle bindeordene sammen! 🎉", text:"Nå bruker du ALLE bindeordene fra to uker! Du er en språkmester!"},
     steps:[
-      {type:"visual", head:"Se og les", emoji:"🌟", text:"<b>Først, etterpå, til slutt</b> — <b>fordi</b> — <b>men, derfor</b> — <b>da, når, hvis, før, etter at</b> — alle sammen!"},
-      {type:"rep", head:"Les høyt – 3 ganger", rows:[
+      {type:"visual", head:"1️⃣ Se og les", emoji:"🌟", text:"<b>Først, etterpå, til slutt</b> — <b>fordi</b> — <b>men, derfor</b> — <b>da, når, hvis, før, etter at</b> — alle sammen!"},
+      {type:"rep", head:"2️⃣ Les høyt – 3 ganger", rows:[
         "Først, etterpå, til slutt — rekkefølge.",
         "Fordi — forklarer hvorfor.",
         "Men, derfor — problem og løsning.",
         "Da, når, hvis, før, etter at — tid og betingelse.",
       ]},
-      {type:"speak", head:"Si det høyt selv", emoji:"🗣️", prompt:"Fortell om HELE uken din! Bruk så mange bindeord som du klarer.",
+      {type:"choice", head:"3️⃣ Velg riktig", q:"Hvilket ord forklarer HVORFOR?",
+        opts:[{t:"Men",c:false},{t:"Fordi",c:true},{t:"Når",c:false}],
+        feedback:"✅ Riktig! Forbi forklarer!"},
+      {type:"choice", head:"3️⃣ Velg riktig (2)", q:"Hvilket ord viser REKKEFØLGE?",
+        opts:[{t:"Først",c:true},{t:"Hvis",c:false},{t:"Fordi",c:false}],
+        feedback:"✅ Riktig!"},
+      {type:"speak", head:"4️⃣ Si det høyt selv", emoji:"🗣️", prompt:"Fortell om HELE uken din! Bruk så mange bindeord som du klarer.",
         help:"Først… etterpå… fordi… men… derfor… til slutt…"},
-      {type:"build", head:"Bygg setningen", steps:["Jeg lærte.","Jeg lærte nye ord.","Jeg lærte nye ord denne uken.","Jeg lærte nye ord denne uken, og nå føler jeg tilhørighet fordi jeg kan fortelle mer."]},
+      {type:"build", head:"5️⃣ Bygg setningen", steps:["Jeg lærte.","Jeg lærte nye ord.","Jeg lærte nye ord denne uken.","Jeg lærte nye ord denne uken, og nå føler jeg tilhørighet fordi jeg kan fortelle mer."]},
+      {type:"open", head:"6️⃣ Skriv din egen", prompt:"Skriv: Fortell om hele uke di!", placeholder:"Først... etterpå... fordi... men... derfor... til slutt..."},
     ]
   },
 ];
 
 let currentDay = 0;
 const storageKey = "edels_spraakreise_fire";
+let answered = {};
 
 function init(){
   renderPills();
   renderContent();
   loadFireCount();
-  updateFireCount();
 }
 
 function renderPills(){
@@ -249,26 +328,48 @@ function renderContent(){
     </div>`;
   
   day.steps.forEach((s,si) => {
+    const stepId = currentDay + '_' + si;
     html += `<div class="section">`;
+    
     if(s.type === 'visual'){
       html += `<div class="section-title">${s.head}</div>
         <div class="example-box">${s.text}</div>`;
-    } else if(s.type === 'rep'){
+    } 
+    else if(s.type === 'rep'){
       html += `<div class="section-title">${s.head}</div>`;
       s.rows.forEach(r => html += `<div class="example-box">${r}</div>`);
       html += `<div class="tip">💡 ${s.tip}</div>`;
-    } else if(s.type === 'speak'){
+    } 
+    else if(s.type === 'choice'){
+      html += `<div class="section-title">${s.head}</div>
+        <div class="example-box" style="margin-bottom:12px;">${s.q}</div>
+        <div class="choice-opts">`;
+      s.opts.forEach((o,i) => {
+        html += `<button class="choice-btn" onclick="checkChoice(${currentDay},${si},${i},'${s.feedback}')" id="opt${stepId}_${i}">${o.t}</button>`;
+      });
+      html += `</div>`;
+    }
+    else if(s.type === 'speak'){
       html += `<div class="section-title">${s.head}</div>
         <div class="example-box"><strong>Spørsmål:</strong> ${s.prompt}</div>
         <div class="tip">💬 ${s.help}</div>`;
-    } else if(s.type === 'build'){
+    } 
+    else if(s.type === 'build'){
       html += `<div class="section-title">${s.head}</div><div class="sentence-build">`;
       s.steps.forEach((st,i) => html += `<div class="build-step"><span class="num">${i+1}</span>${st}</div>`);
       html += `</div>
         <div class="input-box">
-          <textarea placeholder="Lag din egen setning her..." id="input${si}"></textarea>
+          <textarea placeholder="Lag din egen setning her..." id="input${stepId}"></textarea>
         </div>`;
     }
+    else if(s.type === 'open'){
+      html += `<div class="section-title">${s.head}</div>
+        <div class="example-box" style="margin-bottom:12px;">${s.prompt}</div>
+        <div class="input-box">
+          <textarea placeholder="${s.placeholder}" id="input${stepId}"></textarea>
+        </div>`;
+    }
+    
     html += `</div>`;
   });
   
@@ -281,10 +382,30 @@ function renderContent(){
 
 function switchDay(i){
   currentDay = i;
+  answered = {};
   document.querySelectorAll('.day-pill').forEach((p,idx) => {
     p.classList.toggle('active', idx === i);
   });
   renderContent();
+}
+
+function checkChoice(dayIdx, stepIdx, optIdx, feedback){
+  const stepId = dayIdx + '_' + stepIdx;
+  const step = DAYS[dayIdx].steps[stepIdx];
+  const isCorrect = step.opts[optIdx].c;
+  const btn = document.getElementById(`opt${stepId}_${optIdx}`);
+  
+  if(!answered[stepId]){
+    answered[stepId] = true;
+    if(isCorrect){
+      btn.classList.add('correct');
+      alert('✅ ' + feedback);
+    } else {
+      btn.classList.add('wrong');
+      document.getElementById(`opt${stepId}_${step.opts.findIndex(o=>o.c)}`).classList.add('correct');
+      alert('❌ ' + feedback);
+    }
+  }
 }
 
 function completeDay(){
@@ -293,15 +414,12 @@ function completeDay(){
   const userTexts = Array.from(inputs).map(t => t.value).filter(v => v.trim());
   const userText = userTexts.length > 0 ? userTexts.join(' — ') : '(ingen skrevet)';
   
-  // Send email
   sendEmail(day, userText);
   
-  // Update fire
   const fire = parseInt(localStorage.getItem(storageKey) || '0') + 1;
   localStorage.setItem(storageKey, fire);
   updateFireCount();
   
-  // Next day
   if(currentDay < DAYS.length - 1){
     setTimeout(() => switchDay(currentDay + 1), 800);
   } else {
