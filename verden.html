@@ -127,59 +127,68 @@ const WEEKS = [
     week: 2,
     title: 'Uke 2 – Følelser & Styrke',
     chapters: [
-      {name: 'Edel på Taekwondo', emoji: '🥋', desc: 'Frykt blir styrke', steps: [
+      {name: 'Edel mestrer det', emoji: '🥋', desc: 'Å øve til man får det til', steps: [
         {type:'scene', scenes:[
-          {num:1, text:'Det var Edels første dag på taekwondo. Hun var nervøs og visste ikke hva som kom til å skje.', speech:'Jeg er redd...'},
-          {num:2, text:'Hjertet hennes banket fort. Men hun bestemte seg for å prøve likevel.'},
-          {num:3, text:'Treneren viste henne et spark. Edel prøvde, og bommet. Hun prøvde igjen.'},
-          {num:4, text:'Litt etter litt klarte hun det. Det føltes godt å mestre noe nytt.', speech:'Jeg klarte det!'},
-          {num:5, text:'Da hun gikk hjem, kjente hun seg sterk og modig. I morgen vil hun tilbake.'},
+          {num:1, text:'I dag skulle Edel på taekwondo. Hun gledet seg, men var også litt nervøs. Hjertet hennes banket fort. Likevel bestemte hun seg for å prøve.'},
+          {num:2, text:'På trening viste treneren en ny teknikk. Det var et spark Edel ikke hadde prøvd før. Hun fulgte nøye med.', speech:'Jeg følger med på alt.'},
+          {num:3, text:'Da det ble hennes tur, prøvde hun. Hun bommet. Hun prøvde igjen. Det var vanskeligere enn hun hadde trodd.'},
+          {num:4, text:'Edel tenkte på noe Pipoka alltid gjør. Pipoka gir ikke opp ansvaret sitt. Hun prøver hver dag. Edel bestemte seg for å gjøre det samme.', speech:'Jeg gir ikke opp.'},
+          {num:5, text:'Hun prøvde igjen. Og igjen. Litt etter litt ble bevegelsen bedre.'},
+          {num:6, text:'Til slutt klarte hun det. Treneren smilte. Edel kjente seg stolt.', speech:'Jeg klarte det!'},
+          {num:7, text:'Det føltes godt å mestre noe nytt. Å mestre betyr ikke å få det til med én gang. Det betyr å øve til man blir bedre.'},
+          {num:8, text:'Da treningen var ferdig, gikk Edel hjem. Hun følte seg sterkere enn da hun kom. Ikke bare i kroppen, men også inni seg.'},
+          {num:9, text:'Neste uke vil hun lære mer. Hun vet at det tar tid å mestre nye ting. Men hun er klar til å prøve igjen.'},
         ]},
 
-        {type:'words', subtitle:'💪 Ukens ord – Taekwondo', words:[
-          {w:'nervøs', m:'urolig og litt redd før noe nytt', ex:'Edel var nervøs første dagen.', neg:true},
-          {w:'modig', m:'å gjøre noe selv om du er redd', ex:'Edel var modig som prøvde.', neg:false},
+        {type:'words', subtitle:'🥋 Ord vi jobber med', words:[
+          {w:'mestre', m:'å lære noe gjennom øving til man får det til', ex:'Edel klarte å mestre sparket til slutt.', neg:false},
           {w:'prøve', m:'å forsøke, selv om det er vanskelig', ex:'Hun prøvde igjen og igjen.', neg:false},
-          {w:'mestre', m:'å klare noe du øvde på', ex:'Til slutt klarte hun å mestre sparket.', neg:false},
-          {w:'sterk', m:'å kunne klare vanskelige ting', ex:'Edel følte seg sterk etterpå.', neg:false},
+          {w:'nervøs', m:'urolig og litt redd før noe nytt', ex:'Edel var nervøs før treningen.', neg:true},
+          {w:'sterk', m:'å klare vanskelige ting, i kroppen eller inni seg', ex:'Hun følte seg sterk etterpå.', neg:false},
+          {w:'følge med', m:'å se og høre nøye på det som skjer', ex:'Edel fulgte med på treneren.', neg:false},
+          {w:'ansvar', m:'noe som er din jobb å passe på', ex:'Pipoka gir ikke opp ansvaret sitt.', neg:false},
         ]},
 
-        // --- nervøs (x3) ---
-        {type:'multiple', q:'Hva betyr nervøs?', opts:[{t:'Urolig og litt redd',c:true},{t:'Glad og rolig',c:false}], fb:'✅!'},
-        {type:'fillin', sentence:'Edel var ___ på sin første dag.',opts:['nervøs','sulten'], correct:'nervøs', fb:'✅!'},
-        {type:'multiple', q:'Når var Edel nervøs?', opts:[{t:'Før noe nytt',c:true},{t:'Da hun sov',c:false}], fb:'✅ Vi blir ofte nervøse før noe nytt.'},
-
-        // --- modig (x3) ---
-        {type:'multiple', q:'Hva betyr modig?', opts:[{t:'Å gjøre noe selv om du er redd',c:true},{t:'Å aldri prøve',c:false}], fb:'✅!'},
-        {type:'fillin', sentence:'Det var ___ å prøve selv om hun var redd.',opts:['modig','dumt'], correct:'modig', fb:'✅!'},
-        {type:'multiple', q:'Hvem var modig i historien?', opts:[{t:'Edel',c:true},{t:'Treneren',c:false}], fb:'✅!'},
+        // --- mestre (x4) – ukens hovedord ---
+        {type:'multiple', q:'Hva betyr å mestre noe?', opts:[{t:'Å øve til man får det til',c:true},{t:'Å klare alt med én gang',c:false}], fb:'✅ Å mestre tar tid og øving.'},
+        {type:'fillin', sentence:'Til slutt klarte Edel å ___ det nye sparket.',opts:['mestre','miste'], correct:'mestre', fb:'✅!'},
+        {type:'multiple', q:'Klarte Edel sparket med én gang?', opts:[{t:'Nei, hun øvde mange ganger',c:true},{t:'Ja, med det samme',c:false}], fb:'✅ Å mestre = å øve til det blir bedre.'},
+        {type:'fillin', sentence:'Det tar tid å ___ nye ting.',opts:['mestre','glemme'], correct:'mestre', fb:'✅!'},
 
         // --- prøve (x3) ---
-        {type:'multiple', q:'Hva gjorde Edel da hun bommet?', opts:[{t:'Prøvde igjen',c:true},{t:'Ga opp',c:false}], fb:'✅ Hun prøvde igjen!'},
+        {type:'multiple', q:'Hva gjorde Edel da hun bommet?', opts:[{t:'Hun prøvde igjen',c:true},{t:'Hun ga opp',c:false}], fb:'✅!'},
         {type:'fillin', sentence:'Edel ville ___ en gang til.',opts:['prøve','sove'], correct:'prøve', fb:'✅!'},
-        {type:'multiple', q:'Er det greit å bomme når du prøver?', opts:[{t:'Ja, det er sånn vi lærer',c:true},{t:'Nei, da må du slutte',c:false}], fb:'✅ Helt riktig!'},
+        {type:'multiple', q:'Er det greit å bomme når du prøver?', opts:[{t:'Ja, det er sånn vi lærer',c:true},{t:'Nei, da må man slutte',c:false}], fb:'✅ Helt riktig!'},
 
-        // --- mestre (x3) ---
-        {type:'multiple', q:'Hva betyr å mestre noe?', opts:[{t:'Å klare noe du øvde på',c:true},{t:'Å glemme noe',c:false}], fb:'✅!'},
-        {type:'fillin', sentence:'Til slutt klarte Edel å ___ sparket.',opts:['mestre','miste'], correct:'mestre', fb:'✅!'},
-        {type:'multiple', q:'Hvordan føltes det å mestre noe nytt?', opts:[{t:'Godt',c:true},{t:'Kjedelig',c:false}], fb:'✅!'},
+        // --- nervøs (x2) ---
+        {type:'multiple', q:'Hvordan følte Edel seg før treningen?', opts:[{t:'Nervøs',c:true},{t:'Helt rolig',c:false}], fb:'✅ Vi blir ofte nervøse før noe nytt.'},
+        {type:'fillin', sentence:'Edel var ___, men prøvde likevel.',opts:['nervøs','sulten'], correct:'nervøs', fb:'✅!'},
 
         // --- sterk (x2) ---
-        {type:'multiple', q:'Hvordan følte Edel seg da hun gikk hjem?', opts:[{t:'Sterk og modig',c:true},{t:'Svak og redd',c:false}], fb:'✅!'},
-        {type:'fillin', sentence:'Edel ble ___ av å trene.',opts:['sterk','trøtt'], correct:'sterk', fb:'✅!'},
+        {type:'multiple', q:'Hvordan følte Edel seg da hun gikk hjem?', opts:[{t:'Sterkere enn før',c:true},{t:'Svakere enn før',c:false}], fb:'✅!'},
+        {type:'multiple', q:'Hvor følte Edel seg sterk?', opts:[{t:'I kroppen og inni seg',c:true},{t:'Bare i armene',c:false}], fb:'✅ Sterk handler også om følelser.'},
 
-        // --- REVISJON: forrige uke (Pipoka) + Uke 1 ---
-        {type:'multiple', q:'🔁 Repetisjon: Pipoka er alltid der for Edel. Hva viser hun?', opts:[{t:'lojalitet',c:true},{t:'frykt',c:false}], fb:'✅ Lojalitet – fra Pipoka!'},
-        {type:'fillin', sentence:'🔁 Hjemme med familien føler Edel ___.',opts:['trygghet','panikk'], correct:'trygghet', fb:'✅ Trygghet – husker du?'},
-        {type:'multiple', q:'🔁 Repetisjon: På laget får alle være med. Da føler Edel seg...', opts:[{t:'inkludert',c:true},{t:'avvist',c:false}], fb:'✅ Inkludert – fra Uke 1!'},
-        {type:'fillin', sentence:'🔁 Pipoka tar ___ for huset når alle er borte.',opts:['ansvar','ferie'], correct:'ansvar', fb:'✅ Ansvar – fra Pipoka!'},
-        {type:'multiple', q:'🔗 Edel var nervøs, men hun var også...', opts:[{t:'modig',c:true},{t:'sint',c:false}], fb:'✅ Man kan være nervøs OG modig samtidig!'},
-        {type:'fillin', sentence:'🔗 Hun måtte ___ mange ganger for å mestre det.',opts:['prøve','sove'], correct:'prøve', fb:'✅ Prøve + mestre hører sammen!'},
+        // --- følge med (x2) ---
+        {type:'multiple', q:'Hva gjorde Edel da treneren viste teknikken?', opts:[{t:'Hun fulgte med',c:true},{t:'Hun så bort',c:false}], fb:'✅!'},
+        {type:'fillin', sentence:'Edel ___ nøye med på treneren.',opts:['fulgte','glemte'], correct:'fulgte', fb:'✅ Å følge med = å se og høre nøye.'},
+
+        // --- ansvar + lojalitet (Pipoka-ord, brukt på nytt) (x3) ---
+        {type:'multiple', q:'Hva tenkte Edel at Pipoka aldri gir opp?', opts:[{t:'Ansvaret sitt',c:true},{t:'Maten sin',c:false}], fb:'✅ Pipoka gir ikke opp ansvaret – som Edel ikke gir opp sparket.'},
+        {type:'fillin', sentence:'Pipoka tar ___ for huset hver dag.',opts:['ansvar','ferie'], correct:'ansvar', fb:'✅!'},
+        {type:'multiple', q:'Edel gjorde som Pipoka. Hva viser hun da?', opts:[{t:'Lojalitet og pågangsmot',c:true},{t:'At hun gir opp',c:false}], fb:'✅ Samme ord, ny situasjon!'},
+
+        // --- trygghet + savne (Pipoka-ord, brukt på nytt) (x2) ---
+        {type:'multiple', q:'Hjemme hos familien føler Edel...', opts:[{t:'trygghet',c:true},{t:'frykt',c:false}], fb:'✅ Trygghet – samme følelse som Pipoka gir.'},
+        {type:'fillin', sentence:'Når Edel er på trening, kan Pipoka ___ henne hjemme.',opts:['savne','glemme'], correct:'savne', fb:'✅!'},
+
+        // --- kobling mellom ord (x2) ---
+        {type:'multiple', q:'Edel var nervøs, men hun var også...', opts:[{t:'modig',c:true},{t:'sint',c:false}], fb:'✅ Man kan være nervøs OG modig samtidig.'},
+        {type:'fillin', sentence:'Hun måtte ___ mange ganger for å mestre det.',opts:['prøve','sove'], correct:'prøve', fb:'✅ Prøve og mestre hører sammen!'},
 
         // --- SKRIV SELV ---
-        {type:'writein', tag:'Modig', prompt:'Skriv en setning med ordet «modig».', hint:'F.eks: «Jeg var modig da jeg...»'},
-        {type:'writein', tag:'Nervøs', prompt:'Når er DU nervøs? Skriv en setning med ordet «nervøs».', hint:'F.eks: «Jeg blir nervøs når...»'},
-        {type:'writein', tag:'Fri tekst', prompt:'Hva er noe du har lært å mestre? Skriv litt om det.', hint:'Det finnes ikke noe feil svar 💚'},
+        {type:'writein', tag:'Mestre', prompt:'Hva har DU lært å mestre? Skriv en setning med ordet «mestre».', hint:'F.eks: «Jeg lærte å mestre...»'},
+        {type:'writein', tag:'Prøve', prompt:'Skriv om noe som var vanskelig, men du prøvde igjen.', hint:'F.eks: «Det var vanskelig, men jeg prøvde...»'},
+        {type:'writein', tag:'Fri tekst', prompt:'Edel tenkte på Pipoka for å ikke gi opp. Hvem eller hva tenker DU på?', hint:'Det finnes ikke noe feil svar 💚'},
       ]},
       {name: 'Pipoka Lojaliteten', emoji: '🐕', desc: 'Lojalitet uten grenser', steps: [
         {type:'scene', scenes:[
