@@ -60,6 +60,13 @@ body{font-family:'Nunito',sans-serif;background:linear-gradient(160deg,#E8F5EC,#
 .fill-chip{background:white;border:2px solid #c5dfc0;border-radius:50px;padding:7px 14px;font-size:0.85rem;font-weight:700;color:var(--p3);cursor:pointer;transition:all 0.15s;}
 .fill-chip.used{opacity:0.3;pointer-events:none;}
 .fill-chip.correct{background:var(--p3);color:white;border-color:var(--p3);}
+.write-prompt{font-size:0.95rem;font-weight:700;margin-bottom:10px;line-height:1.4;}
+.write-hint{font-size:0.8rem;color:#888;font-weight:600;margin-bottom:8px;}
+.write-area{width:100%;border:2px solid #c5dfc0;border-radius:12px;padding:12px;font-family:'Nunito',sans-serif;font-size:0.95rem;font-weight:600;color:var(--ink);resize:vertical;min-height:70px;background:#fbfffb;}
+.write-area:focus{outline:none;border-color:var(--p3);}
+.btn-save{width:100%;padding:11px;background:var(--p2);color:#5a4500;border:none;border-radius:50px;font-family:'Baloo 2',cursive;font-size:0.9rem;font-weight:700;cursor:pointer;box-shadow:0 3px 0 #d9a93c;transition:all 0.1s;margin-top:10px;}
+.btn-save:active{transform:translateY(2px);box-shadow:0 1px 0 #d9a93c;}
+.btn-save.saved{background:var(--p3);color:white;box-shadow:0 3px 0 #4d8a52;}
 .feedback{border-radius:10px;padding:11px 12px;font-size:0.85rem;font-weight:700;margin-top:8px;display:none;line-height:1.4;}
 .feedback.show{display:block;}
 .feedback.correct{background:var(--p3);color:white;border:2px solid #a8d5b5;}
@@ -121,16 +128,116 @@ const WEEKS = [
     title: 'Uke 2 – Følelser & Styrke',
     chapters: [
       {name: 'Edel på Taekwondo', emoji: '🥋', desc: 'Frykt blir styrke', steps: [
-        {type:'scene', scenes:[{num:1, text:'Edel var nervøs på første dag.', speech:'Jeg er redd!'},{num:2, text:'Men hun prøvde likevel.'}]},
-        {type:'multiple', q:'Var Edel redd?', opts:[{t:'Ja',c:true},{t:'Nei',c:false}], fb:'✅!'},
-        {type:'words', subtitle:'💪 Ordene for styrke', words:[{w:'modig', m:'gjøre noe selv om du er redd', ex:'Edel var modig.', neg:false},{w:'sterk', m:'kunne klare ting vanskelig', ex:'Hun ble sterkere.', neg:false}]},
-        {type:'fillin', sentence:'Det var ___ å prøve.',opts:['modig','redd'], correct:'modig', fb:'✅!'},
+        {type:'scene', scenes:[
+          {num:1, text:'Det var Edels første dag på taekwondo. Hun var nervøs og visste ikke hva som kom til å skje.', speech:'Jeg er redd...'},
+          {num:2, text:'Hjertet hennes banket fort. Men hun bestemte seg for å prøve likevel.'},
+          {num:3, text:'Treneren viste henne et spark. Edel prøvde, og bommet. Hun prøvde igjen.'},
+          {num:4, text:'Litt etter litt klarte hun det. Det føltes godt å mestre noe nytt.', speech:'Jeg klarte det!'},
+          {num:5, text:'Da hun gikk hjem, kjente hun seg sterk og modig. I morgen vil hun tilbake.'},
+        ]},
+
+        {type:'words', subtitle:'💪 Ukens ord – Taekwondo', words:[
+          {w:'nervøs', m:'urolig og litt redd før noe nytt', ex:'Edel var nervøs første dagen.', neg:true},
+          {w:'modig', m:'å gjøre noe selv om du er redd', ex:'Edel var modig som prøvde.', neg:false},
+          {w:'prøve', m:'å forsøke, selv om det er vanskelig', ex:'Hun prøvde igjen og igjen.', neg:false},
+          {w:'mestre', m:'å klare noe du øvde på', ex:'Til slutt klarte hun å mestre sparket.', neg:false},
+          {w:'sterk', m:'å kunne klare vanskelige ting', ex:'Edel følte seg sterk etterpå.', neg:false},
+        ]},
+
+        // --- nervøs (x3) ---
+        {type:'multiple', q:'Hva betyr nervøs?', opts:[{t:'Urolig og litt redd',c:true},{t:'Glad og rolig',c:false}], fb:'✅!'},
+        {type:'fillin', sentence:'Edel var ___ på sin første dag.',opts:['nervøs','sulten'], correct:'nervøs', fb:'✅!'},
+        {type:'multiple', q:'Når var Edel nervøs?', opts:[{t:'Før noe nytt',c:true},{t:'Da hun sov',c:false}], fb:'✅ Vi blir ofte nervøse før noe nytt.'},
+
+        // --- modig (x3) ---
+        {type:'multiple', q:'Hva betyr modig?', opts:[{t:'Å gjøre noe selv om du er redd',c:true},{t:'Å aldri prøve',c:false}], fb:'✅!'},
+        {type:'fillin', sentence:'Det var ___ å prøve selv om hun var redd.',opts:['modig','dumt'], correct:'modig', fb:'✅!'},
+        {type:'multiple', q:'Hvem var modig i historien?', opts:[{t:'Edel',c:true},{t:'Treneren',c:false}], fb:'✅!'},
+
+        // --- prøve (x3) ---
+        {type:'multiple', q:'Hva gjorde Edel da hun bommet?', opts:[{t:'Prøvde igjen',c:true},{t:'Ga opp',c:false}], fb:'✅ Hun prøvde igjen!'},
+        {type:'fillin', sentence:'Edel ville ___ en gang til.',opts:['prøve','sove'], correct:'prøve', fb:'✅!'},
+        {type:'multiple', q:'Er det greit å bomme når du prøver?', opts:[{t:'Ja, det er sånn vi lærer',c:true},{t:'Nei, da må du slutte',c:false}], fb:'✅ Helt riktig!'},
+
+        // --- mestre (x3) ---
+        {type:'multiple', q:'Hva betyr å mestre noe?', opts:[{t:'Å klare noe du øvde på',c:true},{t:'Å glemme noe',c:false}], fb:'✅!'},
+        {type:'fillin', sentence:'Til slutt klarte Edel å ___ sparket.',opts:['mestre','miste'], correct:'mestre', fb:'✅!'},
+        {type:'multiple', q:'Hvordan føltes det å mestre noe nytt?', opts:[{t:'Godt',c:true},{t:'Kjedelig',c:false}], fb:'✅!'},
+
+        // --- sterk (x2) ---
+        {type:'multiple', q:'Hvordan følte Edel seg da hun gikk hjem?', opts:[{t:'Sterk og modig',c:true},{t:'Svak og redd',c:false}], fb:'✅!'},
+        {type:'fillin', sentence:'Edel ble ___ av å trene.',opts:['sterk','trøtt'], correct:'sterk', fb:'✅!'},
+
+        // --- REVISJON: forrige uke (Pipoka) + Uke 1 ---
+        {type:'multiple', q:'🔁 Repetisjon: Pipoka er alltid der for Edel. Hva viser hun?', opts:[{t:'lojalitet',c:true},{t:'frykt',c:false}], fb:'✅ Lojalitet – fra Pipoka!'},
+        {type:'fillin', sentence:'🔁 Hjemme med familien føler Edel ___.',opts:['trygghet','panikk'], correct:'trygghet', fb:'✅ Trygghet – husker du?'},
+        {type:'multiple', q:'🔁 Repetisjon: På laget får alle være med. Da føler Edel seg...', opts:[{t:'inkludert',c:true},{t:'avvist',c:false}], fb:'✅ Inkludert – fra Uke 1!'},
+        {type:'fillin', sentence:'🔁 Pipoka tar ___ for huset når alle er borte.',opts:['ansvar','ferie'], correct:'ansvar', fb:'✅ Ansvar – fra Pipoka!'},
+        {type:'multiple', q:'🔗 Edel var nervøs, men hun var også...', opts:[{t:'modig',c:true},{t:'sint',c:false}], fb:'✅ Man kan være nervøs OG modig samtidig!'},
+        {type:'fillin', sentence:'🔗 Hun måtte ___ mange ganger for å mestre det.',opts:['prøve','sove'], correct:'prøve', fb:'✅ Prøve + mestre hører sammen!'},
+
+        // --- SKRIV SELV ---
+        {type:'writein', tag:'Modig', prompt:'Skriv en setning med ordet «modig».', hint:'F.eks: «Jeg var modig da jeg...»'},
+        {type:'writein', tag:'Nervøs', prompt:'Når er DU nervøs? Skriv en setning med ordet «nervøs».', hint:'F.eks: «Jeg blir nervøs når...»'},
+        {type:'writein', tag:'Fri tekst', prompt:'Hva er noe du har lært å mestre? Skriv litt om det.', hint:'Det finnes ikke noe feil svar 💚'},
       ]},
-      {name: 'Pipoka Lojaliteten', emoji: '🐕', desc: 'Kjærlighet uten ord', steps: [
-        {type:'scene', scenes:[{num:1, text:'Når Edel er trist, Pipoka er alltid der.', speech:'Jeg er hos deg.'},{num:2, text:'Han sitter tett inntil henne.'}]},
-        {type:'multiple', q:'Hva gjør Pipoka?', opts:[{t:'Går bort',c:false},{t:'Sitter nær Edel',c:true}], fb:'✅!'},
-        {type:'words', subtitle:'💚 Kjærlighet', words:[{w:'tro', m:'tru på noen', ex:'Pipoka har tro på Edel.', neg:false},{w:'omsorg', m:'bry seg om', ex:'Han viser omsorg.', neg:false}]},
-        {type:'fillin', sentence:'Pipoka viser ___ hver dag.',opts:['omsorg','frykt'], correct:'omsorg', fb:'✅!'},
+      {name: 'Pipoka Lojaliteten', emoji: '🐕', desc: 'Lojalitet uten grenser', steps: [
+        {type:'scene', scenes:[
+          {num:1, text:'Pipoka er ikke bare en hund. Hun er en del av familien.', speech:'Jeg passer på dere alle.'},
+          {num:2, text:'Hun merker når noen er trist, og når noen snart skal gå ut døren.'},
+          {num:3, text:'Om morgenen går alle ut. Mamma på jobb, Edel på skolen, Petter på jobb. Døren lukkes, og huset blir stille.'},
+          {num:4, text:'Pipoka savner familien, men hun får ikke panikk. Hun legger seg ved døren og følger med.'},
+          {num:5, text:'I hodet sitt er hun husets vekter, nesten som om hun jobbet for Nokas.', speech:'Dette er mitt ansvar.'},
+          {num:6, text:'Når Edel kommer hjem og er lei seg, viser Pipoka lojalitet. Hun spør med øynene og med kroppen:', speech:'Hva skjer?'},
+        ]},
+
+        {type:'words', subtitle:'💚 Ukens ord – Pipoka', words:[
+          {w:'lojalitet', m:'å være trofast og stå ved noen man er glad i, også når de er borte en stund', ex:'Pipoka viser lojalitet hver dag.', neg:false},
+          {w:'trofast', m:'å alltid være der og aldri svikte noen', ex:'Pipoka er trofast mot familien.', neg:false},
+          {w:'trygghet', m:'følelsen av å være trygg og passet på', ex:'Familien er Pipokas trygghet.', neg:false},
+          {w:'ansvar', m:'noe som er din jobb å passe på', ex:'Pipoka tar ansvar for huset.', neg:false},
+          {w:'savne', m:'å kjenne at noen er borte', ex:'Pipoka savner Edel når hun er på skolen.', neg:false},
+          {w:'vekter', m:'en som passer på og holder vakt', ex:'Pipoka er husets vekter.', neg:false},
+        ]},
+
+        // --- lojalitet (x3) ---
+        {type:'multiple', q:'Hva betyr lojalitet?', opts:[{t:'Å være trofast og stå ved noen',c:true},{t:'Å gå sin vei',c:false}], fb:'✅ Lojalitet er å bli værende.'},
+        {type:'fillin', sentence:'Pipoka viser ___ til familien sin.',opts:['lojalitet','panikk'], correct:'lojalitet', fb:'✅!'},
+        {type:'multiple', q:'Hvem viser lojalitet i historien?', opts:[{t:'Pipoka',c:true},{t:'Postbudet',c:false}], fb:'✅!'},
+
+        // --- trofast (x2) ---
+        {type:'multiple', q:'Hva betyr å være trofast?', opts:[{t:'Å alltid være der og aldri svikte',c:true},{t:'Å glemme noen fort',c:false}], fb:'✅!'},
+        {type:'fillin', sentence:'Pipoka er ___ mot familien sin.',opts:['trofast','sliten'], correct:'trofast', fb:'✅ Trofast og lojal hører sammen!'},
+
+        // --- trygghet (x3) ---
+        {type:'multiple', q:'Hva er familien for Pipoka?', opts:[{t:'Trygghet',c:true},{t:'Fare',c:false}], fb:'✅ Familien betyr trygghet.'},
+        {type:'fillin', sentence:'Når familien er hjemme, kjenner Pipoka ___.',opts:['trygghet','frykt'], correct:'trygghet', fb:'✅!'},
+        {type:'multiple', q:'Hva gir Pipoka til Edel når hun er lei seg?', opts:[{t:'Trygghet og trøst',c:true},{t:'Ingenting',c:false}], fb:'✅!'},
+
+        // --- ansvar (x3) ---
+        {type:'multiple', q:'Hva tar Pipoka ansvar for?', opts:[{t:'Huset',c:true},{t:'Bilen',c:false}], fb:'✅ Hun passer på huset.'},
+        {type:'fillin', sentence:'Pipoka tar ___ for hjemmet når alle er borte.',opts:['ansvar','ferie'], correct:'ansvar', fb:'✅!'},
+        {type:'multiple', q:'Tar Pipoka oppgaven seriøst?', opts:[{t:'Ja, veldig',c:true},{t:'Nei, hun bryr seg ikke',c:false}], fb:'✅!'},
+
+        // --- savne (x3) ---
+        {type:'multiple', q:'Hva gjør Pipoka når familien går ut?', opts:[{t:'Hun savner dem',c:true},{t:'Hun glemmer dem',c:false}], fb:'✅ Hun savner dem.'},
+        {type:'fillin', sentence:'Pipoka ___ Edel når hun er på skolen.',opts:['savner','glemmer'], correct:'savner', fb:'✅!'},
+        {type:'multiple', q:'Får Pipoka panikk når hun savner familien?', opts:[{t:'Nei, hun venter rolig',c:true},{t:'Ja, hun får panikk',c:false}], fb:'✅!'},
+
+        // --- vekter (x3) ---
+        {type:'multiple', q:'Hva er en vekter?', opts:[{t:'En som passer på og holder vakt',c:true},{t:'En som sover hele dagen',c:false}], fb:'✅!'},
+        {type:'fillin', sentence:'I hodet sitt er Pipoka husets ___.',opts:['vekter','gjest'], correct:'vekter', fb:'✅!'},
+        {type:'multiple', q:'Hvem jobber Pipoka «for», later hun som?', opts:[{t:'Nokas',c:false},{t:'Nokas eller Veritas',c:true}], fb:'✅ Som en ekte vekter!'},
+
+        // --- REVISJON: gamle ord (spaced retrieval) ---
+        {type:'multiple', q:'🔁 Repetisjon: Pipoka gjør at familien føler de hører sammen. Hva heter det?', opts:[{t:'tilhørighet',c:true},{t:'utenforskap',c:false}], fb:'✅ Tilhørighet – fra Uke 1!'},
+        {type:'fillin', sentence:'🔁 Med Pipoka føler Edel seg ___, ikke utenfor.',opts:['inkludert','avvist'], correct:'inkludert', fb:'✅ Husker du dette ordet?'},
+        {type:'multiple', q:'🔁 Repetisjon: Pipoka venter rolig alene. Det er...', opts:[{t:'modig',c:true},{t:'redd',c:false}], fb:'✅ Modig – fra Uke 2!'},
+
+        // --- SKRIV SELV (sendes til mamma) ---
+        {type:'writein', tag:'Lojalitet', prompt:'Skriv en setning med ordet «lojalitet».', hint:'Tenk på Pipoka eller en venn. F.eks: «Pipoka viser lojalitet når...»'},
+        {type:'writein', tag:'Trygghet', prompt:'Når føler DU deg trygg? Skriv en setning med ordet «trygghet».', hint:'F.eks: «Jeg føler trygghet når...»'},
+        {type:'writein', tag:'Fri tekst', prompt:'Hva betyr Pipoka for deg? Skriv noen ord.', hint:'Det finnes ikke noe feil svar her 💚'},
       ]},
       {name: 'Handball Vinnerlaget', emoji: '🤾', desc: 'Sammen er vi sterke', steps: [
         {type:'scene', scenes:[{num:1, text:'Edel spiller handball med laget sitt.', speech:'Vi vinner sammen!'},{num:2, text:'De gleder seg som ett lag.'}]},
@@ -244,6 +351,7 @@ let score = 0;
 let totalQ = 0;
 let answered = false;
 const completed = {};
+let writtenAnswers = [];
 
 function getAllChapters(){
   let all = [];
@@ -285,6 +393,7 @@ function startChapter(idx){
   score = 0;
   totalQ = 0;
   answered = false;
+  writtenAnswers = [];
   const allCh = getAllChapters();
   const ch = allCh[idx];
   renderLesson(ch);
@@ -341,6 +450,16 @@ function renderLesson(ch){
         stepHtml += `<button class="fill-chip" onclick="checkFill(${currentChapter},${si},'${o}','${step.correct}','${step.fb}')">${o}</button>`;
       });
       stepHtml += `</div><div class="feedback" id="fb${si}"></div></div>`;
+    }
+    else if(step.type === 'writein'){
+      stepHtml += `<div class="step-label">✍️ Skriv selv</div>
+        <div class="question-card">
+          <div class="write-prompt">${step.prompt}</div>
+          ${step.hint?`<div class="write-hint">${step.hint}</div>`:''}
+          <textarea class="write-area" id="write${si}" placeholder="Skriv her..."></textarea>
+          <button class="btn-save" id="saveBtn${si}" onclick="saveWrite(${si},'${step.tag||''}')">💾 Lagre svaret</button>
+          <div class="feedback" id="fb${si}"></div>
+        </div>`;
     }
     
     stepHtml += `</div>`;
@@ -415,6 +534,27 @@ function checkFill(chIdx, stepIdx, chosen, correct, fb){
   }
 }
 
+function saveWrite(stepIdx, tag){
+  const ta = document.getElementById(`write${stepIdx}`);
+  const txt = ta.value.trim();
+  const fbEl = document.getElementById(`fb${stepIdx}`);
+  const btn = document.getElementById(`saveBtn${stepIdx}`);
+  if(!txt){
+    fbEl.textContent = '✏️ Skriv noe først!';
+    fbEl.className = 'feedback show wrong';
+    return;
+  }
+  // store/replace this step's answer
+  const existing = writtenAnswers.findIndex(a => a.step === stepIdx);
+  const entry = {step: stepIdx, tag: tag || `Setning ${stepIdx}`, text: txt};
+  if(existing >= 0) writtenAnswers[existing] = entry;
+  else writtenAnswers.push(entry);
+  btn.textContent = '✅ Lagret!';
+  btn.classList.add('saved');
+  fbEl.textContent = '💚 Bra skrevet! Mamma får se setningen din.';
+  fbEl.className = 'feedback show correct';
+}
+
 function nextStep(){
   const allCh = getAllChapters();
   currentStep++;
@@ -451,8 +591,17 @@ async function sendEmail(ch){
   const now = new Date();
   const dato = now.toLocaleDateString('no-NO',{weekday:'long',year:'numeric',month:'long',day:'numeric'});
   const tid = now.toLocaleTimeString('no-NO',{hour:'2-digit',minute:'2-digit'});
-  const pct = Math.round((score / totalQ) * 100);
-  
+  const pct = totalQ > 0 ? Math.round((score / totalQ) * 100) : 0;
+
+  // Build a readable block of everything Edel wrote
+  let skrevet = '(ingenting skrevet)';
+  if(writtenAnswers.length){
+    skrevet = writtenAnswers
+      .sort((a,b)=>a.step-b.step)
+      .map(a => `• ${a.tag}: "${a.text}"`)
+      .join('\n');
+  }
+
   try{
     await fetch('https://formspree.io/f/mqeolldg',{
       method:'POST',
@@ -463,7 +612,8 @@ async function sendEmail(ch){
         Tidspunkt: tid,
         Kapittel: ch.name,
         Resultat: `${score} av ${totalQ} riktige (${pct}%)`,
-        Vurdering: pct===100?'🌟 Perfekt!':pct>=70?'✅ Veldig bra!':'💪 Fortsett å øve!'
+        Vurdering: pct===100?'🌟 Perfekt!':pct>=70?'✅ Veldig bra!':'💪 Fortsett å øve!',
+        Edel_skrev: skrevet
       })
     });
   } catch(e){ console.log(e); }
