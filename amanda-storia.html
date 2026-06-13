@@ -1,0 +1,338 @@
+<!DOCTYPE html>
+<html lang="no">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Amanda – Edels Verden 📚</title>
+<link href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@600;700;800&family=Nunito:wght@400;600;700;800&display=swap" rel="stylesheet">
+<style>
+:root{--p1:#FF6B9D;--p2:#FFC75F;--p3:#6BCB77;--p4:#4D96FF;--p5:#C780E8;--ink:#2D2A4A;--shadow:rgba(45,42,74,0.14);}
+*{box-sizing:border-box;margin:0;padding:0;}
+body{font-family:'Nunito',sans-serif;background:linear-gradient(160deg,#FFE8F0,#F0F8FF);min-height:100vh;color:var(--ink);}
+.topbar{background:white;padding:14px 18px;display:flex;align-items:center;gap:12px;box-shadow:0 2px 12px var(--shadow);position:sticky;top:0;z-index:50;}
+.home-btn{text-decoration:none;font-size:1.4rem;background:#F4F4FB;border-radius:12px;padding:6px 12px;}
+.logo{font-family:'Baloo 2',cursive;font-weight:800;font-size:1.2rem;}
+.score{margin-left:auto;font-size:1.4rem;}
+.container{max-width:560px;margin:0 auto;padding:20px 18px 100px;}
+.lesson-wrap{background:white;border-radius:18px;overflow:hidden;box-shadow:0 5px 18px var(--shadow);margin-bottom:20px;}
+.lesson-header{background:var(--p1);padding:18px;color:white;}
+.lesson-title{font-family:'Baloo 2',cursive;font-size:1.3rem;margin-bottom:8px;}
+.progress-bar{height:8px;background:rgba(255,255,255,0.3);border-radius:10px;overflow:hidden;margin-top:10px;}
+.progress-fill{height:100%;background:white;border-radius:10px;transition:width 0.3s;}
+.lesson-body{padding:18px;max-height:600px;overflow-y:auto;}
+.step{display:none;margin-bottom:18px;}
+.step.active{display:block;animation:fadeIn 0.3s;}
+@keyframes fadeIn{from{opacity:0}to{opacity:1}}
+.step-label{font-size:0.8rem;font-weight:800;text-transform:uppercase;color:#888;margin-bottom:8px;}
+.scene-card{background:#f9f9f9;border-radius:12px;padding:14px;margin-bottom:12px;border-left:4px solid var(--p1);}
+.scene-num{display:inline-block;background:var(--p1);color:white;font-weight:800;padding:3px 9px;border-radius:20px;font-size:0.8rem;margin-bottom:6px;}
+.scene-text{font-size:0.95rem;font-weight:700;line-height:1.5;margin:8px 0;}
+.scene-speech{background:#FFE8F0;border-left:4px solid var(--p1);padding:10px 12px;border-radius:8px;font-size:0.9rem;font-weight:600;color:#c0566a;margin:8px 0;}
+.listen-btn{background:var(--p4);color:white;border:none;border-radius:12px;padding:12px 16px;font-weight:700;cursor:pointer;display:flex;align-items:center;gap:8px;margin-top:10px;font-size:0.95rem;box-shadow:0 2px 8px rgba(77,150,255,0.3);}
+.listen-btn:active{transform:scale(0.97);}
+.word-card{background:#f9f9f9;border-radius:12px;padding:14px;margin-bottom:12px;border-left:4px solid var(--p1);}
+.word-main{font-family:'Baloo 2',cursive;font-size:1.1rem;color:var(--p1);margin-bottom:4px;font-weight:700;}
+.word-meaning{font-size:0.85rem;color:#888;margin-bottom:8px;}
+.word-example{font-size:0.9rem;font-weight:600;background:white;padding:9px 12px;border-radius:8px;line-height:1.4;margin:6px 0;}
+.question-card{background:#f9f9f9;border-radius:12px;padding:14px;margin-bottom:12px;}
+.q-text{font-size:0.95rem;font-weight:700;margin-bottom:12px;line-height:1.4;}
+.options{display:flex;flex-direction:column;gap:8px;}
+.opt-btn{background:white;border:2px solid #e0d8d0;border-radius:10px;padding:11px 12px;font-size:0.9rem;font-weight:700;color:var(--ink);cursor:pointer;text-align:left;transition:all 0.15s;}
+.opt-btn.correct{background:var(--p1);color:white;border-color:var(--p1);}
+.opt-btn.wrong{background:#FFE8F0;color:#c0566a;border-color:var(--p1);}
+.opt-btn.disabled{pointer-events:none;opacity:0.5;}
+.fill-sentence{font-size:0.95rem;font-weight:700;padding:12px;background:#FFF9E0;border:2px dashed var(--p2);border-radius:10px;line-height:1.5;margin-bottom:12px;}
+.blank{display:inline-block;min-width:80px;border-bottom:3px solid var(--p1);color:var(--p1);font-weight:800;}
+.fill-opts{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:12px;}
+.fill-chip{background:white;border:2px solid #c5dfc0;border-radius:50px;padding:7px 14px;font-size:0.85rem;font-weight:700;color:var(--p1);cursor:pointer;transition:all 0.15s;}
+.fill-chip.used{opacity:0.3;pointer-events:none;}
+.fill-chip.correct{background:var(--p1);color:white;border-color:var(--p1);}
+.feedback{border-radius:10px;padding:11px 12px;font-size:0.85rem;font-weight:700;margin-top:8px;display:none;line-height:1.4;}
+.feedback.show{display:block;}
+.feedback.correct{background:var(--p1);color:white;border:2px solid rgba(255,107,157,0.5);}
+.feedback.wrong{background:#FFE8F0;color:#c0566a;border:2px solid var(--p1);}
+.btn-next{width:100%;padding:12px;background:var(--p1);color:white;border:none;border-radius:50px;font-family:'Baloo 2',cursive;font-size:0.95rem;font-weight:700;cursor:pointer;box-shadow:0 3px 0 rgba(255,107,157,0.3);transition:all 0.1s;margin-top:12px;}
+.btn-next:active{transform:translateY(2px);box-shadow:0 1px 0 rgba(255,107,157,0.3);}
+.end-screen{background:linear-gradient(160deg,#FFE8F0,#F0FFFE);padding:40px 24px;text-align:center;border-radius:18px;margin-bottom:20px;display:none;}
+.end-screen.active{display:block;}
+.end-emoji{font-size:64px;margin-bottom:12px;}
+.end-title{font-family:'Baloo 2',cursive;font-size:1.5rem;color:var(--p1);margin-bottom:6px;}
+.score-big{font-family:'Baloo 2',cursive;font-size:2.2rem;color:var(--p1);margin-bottom:4px;}
+.btn-home{background:white;color:var(--p1);border:2px solid var(--p1);border-radius:50px;padding:11px 32px;font-family:'Baloo 2',cursive;font-size:0.95rem;font-weight:700;cursor:pointer;width:100%;margin-bottom:8px;}
+</style>
+</head>
+<body>
+
+<div class="topbar">
+  <a class="home-btn" href="index.html">← Hjem</a>
+  <div class="logo">💜 Amanda's Historie</div>
+  <div class="score" id="scoreDisplay">0/0</div>
+</div>
+
+<div class="container">
+  <div class="lesson-wrap">
+    <div class="lesson-header">
+      <div class="lesson-title">Amanda – Når nervene tar over 💜</div>
+      <div class="progress-bar"><div class="progress-fill" id="progress" style="width:0%"></div></div>
+    </div>
+    <div class="lesson-body" id="lessonBody"></div>
+    <button class="btn-next" onclick="nextStep()">Neste →</button>
+  </div>
+  <div class="end-screen" id="endScreen"></div>
+</div>
+
+<script>
+const STEPS = [
+  {type:'scene', title:'Amanda ser Adam', scenes:[
+    {num:1, text:'Det er første skoledag etter sommeren.', speech:'Alle skal finne nye plasser i klasserommet.'},
+    {num:2, text:'Amanda går inn i klasserommet og – BAM! – der sitter han: Adam!', speech:'Adam sitter to rader foran meg...'},
+    {num:3, text:'Adam snurrer en blyant på fingerspissene. Han er så cool.', speech:'Hvordan gjør han det så lettvint?'}
+  ]},
+  {type:'multiple', q:'Hva gjør Adam når Amanda ser ham?', opts:[{t:'Han snakker med venner',c:false},{t:'Han snurrer en blyant',c:true},{t:'Han skriver',c:false},{t:'Han tegner',c:false}], fb:'✅ Riktig!'},
+  {type:'words', subtitle:'😔 Når nervene kommer', words:[{w:'stivne', m:'å bli helt stiff av nervositet', ex:'Amanda stivnet da hun så Adam.', neg:true},{w:'panikk', m:'stor frykt eller angst', ex:'Panikken vokste i henne.', neg:true}]},
+  {type:'fillin', sentence:'Amanda ___ helt når hun så Adam.',opts:['stivnet','smilte','løp'], correct:'stivnet', fb:'✅ Riktig!'},
+  {type:'scene', title:'Sari kommer til hjelp', scenes:[
+    {num:4, text:'Bestevennen Sari ser at Amanda har stivnet.', speech:'Hva er det med deg?'},
+    {num:5, text:'Sari tar Amandas arm og leder henne bort.', speech:'Kom, vi setter oss bak der.'}
+  ]},
+  {type:'multiple', q:'Hva gjorde Sari når hun så Amanda var nervøs?', opts:[{t:'Hun lo',c:false},{t:'Hun hjalp henne',c:true},{t:'Hun gikk bort',c:false}], fb:'✅ Riktig!'},
+  {type:'words', subtitle:'💚 Vennskap er styrke', words:[{w:'vennskap', m:'å ha en ekte venn du kan stole på', ex:'Sari viste at vennskap handler om å hjelpe.', neg:false},{w:'støtte', m:'å være der for noen', ex:'Sari ga Amanda støtte.', neg:false}]},
+  {type:'fillin', sentence:'Sari viste ___ ved å hjelpe Amanda.',opts:['vennskap','kjærlighet','styrke'], correct:'vennskap', fb:'✅ Perfekt!'},
+  {type:'scene', title:'Kay kommer – teamet er komplett!', scenes:[
+    {num:6, text:'Kay kommer og gir dem en high-five.', speech:'Halla! Dere!'},
+    {num:7, text:'Nå er det tre igjen – Amanda, Sari og Kay.', speech:'Vi er tilbake sammen!'}
+  ]},
+  {type:'multiple', q:'Hvem utgjør trios?', opts:[{t:'Amanda og Sari',c:false},{t:'Kay og Adam',c:false},{t:'Amanda, Sari og Kay',c:true},{t:'Hele klassen',c:false}], fb:'✅ Riktig!'},
+  {type:'words', subtitle:'⭐ Trio = kraft', words:[{w:'trio', m:'gruppe av tre venner', ex:'Amanda, Sari og Kay er en trio.', neg:false},{w:'kjenne på', m:'å være sammen og dele', ex:'De kjente på hverandre igjen.', neg:false}]},
+  {type:'fillin', sentence:'Den lille ___ gjorde Amanda sterkere.',opts:['trio','duo','lag'], correct:'trio', fb:'✅!'},
+  {type:'scene', title:'Amanda elsker Adam?', scenes:[
+    {num:8, text:'Amanda hvisker til Sari mens hun stirrer på Adam.', speech:'Jeg elsker han.'},
+    {num:9, text:'Sari blir alvorlig.', speech:'Er du sikker på det?'},
+    {num:10, text:'"Ja," sier Amanda. "Det er bare blitt verre over sommeren."', speech:'Jeg kan ikke slutte å tenke på ham.'}
+  ]},
+  {type:'multiple', q:'Hva hvisket Amanda til Sari?', opts:[{t:'Jeg er nervøs',c:false},{t:'Jeg elsker Adam',c:true},{t:'Jeg vil dra hjem',c:false}], fb:'✅ Riktig!'},
+  {type:'words', subtitle:'💗 Følelser er sterke', words:[{w:'forelsket', m:'å elske noen helt fra hjertet', ex:'Amanda er forelsket i Adam.', neg:false},{w:'elsker', m:'å kjenne dyp kjærlighet', ex:'Jeg elsker han - det ordet er sterkt.', neg:false}]},
+  {type:'fillin', sentence:'Amanda er ___ i Adam.',opts:['forelsket','redd','glad'], correct:'forelsket', fb:'✅!'},
+  {type:'multiple', q:'Hva sa Sari om ordet "elsker"?', opts:[{t:'Det er et svakt ord',c:false},{t:'Det er et sterkt ord',c:true},{t:'Det er et dårlig ord',c:false}], fb:'✅ Riktig!'},
+  {type:'scene', title:'Kay gir råd', scenes:[
+    {num:11, text:'Kay sier bestemt: "Du må gå bort til ham og si hei!"', speech:'Jo før, jo bedre!'},
+    {num:12, text:'Amanda er usikker. Hva hvis det går galt?', speech:'Nei... jeg kan ikke...'}
+  ]},
+  {type:'multiple', q:'Hva ville Kay at Amanda skulle gjøre?', opts:[{t:'Glemme Adam',c:false},{t:'Gå bort og si hei',c:true},{t:'Spørre Sari om råd',c:false}], fb:'✅ Riktig!'},
+  {type:'words', subtitle:'🔥 Mot vs. frykt', words:[{w:'mot', m:'å gjøre noe selv om du er redd', ex:'Det trengs mot å gå bort til Adam.', neg:false},{w:'usikker', m:'ikke å vite om du klarer det', ex:'Amanda var usikker på om hun torde.', neg:true}]},
+  {type:'fillin', sentence:'Det trengs ___ å snakke med Adam.',opts:['mot','frykt','skam'], correct:'mot', fb:'✅!'},
+  {type:'scene', title:'Amanda går mot Adam', scenes:[
+    {num:13, text:'Amanda tar et dypt pustetak og begynner å gå mot Adam.', speech:'Jeg klarer dette. Jeg må klare dette.'},
+    {num:14, text:'Hvert steg gjør henne mer nervøs, men hun fortsetter.', speech:'Kom igjen, Amanda!'},
+    {num:15, text:'"Halla," sier hun når hun når ham.', speech:'Det var det eneste jeg klarte å si.'}
+  ]},
+  {type:'multiple', q:'Hva gjorde Amanda når hun gikk mot Adam?', opts:[{t:'Hun lo',c:false},{t:'Hun purket fram et "Halla"',c:true},{t:'Hun lo av ham',c:false}], fb:'✅ Riktig!'},
+  {type:'words', subtitle:'🎯 Koraje i aksjon', words:[{w:'nervøs', m:'å være spendt og redd', ex:'Amanda var nervøs før hun sa hallo.', neg:true},{w:'stødig', m:'å være rolig og sterk', ex:'Hun prøvde å være stødig.', neg:false}]},
+  {type:'fillin', sentence:'Selv om Amanda var ___, gikk hun fram.',opts:['nervøs','glad','sint'], correct:'nervøs', fb:'✅ Perfekt!'},
+  {type:'scene', title:'Adam svarer', scenes:[
+    {num:16, text:'Adam svarer med "Halla" - kjølig og kort.', speech:'Bra sommer?'},
+    {num:17, text:'Amanda slenger ut: "Bra!" - uten å vakle.', speech:'Jeg klarte det!'},
+    {num:18, text:'De blir stående i stillhet. Det er så ubekvemt.', speech:'Vi sees rundt!'}
+  ]},
+  {type:'multiple', q:'Hvordan var Amandas stemme når hun svarte Adam?', opts:[{t:'Redd',c:false},{t:'Uten å vakle',c:true},{t:'Trist',c:false}], fb:'✅ Riktig!'},
+  {type:'words', subtitle:'✨ Å prøve er viktigt', words:[{w:'forsøk', m:'å prøve noe vanskelig', ex:'Amandas forsøk var modig.', neg:false},{w:'selvtillit', m:'å tro på deg selv', ex:'Hun hadde selvtillit når hun snakket.', neg:false}]},
+  {type:'fillin', sentence:'Amandas ___ gjorde at hun klarte å snakke med Adam.',opts:['selvtillit','frykt','skam'], correct:'selvtillit', fb:'✅!'},
+  {type:'multiple', q:'Hva lærer vi fra Amandas historie?', opts:[{t:'At vi alltid vil mislykkes',c:false},{t:'At vennskap og mot hjelper',c:true},{t:'At kjærlighet er umulig',c:false}], fb:'✅ Du forstår det!'},
+  {type:'scene', title:'Refleksjon: Hva betyr det?', scenes:[
+    {num:19, text:'Amanda gikk bort til Adam. Det var skummelt.', speech:'Men jeg gjorde det!'},
+    {num:20, text:'Sari og Kay var der hele tiden. Det gjorde det mulig.', speech:'Takk, venner!'},
+    {num:21, text:'Neste gang blir det kanskje lettere. Eller kanskje ikke. Men hun vet at hun kan.', speech:'Jeg klarer det igjen.'}
+  ]},
+];
+
+let currentStep = 0;
+let score = 0;
+let totalQ = 0;
+let answered = false;
+
+function init(){
+  renderStep();
+  totalQ = STEPS.filter(s => s.type==='multiple' || s.type==='fillin').length;
+}
+
+function renderStep(){
+  const lessonBody = document.getElementById('lessonBody');
+  lessonBody.innerHTML = '';
+  
+  const step = STEPS[currentStep];
+  let stepHtml = `<div class="step active">`;
+  
+  if(step.type === 'scene'){
+    stepHtml += `<div class="step-label">📖 Les historien</div>`;
+    step.scenes.forEach(s => {
+      stepHtml += `<div class="scene-card">
+        <div class="scene-num">Scene ${s.num}</div>
+        <div class="scene-text">${s.text}</div>
+        ${s.speech?`<div class="scene-speech">${s.speech}</div>`:''}
+      </div>`;
+    });
+    stepHtml += `<button class="listen-btn" onclick="speakText('${step.scenes.map(s=>s.text+'. '+(s.speech||'')).join(' ')}')">
+      🔊 Les høyt
+    </button>`;
+  }
+  else if(step.type === 'multiple'){
+    stepHtml += `<div class="step-label">❓ Spørsmål</div>
+      <div class="question-card">
+        <div class="q-text">${step.q}</div>
+        <div class="options">`;
+    step.opts.forEach((o, i) => {
+      stepHtml += `<button class="opt-btn" onclick="checkMult(${i},'${step.fb}')">${o.t}</button>`;
+    });
+    stepHtml += `</div><div class="feedback" id="feedback"></div></div>`;
+  }
+  else if(step.type === 'words'){
+    stepHtml += `<div class="step-label">📚 ${step.subtitle}</div>`;
+    step.words.forEach(w => {
+      stepHtml += `<div class="word-card">
+        <div class="word-main">${w.neg?'😔':'💜'} ${w.w}</div>
+        <div class="word-meaning">${w.m}</div>
+        <div class="word-example">"${w.ex}"</div>
+      </div>`;
+    });
+  }
+  else if(step.type === 'fillin'){
+    const parts = step.sentence.split('___');
+    stepHtml += `<div class="step-label">✏️ Fyll inn ordet</div>
+      <div class="question-card">
+        <div class="fill-sentence">${parts[0]}<span class="blank" id="blank">___</span>${parts[1]||''}</div>
+        <div class="fill-opts">`;
+    step.opts.forEach(o => {
+      stepHtml += `<button class="fill-chip" onclick="checkFill('${o}','${step.correct}','${step.fb}')">${o}</button>`;
+    });
+    stepHtml += `</div><div class="feedback" id="feedback"></div></div>`;
+  }
+  
+  stepHtml += `</div>`;
+  lessonBody.innerHTML = stepHtml;
+  
+  const pct = Math.round(((currentStep+1) / STEPS.length) * 100);
+  document.getElementById('progress').style.width = pct + '%';
+  window.scrollTo(0, 0);
+}
+
+function speakText(text){
+  if('speechSynthesis' in window){
+    const utterance = new SpeechSynthesisUtterance(text);
+    utterance.lang = 'no-NO';
+    utterance.rate = 0.9;
+    window.speechSynthesis.speak(utterance);
+  }
+}
+
+function checkMult(optIdx, fb){
+  if(answered) return;
+  answered = true;
+  const step = STEPS[currentStep];
+  const isCorrect = step.opts[optIdx].c;
+  const btns = document.querySelectorAll('.opt-btn');
+  btns.forEach(b => b.classList.add('disabled'));
+  const fbEl = document.getElementById('feedback');
+  
+  if(isCorrect){
+    btns[optIdx].classList.add('correct');
+    score++;
+    fbEl.textContent = fb;
+    fbEl.className = 'feedback show correct';
+  } else {
+    btns[optIdx].classList.add('wrong');
+    btns[step.opts.findIndex(o=>o.c)].classList.add('correct');
+    fbEl.textContent = '❌ ' + fb;
+    fbEl.className = 'feedback show wrong';
+  }
+}
+
+function checkFill(chosen, correct, fb){
+  if(answered) return;
+  answered = true;
+  const blank = document.getElementById('blank');
+  const chips = document.querySelectorAll('.fill-chip');
+  chips.forEach(c => c.classList.add('used'));
+  const fbEl = document.getElementById('feedback');
+  
+  blank.textContent = chosen === correct ? chosen : correct;
+  if(chosen === correct){
+    chips.forEach(c => {if(c.textContent === correct) c.classList.add('correct')});
+    score++;
+    fbEl.textContent = fb;
+    fbEl.className = 'feedback show correct';
+  } else {
+    chips.forEach(c => {
+      if(c.textContent === chosen) c.classList.add('wrong');
+      if(c.textContent === correct) c.classList.add('correct');
+    });
+    fbEl.textContent = '❌ ' + fb;
+    fbEl.className = 'feedback show wrong';
+  }
+}
+
+function nextStep(){
+  currentStep++;
+  if(currentStep >= STEPS.length){
+    showEnd();
+  } else {
+    answered = false;
+    renderStep();
+  }
+}
+
+function showEnd(){
+  const pct = Math.round((score / totalQ) * 100);
+  const html = `
+    <div class="end-emoji">💜⭐✨</div>
+    <div class="end-title">Du er en helt, som Amanda!</div>
+    <div style="font-size:1rem;color:#666;margin:12px 0;">Du fullførte hele Amandas historie!</div>
+    <div class="score-big">${score}/${totalQ}</div>
+    <div style="font-size:0.9rem;color:#888;margin-bottom:20px;">riktige svar (${pct}%)</div>
+    <div style="background:#FFE8F0;border-radius:12px;padding:16px;margin-bottom:16px;font-size:0.95rem;line-height:1.6;">
+      <strong>Du lærte:</strong><br>
+      ✅ Hva nervositet er<br>
+      ✅ Kraft av vennskap<br>
+      ✅ At mot er mulig<br>
+      ✅ At du klarer det
+    </div>
+    <button class="btn-home" onclick="window.location.href='index.html'">← Hjem</button>
+  `;
+  document.querySelector('.lesson-wrap').style.display = 'none';
+  const endEl = document.getElementById('endScreen');
+  endEl.innerHTML = html;
+  endEl.classList.add('active');
+  
+  sendEmail();
+  updateScore();
+}
+
+async function sendEmail(){
+  const now = new Date();
+  const dato = now.toLocaleDateString('no-NO',{weekday:'long',year:'numeric',month:'long',day:'numeric'});
+  const tid = now.toLocaleTimeString('no-NO',{hour:'2-digit',minute:'2-digit'});
+  const pct = Math.round((score / totalQ) * 100);
+  
+  try{
+    await fetch('https://formspree.io/f/mqeolldg',{
+      method:'POST',
+      headers:{'Content-Type':'application/json'},
+      body: JSON.stringify({
+        _subject: `Edels Verden – Amanda's Historie – ${dato}`,
+        Dato: dato,
+        Tidspunkt: tid,
+        Kapittel: 'Amanda – Når nervene tar over',
+        Resultat: `${score} av ${totalQ} riktige (${pct}%)`,
+        Vurdering: pct===100?'💜 PERFEKT!':pct>=80?'✅ Utmerket!':pct>=70?'✅ Veldig bra!':'💪 God innsats!'
+      })
+    });
+  } catch(e){ console.log(e); }
+}
+
+function updateScore(){
+  document.getElementById('scoreDisplay').textContent = `${score}/${totalQ}`;
+}
+
+init();
+</script>
+</body>
+</html>
