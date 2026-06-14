@@ -1,0 +1,238 @@
+<!DOCTYPE html>
+<html lang="no">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Edels Butikk – Veksel</title>
+<link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@500;600;700&family=Nunito:wght@600;700;800&display=swap" rel="stylesheet">
+<style>
+:root{--bg:#1a1530;--paper:#FFFDF9;--ink:#23203a;--lilla:#C99BE0;--lilla-d:#9B6FC0;--coral:#FF7A8A;--sun:#FFC857;--mint:#5BD6A8;--line:#E6DEF0;--muted:#8A82A0;}
+*{box-sizing:border-box;margin:0;padding:0;}
+body{font-family:'Nunito',sans-serif;background:var(--bg);color:var(--ink);min-height:100vh;padding:0 0 60px;}
+.wrap{max-width:560px;margin:0 auto;padding:16px;}
+.top{display:flex;align-items:center;gap:10px;padding:6px 2px 14px;}
+.home{text-decoration:none;background:rgba(255,255,255,0.12);color:#fff;border-radius:12px;padding:8px 12px;font-size:1.2rem;}
+.brand{font-family:'Fredoka';color:#fff;font-weight:700;font-size:1.3rem;}
+.brand small{display:block;font-size:.68rem;font-weight:600;color:#d9b8f0;letter-spacing:2px;text-transform:uppercase;}
+.tabs{display:flex;gap:8px;margin-bottom:14px;}
+.tab{flex:1;background:#2a2348;border:2px solid transparent;border-radius:14px;color:#cdbce8;padding:10px 6px;font-family:'Fredoka';font-weight:600;font-size:.9rem;cursor:pointer;text-align:center;}
+.tab.active{background:var(--lilla);color:#3a1d4d;border-color:#ecd6f8;}
+.card{background:var(--paper);border-radius:22px;padding:18px;box-shadow:0 12px 30px rgba(0,0,0,.3);}
+.card-title{font-family:'Fredoka';font-size:1.2rem;font-weight:700;margin-bottom:4px;}
+.card-sub{font-size:.85rem;color:var(--muted);margin-bottom:16px;line-height:1.4;}
+
+/* method demo */
+.method{background:#FAF5FF;border:2px solid var(--lilla);border-radius:16px;padding:16px;margin-bottom:16px;}
+.method h3{font-family:'Fredoka';font-size:1rem;color:var(--lilla-d);margin-bottom:12px;}
+.grid-sum{font-family:'Fredoka';font-size:1.6rem;line-height:1.5;letter-spacing:.12em;background:#fff;border-radius:12px;padding:16px;display:inline-block;min-width:170px;border:2px dashed var(--lilla);}
+.grid-sum .row{display:block;text-align:right;padding-right:10px;}
+.grid-sum .bar{border-top:3px solid var(--ink);margin:4px 0;}
+.grid-sum .small{font-size:.85rem;color:var(--coral);vertical-align:super;}
+.step{font-size:.9rem;line-height:1.5;margin:10px 0;padding-left:4px;}
+.step b{color:var(--lilla-d);}
+.hl{background:#FFF1C2;border-radius:6px;padding:1px 6px;font-weight:800;}
+.tip99{background:#E9FBF3;border:2px solid var(--mint);border-radius:14px;padding:14px;margin:14px 0;}
+.tip99 h4{font-family:'Fredoka';color:#2BAE82;font-size:.95rem;margin-bottom:8px;}
+.tip99 .ex{font-family:'Fredoka';font-size:1.05rem;color:var(--ink);line-height:1.7;}
+
+/* phase pills */
+.phases{display:flex;gap:6px;margin-bottom:14px;}
+.phase{flex:1;text-align:center;font-size:.7rem;font-weight:800;padding:6px 2px;border-radius:10px;background:#EEE8F6;color:var(--muted);}
+.phase.on{background:var(--lilla);color:#fff;}
+
+/* product */
+.prod{display:flex;align-items:center;gap:14px;background:#fff;border:2px solid var(--line);border-radius:16px;padding:12px 14px;margin-bottom:14px;}
+.prod .ic{width:64px;height:64px;flex-shrink:0;}
+.prod .ic svg{width:100%;height:100%;}
+.prod .info{flex:1;}
+.prod .nm{font-weight:800;font-size:.95rem;}
+.prod .fg{font-size:.78rem;color:var(--muted);}
+.prod .pr{font-family:'Fredoka';font-size:1.15rem;color:var(--coral);font-weight:700;margin-top:2px;}
+
+/* question */
+.q{border-top:1px solid var(--line);padding:14px 0;}
+.q-text{font-size:.95rem;font-weight:700;line-height:1.45;margin-bottom:6px;}
+.hint{display:inline-flex;gap:5px;background:#FFF1EE;color:var(--coral);font-size:.76rem;font-weight:700;padding:3px 9px;border-radius:20px;margin-bottom:8px;}
+.ans-row{display:flex;gap:8px;align-items:center;}
+.ans{flex:1;border:2px solid var(--line);border-radius:12px;padding:12px;font-family:'Fredoka';font-size:1.1rem;color:var(--ink);background:#fff;text-align:center;}
+.ans:focus{outline:none;border-color:var(--lilla);}
+.unit{font-weight:800;color:var(--muted);}
+.check{background:var(--lilla);color:#fff;border:none;border-radius:12px;padding:12px 18px;font-family:'Fredoka';font-weight:600;cursor:pointer;box-shadow:0 3px 0 var(--lilla-d);}
+.check:active{transform:translateY(2px);box-shadow:0 1px 0 var(--lilla-d);}
+.fb{margin-top:8px;font-size:.85rem;font-weight:700;padding:9px 12px;border-radius:10px;display:none;line-height:1.4;}
+.fb.ok{display:block;background:#E9FBF3;color:#2BAE82;}
+.fb.no{display:block;background:#FFEDEF;color:var(--coral);}
+.score-pill{display:inline-block;margin:6px 0 12px;background:#2a2348;color:#cdbce8;padding:6px 16px;border-radius:20px;font-weight:800;font-size:.9rem;}
+.send{width:100%;background:var(--coral);color:#fff;border:none;border-radius:16px;padding:15px;font-family:'Fredoka';font-weight:700;font-size:1.05rem;cursor:pointer;box-shadow:0 4px 0 #d65668;margin-top:6px;}
+.send:active{transform:translateY(2px);box-shadow:0 2px 0 #d65668;}
+.toast{position:fixed;left:50%;bottom:24px;transform:translateX(-50%);background:var(--ink);color:#fff;padding:12px 20px;border-radius:30px;font-weight:700;opacity:0;transition:opacity .3s;z-index:99;}
+.toast.show{opacity:1;}
+.reveal-btn{background:none;border:2px solid var(--lilla);color:var(--lilla-d);border-radius:12px;padding:8px 14px;font-family:'Fredoka';font-weight:600;font-size:.85rem;cursor:pointer;margin-top:6px;}
+@media (prefers-reduced-motion:reduce){*{transition:none!important;}}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <div class="top">
+    <a class="home" href="index.html">🏠</a>
+    <div class="brand">Edels Butikk<small>Veksel &amp; minus</small></div>
+  </div>
+  <div class="tabs">
+    <button class="tab active" id="tabL" onclick="show('laer')">METODE</button>
+    <button class="tab" id="tabO" onclick="show('ove')">OPPGAVER</button>
+  </div>
+  <div id="stage"></div>
+</div>
+<div class="toast" id="toast"></div>
+
+<script>
+const PRODUCTS = {"topp": {"navn": "Haley strikketopp", "pris": 99, "farge": "Lys lilla"}, "smykke": {"navn": "Pearl ankelsmykke", "pris": 65, "farge": "Off white"}, "tskjorte": {"navn": "Baby t-skjorte", "pris": 159, "farge": "Hvit"}, "veske": {"navn": "Folded veske", "pris": 399, "farge": "Svart"}};
+const ICONS = {"topp": "<svg viewBox=\"0 0 100 100\" xmlns=\"http://www.w3.org/2000/svg\">\n<path d=\"M30 25 L42 18 Q50 24 58 18 L70 25 L80 38 L70 46 L68 42 L68 80 Q50 84 32 80 L32 42 L30 46 L20 38 Z\" fill=\"#D7B8E8\" stroke=\"#9B7BB8\" stroke-width=\"2.5\" stroke-linejoin=\"round\"/>\n<path d=\"M42 18 Q50 28 58 18\" fill=\"none\" stroke=\"#9B7BB8\" stroke-width=\"2.5\"/>\n</svg>", "smykke": "<svg viewBox=\"0 0 100 100\" xmlns=\"http://www.w3.org/2000/svg\">\n<path d=\"M18 50 Q50 78 82 50\" fill=\"none\" stroke=\"#C9C2B6\" stroke-width=\"2.5\"/>\n<circle cx=\"24\" cy=\"55\" r=\"6\" fill=\"#F4F1E8\" stroke=\"#C9C2B6\" stroke-width=\"1.5\"/>\n<circle cx=\"38\" cy=\"64\" r=\"6.5\" fill=\"#F4F1E8\" stroke=\"#C9C2B6\" stroke-width=\"1.5\"/>\n<circle cx=\"50\" cy=\"68\" r=\"7\" fill=\"#F4F1E8\" stroke=\"#C9C2B6\" stroke-width=\"1.5\"/>\n<circle cx=\"62\" cy=\"64\" r=\"6.5\" fill=\"#F4F1E8\" stroke=\"#C9C2B6\" stroke-width=\"1.5\"/>\n<circle cx=\"76\" cy=\"55\" r=\"6\" fill=\"#F4F1E8\" stroke=\"#C9C2B6\" stroke-width=\"1.5\"/>\n</svg>", "veske": "<svg viewBox=\"0 0 100 100\" xmlns=\"http://www.w3.org/2000/svg\">\n<path d=\"M28 40 L72 40 L78 82 L22 82 Z\" fill=\"#2D2A2A\" stroke=\"#000\" stroke-width=\"2.5\" stroke-linejoin=\"round\"/>\n<path d=\"M38 40 Q38 22 50 22 Q62 22 62 40\" fill=\"none\" stroke=\"#000\" stroke-width=\"3.5\"/>\n<path d=\"M28 40 L72 40\" stroke=\"#555\" stroke-width=\"2\"/>\n</svg>", "tskjorte": "<svg viewBox=\"0 0 100 100\" xmlns=\"http://www.w3.org/2000/svg\">\n<path d=\"M32 26 L42 22 Q50 30 58 22 L68 26 L82 36 L74 48 L70 44 L70 80 Q50 84 30 80 L30 44 L26 48 L18 36 Z\" fill=\"#FFFFFF\" stroke=\"#C9C9D2\" stroke-width=\"2.5\" stroke-linejoin=\"round\"/>\n<path d=\"M42 22 Q50 32 58 22\" fill=\"none\" stroke=\"#C9C9D2\" stroke-width=\"2.5\"/>\n</svg>"};
+const FORM = 'https://formspree.io/f/mqeolldg';
+let view='laer';
+const score={n:0,t:0,scored:{}};
+
+function show(v){view=v;document.getElementById('tabL').classList.toggle('active',v=='laer');document.getElementById('tabO').classList.toggle('active',v=='ove');render();window.scrollTo({top:0,behavior:'smooth'});}
+
+function gridSub(top, bot){
+  // returns html showing the borrow method for top-bot (3-digit-safe, used for 100-42 demo)
+  return '';
+}
+
+function renderLaer(){
+  return `<div class="card">
+    <div class="card-title">Hvordan trekke fra med veksling</div>
+    <div class="card-sub">Når du ikke kan ta f.eks. 2 fra 0, må du <b>låne</b> fra naboen. Vi tar det rolig, steg for steg.</div>
+
+    <div class="phases">
+      <div class="phase on">1 Se</div><div class="phase on">2 Lån</div><div class="phase on">3 Regn</div><div class="phase on">4 Svar</div>
+    </div>
+
+    <div class="method">
+      <h3>📝 Eksempel: 100 − 42</h3>
+      <div class="grid-sum">
+        <span class="row">100</span>
+        <span class="row">− 42</span>
+        <span class="row bar"></span>
+        <span class="row" style="color:var(--lilla-d)">?</span>
+      </div>
+      <div class="step"><b>1. Se:</b> Vi skal ta 42 fra 100. Vi begynner til <span class="hl">høyre</span>.</div>
+      <div class="step"><b>2. Lån:</b> 0 − 2 går ikke. Vi må låne. Men naboen er også 0! Da gjør vi <span class="hl">100 om til 99 + 1</span>.</div>
+      <div class="step"><b>3. Regn:</b> Nå er det lett:<br>99 − 42 = <span class="hl">57</span></div>
+      <div class="step"><b>4. Svar:</b> Legg tilbake den ene: 57 + 1 = <span class="hl">58</span></div>
+    </div>
+
+    <div class="tip99">
+      <h4>💚 Lurt triks: «Gå til 99 først»</h4>
+      <div class="ex">Skal du trekke fra <b>100</b>?<br>
+      → Gjør 100 til <b>99</b> (lettere!)<br>
+      → Trekk fra<br>
+      → Legg tilbake <b>1</b> til slutt</div>
+    </div>
+
+    <div class="method">
+      <h3>📝 Prøv tanken: 100 − 65</h3>
+      <div class="step">99 − 65 = <span class="hl">34</span></div>
+      <div class="step">34 + 1 = <span class="hl">35</span> ✅</div>
+      <div class="step" style="color:var(--muted)">Samme triks: ingen vanskelig låning!</div>
+    </div>
+
+    <button class="check" style="width:100%;margin-top:6px" onclick="show('ove')">Jeg er klar – la oss øve! →</button>
+  </div>`;
+}
+
+function prodCard(k){
+  const p=PRODUCTS[k];
+  return `<div class="prod"><div class="ic">${ICONS[k]}</div>
+    <div class="info"><div class="nm">${p.navn}</div><div class="fg">Farge: ${p.farge}</div>
+    <div class="pr">${p.pris} kr</div></div></div>`;
+}
+
+const OPPG = [
+  {har:100, k:'topp',     svar:1},
+  {har:100, k:'smykke',   svar:35},
+  {har:200, k:'tskjorte', svar:41},
+  {har:500, k:'veske',    svar:101},
+  {har:100, k:'smykke',   svar:35, twin:true},
+];
+
+function renderOve(){
+  let h=`<div class="card"><div class="card-title">Regn ut vekselen 🛍️</div>
+    <div class="card-sub">Edel handler på Bik Bok. Hun betaler med en seddel. Hvor mye får hun igjen?</div>
+    <div class="score-pill" id="pill">${score.n} / ${score.t} riktige</div>`;
+  const tasks=[
+    {har:100,k:'topp'},
+    {har:100,k:'smykke'},
+    {har:200,k:'tskjorte'},
+    {har:500,k:'veske'},
+  ];
+  score.t=tasks.length;
+  tasks.forEach((t,i)=>{
+    const p=PRODUCTS[t.k]; const svar=t.har-p.pris;
+    h+=prodCard(t.k);
+    h+=`<div class="q">
+      <div class="q-text">Edel har <b>${t.har} kr</b> og kjøper <b>${p.navn}</b> (${p.pris} kr). Hvor mye får hun igjen?</div>
+      <div class="hint">💡 Triks: gjør ${t.har} til ${t.har-1}, trekk fra, legg tilbake 1</div>
+      <div class="ans-row">
+        <input class="ans" id="o${i}" inputmode="numeric" placeholder="?">
+        <span class="unit">kr</span>
+        <button class="check" onclick="checkO(${i},${svar})">Sjekk</button>
+      </div>
+      <button class="reveal-btn" onclick="reveal(${i},${t.har},${p.pris})">Vis meg hvordan 👀</button>
+      <div class="fb" id="fbo${i}"></div>
+      <div class="fb" id="rev${i}"></div>
+    </div>`;
+  });
+  h+=`<button class="send" onclick="finish()">📨 Send svar til mamma</button></div>`;
+  return h;
+}
+
+function reveal(i,har,pris){
+  const el=document.getElementById('rev'+i);
+  const near=har-1;
+  const a=near-pris;
+  el.className='fb ok';
+  el.innerHTML=`<b>Steg for steg:</b><br>
+    1. Gjør ${har} til <b>${near}</b><br>
+    2. ${near} − ${pris} = <b>${a}</b><br>
+    3. Legg tilbake 1: ${a} + 1 = <b>${a+1}</b> kr ✅`;
+}
+
+function render(){
+  document.getElementById('stage').innerHTML = view=='laer'?renderLaer():renderOve();
+}
+
+function checkO(i,correct){
+  const v=(document.getElementById('o'+i).value||'').replace(/\s/g,'');
+  const fb=document.getElementById('fbo'+i);
+  if(v===''){fb.className='fb no';fb.textContent='✏️ Skriv et tall først';return;}
+  if(Number(v)===correct){
+    fb.className='fb ok';fb.textContent='✅ Riktig! Flott regnet.';
+    if(!score.scored['o'+i]){score.scored['o'+i]=true;score.n++;}
+  } else {
+    fb.className='fb no';fb.textContent='🤔 Ikke helt. Prøv trikset: gå til 99 først, så legg tilbake 1.';
+    score.scored['o'+i]=score.scored['o'+i]||false;
+  }
+  document.getElementById('pill').textContent=`${score.n} / ${score.t} riktige`;
+}
+
+async function finish(){
+  const pct=score.t?Math.round(score.n/score.t*100):0;
+  const now=new Date();
+  try{
+    await fetch(FORM,{method:'POST',headers:{'Content-Type':'application/json'},
+      body:JSON.stringify({
+        _subject:'Edels Butikk – Veksel & minus',
+        Dato:now.toLocaleString('no-NO'),
+        Oppgave:'Subtraksjon med veksling (Bik Bok)',
+        Resultat:`${score.n} av ${score.t} riktige (${pct}%)`,
+        Vurdering:pct===100?'🌟 Perfekt!':pct>=70?'✅ Veldig bra!':'💪 Vi øver mer på veksling'
+      })});
+    const t=document.getElementById('toast');t.textContent='📨 Sendt til mamma!';t.classList.add('show');setTimeout(()=>t.classList.remove('show'),1500);
+  }catch(e){const t=document.getElementById('toast');t.textContent='Lagret lokalt';t.classList.add('show');setTimeout(()=>t.classList.remove('show'),1500);}
+}
+
+render();
+</script>
+</body>
+</html>
