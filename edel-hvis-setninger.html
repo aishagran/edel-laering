@@ -1,0 +1,306 @@
+<!DOCTYPE html>
+<html lang="no">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Edels Hvis-setninger</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,600;9..144,900&family=Nunito:wght@400;600;700;800&display=swap');
+
+  :root{
+    --paper:#FBF7EF;
+    --ink:#2A2622;
+    --plum:#6B4E71;
+    --plum-soft:#EDE3EF;
+    --sun:#F2A65A;
+    --sun-soft:#FBE6CF;
+    --leaf:#4E8E6E;
+    --leaf-soft:#DCEDE3;
+    --sky:#5B8BB0;
+    --sky-soft:#DDEAF2;
+    --line:#E5DCCC;
+    --shadow:0 8px 26px rgba(42,38,34,.10);
+  }
+  *{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent;}
+  html{scroll-behavior:smooth;}
+  body{font-family:'Nunito',sans-serif;background:var(--paper);color:var(--ink);line-height:1.6;padding:0 0 80px;overflow-x:hidden;}
+  .wrap{max-width:680px;margin:0 auto;padding:0 20px;}
+
+  /* HERO */
+  header{text-align:center;padding:46px 20px 26px;background:radial-gradient(120% 90% at 50% -10%, var(--sky-soft) 0%, transparent 60%);}
+  .eyebrow{font-weight:800;letter-spacing:.18em;text-transform:uppercase;font-size:.72rem;color:var(--sky);margin-bottom:14px;}
+  h1{font-family:'Fraunces',serif;font-weight:900;font-size:clamp(2rem,8vw,3rem);line-height:1.04;}
+  h1 .hvis{color:var(--sky);font-style:italic;}
+  h1 .saa{color:var(--sun);font-style:italic;}
+  .subtitle{font-family:'Fraunces',serif;font-style:italic;font-size:1.1rem;color:var(--plum);margin-top:10px;}
+
+  /* HER QUOTE */
+  .herquote{background:#fff;border-radius:20px;box-shadow:var(--shadow);border:1px solid var(--line);padding:22px;margin:24px 0 8px;position:relative;}
+  .herquote .label{font-size:.72rem;font-weight:800;letter-spacing:.08em;text-transform:uppercase;color:var(--sun);margin-bottom:10px;}
+  .herquote blockquote{font-family:'Fraunces',serif;font-size:1.25rem;line-height:1.5;color:var(--ink);}
+  .herquote blockquote .mark{background:linear-gradient(transparent 58%, var(--sky-soft) 58%);font-weight:700;}
+  .herquote .by{margin-top:12px;font-size:.95rem;color:var(--leaf);font-weight:700;}
+
+  /* SECTION LABEL */
+  .section-label{display:flex;align-items:center;gap:12px;margin:44px 0 8px;}
+  .section-label .num{font-family:'Fraunces',serif;font-weight:900;font-size:1.05rem;width:34px;height:34px;border-radius:50%;display:grid;place-items:center;flex:none;background:var(--sky);color:#fff;}
+  .section-label h2{font-family:'Fraunces',serif;font-weight:600;font-size:1.45rem;}
+  .section-label .rule{flex:1;height:2px;background:var(--line);border-radius:2px;}
+  .lead{color:var(--plum);font-weight:700;margin-bottom:16px;}
+
+  /* BUILDER */
+  .build{background:#fff;border-radius:18px;box-shadow:var(--shadow);border:1px solid var(--line);padding:20px;margin-bottom:16px;}
+  .scene{font-size:.78rem;font-weight:800;letter-spacing:.06em;text-transform:uppercase;color:var(--leaf);background:var(--leaf-soft);display:inline-block;padding:4px 12px;border-radius:20px;margin-bottom:14px;}
+  .frame{font-family:'Fraunces',serif;font-size:1.3rem;line-height:1.9;}
+  .frame .hvis{color:var(--sky);font-weight:600;}
+  .frame .saa{color:var(--sun);font-weight:600;}
+  .slot{display:inline-block;min-width:90px;border-bottom:2.5px dashed var(--line);color:var(--plum);font-weight:700;padding:0 8px;text-align:center;transition:.2s;}
+  .slot.filled{border-bottom-style:solid;border-bottom-color:var(--sky);background:var(--sky-soft);border-radius:6px 6px 0 0;}
+  .chips{display:flex;flex-wrap:wrap;gap:8px;margin-top:16px;}
+  .chip{font:inherit;font-size:.98rem;font-weight:700;background:var(--paper);border:2px solid var(--line);border-radius:20px;padding:7px 14px;cursor:pointer;transition:.15s;color:var(--ink);}
+  .chip:hover:not(:disabled){border-color:var(--sky);background:#fff;}
+  .chip.used{opacity:.35;cursor:default;}
+  .chip-group-label{width:100%;font-size:.72rem;font-weight:800;letter-spacing:.06em;text-transform:uppercase;color:var(--ink);opacity:.5;margin-top:6px;}
+  .build .reset{margin-top:14px;background:none;border:none;color:var(--sky);font:inherit;font-weight:800;font-size:.9rem;cursor:pointer;text-decoration:underline;text-underline-offset:3px;}
+
+  /* RIKTIG FORM (mc) */
+  .q{background:#fff;border-radius:16px;padding:18px;margin-bottom:14px;box-shadow:var(--shadow);border:1px solid var(--line);}
+  .q .qtext{font-weight:700;font-size:1.08rem;margin-bottom:6px;}
+  .q .qsub{font-size:.92rem;color:var(--plum);margin-bottom:12px;}
+  .opts{display:grid;gap:9px;}
+  .opt{text-align:left;font:inherit;font-size:1.08rem;font-weight:600;font-family:'Fraunces',serif;background:var(--paper);border:2px solid var(--line);border-radius:12px;padding:12px 16px;cursor:pointer;transition:.15s;color:var(--ink);}
+  .opt:hover:not(:disabled){border-color:var(--sky);background:#fff;}
+  .opt:disabled{cursor:default;}
+  .opt.correct{border-color:var(--leaf);background:var(--leaf-soft);color:var(--leaf);}
+  .opt.wrong{border-color:#D98A8A;background:#F7E4E4;color:#B05555;opacity:.7;}
+  .fb{margin-top:12px;font-size:1rem;font-weight:700;padding:10px 14px;border-radius:10px;display:none;}
+  .fb.show{display:block;}
+  .fb.good{background:var(--leaf-soft);color:var(--leaf);}
+  .fb.bad{background:var(--sun-soft);color:var(--sun);}
+
+  /* WRITE / FORMSPREE */
+  .write{background:linear-gradient(135deg,var(--sky-soft),var(--sun-soft));border-radius:22px;padding:26px 22px;margin-top:8px;}
+  .write h3{font-family:'Fraunces',serif;font-size:1.4rem;color:var(--plum);margin-bottom:6px;}
+  .write p{margin-bottom:14px;}
+  .write .starter{font-family:'Fraunces',serif;font-size:1.15rem;color:var(--sky);margin-bottom:8px;}
+  .write input[type=text]{width:100%;border:2px solid #fff;border-radius:12px;padding:12px 14px;font:inherit;font-size:1.05rem;margin-bottom:12px;background:#fff;transition:.2s;}
+  .write input[type=text]:focus{outline:none;border-color:var(--sky);}
+  .write textarea{width:100%;border:2px solid #fff;border-radius:12px;padding:12px 14px;font:inherit;font-size:1.05rem;min-height:90px;resize:vertical;background:#fff;transition:.2s;}
+  .write textarea:focus{outline:none;border-color:var(--sky);}
+  .send{margin-top:14px;background:var(--plum);color:#fff;border:none;font:inherit;font-weight:800;font-size:1.05rem;padding:13px 28px;border-radius:28px;cursor:pointer;box-shadow:var(--shadow);transition:.2s;}
+  .send:hover{transform:translateY(-2px);background:#5a4060;}
+  .send:disabled{opacity:.6;cursor:default;transform:none;}
+  .sent-msg{margin-top:14px;font-weight:800;color:var(--leaf);display:none;}
+  .sent-msg.show{display:block;}
+
+  @media (prefers-reduced-motion:reduce){*{transition:none!important;animation:none!important;}}
+  .reveal{opacity:0;transform:translateY(14px);}
+  .reveal.in{opacity:1;transform:none;transition:.5s;}
+</style>
+</head>
+<body>
+
+<header>
+  <div class="eyebrow">Edels Verden · Språkreise</div>
+  <h1>Hvis <span class="hvis">···</span><br>så <span class="saa">···</span></h1>
+  <div class="subtitle">Å tenke på «hvis» og «så»</div>
+</header>
+
+<div class="wrap">
+
+  <!-- HER OWN SENTENCE -->
+  <div class="herquote reveal">
+    <div class="label">Dette skrev du i går 🌟</div>
+    <blockquote>«… <span class="mark">hvis</span> jeg ikke var god i håndball, <span class="mark">så</span> er det katastrofe.»</blockquote>
+    <div class="by">Du brukte «hvis … så» helt selv! I dag øver vi mer på den.</div>
+  </div>
+
+  <!-- SECTION 1: BUILD -->
+  <div class="section-label reveal"><span class="num">1</span><h2>Bygg setningen</h2><div class="rule"></div></div>
+  <p class="lead reveal">Trykk på ordene for å fylle inn. Først «hvis», så «så».</p>
+  <div id="builders"></div>
+
+  <!-- SECTION 2: RIKTIG FORM -->
+  <div class="section-label reveal"><span class="num">2</span><h2>Hvilken høres riktig ut?</h2><div class="rule"></div></div>
+  <p class="lead reveal">Velg setningen som er bygd riktig.</p>
+  <div id="forms"></div>
+
+  <!-- SECTION 3: WRITE -->
+  <div class="section-label reveal"><span class="num">3</span><h2>Skriv din egen</h2><div class="rule"></div></div>
+  <div class="write reveal">
+    <h3>Din egen hvis-setning ✏️</h3>
+    <p>Tenk på fremtiden, akkurat som du gjorde i går. Skriv en setning med <b>hvis</b> og <b>så</b>.</p>
+    <div class="starter">Hvis jeg … , så …</div>
+    <input type="text" id="tema" placeholder="Tema (f.eks. håndball, Pipoka, friminutt)">
+    <textarea id="setning" placeholder="Hvis jeg ___, så ___"></textarea>
+    <button class="send" id="sendBtn">Send til mamma</button>
+    <div class="sent-msg" id="sentMsg">Sendt! Bra jobbet, Edel 💛</div>
+  </div>
+
+</div>
+
+<script>
+/* ====== KONFIG: bytt til samme Formspree-endpoint som de andre appene ====== */
+const FORMSPREE_ENDPOINT = "https://formspree.io/f/DITT_SKJEMA_ID";
+
+/* ---------- BUILDERS ---------- */
+const BUILDERS = [
+  {
+    scene:"Håndball",
+    hvis:["øver hver dag","spiller godt","blir trøtt"],
+    saa:["blir jeg flink","vinner vi kampen","tar jeg en pause"]
+  },
+  {
+    scene:"Pipoka",
+    hvis:["går tur med Pipoka","gir Pipoka mat","leker med Pipoka"],
+    saa:["blir hun glad","logrer hun med halen","blir hun trøtt"]
+  },
+  {
+    scene:"Friminutt",
+    hvis:["spør om å være med","finner en venn","det regner ute"],
+    saa:["får jeg leke","blir friminuttet gøy","er vi inne"]
+  },
+  {
+    scene:"Fremtiden",
+    hvis:["jobber hardt","tror på meg selv","gir opp"],
+    saa:["klarer jeg det","mestrer jeg nye ting","lærer jeg ingenting"]
+  }
+];
+
+const bbox = document.getElementById('builders');
+BUILDERS.forEach((b,i)=>{
+  const el=document.createElement('div');
+  el.className='build reveal';
+  el.innerHTML=`
+    <span class="scene">${b.scene}</span>
+    <div class="frame">
+      <span class="hvis">Hvis</span> jeg <span class="slot" data-slot="hvis">···</span>,
+      <span class="saa">så</span> <span class="slot" data-slot="saa">···</span>.
+    </div>
+    <div class="chips">
+      <span class="chip-group-label">Hvis jeg …</span>
+      ${b.hvis.map(h=>`<button class="chip" data-type="hvis">${h}</button>`).join('')}
+      <span class="chip-group-label">… så …</span>
+      ${b.saa.map(s=>`<button class="chip" data-type="saa">${s}</button>`).join('')}
+    </div>
+    <button class="reset">Tøm</button>`;
+
+  const slotHvis=el.querySelector('[data-slot="hvis"]');
+  const slotSaa=el.querySelector('[data-slot="saa"]');
+  el.querySelectorAll('.chip').forEach(chip=>{
+    chip.addEventListener('click',()=>{
+      const t=chip.dataset.type;
+      const slot=t==='hvis'?slotHvis:slotSaa;
+      slot.textContent=chip.textContent;
+      slot.classList.add('filled');
+      // un-dim siblings of same type, dim chosen
+      el.querySelectorAll(`.chip[data-type="${t}"]`).forEach(c=>c.classList.remove('used'));
+      chip.classList.add('used');
+    });
+  });
+  el.querySelector('.reset').addEventListener('click',()=>{
+    slotHvis.textContent='···';slotSaa.textContent='···';
+    slotHvis.classList.remove('filled');slotSaa.classList.remove('filled');
+    el.querySelectorAll('.chip').forEach(c=>c.classList.remove('used'));
+  });
+  bbox.appendChild(el);
+});
+
+/* ---------- RIKTIG FORM (mc) ---------- */
+const FORMS = [
+  {
+    q:"Hvilken setning er bygd riktig?",
+    sub:"Begge starter med «hvis». Hvilken har «så» på rett plass?",
+    opts:["Hvis det regner, så er vi inne.","Hvis det regner, vi er inne så."],
+    correct:0,
+    fb:"Riktig! «Så» kommer rett etter komma: «Hvis det regner, så er vi inne.»"
+  },
+  {
+    q:"Velg setningen som henger sammen:",
+    sub:"Tenk på om «hvis»-delen og «så»-delen passer.",
+    opts:["Hvis jeg øver, så blir jeg flink.","Hvis jeg øver, så spiser jeg lunsj."],
+    correct:0,
+    fb:"Riktig! Når du øver, så blir du flink. Delene hører sammen."
+  },
+  {
+    q:"Hvilken er riktig?",
+    sub:"Pass på lite ord i starten av setningen.",
+    opts:["hvis jeg vinner, så jubler jeg.","Hvis jeg vinner, så jubler jeg."],
+    correct:1,
+    fb:"Riktig! Setninger starter med stor bokstav: «Hvis …»."
+  }
+];
+
+const fbox=document.getElementById('forms');
+FORMS.forEach(item=>{
+  const el=document.createElement('div');
+  el.className='q reveal';
+  el.innerHTML=`
+    <div class="qtext">${item.q}</div>
+    <div class="qsub">${item.sub}</div>
+    <div class="opts"></div>
+    <div class="fb"></div>`;
+  const optBox=el.querySelector('.opts');
+  const fb=el.querySelector('.fb');
+  let done=false;
+  item.opts.forEach((txt,idx)=>{
+    const o=document.createElement('button');
+    o.className='opt';o.textContent=txt;
+    o.addEventListener('click',()=>{
+      if(done)return;
+      if(idx===item.correct){
+        done=true;o.classList.add('correct');
+        fb.textContent='✓ '+item.fb;fb.className='fb good show';
+        optBox.querySelectorAll('.opt').forEach(b=>b.disabled=true);
+      }else{
+        o.classList.add('wrong');o.disabled=true;
+        fb.textContent='Prøv igjen! 💪';fb.className='fb bad show';
+      }
+    });
+    optBox.appendChild(o);
+  });
+  fbox.appendChild(el);
+});
+
+/* ---------- FORMSPREE SEND ---------- */
+const sendBtn=document.getElementById('sendBtn');
+const sentMsg=document.getElementById('sentMsg');
+sendBtn.addEventListener('click',async()=>{
+  const tema=document.getElementById('tema').value.trim();
+  const setning=document.getElementById('setning').value.trim();
+  if(!setning){
+    document.getElementById('setning').focus();
+    return;
+  }
+  sendBtn.disabled=true;sendBtn.textContent='Sender …';
+  try{
+    const res=await fetch(FORMSPREE_ENDPOINT,{
+      method:'POST',
+      headers:{'Accept':'application/json','Content-Type':'application/json'},
+      body:JSON.stringify({
+        Tema: tema || 'Hvis-setning',
+        Tekst_hun_skrev: setning,
+        Bindeord_fokus: 'Hvis … så (kondisjonal)'
+      })
+    });
+    if(res.ok){
+      sentMsg.classList.add('show');
+      sendBtn.textContent='Sendt 💛';
+      document.getElementById('setning').value='';
+      document.getElementById('tema').value='';
+    }else{
+      sendBtn.disabled=false;
+      sendBtn.textContent='Prøv å sende igjen';
+    }
+  }catch(e){
+    sendBtn.disabled=false;
+    sendBtn.textContent='Prøv å sende igjen';
+  }
+});
+
+/* ---------- REVEAL ---------- */
+const io=new IntersectionObserver(es=>{es.forEach(e=>{if(e.isIntersecting)e.target.classList.add('in');});},{threshold:.12});
+document.querySelectorAll('.reveal').forEach(el=>io.observe(el));
+</script>
+</body>
+</html>
