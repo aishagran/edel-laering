@@ -1,0 +1,379 @@
+<!DOCTYPE html>
+<html lang="no">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+<title>Kapittel 1: 1968 – Frit valg?</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800;900&family=Fredoka+One&display=swap');
+*{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent;}
+:root{
+  --green:#5a9e6f;--green-light:#e8f5ec;--green-dark:#3d7a52;
+  --warm:#f9f4ed;--pink:#f4a0b0;--pink-light:#fdeef1;
+  --yellow:#f7d97a;--yellow-light:#fef9e7;
+  --sky:#5B8BB0;--sky-light:#e3eef5;
+  --text:#3a3228;--text-soft:#7a6e64;
+  --radius:20px;--shadow:0 4px 20px rgba(0,0,0,0.10);
+}
+html{scroll-behavior:smooth;}
+body{font-family:'Nunito',sans-serif;background:linear-gradient(160deg,#e8f5ec 0%,#fdeef1 55%,#e8f4fa 100%);color:var(--text);padding-bottom:120px;}
+.wrap{max-width:640px;margin:0 auto;padding:0 18px;}
+
+/* HEADER */
+.head{text-align:center;padding:34px 20px 14px;}
+.head .era{font-size:48px;margin-bottom:4px;}
+.head h1{font-family:'Fredoka One',cursive;font-size:30px;color:var(--green-dark);line-height:1.1;}
+.head .sub{font-size:14px;color:var(--text-soft);margin-top:6px;}
+
+/* PROGRESS */
+.prog-wrap{background:white;border-radius:50px;box-shadow:var(--shadow);margin:14px 18px 0;padding:8px 16px;display:flex;align-items:center;gap:12px;position:sticky;top:10px;z-index:20;max-width:604px;margin-left:auto;margin-right:auto;}
+.prog-bar{flex:1;height:10px;background:#e8e0d8;border-radius:10px;overflow:hidden;}
+.prog-fill{height:100%;width:0%;background:linear-gradient(90deg,var(--green),#7ec898);border-radius:10px;transition:width .4s;}
+.prog-text{font-size:12px;font-weight:800;color:var(--text-soft);white-space:nowrap;}
+
+/* SECTION HEADING */
+.shead{display:flex;align-items:center;gap:10px;margin:30px 0 14px;}
+.shead .ico{font-size:26px;}
+.shead h2{font-family:'Fredoka One',cursive;font-size:20px;color:var(--green-dark);}
+
+/* STORY */
+.story-card{background:white;border-radius:var(--radius);box-shadow:var(--shadow);padding:18px 18px 4px;margin-bottom:14px;}
+.story-card p{font-size:16px;line-height:1.65;margin-bottom:14px;}
+.story-card .scene-tag{font-size:11px;font-weight:800;text-transform:uppercase;letter-spacing:1px;color:var(--sky);margin-bottom:10px;}
+.kw{font-weight:800;color:var(--green-dark);background:var(--green-light);border-radius:6px;padding:1px 5px;cursor:pointer;border-bottom:2px solid var(--green);}
+.kw:active{background:var(--green);color:white;}
+.dialog{color:var(--sky);font-weight:700;border-left:3px solid var(--sky);padding-left:10px;}
+
+/* WORD POPUP */
+.pop{position:fixed;z-index:60;max-width:250px;background:var(--text);color:var(--warm);padding:11px 13px;border-radius:12px;font-size:13px;font-weight:600;line-height:1.4;box-shadow:var(--shadow);opacity:0;pointer-events:none;transform:translateY(6px);transition:.18s;}
+.pop.show{opacity:1;transform:translateY(0);}
+.pop b{color:var(--yellow);}
+
+/* WORD LIST */
+.wordbox{background:white;border-radius:var(--radius);box-shadow:var(--shadow);padding:16px;margin-bottom:14px;}
+.wordbox .wbtitle{font-size:11px;font-weight:800;text-transform:uppercase;letter-spacing:1px;color:var(--text-soft);margin-bottom:12px;}
+.wrow{display:flex;gap:10px;align-items:flex-start;padding:9px 0;border-bottom:1px solid #f0ebe4;}
+.wrow:last-child{border-bottom:none;}
+.wrow .wemoji{font-size:22px;min-width:30px;text-align:center;}
+.wrow .wmain{font-weight:800;color:var(--green-dark);}
+.wrow .wdef{font-size:13px;color:var(--text-soft);}
+
+/* QUESTION */
+.qcard{background:white;border-radius:var(--radius);box-shadow:var(--shadow);padding:17px;margin-bottom:13px;}
+.qcat{display:inline-block;font-size:10px;font-weight:800;text-transform:uppercase;letter-spacing:1px;padding:3px 10px;border-radius:20px;margin-bottom:10px;}
+.qcat.les{background:var(--sky-light);color:var(--sky);}
+.qcat.ord{background:var(--green-light);color:var(--green-dark);}
+.qcat.hvis{background:var(--yellow-light);color:#b88a1e;}
+.q-text{font-size:16px;font-weight:700;line-height:1.4;margin-bottom:13px;}
+.options{display:flex;flex-direction:column;gap:8px;}
+.opt-btn{background:var(--warm);border:2.5px solid #e0d8d0;border-radius:13px;padding:12px 14px;font-family:'Nunito',sans-serif;font-size:14px;font-weight:700;color:var(--text);cursor:pointer;text-align:left;transition:.15s;line-height:1.35;}
+.opt-btn:active{transform:scale(.99);}
+.opt-btn.correct{background:var(--green-light);border-color:var(--green);color:var(--green-dark);}
+.opt-btn.wrong{background:var(--pink-light);border-color:var(--pink);color:#c0566a;}
+.opt-btn.disabled{pointer-events:none;}
+.opt-btn.dim{opacity:.45;}
+.feedback{border-radius:13px;padding:11px 13px;font-size:13px;font-weight:700;margin-top:10px;display:none;line-height:1.45;}
+.feedback.show{display:block;}
+.feedback.correct{background:var(--green-light);color:var(--green-dark);border:2px solid #a8d5b5;}
+.feedback.wrong{background:var(--pink-light);color:#c0566a;border:2px solid var(--pink);}
+
+/* DAILY HVIS */
+.daily{background:linear-gradient(135deg,var(--yellow-light),var(--pink-light));border-radius:var(--radius);box-shadow:var(--shadow);padding:20px;margin-bottom:14px;border:2.5px solid var(--yellow);}
+.daily .badge{display:inline-block;background:var(--yellow);color:#7a5a10;font-weight:800;font-size:11px;text-transform:uppercase;letter-spacing:1px;padding:4px 12px;border-radius:20px;margin-bottom:12px;}
+.daily h3{font-family:'Fredoka One',cursive;font-size:18px;color:var(--green-dark);margin-bottom:6px;}
+.daily .prompt{font-size:15px;font-weight:700;color:var(--text);background:white;border-radius:12px;padding:11px 13px;margin-bottom:12px;line-height:1.5;}
+.daily .prompt .hl{color:var(--sky);}
+.daily .starter{font-weight:800;color:var(--sky);margin-bottom:8px;font-size:15px;}
+.daily textarea{width:100%;border:2.5px solid white;border-radius:12px;padding:11px 13px;font:inherit;font-size:15px;min-height:74px;resize:vertical;background:white;}
+.daily textarea:focus{outline:none;border-color:var(--sky);}
+.daily .newprompt{background:none;border:none;color:var(--green-dark);font:inherit;font-weight:800;font-size:13px;cursor:pointer;text-decoration:underline;margin-top:4px;}
+
+/* NEXT BTN */
+.btn-next{position:fixed;bottom:20px;left:50%;transform:translateX(-50%);background:var(--green);color:white;border:none;border-radius:50px;padding:14px 36px;font-family:'Fredoka One',cursive;font-size:17px;cursor:pointer;box-shadow:0 5px 0 var(--green-dark);width:calc(100% - 36px);max-width:380px;z-index:30;}
+.btn-next:active{transform:translateX(-50%) translateY(3px);box-shadow:0 2px 0 var(--green-dark);}
+.btn-send{background:var(--green);color:white;border:none;border-radius:50px;padding:12px 28px;font-family:'Fredoka One',cursive;font-size:15px;cursor:pointer;box-shadow:0 4px 0 var(--green-dark);margin-top:12px;}
+.btn-send:active{transform:translateY(3px);box-shadow:0 1px 0 var(--green-dark);}
+.btn-send:disabled{opacity:.6;}
+.sent{margin-top:10px;font-weight:800;color:var(--green-dark);display:none;}
+.sent.show{display:block;}
+
+/* END */
+.endcard{background:white;border-radius:var(--radius);box-shadow:var(--shadow);padding:26px 20px;text-align:center;margin-top:10px;display:none;}
+.endcard.show{display:block;}
+.endcard .star{font-size:60px;}
+.endcard h2{font-family:'Fredoka One',cursive;font-size:24px;color:var(--green-dark);margin:6px 0;}
+.endcard .big{font-family:'Fredoka One',cursive;font-size:44px;color:var(--green-dark);}
+.endcard p{color:var(--text-soft);font-size:14px;}
+
+.reveal{opacity:0;transform:translateY(14px);}
+.reveal.in{opacity:1;transform:none;transition:.5s;}
+@media (prefers-reduced-motion:reduce){*{transition:none!important;animation:none!important;}}
+</style>
+</head>
+<body>
+
+<div class="head">
+  <div class="era">🌼</div>
+  <h1>1968 – Frit valg?</h1>
+  <div class="sub">Edels Språkreise · Kapittel 1</div>
+</div>
+
+<div class="prog-wrap">
+  <div class="prog-bar"><div class="prog-fill" id="progFill"></div></div>
+  <div class="prog-text" id="progText">0 / 12</div>
+</div>
+
+<div class="wrap">
+
+  <!-- STORY with embedded academic words -->
+  <div class="shead reveal"><span class="ico">📖</span><h2>Historien</h2></div>
+
+  <div class="story-card reveal">
+    <div class="scene-tag">Edel reiser til 1968</div>
+    <p>Edel bruker Skjebnehjulet og reiser til året 1968. Hun er usynlig, og ingen kan se henne. Hun er her for å lære historie.</p>
+    <p>Hun møter Heather, en jente som krangler med foreldrene sine. Heather sier at hun er <span class="kw" data-w="uenig">uenig</span> med dem. Foreldrene har en annen <span class="kw" data-w="verdi">verdi</span> enn henne.</p>
+    <p class="dialog">– Jeg er lei av denne kulturen. Jeg tror ikke på det samme som dere, sier Heather.</p>
+    <p>Foreldrene svarer at de bare vil hennes beste. Her finnes det ikke en enkel <span class="kw" data-w="løsning">løsning</span>.</p>
+  </div>
+
+  <div class="story-card reveal">
+    <div class="scene-tag">Heather møter Frank</div>
+    <p>Ute treffer Heather klassekameraten Frank. Frank forteller om hippiebevegelsen. Han kommer med en <span class="kw" data-w="påstand">påstand</span>:</p>
+    <p class="dialog">– Alt startet med at unge ville ha fred, mot Vietnamkrigen. Vi vil leve i fellesskap og ta vare på naturen.</p>
+    <p>Frank forklarer <span class="kw" data-w="årsak">årsaken</span> til protesten: krigen gjorde mange unge sinte og redde. Det var grunnen til at de protesterte.</p>
+    <p>Heather lytter. Men hun lurer: hva er den rette <span class="kw" data-w="mening">meningen</span> for henne?</p>
+  </div>
+
+  <div class="story-card reveal">
+    <div class="scene-tag">Esmeralda kommer</div>
+    <p>Plutselig dukker Esmeralda opp ved siden av Edel.</p>
+    <p class="dialog">– I historien finnes det aldri bare ett riktig svar, min venn. Mennesker har ulike verdier og tar ulike <span class="kw" data-w="valg">valg</span>.</p>
+    <p>Esmeralda sier at hvert valg har en <span class="kw" data-w="konsekvens">konsekvens</span>. Det betyr at det som skjer etterpå, henger sammen med valget du tok.</p>
+    <p class="dialog">– Det er dine valg som former din framtid, sier Esmeralda.</p>
+    <p>Edel tenker: hun må lære av både Heather, Frank og foreldrene. Alle har sin egen mening.</p>
+  </div>
+
+  <!-- WORD LIST -->
+  <div class="shead reveal"><span class="ico">🔑</span><h2>Ord jeg må lære</h2></div>
+  <div class="wordbox reveal" id="wordbox"></div>
+
+  <!-- QUESTIONS -->
+  <div class="shead reveal"><span class="ico">✏️</span><h2>Oppgaver</h2></div>
+  <div id="questions"></div>
+
+  <!-- DAILY HVIS -->
+  <div class="shead reveal"><span class="ico">🌟</span><h2>Dagens hvis-setning</h2></div>
+  <div class="daily reveal">
+    <span class="badge">Hver dag ✦</span>
+    <h3>Skriv én hvis-setning i dag</h3>
+    <div class="prompt" id="dailyPrompt"></div>
+    <div class="starter">Hvis … , så …</div>
+    <textarea id="dailyText" placeholder="Hvis jeg ___, så ___"></textarea>
+    <div>
+      <button class="newprompt" id="newPrompt">↻ Gi meg en ny idé</button>
+    </div>
+    <button class="btn-send" id="dailySend">Send til mamma 💛</button>
+    <div class="sent" id="dailySent">Sendt! Bra jobbet, Edel 🌟</div>
+  </div>
+
+  <!-- END -->
+  <div class="endcard" id="endcard">
+    <div class="star">⭐</div>
+    <h2>Kjempebra, Edel!</h2>
+    <div class="big" id="endScore">0 / 12</div>
+    <p>Du lærte om valg, verdier og framtid i 1968 💚</p>
+  </div>
+
+</div>
+
+<button class="btn-next" id="sendResults" style="display:none;">Send resultatet 📩</button>
+
+<div class="pop" id="pop"></div>
+
+<script>
+/* ====== CONFIG ====== */
+const FORMSPREE = "https://formspree.io/f/mqeolldg";
+
+/* ====== VOCAB (academic words, embedded in story) ====== */
+const WORDS = {
+  "uenig":      {e:"🙅", def:"Når du ikke mener det samme som en annen."},
+  "verdi":      {e:"💗", def:"Noe som er viktig for deg, som du tror på."},
+  "løsning":    {e:"🔑", def:"Noe som hjelper med et problem."},
+  "påstand":    {e:"💬", def:"Noe du sier er sant, men som andre kan være uenig i."},
+  "årsak":      {e:"➡️", def:"Grunnen til at noe skjer."},
+  "mening":     {e:"🤔", def:"Det du tenker og tror om noe."},
+  "valg":       {e:"🔀", def:"Når du bestemmer mellom flere ting."},
+  "konsekvens": {e:"⚖️", def:"Det som skjer etterpå, på grunn av et valg."}
+};
+const WORD_ORDER = ["valg","konsekvens","verdi","mening","årsak","påstand","løsning","uenig"];
+
+/* ====== QUESTIONS (12: mix les / ord / hvis) ====== */
+const QUESTIONS = [
+  // leseforståelse
+  {cat:"les",label:"Les og svar",q:"Hvorfor reiser Edel til 1968?",
+   opts:["For å lære historie","For å kjøpe klær","For å spille håndball"],correct:0,
+   fb:"✅ Riktig! Hun er der for å lære historie."},
+  {cat:"les",label:"Les og svar",q:"Hvorfor krangler Heather med foreldrene?",
+   opts:["Hun vil ha mer mat","Hun er uenig i verdiene deres","Hun vil sove"],correct:1,
+   fb:"✅ Riktig! Heather er uenig med foreldrene sine."},
+  {cat:"les",label:"Les og svar",q:"Hva forteller Frank om?",
+   opts:["Om håndball","Om hippiebevegelsen","Om matte"],correct:1,
+   fb:"✅ Riktig! Frank forteller om hippiebevegelsen."},
+  {cat:"les",label:"Les og svar",q:"Hva sier Esmeralda om historien?",
+   opts:["At det alltid er ett riktig svar","At det aldri er bare ett riktig svar","At historie er kjedelig"],correct:1,
+   fb:"✅ Riktig! Hun sier det aldri er bare ett riktig svar."},
+  // ord (academic vocab)
+  {cat:"ord",label:"Hva betyr ordet?",q:"Hva betyr «konsekvens»?",
+   opts:["Det som skjer etterpå, på grunn av et valg","En type mat","Å være glad"],correct:0,
+   fb:"✅ Riktig! En konsekvens er det som skjer etter et valg."},
+  {cat:"ord",label:"Hva betyr ordet?",q:"Hva betyr «årsak»?",
+   opts:["Grunnen til at noe skjer","Et hus","En sang"],correct:0,
+   fb:"✅ Riktig! Årsak er grunnen til at noe skjer."},
+  {cat:"ord",label:"Hva betyr ordet?",q:"Hva betyr «uenig»?",
+   opts:["Å mene det samme","Å ikke mene det samme","Å være trøtt"],correct:1,
+   fb:"✅ Riktig! Uenig betyr at du ikke mener det samme."},
+  {cat:"ord",label:"Velg riktig ord",q:"Esmeralda sier: «Hvert valg har en ___.» Hvilket ord passer?",
+   opts:["konsekvens","frokost","ferie"],correct:0,
+   fb:"✅ Riktig! Hvert valg har en konsekvens."},
+  {cat:"ord",label:"Velg riktig ord",q:"Frank kommer med en ___ om hippiebevegelsen. Hvilket ord passer?",
+   opts:["påstand","sko","banan"],correct:0,
+   fb:"✅ Riktig! En påstand er noe du sier er sant."},
+  // hvis...så
+  {cat:"hvis",label:"Hvis … så",q:"Velg setningen som er bygd riktig:",
+   opts:["Hvis jeg velger selv, så former jeg framtiden min.","Hvis jeg velger selv, framtiden jeg former så."],correct:0,
+   fb:"✅ Riktig! «Så» kommer rett etter komma."},
+  {cat:"hvis",label:"Hvis … så",q:"Hvilken henger sammen?",
+   opts:["Hvis Heather lytter til alle, så lærer hun mer.","Hvis Heather lytter til alle, så spiser hun lunsj."],correct:0,
+   fb:"✅ Riktig! Delene hører sammen: lytte → lære."},
+  {cat:"hvis",label:"Hvis … så",q:"Velg riktig start:",
+   opts:["hvis jeg tar et valg, så får det en konsekvens.","Hvis jeg tar et valg, så får det en konsekvens."],correct:1,
+   fb:"✅ Riktig! Setninger starter med stor bokstav."}
+];
+
+/* ====== DAILY HVIS PROMPTS ====== */
+const DAILY_PROMPTS = [
+  "Tenk på et <span class='hl'>valg</span> du kan ta i dag. Hvis du gjør det, hva skjer så?",
+  "Tenk på <span class='hl'>Pipoka</span>. Hvis du gjør noe for henne, så …?",
+  "Tenk på <span class='hl'>håndball</span>. Hvis du øver, så …?",
+  "Tenk på <span class='hl'>framtiden</span> din. Hvis du jobber hardt, så …?",
+  "Tenk på en <span class='hl'>venn</span>. Hvis du er snill, så …?",
+  "Tenk på <span class='hl'>taekwondo</span>. Hvis du trener mye, så …?",
+  "Tenk på <span class='hl'>skolen</span>. Hvis du spør om hjelp, så …?"
+];
+
+/* ====== BUILD WORD LIST ====== */
+const wb=document.getElementById('wordbox');
+wb.innerHTML='<div class="wbtitle">Trykk på de uthevede ordene i historien for å se hva de betyr</div>';
+WORD_ORDER.forEach(w=>{
+  const d=WORDS[w];
+  const row=document.createElement('div');
+  row.className='wrow';
+  row.innerHTML=`<span class="wemoji">${d.e}</span><span><span class="wmain">${w}</span> – <span class="wdef">${d.def}</span></span>`;
+  wb.appendChild(row);
+});
+
+/* ====== WORD POPUPS IN STORY ====== */
+const pop=document.getElementById('pop');
+let popT;
+document.querySelectorAll('.kw').forEach(k=>{
+  k.addEventListener('click',e=>{
+    const w=k.dataset.w,d=WORDS[w];
+    pop.innerHTML=`<b>${w}</b> — ${d.def}`;
+    pop.classList.add('show');
+    const r=k.getBoundingClientRect();
+    let x=r.left+r.width/2-125;x=Math.max(10,Math.min(x,window.innerWidth-260));
+    pop.style.left=x+'px';pop.style.top=(r.bottom+8)+'px';
+    clearTimeout(popT);popT=setTimeout(()=>pop.classList.remove('show'),3200);
+    e.stopPropagation();
+  });
+});
+document.addEventListener('click',e=>{if(!e.target.classList.contains('kw'))pop.classList.remove('show');});
+
+/* ====== BUILD QUESTIONS ====== */
+let score=0,answeredCount=0;
+const total=QUESTIONS.length;
+const qbox=document.getElementById('questions');
+document.getElementById('progText').textContent=`0 / ${total}`;
+document.getElementById('endScore').textContent=`0 / ${total}`;
+
+QUESTIONS.forEach((item,i)=>{
+  const c=document.createElement('div');
+  c.className='qcard reveal';
+  let h=`<span class="qcat ${item.cat}">${item.label}</span><div class="q-text">${item.q}</div><div class="options">`;
+  item.opts.forEach((o,idx)=>h+=`<button class="opt-btn">${o}</button>`);
+  h+=`</div><div class="feedback"></div>`;
+  c.innerHTML=h;
+  const fb=c.querySelector('.feedback');
+  let done=false;
+  c.querySelectorAll('.opt-btn').forEach((btn,idx)=>{
+    btn.addEventListener('click',()=>{
+      if(done)return;
+      if(idx===item.correct){
+        done=true;answeredCount++;score++;
+        btn.classList.add('correct');
+        c.querySelectorAll('.opt-btn').forEach(b=>{b.classList.add('disabled');if(b!==btn)b.classList.add('dim');});
+        fb.textContent=item.fb;fb.className='feedback show correct';
+        updateProg();
+      }else{
+        btn.classList.add('wrong','disabled','dim');
+        fb.textContent='💪 Prøv en gang til!';fb.className='feedback show wrong';
+      }
+    });
+  });
+  qbox.appendChild(c);
+});
+
+function updateProg(){
+  const pct=Math.round((answeredCount/total)*100);
+  document.getElementById('progFill').style.width=pct+'%';
+  document.getElementById('progText').textContent=`${answeredCount} / ${total}`;
+  if(answeredCount===total){
+    document.getElementById('endScore').textContent=`${score} / ${total}`;
+    document.getElementById('endcard').classList.add('show');
+    document.getElementById('sendResults').style.display='block';
+    document.getElementById('endcard').scrollIntoView({behavior:'smooth'});
+  }
+}
+
+/* ====== DAILY HVIS ====== */
+let promptIdx=Math.floor(Math.random()*DAILY_PROMPTS.length);
+function showPrompt(){document.getElementById('dailyPrompt').innerHTML=DAILY_PROMPTS[promptIdx];}
+showPrompt();
+document.getElementById('newPrompt').addEventListener('click',()=>{
+  promptIdx=(promptIdx+1)%DAILY_PROMPTS.length;showPrompt();
+});
+
+document.getElementById('dailySend').addEventListener('click',async()=>{
+  const txt=document.getElementById('dailyText').value.trim();
+  if(!txt){document.getElementById('dailyText').focus();return;}
+  const btn=document.getElementById('dailySend');
+  btn.disabled=true;btn.textContent='Sender …';
+  const promptText=document.getElementById('dailyPrompt').textContent;
+  try{
+    const r=await fetch(FORMSPREE,{method:'POST',headers:{'Accept':'application/json','Content-Type':'application/json'},
+      body:JSON.stringify({_subject:'Edels Verden – Dagens hvis-setning',Tema:'Dagens hvis-setning (Kap.1 1968)',Oppgave:promptText,Tekst_hun_skrev:txt,Bindeord_fokus:'Hvis … så (kondisjonal)'})});
+    if(r.ok){document.getElementById('dailySent').classList.add('show');btn.textContent='Sendt 💛';document.getElementById('dailyText').value='';}
+    else{btn.disabled=false;btn.textContent='Prøv igjen';}
+  }catch(e){btn.disabled=false;btn.textContent='Prøv igjen';}
+});
+
+/* ====== SEND RESULTS ====== */
+document.getElementById('sendResults').addEventListener('click',async()=>{
+  const btn=document.getElementById('sendResults');
+  btn.disabled=true;btn.textContent='Sender …';
+  const now=new Date();
+  const dato=now.toLocaleDateString('no-NO',{weekday:'long',year:'numeric',month:'long',day:'numeric'});
+  const pct=Math.round((score/total)*100);
+  try{
+    await fetch(FORMSPREE,{method:'POST',headers:{'Accept':'application/json','Content-Type':'application/json'},
+      body:JSON.stringify({_subject:`Edels Verden – Kap.1 1968 – ${dato}`,Dato:dato,Kapittel:'Kapittel 1: 1968 – Frit valg?',Resultat:`${score} av ${total} riktige (${pct}%)`,Vurdering:pct===100?'🌟 Perfekt!':pct>=70?'✅ Veldig bra!':'💪 Fortsett å øve!'})});
+    btn.textContent='Sendt! 🌟';
+  }catch(e){btn.disabled=false;btn.textContent='Prøv igjen 📩';}
+});
+
+/* ====== REVEAL ====== */
+const io=new IntersectionObserver(es=>{es.forEach(e=>{if(e.isIntersecting)e.target.classList.add('in');});},{threshold:.1});
+document.querySelectorAll('.reveal').forEach(el=>io.observe(el));
+</script>
+</body>
+</html>

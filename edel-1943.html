@@ -1,0 +1,378 @@
+<!DOCTYPE html>
+<html lang="no">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+<title>Kapittel 2: 1943 – Hva formet foreldrene?</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800;900&family=Fredoka+One&display=swap');
+*{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent;}
+:root{
+  --green:#5a9e6f;--green-light:#e8f5ec;--green-dark:#3d7a52;
+  --warm:#f9f4ed;--pink:#f4a0b0;--pink-light:#fdeef1;
+  --yellow:#f7d97a;--yellow-light:#fef9e7;
+  --sky:#5B8BB0;--sky-light:#e3eef5;
+  --sepia:#9c7a4d;--sepia-light:#f0e6d6;--sepia-dark:#6b5436;
+  --text:#3a3228;--text-soft:#7a6e64;
+  --radius:20px;--shadow:0 4px 20px rgba(0,0,0,0.10);
+}
+html{scroll-behavior:smooth;}
+body{font-family:'Nunito',sans-serif;background:linear-gradient(160deg,#f0e6d6 0%,#e8f5ec 50%,#e3eef5 100%);color:var(--text);padding-bottom:120px;}
+.wrap{max-width:640px;margin:0 auto;padding:0 18px;}
+
+.head{text-align:center;padding:34px 20px 14px;}
+.head .era{font-size:48px;margin-bottom:4px;}
+.head h1{font-family:'Fredoka One',cursive;font-size:27px;color:var(--sepia-dark);line-height:1.12;}
+.head .sub{font-size:14px;color:var(--text-soft);margin-top:6px;}
+
+.prog-wrap{background:white;border-radius:50px;box-shadow:var(--shadow);padding:8px 16px;display:flex;align-items:center;gap:12px;position:sticky;top:10px;z-index:20;max-width:604px;margin:14px auto 0;}
+.prog-bar{flex:1;height:10px;background:#e8e0d8;border-radius:10px;overflow:hidden;}
+.prog-fill{height:100%;width:0%;background:linear-gradient(90deg,var(--sepia),#c4a574);border-radius:10px;transition:width .4s;}
+.prog-text{font-size:12px;font-weight:800;color:var(--text-soft);white-space:nowrap;}
+
+.shead{display:flex;align-items:center;gap:10px;margin:30px 0 14px;}
+.shead .ico{font-size:26px;}
+.shead h2{font-family:'Fredoka One',cursive;font-size:20px;color:var(--sepia-dark);}
+
+/* STORY */
+.story-card{background:white;border-radius:var(--radius);box-shadow:var(--shadow);padding:18px 18px 4px;margin-bottom:14px;}
+.story-card.sepia{background:linear-gradient(180deg,#fbf6ec,#f5ecdc);}
+.story-card p{font-size:16px;line-height:1.65;margin-bottom:14px;}
+.story-card .scene-tag{font-size:11px;font-weight:800;text-transform:uppercase;letter-spacing:1px;color:var(--sepia);margin-bottom:10px;}
+.kw{font-weight:800;color:var(--sepia-dark);background:var(--sepia-light);border-radius:6px;padding:1px 5px;cursor:pointer;border-bottom:2px solid var(--sepia);}
+.kw:active{background:var(--sepia);color:white;}
+.dialog{color:var(--sky);font-weight:700;border-left:3px solid var(--sky);padding-left:10px;}
+
+.pop{position:fixed;z-index:60;max-width:250px;background:var(--text);color:var(--warm);padding:11px 13px;border-radius:12px;font-size:13px;font-weight:600;line-height:1.4;box-shadow:var(--shadow);opacity:0;pointer-events:none;transform:translateY(6px);transition:.18s;}
+.pop.show{opacity:1;transform:translateY(0);}
+.pop b{color:var(--yellow);}
+
+.wordbox{background:white;border-radius:var(--radius);box-shadow:var(--shadow);padding:16px;margin-bottom:14px;}
+.wordbox .wbtitle{font-size:11px;font-weight:800;text-transform:uppercase;letter-spacing:1px;color:var(--text-soft);margin-bottom:12px;}
+.wrow{display:flex;gap:10px;align-items:flex-start;padding:9px 0;border-bottom:1px solid #f0ebe4;}
+.wrow:last-child{border-bottom:none;}
+.wrow .wemoji{font-size:22px;min-width:30px;text-align:center;}
+.wrow .wmain{font-weight:800;color:var(--sepia-dark);}
+.wrow .wdef{font-size:13px;color:var(--text-soft);}
+
+/* ÅRSAK → KONSEKVENS MATCH */
+.match-intro{background:var(--sky-light);border-radius:var(--radius);padding:16px;margin-bottom:14px;font-size:14px;font-weight:700;color:var(--sky);line-height:1.5;}
+.match-wrap{background:white;border-radius:var(--radius);box-shadow:var(--shadow);padding:16px;margin-bottom:14px;}
+.match-cols{display:flex;gap:10px;}
+.match-col{flex:1;}
+.match-col h4{font-size:11px;font-weight:800;text-transform:uppercase;letter-spacing:.5px;text-align:center;margin-bottom:10px;color:var(--text-soft);}
+.match-col h4.a{color:var(--sepia-dark);}
+.match-col h4.k{color:var(--green-dark);}
+.mcard{border:2.5px solid #e0d8d0;border-radius:12px;padding:11px 10px;margin-bottom:9px;font-size:13px;font-weight:700;line-height:1.3;cursor:pointer;transition:.15s;background:var(--warm);min-height:62px;display:flex;align-items:center;}
+.mcard.a{border-color:#dcc9a8;}
+.mcard.k{border-color:#bcdcc6;}
+.mcard.sel{border-color:var(--sky);background:var(--sky-light);transform:scale(1.02);}
+.mcard.matched{border-color:var(--green);background:var(--green-light);color:var(--green-dark);pointer-events:none;opacity:.75;}
+.mcard.matched::after{content:" ✓";color:var(--green);font-weight:900;}
+.match-status{text-align:center;font-weight:800;font-size:13px;color:var(--green-dark);margin-top:6px;min-height:18px;}
+
+.qcard{background:white;border-radius:var(--radius);box-shadow:var(--shadow);padding:17px;margin-bottom:13px;}
+.qcat{display:inline-block;font-size:10px;font-weight:800;text-transform:uppercase;letter-spacing:1px;padding:3px 10px;border-radius:20px;margin-bottom:10px;}
+.qcat.les{background:var(--sky-light);color:var(--sky);}
+.qcat.ord{background:var(--sepia-light);color:var(--sepia-dark);}
+.qcat.hvis{background:var(--yellow-light);color:#b88a1e;}
+.q-text{font-size:16px;font-weight:700;line-height:1.4;margin-bottom:13px;}
+.options{display:flex;flex-direction:column;gap:8px;}
+.opt-btn{background:var(--warm);border:2.5px solid #e0d8d0;border-radius:13px;padding:12px 14px;font-family:'Nunito',sans-serif;font-size:14px;font-weight:700;color:var(--text);cursor:pointer;text-align:left;transition:.15s;line-height:1.35;}
+.opt-btn:active{transform:scale(.99);}
+.opt-btn.correct{background:var(--green-light);border-color:var(--green);color:var(--green-dark);}
+.opt-btn.wrong{background:var(--pink-light);border-color:var(--pink);color:#c0566a;}
+.opt-btn.disabled{pointer-events:none;}
+.opt-btn.dim{opacity:.45;}
+.feedback{border-radius:13px;padding:11px 13px;font-size:13px;font-weight:700;margin-top:10px;display:none;line-height:1.45;}
+.feedback.show{display:block;}
+.feedback.correct{background:var(--green-light);color:var(--green-dark);border:2px solid #a8d5b5;}
+.feedback.wrong{background:var(--pink-light);color:#c0566a;border:2px solid var(--pink);}
+
+.daily{background:linear-gradient(135deg,var(--yellow-light),var(--sepia-light));border-radius:var(--radius);box-shadow:var(--shadow);padding:20px;margin-bottom:14px;border:2.5px solid var(--yellow);}
+.daily .badge{display:inline-block;background:var(--yellow);color:#7a5a10;font-weight:800;font-size:11px;text-transform:uppercase;letter-spacing:1px;padding:4px 12px;border-radius:20px;margin-bottom:12px;}
+.daily h3{font-family:'Fredoka One',cursive;font-size:18px;color:var(--sepia-dark);margin-bottom:6px;}
+.daily .prompt{font-size:15px;font-weight:700;color:var(--text);background:white;border-radius:12px;padding:11px 13px;margin-bottom:12px;line-height:1.5;}
+.daily .prompt .hl{color:var(--sky);}
+.daily .starter{font-weight:800;color:var(--sky);margin-bottom:8px;font-size:15px;}
+.daily textarea{width:100%;border:2.5px solid white;border-radius:12px;padding:11px 13px;font:inherit;font-size:15px;min-height:74px;resize:vertical;background:white;}
+.daily textarea:focus{outline:none;border-color:var(--sky);}
+.daily .newprompt{background:none;border:none;color:var(--sepia-dark);font:inherit;font-weight:800;font-size:13px;cursor:pointer;text-decoration:underline;margin-top:4px;}
+
+.btn-next{position:fixed;bottom:20px;left:50%;transform:translateX(-50%);background:var(--green);color:white;border:none;border-radius:50px;padding:14px 36px;font-family:'Fredoka One',cursive;font-size:17px;cursor:pointer;box-shadow:0 5px 0 var(--green-dark);width:calc(100% - 36px);max-width:380px;z-index:30;}
+.btn-next:active{transform:translateX(-50%) translateY(3px);box-shadow:0 2px 0 var(--green-dark);}
+.btn-send{background:var(--green);color:white;border:none;border-radius:50px;padding:12px 28px;font-family:'Fredoka One',cursive;font-size:15px;cursor:pointer;box-shadow:0 4px 0 var(--green-dark);margin-top:12px;}
+.btn-send:active{transform:translateY(3px);box-shadow:0 1px 0 var(--green-dark);}
+.btn-send:disabled{opacity:.6;}
+.sent{margin-top:10px;font-weight:800;color:var(--green-dark);display:none;}
+.sent.show{display:block;}
+
+.endcard{background:white;border-radius:var(--radius);box-shadow:var(--shadow);padding:26px 20px;text-align:center;margin-top:10px;display:none;}
+.endcard.show{display:block;}
+.endcard .star{font-size:60px;}
+.endcard h2{font-family:'Fredoka One',cursive;font-size:23px;color:var(--sepia-dark);margin:6px 0;}
+.endcard .big{font-family:'Fredoka One',cursive;font-size:44px;color:var(--sepia-dark);}
+.endcard p{color:var(--text-soft);font-size:14px;line-height:1.5;}
+
+.reveal{opacity:0;transform:translateY(14px);}
+.reveal.in{opacity:1;transform:none;transition:.5s;}
+@media (prefers-reduced-motion:reduce){*{transition:none!important;animation:none!important;}}
+</style>
+</head>
+<body>
+
+<div class="head">
+  <div class="era">🕰️</div>
+  <h1>1943 – Hva formet<br>foreldrene?</h1>
+  <div class="sub">Edels Språkreise · Kapittel 2</div>
+</div>
+
+<div class="prog-wrap">
+  <div class="prog-bar"><div class="prog-fill" id="progFill"></div></div>
+  <div class="prog-text" id="progText">0 / 12</div>
+</div>
+
+<div class="wrap">
+
+  <div class="shead reveal"><span class="ico">📖</span><h2>Historien</h2></div>
+
+  <div class="story-card sepia reveal">
+    <div class="scene-tag">Edel reiser tilbake</div>
+    <p>Edel bruker Skjebnehjulet igjen. Denne gangen reiser hun ikke til 1968. Hun reiser helt tilbake til <b>1943</b> – midt under andre verdenskrig.</p>
+    <p>Esmeralda hvisker: – For å forstå Heather, må du forstå foreldrene hennes. Og for å forstå dem, må du se barndommen deres.</p>
+    <p>Edel forstår: foreldrene til Heather var en gang barn. Det de opplevde, formet hvem de ble.</p>
+  </div>
+
+  <div class="story-card sepia reveal">
+    <div class="scene-tag">Heathers mor som barn</div>
+    <p>I et lite, enkelt hus bor jenta som senere blir Heathers mor. Klærne hennes er lappet, for ingenting får gå til spille.</p>
+    <p>Det er <span class="kw" data-w="rasjonering">rasjonering</span>: familien får bare litt mat hver uke. Hun lærer å <span class="kw" data-w="spare">spare</span> på alt – mat, klær og penger.</p>
+    <p>Hun hjelper foreldrene med oppgaver hver dag. Hun kjenner på en stadig <span class="kw" data-w="frykt">frykt</span> for at maten skal ta slutt.</p>
+    <p class="dialog">– Vi må passe på det vi har, sier moren hennes. – Man vet aldri hva som skjer i morgen.</p>
+  </div>
+
+  <div class="story-card sepia reveal">
+    <div class="scene-tag">Heathers far som barn</div>
+    <p>I nabolaget vokser gutten som senere blir Heathers far. Han ser soldater dra av gårde til krigen. Om kveldene lytter familien til nyheter på radioen.</p>
+    <p>Det er en utrygg tid, full av <span class="kw" data-w="usikkerhet">usikkerhet</span>. Ingen vet hvordan det vil gå.</p>
+    <p>Han vokser opp med tre setninger som gjentas igjen og igjen:</p>
+    <p class="dialog">– Jobb hardt. Ikke sløs. Spar penger.</p>
+    <p>Av denne <span class="kw" data-w="erfaring">erfaringen</span> lærer han at <span class="kw" data-w="trygghet">trygghet</span> og orden er det aller viktigste.</p>
+  </div>
+
+  <div class="story-card reveal">
+    <div class="scene-tag">Edel forstår</div>
+    <p>Edel ser det nå. Foreldrene til Heather ble ikke strenge uten grunn. De vokste opp med krig, frykt og <span class="kw" data-w="rasjonering">rasjonering</span>.</p>
+    <p>Derfor er <span class="kw" data-w="trygghet">trygghet</span>, arbeid og familie så viktig for dem. Det er en hel <span class="kw" data-w="generasjon">generasjon</span> som bærer på den samme erfaringen.</p>
+    <p>Esmeralda dukker opp ved siden av henne og smiler:</p>
+    <p class="dialog">– Når vi forstår barndommen til et menneske, forstår vi bedre valgene de tar som voksne.</p>
+    <p>Edel tenker: foreldrene prøver ikke å være vonde. De prøver å beskytte. De er redde for at kaoset skal komme tilbake.</p>
+  </div>
+
+  <!-- WORD LIST -->
+  <div class="shead reveal"><span class="ico">🔑</span><h2>Ord jeg må lære</h2></div>
+  <div class="wordbox reveal" id="wordbox"></div>
+
+  <!-- ÅRSAK → KONSEKVENS -->
+  <div class="shead reveal"><span class="ico">🔗</span><h2>Fra frykt til orden</h2></div>
+  <div class="match-intro reveal">
+    Hver <b>årsak</b> (noe som skjedde) har en <b>konsekvens</b> (hva de lærte). Trykk på en grunn til venstre, så på det den førte til høyre.
+  </div>
+  <div class="match-wrap reveal">
+    <div class="match-cols">
+      <div class="match-col">
+        <h4 class="a">Årsak (det de opplevde)</h4>
+        <div id="colA"></div>
+      </div>
+      <div class="match-col">
+        <h4 class="k">Konsekvens (hva de lærte)</h4>
+        <div id="colK"></div>
+      </div>
+    </div>
+    <div class="match-status" id="matchStatus"></div>
+  </div>
+
+  <!-- QUESTIONS -->
+  <div class="shead reveal"><span class="ico">✏️</span><h2>Oppgaver</h2></div>
+  <div id="questions"></div>
+
+  <!-- DAILY HVIS -->
+  <div class="shead reveal"><span class="ico">🌟</span><h2>Dagens hvis-setning</h2></div>
+  <div class="daily reveal">
+    <span class="badge">Hver dag ✦</span>
+    <h3>Skriv én hvis-setning i dag</h3>
+    <div class="prompt" id="dailyPrompt"></div>
+    <div class="starter">Hvis … , så …</div>
+    <textarea id="dailyText" placeholder="Hvis ___, så ___"></textarea>
+    <div><button class="newprompt" id="newPrompt">↻ Gi meg en ny idé</button></div>
+    <button class="btn-send" id="dailySend">Send til mamma 💛</button>
+    <div class="sent" id="dailySent">Sendt! Bra jobbet, Edel 🌟</div>
+  </div>
+
+  <div class="endcard" id="endcard">
+    <div class="star">⭐</div>
+    <h2>Kjempebra, Edel!</h2>
+    <div class="big" id="endScore">0 / 12</div>
+    <p>Nå vet du hvorfor Heathers foreldre ble som de ble.<br>Du forstår fortiden 🕰️💚</p>
+  </div>
+
+</div>
+
+<button class="btn-next" id="sendResults" style="display:none;">Send resultatet 📩</button>
+<div class="pop" id="pop"></div>
+
+<script>
+const FORMSPREE = "https://formspree.io/f/mqeolldg";
+
+const WORDS = {
+  "rasjonering":{e:"🍞",def:"Når man bare får litt mat eller varer hver uke, fordi det er lite av alt."},
+  "spare":      {e:"🪙",def:"Å ta vare på noe og ikke bruke alt med en gang."},
+  "frykt":      {e:"😟",def:"En sterk følelse av å være redd."},
+  "usikkerhet": {e:"❓",def:"Når man ikke vet hva som kommer til å skje."},
+  "erfaring":   {e:"📚",def:"Noe du har opplevd og lært av."},
+  "trygghet":   {e:"🛡️",def:"Følelsen av å være trygg og at alt er i orden."},
+  "generasjon": {e:"👨‍👩‍👧",def:"Alle menneskene som er barn i samme tid."}
+};
+const WORD_ORDER=["frykt","trygghet","rasjonering","spare","usikkerhet","erfaring","generasjon"];
+
+/* årsak → konsekvens pairs */
+const PAIRS=[
+  {a:"Det var krig og lite mat.", k:"De lærte å spare på alt."},
+  {a:"De levde med frykt og usikkerhet.", k:"De ville ha trygghet og orden."},
+  {a:"De så soldater dra til krigen.", k:"De syntes familie var aller viktigst."},
+  {a:"Klærne måtte lappes og brukes lenge.", k:"De kastet aldri noe som kunne brukes."}
+];
+
+const QUESTIONS=[
+  // les
+  {cat:"les",label:"Les og svar",q:"Hvilket år reiser Edel til i dette kapittelet?",
+   opts:["1968","1943","2024"],correct:1,fb:"✅ Riktig! Hun reiser til 1943, under andre verdenskrig."},
+  {cat:"les",label:"Les og svar",q:"Hvorfor er klærne til Heathers mor lappet?",
+   opts:["Fordi ingenting får gå til spille","Fordi hun liker lapper","Fordi hun er kunstner"],correct:0,
+   fb:"✅ Riktig! Under krigen kunne ingenting sløses bort."},
+  {cat:"les",label:"Les og svar",q:"Hvilke tre setninger vokser Heathers far opp med?",
+   opts:["Lek, sov, spis","Jobb hardt, ikke sløs, spar penger","Syng, dans, le"],correct:1,
+   fb:"✅ Riktig! «Jobb hardt. Ikke sløs. Spar penger.»"},
+  {cat:"les",label:"Les og svar",q:"Hva forstår Edel til slutt om foreldrene?",
+   opts:["At de er vonde","At de prøver å beskytte, fordi de var redde","At de ikke bryr seg"],correct:1,
+   fb:"✅ Riktig! De prøver å beskytte, ikke å være strenge uten grunn."},
+  // ord
+  {cat:"ord",label:"Hva betyr ordet?",q:"Hva betyr «rasjonering»?",
+   opts:["Å få bare litt mat eller varer hver uke","En type fest","Å reise med tog"],correct:0,
+   fb:"✅ Riktig! Rasjonering betyr at man bare får litt av alt."},
+  {cat:"ord",label:"Hva betyr ordet?",q:"Hva betyr «trygghet»?",
+   opts:["Å være redd","Følelsen av å være trygg og at alt er i orden","Å være sulten"],correct:1,
+   fb:"✅ Riktig! Trygghet er følelsen av at alt er i orden."},
+  {cat:"ord",label:"Hva betyr ordet?",q:"Hva betyr «generasjon»?",
+   opts:["Alle som er barn i samme tid","En stor bil","Et land"],correct:0,
+   fb:"✅ Riktig! En generasjon er alle som vokser opp i samme tid."},
+  {cat:"ord",label:"Velg riktig ord",q:"Heathers mor lærte å ___ på alt – mat, klær og penger. Hvilket ord passer?",
+   opts:["spare","sløse","sove"],correct:0,fb:"✅ Riktig! Hun lærte å spare på alt."},
+  {cat:"ord",label:"Velg riktig ord",q:"En ___ er noe du har opplevd og lært av. Hvilket ord passer?",
+   opts:["erfaring","ferie","farge"],correct:0,fb:"✅ Riktig! En erfaring er noe du har opplevd og lært av."},
+  // hvis
+  {cat:"hvis",label:"Hvis … så",q:"Velg setningen som er bygd riktig:",
+   opts:["Hvis jeg forstår fortiden, så forstår jeg menneskene bedre.","Hvis jeg forstår fortiden, menneskene jeg forstår så bedre."],correct:0,
+   fb:"✅ Riktig! «Så» kommer rett etter komma."},
+  {cat:"hvis",label:"Hvis … så",q:"Hvilken henger sammen (årsak og konsekvens)?",
+   opts:["Hvis man vokser opp med krig, så ønsker man trygghet.","Hvis man vokser opp med krig, så liker man is."],correct:0,
+   fb:"✅ Riktig! Krig → ønske om trygghet. Delene hører sammen."},
+  {cat:"hvis",label:"Hvis … så",q:"Velg riktig start:",
+   opts:["hvis jeg lytter til andre, så lærer jeg mer.","Hvis jeg lytter til andre, så lærer jeg mer."],correct:1,
+   fb:"✅ Riktig! Setninger starter med stor bokstav."}
+];
+
+const DAILY_PROMPTS=[
+  "Tenk på <span class='hl'>trygghet</span>. Hvis du vil føle deg trygg, så …?",
+  "Tenk på å <span class='hl'>spare</span>. Hvis du sparer på noe, så …?",
+  "Tenk på <span class='hl'>Pipoka</span>. Hvis du passer godt på henne, så …?",
+  "Tenk på <span class='hl'>fortiden</span>. Hvis du forstår hvor noen kommer fra, så …?",
+  "Tenk på en <span class='hl'>venn</span>. Hvis du lytter til vennen din, så …?",
+  "Tenk på <span class='hl'>framtiden</span>. Hvis du lærer av historien, så …?",
+  "Tenk på <span class='hl'>familien</span>. Hvis du hjelper hjemme, så …?"
+];
+
+/* build word list */
+const wb=document.getElementById('wordbox');
+wb.innerHTML='<div class="wbtitle">Trykk på de uthevede ordene i historien for å se hva de betyr</div>';
+WORD_ORDER.forEach(w=>{const d=WORDS[w];const r=document.createElement('div');r.className='wrow';
+  r.innerHTML=`<span class="wemoji">${d.e}</span><span><span class="wmain">${w}</span> – <span class="wdef">${d.def}</span></span>`;wb.appendChild(r);});
+
+/* popups */
+const pop=document.getElementById('pop');let popT;
+document.querySelectorAll('.kw').forEach(k=>{k.addEventListener('click',e=>{
+  const w=k.dataset.w,d=WORDS[w];pop.innerHTML=`<b>${w}</b> — ${d.def}`;pop.classList.add('show');
+  const r=k.getBoundingClientRect();let x=r.left+r.width/2-125;x=Math.max(10,Math.min(x,window.innerWidth-260));
+  pop.style.left=x+'px';pop.style.top=(r.bottom+8)+'px';clearTimeout(popT);popT=setTimeout(()=>pop.classList.remove('show'),3200);e.stopPropagation();});});
+document.addEventListener('click',e=>{if(!e.target.classList.contains('kw'))pop.classList.remove('show');});
+
+/* ===== MATCH GAME ===== */
+let matchScore=0;
+const colA=document.getElementById('colA'),colK=document.getElementById('colK');
+const shuffle=arr=>arr.map(v=>[Math.random(),v]).sort((a,b)=>a[0]-b[0]).map(x=>x[1]);
+PAIRS.forEach((p,i)=>{const c=document.createElement('div');c.className='mcard a';c.dataset.id=i;c.textContent=p.a;colA.appendChild(c);});
+shuffle(PAIRS.map((p,i)=>({...p,id:i}))).forEach(p=>{const c=document.createElement('div');c.className='mcard k';c.dataset.id=p.id;c.textContent=p.k;colK.appendChild(c);});
+let selA=null;
+function clearSel(){document.querySelectorAll('.mcard.sel').forEach(c=>c.classList.remove('sel'));}
+colA.querySelectorAll('.mcard').forEach(c=>c.addEventListener('click',()=>{if(c.classList.contains('matched'))return;clearSel();selA=c;c.classList.add('sel');}));
+colK.querySelectorAll('.mcard').forEach(c=>c.addEventListener('click',()=>{
+  if(c.classList.contains('matched')||!selA)return;
+  if(c.dataset.id===selA.dataset.id){
+    c.classList.add('matched');selA.classList.add('matched');selA.classList.remove('sel');selA=null;matchScore++;
+    document.getElementById('matchStatus').textContent=matchScore===PAIRS.length?'🌟 Alle riktige! Du forstår årsak og konsekvens!':`${matchScore} av ${PAIRS.length} riktige`;
+  }else{
+    const bad=c;bad.style.borderColor='#f4a0b0';setTimeout(()=>{bad.style.borderColor='';},500);
+    document.getElementById('matchStatus').textContent='💪 Ikke helt – prøv en annen!';
+  }
+}));
+
+/* ===== QUESTIONS ===== */
+let score=0,answeredCount=0;const total=QUESTIONS.length;
+const qbox=document.getElementById('questions');
+document.getElementById('progText').textContent=`0 / ${total}`;
+document.getElementById('endScore').textContent=`0 / ${total}`;
+QUESTIONS.forEach(item=>{const c=document.createElement('div');c.className='qcard reveal';
+  let h=`<span class="qcat ${item.cat}">${item.label}</span><div class="q-text">${item.q}</div><div class="options">`;
+  item.opts.forEach(o=>h+=`<button class="opt-btn">${o}</button>`);h+=`</div><div class="feedback"></div>`;
+  c.innerHTML=h;const fb=c.querySelector('.feedback');let done=false;
+  c.querySelectorAll('.opt-btn').forEach((btn,idx)=>{btn.addEventListener('click',()=>{if(done)return;
+    if(idx===item.correct){done=true;answeredCount++;score++;btn.classList.add('correct');
+      c.querySelectorAll('.opt-btn').forEach(b=>{b.classList.add('disabled');if(b!==btn)b.classList.add('dim');});
+      fb.textContent=item.fb;fb.className='feedback show correct';updateProg();}
+    else{btn.classList.add('wrong','disabled','dim');fb.textContent='💪 Prøv en gang til!';fb.className='feedback show wrong';}});});
+  qbox.appendChild(c);});
+
+function updateProg(){const pct=Math.round((answeredCount/total)*100);
+  document.getElementById('progFill').style.width=pct+'%';document.getElementById('progText').textContent=`${answeredCount} / ${total}`;
+  if(answeredCount===total){document.getElementById('endScore').textContent=`${score} / ${total}`;
+    document.getElementById('endcard').classList.add('show');document.getElementById('sendResults').style.display='block';
+    document.getElementById('endcard').scrollIntoView({behavior:'smooth'});}}
+
+/* daily */
+let pi=Math.floor(Math.random()*DAILY_PROMPTS.length);
+function showP(){document.getElementById('dailyPrompt').innerHTML=DAILY_PROMPTS[pi];}showP();
+document.getElementById('newPrompt').addEventListener('click',()=>{pi=(pi+1)%DAILY_PROMPTS.length;showP();});
+document.getElementById('dailySend').addEventListener('click',async()=>{
+  const txt=document.getElementById('dailyText').value.trim();if(!txt){document.getElementById('dailyText').focus();return;}
+  const btn=document.getElementById('dailySend');btn.disabled=true;btn.textContent='Sender …';
+  const promptText=document.getElementById('dailyPrompt').textContent;
+  try{const r=await fetch(FORMSPREE,{method:'POST',headers:{'Accept':'application/json','Content-Type':'application/json'},
+    body:JSON.stringify({_subject:'Edels Verden – Dagens hvis-setning',Tema:'Dagens hvis-setning (Kap.2 1943)',Oppgave:promptText,Tekst_hun_skrev:txt,Bindeord_fokus:'Hvis … så (kondisjonal)'})});
+    if(r.ok){document.getElementById('dailySent').classList.add('show');btn.textContent='Sendt 💛';document.getElementById('dailyText').value='';}
+    else{btn.disabled=false;btn.textContent='Prøv igjen';}}catch(e){btn.disabled=false;btn.textContent='Prøv igjen';}});
+
+/* results */
+document.getElementById('sendResults').addEventListener('click',async()=>{
+  const btn=document.getElementById('sendResults');btn.disabled=true;btn.textContent='Sender …';
+  const now=new Date();const dato=now.toLocaleDateString('no-NO',{weekday:'long',year:'numeric',month:'long',day:'numeric'});
+  const pct=Math.round((score/total)*100);
+  try{await fetch(FORMSPREE,{method:'POST',headers:{'Accept':'application/json','Content-Type':'application/json'},
+    body:JSON.stringify({_subject:`Edels Verden – Kap.2 1943 – ${dato}`,Dato:dato,Kapittel:'Kapittel 2: 1943 – Hva formet foreldrene?',Resultat:`${score} av ${total} riktige (${pct}%)`,Match:`Årsak→konsekvens: ${matchScore} av ${PAIRS.length}`,Vurdering:pct===100?'🌟 Perfekt!':pct>=70?'✅ Veldig bra!':'💪 Fortsett å øve!'})});
+    btn.textContent='Sendt! 🌟';}catch(e){btn.disabled=false;btn.textContent='Prøv igjen 📩';}});
+
+/* reveal */
+const io=new IntersectionObserver(es=>{es.forEach(e=>{if(e.isIntersecting)e.target.classList.add('in');});},{threshold:.1});
+document.querySelectorAll('.reveal').forEach(el=>io.observe(el));
+</script>
+</body>
+</html>
