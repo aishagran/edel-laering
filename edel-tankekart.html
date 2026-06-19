@@ -1,0 +1,229 @@
+<!DOCTYPE html>
+<html lang="no">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+<title>Edels Tankekart – Skoleord</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800;900&family=Fredoka+One&display=swap');
+*{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent;}
+:root{
+  --green:#5a9e6f;--green-light:#e8f5ec;--green-dark:#3d7a52;
+  --warm:#f9f4ed;--pink:#f4a0b0;--pink-light:#fdeef1;
+  --yellow:#f7d97a;--yellow-light:#fef9e7;
+  --sky:#5B8BB0;--sky-light:#e3eef5;
+  --purple:#9b7bb5;--purple-light:#efe7f5;--purple-dark:#6d4f87;
+  --text:#3a3228;--text-soft:#7a6e64;
+  --radius:20px;--shadow:0 4px 20px rgba(0,0,0,0.10);
+}
+html{scroll-behavior:smooth;}
+body{font-family:'Nunito',sans-serif;background:linear-gradient(160deg,#e3eef5 0%,#efe7f5 50%,#e8f5ec 100%);color:var(--text);padding-bottom:40px;}
+.wrap{max-width:660px;margin:0 auto;padding:0 16px;}
+
+.head{text-align:center;padding:32px 20px 10px;}
+.head .ico{font-size:46px;}
+.head h1{font-family:'Fredoka One',cursive;font-size:27px;color:var(--purple-dark);line-height:1.1;}
+.head .sub{font-size:14px;color:var(--text-soft);margin-top:6px;}
+
+/* CATEGORY FILTER */
+.filters{display:flex;gap:8px;flex-wrap:wrap;justify-content:center;margin:16px 0 8px;}
+.filt{font-family:'Nunito';font-weight:800;font-size:13px;border:2.5px solid #e0d8d0;background:white;color:var(--text-soft);border-radius:30px;padding:7px 15px;cursor:pointer;transition:.15s;}
+.filt.active{background:var(--purple);border-color:var(--purple);color:white;}
+.counter{text-align:center;font-size:13px;font-weight:700;color:var(--text-soft);margin:6px 0 14px;}
+
+/* WORD GRID */
+.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(140px,1fr));gap:11px;}
+.wcard{background:white;border-radius:16px;box-shadow:var(--shadow);padding:16px 12px;text-align:center;cursor:pointer;transition:.18s;border:2.5px solid transparent;}
+.wcard:active{transform:scale(.97);}
+.wcard.done{border-color:var(--green);background:var(--green-light);}
+.wcard .emoji{font-size:34px;line-height:1;}
+.wcard .word{font-family:'Fredoka One',cursive;font-size:16px;color:var(--purple-dark);margin-top:8px;word-break:break-word;}
+.wcard .cat{font-size:10px;font-weight:800;text-transform:uppercase;letter-spacing:.5px;margin-top:4px;}
+.wcard .cat.norsk{color:var(--sky);}
+.wcard .cat.samf{color:#c08a1e;}
+.wcard .cat.natur{color:var(--green-dark);}
+.wcard .check{font-size:13px;color:var(--green);font-weight:900;margin-top:4px;height:16px;}
+
+/* MODAL */
+.overlay{position:fixed;inset:0;background:rgba(42,38,34,.55);backdrop-filter:blur(3px);display:none;align-items:flex-end;justify-content:center;z-index:100;}
+.overlay.show{display:flex;}
+.modal{background:var(--warm);border-radius:26px 26px 0 0;width:100%;max-width:560px;max-height:92vh;overflow-y:auto;padding:8px 20px 28px;animation:slideUp .25s ease;}
+@keyframes slideUp{from{transform:translateY(40px);opacity:.6;}to{transform:none;opacity:1;}}
+.modal .grab{width:42px;height:5px;background:#d8cdbf;border-radius:5px;margin:10px auto 16px;}
+.modal .m-emoji{font-size:54px;text-align:center;line-height:1;}
+.modal .m-word{font-family:'Fredoka One',cursive;font-size:30px;color:var(--purple-dark);text-align:center;margin-top:4px;}
+.modal .m-cat{text-align:center;font-size:12px;font-weight:800;text-transform:uppercase;letter-spacing:1px;margin-top:2px;margin-bottom:18px;}
+.modal .m-cat.norsk{color:var(--sky);}
+.modal .m-cat.samf{color:#c08a1e;}
+.modal .m-cat.natur{color:var(--green-dark);}
+.dim-block{background:white;border-radius:16px;padding:14px 16px;margin-bottom:12px;box-shadow:0 2px 8px rgba(0,0,0,.05);}
+.dim-block .dim-label{font-size:11px;font-weight:800;text-transform:uppercase;letter-spacing:.8px;color:var(--purple);margin-bottom:6px;}
+.dim-block .dim-text{font-size:16px;line-height:1.5;font-weight:600;}
+.dim-block .dim-text.ex{font-style:italic;color:var(--green-dark);font-weight:700;}
+.write-block{background:linear-gradient(135deg,var(--purple-light),var(--yellow-light));border-radius:16px;padding:16px;margin-bottom:6px;}
+.write-block .dim-label{color:var(--purple-dark);}
+.write-block .starter{font-weight:800;color:var(--sky);margin-bottom:8px;font-size:15px;}
+.write-block textarea{width:100%;border:2.5px solid white;border-radius:12px;padding:11px 13px;font:inherit;font-size:15px;min-height:64px;resize:vertical;background:white;}
+.write-block textarea:focus{outline:none;border-color:var(--purple);}
+.send-row{display:flex;gap:10px;align-items:center;margin-top:12px;}
+.btn-send{background:var(--green);color:white;border:none;border-radius:50px;padding:11px 24px;font-family:'Fredoka One',cursive;font-size:15px;cursor:pointer;box-shadow:0 4px 0 var(--green-dark);}
+.btn-send:active{transform:translateY(3px);box-shadow:0 1px 0 var(--green-dark);}
+.btn-send:disabled{opacity:.6;}
+.sent{font-weight:800;color:var(--green-dark);font-size:14px;display:none;}
+.sent.show{display:inline;}
+.btn-close{background:none;border:none;color:var(--text-soft);font:inherit;font-weight:800;font-size:14px;cursor:pointer;display:block;margin:14px auto 0;text-decoration:underline;}
+</style>
+</head>
+<body>
+<div class="head">
+  <div class="ico">🧠</div>
+  <h1>Edels Tankekart</h1>
+  <div class="sub">Skoleord · trykk på et ord for å utforske det</div>
+</div>
+
+<div class="wrap">
+  <div class="filters" id="filters"></div>
+  <div class="counter" id="counter"></div>
+  <div class="grid" id="grid"></div>
+</div>
+
+<div class="overlay" id="overlay">
+  <div class="modal" id="modal"></div>
+</div>
+
+<script>
+const FORMSPREE="https://formspree.io/f/mqeolldg";
+
+/* 30 academic words: norsk / samfunnsfag / naturfag */
+const WORDS=[
+  // NORSK (språk/tekst)
+  {w:"løsning",cat:"norsk",e:"🔑",def:"Noe som hjelper med et problem.",ex:"Vi fant en god løsning på oppgaven."},
+  {w:"påstand",cat:"norsk",e:"💬",def:"Noe du sier er sant, men som andre kan være uenig i.",ex:"«Katter er best» er en påstand."},
+  {w:"mening",cat:"norsk",e:"🤔",def:"Det du tenker og tror om noe.",ex:"Hva er din mening om saken?"},
+  {w:"forklaring",cat:"norsk",e:"💡",def:"Når du sier hvorfor noe er som det er.",ex:"Læreren ga en god forklaring."},
+  {w:"eksempel",cat:"norsk",e:"📝",def:"En ting som viser hva du mener.",ex:"Kan du gi meg et eksempel?"},
+  {w:"sammenligne",cat:"norsk",e:"⚖️",def:"Å se hva som er likt og ulikt.",ex:"Vi skal sammenligne to tekster."},
+  {w:"beskrive",cat:"norsk",e:"🖊️",def:"Å fortelle hvordan noe er.",ex:"Kan du beskrive bildet?"},
+  {w:"oppsummere",cat:"norsk",e:"📄",def:"Å fortelle det viktigste med få ord.",ex:"Til slutt skal vi oppsummere teksten."},
+  {w:"hovedperson",cat:"norsk",e:"⭐",def:"Den viktigste personen i en historie.",ex:"Edel er hovedpersonen i sagaen."},
+  {w:"budskap",cat:"norsk",e:"✉️",def:"Det viktigste teksten vil si til oss.",ex:"Budskapet er at vi må være snille."},
+  // SAMFUNNSFAG
+  {w:"årsak",cat:"samf",e:"➡️",def:"Grunnen til at noe skjer.",ex:"Årsaken til krigen var mange."},
+  {w:"konsekvens",cat:"samf",e:"🎯",def:"Det som skjer etterpå, på grunn av et valg.",ex:"Hvert valg har en konsekvens."},
+  {w:"verdi",cat:"samf",e:"💗",def:"Noe som er viktig for deg, som du tror på.",ex:"Frihet er en viktig verdi."},
+  {w:"samfunn",cat:"samf",e:"🏘️",def:"Alle menneskene som lever sammen på et sted.",ex:"Vi lever i et trygt samfunn."},
+  {w:"rettighet",cat:"samf",e:"📜",def:"Noe alle har lov til, som ingen kan ta fra deg.",ex:"Alle barn har rett til skole."},
+  {w:"demokrati",cat:"samf",e:"🗳️",def:"Når folket bestemmer ved å stemme.",ex:"I et demokrati får alle stemme."},
+  {w:"konflikt",cat:"samf",e:"⚔️",def:"Når to vil ulike ting og er uenige.",ex:"De løste konflikten med å snakke."},
+  {w:"tradisjon",cat:"samf",e:"🕯️",def:"Noe en familie eller et land gjør år etter år.",ex:"Bursdagskake er en tradisjon."},
+  {w:"generasjon",cat:"samf",e:"👨‍👩‍👧",def:"Alle som er barn i samme tid.",ex:"Besteforeldre er en eldre generasjon."},
+  {w:"ansvar",cat:"samf",e:"🤲",def:"Noe du må passe på eller hjelpe med.",ex:"Jeg har ansvar for hunden min."},
+  // NATURFAG
+  {w:"organisme",cat:"natur",e:"🦠",def:"Noe som lever – planter, dyr eller mennesker.",ex:"En maur er en liten organisme."},
+  {w:"miljø",cat:"natur",e:"🌍",def:"Alt som er rundt oss i naturen.",ex:"Vi må ta vare på miljøet."},
+  {w:"energi",cat:"natur",e:"⚡",def:"Det som gjør at noe kan bevege seg eller virke.",ex:"Sola gir oss energi."},
+  {w:"egenskap",cat:"natur",e:"🔬",def:"Noe som er typisk for en ting.",ex:"En egenskap ved vann er at det er vått."},
+  {w:"eksperiment",cat:"natur",e:"🧪",def:"Et forsøk for å finne ut noe.",ex:"Vi gjorde et eksperiment i klassen."},
+  {w:"observere",cat:"natur",e:"👀",def:"Å se nøye på noe for å lære.",ex:"Vi skal observere planten hver dag."},
+  {w:"kretsløp",cat:"natur",e:"🔄",def:"Når noe går rundt og rundt i naturen.",ex:"Vann går i et kretsløp."},
+  {w:"tilpasse",cat:"natur",e:"🦎",def:"Å forandre seg for å passe et sted.",ex:"Dyr kan tilpasse seg kulden."},
+  {w:"næring",cat:"natur",e:"🍎",def:"Det kroppen trenger for å vokse og ha krefter.",ex:"Frukt gir oss god næring."},
+  {w:"art",cat:"natur",e:"🐾",def:"En type dyr eller plante.",ex:"Løven er en sterk art."}
+];
+
+const CATS={norsk:"Norsk",samf:"Samfunnsfag",natur:"Naturfag"};
+const STARTERS={
+  "løsning":"Jeg fant en løsning da …","påstand":"Min påstand er at …","mening":"Min mening er at …",
+  "forklaring":"En forklaring på dette er …","eksempel":"Et eksempel er …","sammenligne":"Jeg kan sammenligne … og …",
+  "beskrive":"Jeg vil beskrive …","oppsummere":"Kort oppsummert …","hovedperson":"Hovedpersonen er … fordi …",
+  "budskap":"Budskapet er at …","årsak":"Årsaken til … er …","konsekvens":"En konsekvens av … er …",
+  "verdi":"En viktig verdi for meg er …","samfunn":"I mitt samfunn …","rettighet":"Jeg har rett til …",
+  "demokrati":"I et demokrati …","konflikt":"En konflikt kan løses ved å …","tradisjon":"En tradisjon vi har er …",
+  "generasjon":"Min generasjon …","ansvar":"Jeg har ansvar for …","organisme":"En organisme jeg kjenner er …",
+  "miljø":"For miljøet kan jeg …","energi":"Jeg får energi av …","egenskap":"En egenskap ved … er …",
+  "eksperiment":"I et eksperiment kan jeg …","observere":"Jeg observerte at …","kretsløp":"Et kretsløp er når …",
+  "tilpasse":"Jeg kan tilpasse meg når …","næring":"God næring er …","art":"En art jeg liker er …"
+};
+
+const done=new Set();
+let filter="alle";
+
+const grid=document.getElementById('grid');
+const counter=document.getElementById('counter');
+const filtersBox=document.getElementById('filters');
+
+/* filters */
+const filterList=[["alle","Alle"],["norsk","Norsk"],["samf","Samfunnsfag"],["natur","Naturfag"]];
+filterList.forEach(([id,label])=>{
+  const b=document.createElement('button');b.className='filt'+(id==="alle"?" active":"");b.textContent=label;
+  b.addEventListener('click',()=>{filter=id;document.querySelectorAll('.filt').forEach(x=>x.classList.remove('active'));b.classList.add('active');render();});
+  filtersBox.appendChild(b);
+});
+
+function render(){
+  grid.innerHTML='';
+  const list=WORDS.filter(x=>filter==="alle"||x.cat===filter);
+  list.forEach(item=>{
+    const c=document.createElement('div');
+    c.className='wcard'+(done.has(item.w)?' done':'');
+    c.innerHTML=`<div class="emoji">${item.e}</div><div class="word">${item.w}</div><div class="cat ${item.cat}">${CATS[item.cat]}</div><div class="check">${done.has(item.w)?'✓ utforsket':''}</div>`;
+    c.addEventListener('click',()=>openWord(item));
+    grid.appendChild(c);
+  });
+  counter.textContent=`Du har utforsket ${done.size} av ${WORDS.length} ord 🌟`;
+}
+
+const overlay=document.getElementById('overlay');
+const modal=document.getElementById('modal');
+
+function openWord(item){
+  const starter=STARTERS[item.w]||"";
+  modal.innerHTML=`
+    <div class="grab"></div>
+    <div class="m-emoji">${item.e}</div>
+    <div class="m-word">${item.w}</div>
+    <div class="m-cat ${item.cat}">${CATS[item.cat]}</div>
+
+    <div class="dim-block">
+      <div class="dim-label">Hva betyr det?</div>
+      <div class="dim-text">${item.def}</div>
+    </div>
+    <div class="dim-block">
+      <div class="dim-label">Eksempel</div>
+      <div class="dim-text ex">«${item.ex}»</div>
+    </div>
+    <div class="write-block">
+      <div class="dim-label">Skriv din egen setning ✏️</div>
+      <div class="starter">${starter}</div>
+      <textarea id="userSentence" placeholder="${starter}"></textarea>
+      <div class="send-row">
+        <button class="btn-send" id="sendBtn">Send til mamma 💛</button>
+        <span class="sent" id="sentMsg">Sendt! 🌟</span>
+      </div>
+    </div>
+    <button class="btn-close" id="closeBtn">Lukk</button>
+  `;
+  overlay.classList.add('show');
+  document.body.style.overflow='hidden';
+
+  document.getElementById('closeBtn').addEventListener('click',closeModal);
+  document.getElementById('sendBtn').addEventListener('click',async()=>{
+    const txt=document.getElementById('userSentence').value.trim();
+    if(!txt){document.getElementById('userSentence').focus();return;}
+    const btn=document.getElementById('sendBtn');btn.disabled=true;btn.textContent='Sender …';
+    try{
+      const r=await fetch(FORMSPREE,{method:'POST',headers:{'Accept':'application/json','Content-Type':'application/json'},
+        body:JSON.stringify({_subject:`Edels Tankekart – ${item.w}`,Tema:`Tankekart: ${item.w} (${CATS[item.cat]})`,Ord:item.w,Tekst_hun_skrev:txt})});
+      if(r.ok){document.getElementById('sentMsg').classList.add('show');btn.textContent='Sendt 💛';
+        done.add(item.w);setTimeout(()=>{closeModal();render();},900);}
+      else{btn.disabled=false;btn.textContent='Prøv igjen';}
+    }catch(e){btn.disabled=false;btn.textContent='Prøv igjen';}
+  });
+}
+function closeModal(){overlay.classList.remove('show');document.body.style.overflow='';}
+overlay.addEventListener('click',e=>{if(e.target===overlay)closeModal();});
+
+render();
+</script>
+</body>
+</html>
