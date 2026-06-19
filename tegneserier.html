@@ -17,14 +17,20 @@ body{font-family:'Nunito',sans-serif;background:linear-gradient(160deg,#FFF6FB,#
 .container{max-width:560px;margin:0 auto;padding:18px 16px 60px;}
 .intro{color:#888;font-size:0.9rem;margin-bottom:16px;text-align:center;}
 
+.section-head{font-family:'Baloo 2',cursive;font-size:1.1rem;font-weight:800;color:var(--ink);margin:22px 2px 12px;display:flex;align-items:center;gap:8px;}
+.section-head.saga{color:#C9802E;}
+.section-sub{font-size:0.82rem;color:#999;margin:-8px 2px 14px;}
+
 .comic-card{background:white;border-radius:22px;overflow:hidden;box-shadow:0 5px 18px var(--shadow);margin-bottom:18px;cursor:pointer;border:3px solid transparent;transition:transform 0.15s;}
 .comic-card:active{transform:scale(0.98);}
+.comic-card.saga{border-color:#F2C879;}
 .comic-thumb{width:100%;max-height:240px;object-fit:cover;object-position:top;display:block;background:#FFF3D6;}
 .comic-thumb.missing{height:130px;display:flex;align-items:center;justify-content:center;font-size:0.85rem;color:#B8962E;text-align:center;padding:16px;}
 .comic-info{padding:14px 18px;display:flex;align-items:center;gap:12px;}
 .comic-emoji{font-size:30px;}
 .comic-title{font-family:'Baloo 2',cursive;font-size:1.05rem;font-weight:700;flex:1;}
 .comic-open{font-size:0.78rem;background:var(--p2);color:#7A5A00;font-weight:800;padding:5px 12px;border-radius:16px;}
+.comic-card.saga .comic-open{background:#F2A65A;color:#5A3500;}
 
 /* Fullscreen reader – pinch zoom enabled */
 .reader{display:none;position:fixed;inset:0;background:#1a1830;z-index:100;flex-direction:column;}
@@ -46,6 +52,12 @@ body{font-family:'Nunito',sans-serif;background:linear-gradient(160deg,#FFF6FB,#
 
 <div class="container">
   <p class="intro">Trykk på en historie for å lese den! 🔍 Du kan zoome med to fingre.</p>
+
+  <div class="section-head saga">🎡 Sagaen om Skjebnehjulet</div>
+  <p class="section-sub">Edel reiser gjennom tiden med det magiske hjulet. Les i rekkefølge!</p>
+  <div id="sagaList"></div>
+
+  <div class="section-head">📚 Andre historier</div>
   <div id="comicList"></div>
 </div>
 
@@ -59,7 +71,14 @@ body{font-family:'Nunito',sans-serif;background:linear-gradient(160deg,#FFF6FB,#
 </div>
 
 <script>
-// Legg til flere historier her — bare last opp bildet på GitHub med samme filnavn!
+// SAGAEN — les i rekkefølge. Last opp PNG på GitHub med samme filnavn.
+const SAGA = [
+  {file:"kapittel0-prolog.png", emoji:"✨", title:"Kapittel 0: Prolog – Edel møter Esmeralda"},
+  {file:"kapittel1-1968.png",   emoji:"🌼", title:"Kapittel 1: Heather og det frie valget (1968)"},
+  {file:"kapittel2-1943.png",   emoji:"🕰️", title:"Kapittel 2: Hva formet foreldrene? (1943)"},
+];
+
+// Andre historier
 const COMICS = [
   {file:"skjebnehjulet.png", emoji:"🌟", title:"Edel – Vokteren av Skjebnehjulet"},
   {file:"pipoka.png", emoji:"🐕", title:"Pipoka hjemme alene – Lojalitet"},
@@ -69,21 +88,25 @@ const COMICS = [
   {file:"kaktus.png",      emoji:"🌵", title:"Edel i friminuttet – kaktusversjonen"},
 ];
 
-const list = document.getElementById('comicList');
-COMICS.forEach(c=>{
-  const card = document.createElement('div');
-  card.className = 'comic-card';
-  card.innerHTML = `
-    <img class="comic-thumb" src="${c.file}" alt=""
-         onerror="this.outerHTML='<div class=\\'comic-thumb missing\\'>Last opp «${c.file}» på GitHub, så vises historien her 😊</div>'">
-    <div class="comic-info">
-      <span class="comic-emoji">${c.emoji}</span>
-      <span class="comic-title">${c.title}</span>
-      <span class="comic-open">Les →</span>
-    </div>`;
-  card.onclick = ()=>openReader(c);
-  list.appendChild(card);
-});
+function buildCards(arr, container, extraClass){
+  arr.forEach(c=>{
+    const card = document.createElement('div');
+    card.className = 'comic-card' + (extraClass ? ' '+extraClass : '');
+    card.innerHTML = `
+      <img class="comic-thumb" src="${c.file}" alt=""
+           onerror="this.outerHTML='<div class=\\'comic-thumb missing\\'>Last opp «${c.file}» på GitHub, så vises historien her 😊</div>'">
+      <div class="comic-info">
+        <span class="comic-emoji">${c.emoji}</span>
+        <span class="comic-title">${c.title}</span>
+        <span class="comic-open">Les →</span>
+      </div>`;
+    card.onclick = ()=>openReader(c);
+    container.appendChild(card);
+  });
+}
+
+buildCards(SAGA, document.getElementById('sagaList'), 'saga');
+buildCards(COMICS, document.getElementById('comicList'), '');
 
 function openReader(c){
   document.getElementById('readerTitle').textContent = c.emoji+' '+c.title;
