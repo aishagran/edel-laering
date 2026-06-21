@@ -1,0 +1,362 @@
+<!DOCTYPE html>
+<html lang="no">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+<title>Edel lærer låning – Minus steg for steg</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800;900&family=Fredoka+One&display=swap');
+*{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent;}
+:root{
+  --green:#5a9e6f;--green-light:#e8f5ec;--green-dark:#3d7a52;
+  --warm:#f9f4ed;--pink:#f4a0b0;--pink-light:#fdeef1;
+  --yellow:#f7d97a;--yellow-light:#fef9e7;
+  --sky:#5B8BB0;--sky-light:#e3eef5;
+  --purple:#9b7bb5;--purple-light:#efe7f5;--purple-dark:#6d4f87;
+  --red:#d96a6a;
+  --text:#3a3228;--text-soft:#7a6e64;
+  --radius:20px;--shadow:0 4px 20px rgba(0,0,0,0.10);
+}
+html{scroll-behavior:smooth;}
+body{font-family:'Nunito',sans-serif;background:linear-gradient(160deg,#e8f5ec,#e3eef5);color:var(--text);padding-bottom:50px;}
+.wrap{max-width:560px;margin:0 auto;padding:0 16px;}
+.head{text-align:center;padding:28px 20px 6px;}
+.head .ico{font-size:42px;}
+.head h1{font-family:'Fredoka One',cursive;font-size:24px;color:var(--green-dark);line-height:1.1;}
+.head .sub{font-size:14px;color:var(--text-soft);margin-top:4px;}
+
+/* TABS */
+.tabs{display:flex;gap:8px;margin:16px 0 18px;}
+.tab{flex:1;background:white;border:2.5px solid #e0d8d0;border-radius:14px;padding:12px;text-align:center;cursor:pointer;font-family:'Fredoka One',cursive;font-size:15px;color:var(--text-soft);transition:.15s;box-shadow:0 2px 8px rgba(0,0,0,.05);}
+.tab .te{font-size:22px;display:block;margin-bottom:2px;}
+.tab.active{border-color:var(--green);background:var(--green-light);color:var(--green-dark);}
+.page{display:none;}
+.page.active{display:block;}
+
+.intro{background:var(--sky-light);border-radius:16px;padding:16px;margin:0 0 16px;font-size:15px;font-weight:700;color:var(--sky);line-height:1.5;}
+.intro b{color:var(--green-dark);}
+
+/* COLUMN SUBTRACTION DISPLAY */
+.calc{background:white;border-radius:var(--radius);box-shadow:var(--shadow);padding:24px 20px 18px;margin-bottom:14px;}
+.calc-title{font-family:'Fredoka One',cursive;font-size:18px;color:var(--purple-dark);text-align:center;margin-bottom:6px;}
+.calc-head{text-align:center;font-size:13px;color:var(--text-soft);font-weight:700;margin-bottom:18px;}
+.cols{display:flex;justify-content:center;font-family:'Fredoka One',cursive;font-size:40px;line-height:1.15;}
+.placerow{display:flex;gap:4px;justify-content:flex-end;}
+.cell{width:52px;text-align:center;position:relative;transition:.25s;border-radius:8px;}
+.cell.hundre{color:var(--sky);}
+.cell.ti{color:var(--purple-dark);}
+.cell.en{color:var(--green-dark);}
+.cell.active{background:var(--yellow-light);box-shadow:0 0 0 3px var(--yellow);}
+.cell .borrow{position:absolute;top:-26px;left:50%;transform:translateX(-50%);font-size:20px;color:var(--red);}
+.cell .strike{position:relative;}
+.cell .strike::after{content:"";position:absolute;left:8%;right:8%;top:48%;height:3px;background:var(--red);transform:rotate(-12deg);}
+.cell .newval{position:absolute;top:-24px;left:50%;transform:translateX(-50%);font-size:22px;color:var(--green);}
+.signcell{width:30px;text-align:center;color:var(--pink);}
+.barline{border-top:3px solid var(--text);margin:6px 0;}
+.answer .cell{color:var(--green-dark);}
+.answer .cell.hidden{color:#ddd;}
+
+.step-box{background:var(--green-light);border-radius:14px;padding:14px 16px;margin-top:16px;font-size:15px;line-height:1.55;font-weight:600;min-height:60px;}
+.step-box b{color:var(--green-dark);}
+.step-box .big{font-family:'Fredoka One',cursive;color:var(--purple-dark);font-size:17px;}
+
+.nav{display:flex;gap:10px;margin-top:14px;}
+.nav button{flex:1;border:none;border-radius:50px;padding:13px;font-family:'Fredoka One',cursive;font-size:15px;cursor:pointer;transition:.15s;}
+.nav .back{background:white;color:var(--text-soft);box-shadow:0 3px 0 #ddd;}
+.nav .next{background:var(--green);color:white;box-shadow:0 4px 0 var(--green-dark);}
+.nav button:active{transform:translateY(3px);box-shadow:0 1px 0 #ccc;}
+.nav .next:active{box-shadow:0 1px 0 var(--green-dark);}
+.nav button:disabled{opacity:.4;cursor:default;}
+
+.examples{display:flex;gap:8px;flex-wrap:wrap;justify-content:center;margin:8px 0 4px;}
+.ex-chip{background:white;border:2.5px solid #e0d8d0;border-radius:30px;padding:8px 14px;font-family:'Fredoka One',cursive;font-size:14px;color:var(--text-soft);cursor:pointer;transition:.15s;}
+.ex-chip.active{border-color:var(--green);background:var(--green-light);color:var(--green-dark);}
+.ex-label{text-align:center;font-size:12px;color:var(--text-soft);font-weight:700;margin-bottom:8px;}
+
+/* ===== PRACTICE ===== */
+.prog{text-align:center;font-weight:800;color:var(--text-soft);font-size:14px;margin-bottom:6px;}
+.help-toggle{display:flex;align-items:center;justify-content:center;gap:10px;margin-bottom:14px;font-weight:800;font-size:14px;color:var(--text-soft);}
+.switch{position:relative;width:48px;height:27px;background:#ddd;border-radius:30px;cursor:pointer;transition:.2s;}
+.switch.on{background:var(--green);}
+.switch .knob{position:absolute;top:3px;left:3px;width:21px;height:21px;background:white;border-radius:50%;transition:.2s;box-shadow:0 1px 3px rgba(0,0,0,.3);}
+.switch.on .knob{left:24px;}
+
+.pcalc{background:white;border-radius:var(--radius);box-shadow:var(--shadow);padding:22px 20px 18px;margin-bottom:14px;}
+.pcols{display:flex;justify-content:center;font-family:'Fredoka One',cursive;font-size:38px;line-height:1.15;}
+.pcell{width:54px;text-align:center;position:relative;}
+.pcell.hundre{color:var(--sky);}
+.pcell.ti{color:var(--purple-dark);}
+.pcell.en{color:var(--green-dark);}
+.pcell.help-hint{background:var(--yellow-light);box-shadow:0 0 0 3px var(--yellow);border-radius:8px;}
+.pcell .phint{position:absolute;top:-22px;left:50%;transform:translateX(-50%);font-size:16px;color:var(--red);font-family:'Nunito';font-weight:800;}
+.ans-inputs{display:flex;gap:4px;justify-content:flex-end;}
+.ans-inputs .ifield{width:54px;}
+.ans-inputs input{width:54px;height:56px;border:2.5px solid #e0d8d0;border-radius:12px;font-family:'Fredoka One',cursive;font-size:32px;text-align:center;background:var(--warm);transition:.15s;}
+.ans-inputs input:focus{outline:none;border-color:var(--green);background:white;}
+.ans-inputs input:disabled{background:#f0ece6;opacity:.5;}
+.ans-inputs input.correct{border-color:var(--green);background:var(--green-light);color:var(--green-dark);}
+.ans-inputs input.wrong{border-color:var(--pink);background:var(--pink-light);color:#c0566a;}
+.ans-inputs input.next-up{border-color:var(--green);box-shadow:0 0 0 3px var(--green-light);}
+.col-label{display:flex;gap:4px;justify-content:flex-end;font-size:12px;color:var(--text-soft);font-weight:800;margin-bottom:4px;}
+.col-label .cl{width:54px;text-align:center;}
+.pfeedback{text-align:center;font-weight:800;font-size:15px;margin-top:14px;min-height:22px;}
+.pfeedback.good{color:var(--green-dark);}
+.pfeedback.bad{color:#c0566a;}
+.pbtns{display:flex;gap:10px;margin-top:8px;}
+.pbtns button{flex:1;border:none;border-radius:50px;padding:13px;font-family:'Fredoka One',cursive;font-size:15px;cursor:pointer;transition:.15s;}
+.pbtns .check{background:var(--green);color:white;box-shadow:0 4px 0 var(--green-dark);}
+.pbtns .new{background:var(--sky);color:white;box-shadow:0 4px 0 #3f6680;}
+.pbtns button:active{transform:translateY(3px);}
+.guide{text-align:center;font-size:13px;color:var(--sky);font-weight:800;margin-bottom:10px;min-height:18px;}
+</style>
+</head>
+<body>
+<div class="head">
+  <div class="ico">➖</div>
+  <h1>Minus med låning</h1>
+  <div class="sub">Først lærer du – så øver du. Du klarer dette, Edel!</div>
+</div>
+
+<div class="wrap">
+  <div class="tabs">
+    <div class="tab active" data-tab="laer"><span class="te">📘</span>Lær</div>
+    <div class="tab" data-tab="ov"><span class="te">✏️</span>Øv</div>
+  </div>
+
+  <!-- ============ TAB LÆR (tutorial) ============ -->
+  <div class="page active" id="page-laer">
+    <div class="intro">
+      Når tallet under er <b>større</b> enn tallet over, må vi <b>låne</b> 1 fra naboen til venstre. 🤝<br>
+      Trykk «Neste» og se hvordan – ett steg om gangen.
+    </div>
+    <div class="ex-label">Velg et regnestykke fra arket ditt:</div>
+    <div class="examples" id="examples"></div>
+    <div class="calc">
+      <div class="calc-title" id="calcTitle"></div>
+      <div class="calc-head">H = hundrere · T = tiere · E = enere</div>
+      <div class="cols">
+        <div>
+          <div class="placerow" style="font-size:13px;color:var(--text-soft);margin-bottom:2px;">
+            <div class="signcell"></div><div class="cell">H</div><div class="cell">T</div><div class="cell">E</div>
+          </div>
+          <div class="placerow" id="row-top">
+            <div class="signcell"></div>
+            <div class="cell hundre" id="t-h"></div>
+            <div class="cell ti" id="t-t"></div>
+            <div class="cell en" id="t-e"></div>
+          </div>
+          <div class="placerow" id="row-bot">
+            <div class="signcell">−</div>
+            <div class="cell hundre" id="b-h"></div>
+            <div class="cell ti" id="b-t"></div>
+            <div class="cell en" id="b-e"></div>
+          </div>
+          <div class="barline"></div>
+          <div class="placerow answer" id="row-ans">
+            <div class="signcell"></div>
+            <div class="cell hundre hidden" id="a-h">?</div>
+            <div class="cell ti hidden" id="a-t">?</div>
+            <div class="cell en hidden" id="a-e">?</div>
+          </div>
+        </div>
+      </div>
+      <div class="step-box" id="stepBox"></div>
+      <div class="nav">
+        <button class="back" id="backBtn">← Tilbake</button>
+        <button class="next" id="nextBtn">Neste →</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ============ TAB ØV (practice) ============ -->
+  <div class="page" id="page-ov">
+    <div class="intro">Nå er det din tur! Regn <b>fra høyre</b>: først E, så T, så H. ✏️</div>
+    <div class="prog" id="pProg"></div>
+    <div class="help-toggle">
+      Vis hjelp
+      <div class="switch on" id="helpSwitch"><div class="knob"></div></div>
+    </div>
+    <div class="pcalc">
+      <div class="guide" id="pGuide"></div>
+      <div class="pcols">
+        <div>
+          <div class="col-label"><span class="cl" style="width:30px"></span><span class="cl">H</span><span class="cl">T</span><span class="cl">E</span></div>
+          <div class="placerow">
+            <div class="signcell" style="font-size:38px"></div>
+            <div class="pcell hundre" id="p-th"></div>
+            <div class="pcell ti" id="p-tt"></div>
+            <div class="pcell en" id="p-te"></div>
+          </div>
+          <div class="placerow">
+            <div class="signcell" style="font-size:38px">−</div>
+            <div class="pcell hundre" id="p-bh"></div>
+            <div class="pcell ti" id="p-bt"></div>
+            <div class="pcell en" id="p-be"></div>
+          </div>
+          <div class="barline"></div>
+          <div class="ans-inputs">
+            <div class="ifield" style="width:30px"></div>
+            <input type="number" inputmode="numeric" id="in-h" maxlength="1">
+            <input type="number" inputmode="numeric" id="in-t" maxlength="1">
+            <input type="number" inputmode="numeric" id="in-e" maxlength="1">
+          </div>
+        </div>
+      </div>
+      <div class="pfeedback" id="pFeedback"></div>
+      <div class="pbtns">
+        <button class="check" id="pCheck">Sjekk ✓</button>
+        <button class="new" id="pNew">Nytt stykke →</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+function digits(n){return [Math.floor(n/100), Math.floor((n%100)/10), n%10];}
+
+/* ============ TAB LÆR (tutorial) — uændret ============ */
+const EXAMPLES=[[247,125],[592,355],[916,377],[745,287],[506,218]];
+let current=0, step=0, STEPS=[];
+
+function buildSteps(top, bot){
+  const [tH,tT,tE]=digits(top);
+  const [bH,bT,bE]=digits(bot);
+  const steps=[];
+  steps.push({title:`${top} − ${bot}`,html:`Vi starter <b>fra høyre</b> – med <span class="big">enerne (E)</span>.`,render:()=>{setBase(top,bot);highlight('e');}});
+  let borrowFromTen=false, enerResult;
+  if(tE>=bE){
+    enerResult=tE-bE;
+    steps.push({title:`${top} − ${bot}`,html:`Enere: <b>${tE} − ${bE} = ${enerResult}</b>. Her trenger vi <b>ikke</b> å låne. 👍`,render:()=>{setBase(top,bot);highlight('e');showAns('e',enerResult);}});
+  } else {
+    borrowFromTen=true;
+    steps.push({title:`${top} − ${bot}`,html:`Enere: <b>${tE} − ${bE}</b>? Vi kan ikke ta ${bE} fra ${tE}. 🤔<br>Vi må <b>låne 1 tier</b> fra naboen.`,render:()=>{setBase(top,bot);highlight('e');borrowTenVisual(tT,tE);}});
+    enerResult=(tE+10)-bE;
+    steps.push({title:`${top} − ${bot}`,html:`Nå har eneren blitt <b>${tE}+10 = ${tE+10}</b>.<br><b>${tE+10} − ${bE} = ${enerResult}</b> ✅`,render:()=>{setBase(top,bot);highlight('e');borrowTenVisual(tT,tE);showAns('e',enerResult);}});
+  }
+  let effTT = borrowFromTen ? tT-1 : tT;
+  let borrowFromHundred=false, tiResult;
+  if(effTT>=bT){
+    tiResult=effTT-bT;
+    steps.push({title:`${top} − ${bot}`,html:`Tiere: <b>${effTT} − ${bT} = ${tiResult}</b>. ${borrowFromTen?'(Husk: tieren ble 1 mindre fordi vi lånte.)':''}`,render:()=>{setBase(top,bot);if(borrowFromTen)borrowTenVisual(tT,tE);highlight('t');if(borrowFromTen)showAns('e',enerResult);showAns('t',tiResult);}});
+  } else {
+    borrowFromHundred=true;
+    steps.push({title:`${top} − ${bot}`,html:`Tiere: <b>${effTT} − ${bT}</b>? Det går ikke. 🤔<br>Vi <b>låner 1 hundrer</b> denne gangen.`,render:()=>{setBase(top,bot);if(borrowFromTen)borrowTenVisual(tT,tE);highlight('t');borrowHundredVisual(tH,effTT);if(borrowFromTen)showAns('e',enerResult);}});
+    tiResult=(effTT+10)-bT;
+    steps.push({title:`${top} − ${bot}`,html:`Tieren ble <b>${effTT}+10 = ${effTT+10}</b>.<br><b>${effTT+10} − ${bT} = ${tiResult}</b> ✅`,render:()=>{setBase(top,bot);if(borrowFromTen)borrowTenVisual(tT,tE);highlight('t');borrowHundredVisual(tH,effTT);if(borrowFromTen)showAns('e',enerResult);showAns('t',tiResult);}});
+  }
+  let effTH = borrowFromHundred ? tH-1 : tH;
+  const hundResult = effTH-bH;
+  steps.push({title:`${top} − ${bot}`,html:`Hundrere: <b>${effTH} − ${bH} = ${hundResult}</b>. ${borrowFromHundred?'(Hundreren ble 1 mindre.)':''}`,render:()=>{setBase(top,bot);if(borrowFromTen)borrowTenVisual(tT,tE);if(borrowFromHundred)borrowHundredVisual(tH,effTT);highlight('h');if(borrowFromTen)showAns('e',enerResult);showAns('t',tiResult);showAns('h',hundResult);}});
+  steps.push({title:`${top} − ${bot} = ${top-bot}`,html:`🎉 <b>Ferdig!</b> Svaret er <span class="big">${top-bot}</span>.<br>Du lånte og regnet helt riktig, Edel! 🌟`,render:()=>{setBase(top,bot);if(borrowFromTen)borrowTenVisual(tT,tE);if(borrowFromHundred)borrowHundredVisual(tH,effTT);showAns('e',enerResult);showAns('t',tiResult);showAns('h',hundResult);clearHighlight();}});
+  return steps;
+}
+function setBase(top,bot){
+  const [tH,tT,tE]=digits(top),[bH,bT,bE]=digits(bot);
+  t_h.innerHTML=tH;t_t.innerHTML=tT;t_e.innerHTML=tE;b_h.innerHTML=bH;b_t.innerHTML=bT;b_e.innerHTML=bE;
+  ['a-h','a-t','a-e'].forEach(id=>{const c=document.getElementById(id);c.textContent='?';c.classList.add('hidden');});
+  clearHighlight();
+}
+const t_h=document.getElementById('t-h'),t_t=document.getElementById('t-t'),t_e=document.getElementById('t-e'),
+      b_h=document.getElementById('b-h'),b_t=document.getElementById('b-t'),b_e=document.getElementById('b-e');
+function highlight(col){clearHighlight();['t','b'].forEach(r=>{const c=document.getElementById(r+'-'+col);if(c)c.classList.add('active');});}
+function clearHighlight(){document.querySelectorAll('.calc .cell').forEach(c=>c.classList.remove('active'));}
+function showAns(col,val){const c=document.getElementById('a-'+col);c.textContent=val;c.classList.remove('hidden');}
+function borrowTenVisual(tT,tE){document.getElementById('t-t').innerHTML=`<span class="strike">${tT}</span><span class="newval">${tT-1}</span>`;document.getElementById('t-e').innerHTML=`<span class="borrow">¹</span>${tE}`;}
+function borrowHundredVisual(tH,effTT){document.getElementById('t-h').innerHTML=`<span class="strike">${tH}</span><span class="newval">${tH-1}</span>`;document.getElementById('t-t').innerHTML=`<span class="borrow">¹</span>${effTT}`;}
+function loadExample(i){current=i;step=0;STEPS=buildSteps(EXAMPLES[i][0],EXAMPLES[i][1]);document.querySelectorAll('.ex-chip').forEach((c,idx)=>c.classList.toggle('active',idx===i));renderStep();}
+function renderStep(){const s=STEPS[step];document.getElementById('calcTitle').textContent=s.title;s.render();document.getElementById('stepBox').innerHTML=s.html;document.getElementById('backBtn').disabled=(step===0);document.getElementById('nextBtn').textContent=(step===STEPS.length-1)?'Ferdig ✓':'Neste →';}
+document.getElementById('nextBtn').addEventListener('click',()=>{if(step<STEPS.length-1){step++;renderStep();}else{document.getElementById('nextBtn').textContent='Bra jobba! 🌟';}});
+document.getElementById('backBtn').addEventListener('click',()=>{if(step>0){step--;renderStep();}});
+const exBox=document.getElementById('examples');
+EXAMPLES.forEach((e,i)=>{const chip=document.createElement('div');chip.className='ex-chip';chip.textContent=`${e[0]}−${e[1]}`;chip.addEventListener('click',()=>loadExample(i));exBox.appendChild(chip);});
+loadExample(0);
+
+/* ============ TAB ØV (practice) ============ */
+/* Mix: noen med låning, noen uten. Tilfeldig rekkefølge. */
+const PRACTICE=[
+  [247,125],[586,424],[754,146], // uten låning
+  [592,355],[916,377],[745,287],[506,218],[824,36],[916,608],[653,291] // med låning
+];
+let pOrder=[], pIdx=0, pTop=0, pBot=0, helpOn=true;
+let pAns={h:0,t:0,e:0};
+
+function shuffle(a){return a.map(v=>[Math.random(),v]).sort((x,y)=>x[0]-y[0]).map(z=>z[1]);}
+function newPractice(){
+  if(pIdx>=pOrder.length){pOrder=shuffle([...PRACTICE]);pIdx=0;}
+  [pTop,pBot]=pOrder[pIdx];pIdx++;
+  const [tH,tT,tE]=digits(pTop),[bH,bT,bE]=digits(pBot);
+  document.getElementById('p-th').textContent=tH;document.getElementById('p-tt').textContent=tT;document.getElementById('p-te').textContent=tE;
+  document.getElementById('p-bh').textContent=bH;document.getElementById('p-bt').textContent=bT;document.getElementById('p-be').textContent=bE;
+  const res=pTop-pBot;const [aH,aT,aE]=digits(res);
+  pAns={h:aH,t:aT,e:aE};
+  ['in-h','in-t','in-e'].forEach(id=>{const f=document.getElementById(id);f.value='';f.className='';f.disabled=false;});
+  document.getElementById('pFeedback').textContent='';document.getElementById('pFeedback').className='pfeedback';
+  document.getElementById('pProg').textContent=`Stykke ${pIdx} · ${pOrder.length} totalt`;
+  applyHelp();
+  guideStep();
+  document.getElementById('in-e').focus();
+}
+function applyHelp(){
+  // help = highlight which columns need borrowing
+  const [tH,tT,tE]=digits(pTop),[bH,bT,bE]=digits(pBot);
+  ['p-th','p-tt','p-te'].forEach(id=>{document.getElementById(id).classList.remove('help-hint');const c=document.getElementById(id);const ph=c.querySelector('.phint');if(ph)ph.remove();});
+  if(!helpOn)return;
+  // ener borrow?
+  if(tE<bE){addHint('p-te');markBorrow('p-tt',tT);}
+  let effTT=(tE<bE)?tT-1:tT;
+  if(effTT<bT){addHint('p-tt');markBorrow('p-th',tH);}
+}
+function addHint(id){document.getElementById(id).classList.add('help-hint');}
+function markBorrow(id,val){const c=document.getElementById(id);if(!c.querySelector('.phint')){const s=document.createElement('span');s.className='phint';s.textContent='lån −1';c.appendChild(s);}}
+function guideStep(){
+  // which input is next to fill
+  const e=document.getElementById('in-e'),t=document.getElementById('in-t'),h=document.getElementById('in-h');
+  [e,t,h].forEach(x=>x.classList.remove('next-up'));
+  if(e.value===''){e.classList.add('next-up');document.getElementById('pGuide').textContent='Start med enerne (E) →';}
+  else if(t.value===''){t.classList.add('next-up');document.getElementById('pGuide').textContent='Nå tierne (T) →';}
+  else if(h.value===''){h.classList.add('next-up');document.getElementById('pGuide').textContent='Til slutt hundrerne (H) →';}
+  else{document.getElementById('pGuide').textContent='Trykk «Sjekk» 👇';}
+}
+['in-e','in-t','in-h'].forEach(id=>{
+  document.getElementById(id).addEventListener('input',e=>{
+    if(e.target.value.length>1)e.target.value=e.target.value.slice(0,1);
+    guideStep();
+    // auto-advance E→T→H
+    if(e.target.value!==''){
+      if(id==='in-e')document.getElementById('in-t').focus();
+      else if(id==='in-t')document.getElementById('in-h').focus();
+    }
+  });
+});
+document.getElementById('pCheck').addEventListener('click',()=>{
+  const ie=document.getElementById('in-e'),it=document.getElementById('in-t'),ih=document.getElementById('in-h');
+  let allRight=true;
+  [[ie,pAns.e],[it,pAns.t],[ih,pAns.h]].forEach(([inp,ans])=>{
+    if(inp.value===''){allRight=false;inp.classList.add('wrong');return;}
+    if(parseInt(inp.value)===ans){inp.classList.add('correct');inp.classList.remove('wrong');}
+    else{inp.classList.add('wrong');inp.classList.remove('correct');allRight=false;}
+  });
+  const fb=document.getElementById('pFeedback');
+  if(allRight){fb.textContent=`🌟 Riktig! ${pTop} − ${pBot} = ${pTop-pBot}`;fb.className='pfeedback good';}
+  else{fb.textContent='💪 Nesten! Se på de røde rutene og prøv igjen.';fb.className='pfeedback bad';}
+});
+document.getElementById('pNew').addEventListener('click',newPractice);
+document.getElementById('helpSwitch').addEventListener('click',()=>{
+  helpOn=!helpOn;
+  document.getElementById('helpSwitch').classList.toggle('on',helpOn);
+  applyHelp();
+});
+
+/* ============ TABS ============ */
+document.querySelectorAll('.tab').forEach(tab=>{
+  tab.addEventListener('click',()=>{
+    document.querySelectorAll('.tab').forEach(t=>t.classList.remove('active'));
+    document.querySelectorAll('.page').forEach(p=>p.classList.remove('active'));
+    tab.classList.add('active');
+    document.getElementById('page-'+tab.dataset.tab).classList.add('active');
+    if(tab.dataset.tab==='ov' && pTop===0)newPractice();
+  });
+});
+</script>
+</body>
+</html>
