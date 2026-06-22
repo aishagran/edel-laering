@@ -1,0 +1,255 @@
+<!DOCTYPE html>
+<html lang="no">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+<title>Hvorfor mister noen kontrollen?</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800;900&family=Fredoka+One&display=swap');
+*{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent;}
+:root{
+  --green:#5a9e6f;--green-light:#e8f5ec;--green-dark:#3d7a52;
+  --warm:#f9f4ed;--pink:#f4a0b0;--pink-light:#fdeef1;
+  --yellow:#f7d97a;--yellow-light:#fef9e7;
+  --sky:#5B8BB0;--sky-light:#e3eef5;
+  --purple:#9b7bb5;--purple-light:#efe7f5;--purple-dark:#6d4f87;
+  --text:#3a3228;--text-soft:#7a6e64;
+  --radius:20px;--shadow:0 4px 20px rgba(0,0,0,0.10);
+}
+html{scroll-behavior:smooth;}
+body{font-family:'Nunito',sans-serif;background:linear-gradient(160deg,#e3eef5,#e8f5ec);color:var(--text);padding-bottom:50px;}
+.wrap{max-width:580px;margin:0 auto;padding:0 16px;}
+.head{text-align:center;padding:28px 20px 6px;}
+.head .ico{font-size:42px;}
+.head h1{font-family:'Fredoka One',cursive;font-size:23px;color:var(--sky);line-height:1.15;}
+.head .sub{font-size:14px;color:var(--text-soft);margin-top:6px;}
+
+.shead{display:flex;align-items:center;gap:10px;margin:28px 0 12px;}
+.shead .ico{font-size:24px;}
+.shead h2{font-family:'Fredoka One',cursive;font-size:18px;color:var(--green-dark);}
+
+.intro{background:var(--sky-light);border-radius:16px;padding:16px;margin:14px 0;font-size:15px;font-weight:700;color:var(--sky);line-height:1.55;}
+.intro b{color:var(--green-dark);}
+
+/* 3 STEPS */
+.steps3{display:flex;flex-direction:column;gap:12px;}
+.s3{background:white;border-radius:18px;box-shadow:var(--shadow);padding:16px;display:flex;gap:14px;align-items:center;border-left:6px solid var(--sky);}
+.s3 .n{font-family:'Fredoka One',cursive;font-size:26px;color:var(--sky);min-width:30px;text-align:center;}
+.s3 .e{font-size:38px;}
+.s3 .tx{flex:1;font-size:15px;font-weight:700;line-height:1.45;}
+.s3 .tx b{color:var(--green-dark);}
+.arrow3{text-align:center;font-size:22px;color:var(--sky);}
+
+/* LINK GAME */
+.match-intro{background:var(--purple-light);border-radius:16px;padding:14px;margin-bottom:12px;font-size:14px;font-weight:700;color:var(--purple-dark);line-height:1.5;}
+.match-wrap{background:white;border-radius:18px;box-shadow:var(--shadow);padding:16px;}
+.match-cols{display:flex;gap:10px;}
+.match-col{flex:1;}
+.match-col h4{font-size:11px;font-weight:800;text-transform:uppercase;letter-spacing:.5px;text-align:center;margin-bottom:10px;color:var(--text-soft);}
+.mcard{border:2.5px solid #e0d8d0;border-radius:12px;padding:11px 9px;margin-bottom:9px;font-size:13px;font-weight:700;line-height:1.3;cursor:pointer;transition:.15s;background:var(--warm);min-height:60px;display:flex;align-items:center;}
+.mcard.sel{border-color:var(--sky);background:var(--sky-light);transform:scale(1.02);}
+.mcard.matched{border-color:var(--green);background:var(--green-light);color:var(--green-dark);pointer-events:none;opacity:.75;}
+.mcard.matched::after{content:" ✓";color:var(--green);font-weight:900;}
+.match-status{text-align:center;font-weight:800;font-size:13px;color:var(--green-dark);margin-top:6px;min-height:18px;}
+
+/* TWO HEARTS message */
+.dual{background:linear-gradient(135deg,var(--sky-light),var(--pink-light));border-radius:18px;padding:18px;margin:14px 0;}
+.dual .row{display:flex;gap:12px;align-items:flex-start;margin-bottom:12px;}
+.dual .row:last-child{margin-bottom:0;}
+.dual .ic{font-size:30px;min-width:38px;text-align:center;}
+.dual .t{font-size:15px;font-weight:700;line-height:1.45;}
+.dual .t b{color:var(--purple-dark);}
+
+/* HVIS SÅ protective */
+.hvis-card{background:white;border-radius:18px;box-shadow:var(--shadow);padding:16px;margin-bottom:12px;}
+.hvis-q{font-family:'Fredoka One',cursive;font-size:15px;color:var(--sky);margin-bottom:4px;}
+.hvis-frame{font-size:15px;font-weight:700;line-height:1.5;margin-bottom:12px;}
+.hvis-frame .hl{color:var(--sky);}
+.opts{display:flex;flex-direction:column;gap:8px;}
+.opt-btn{background:var(--warm);border:2.5px solid #e0d8d0;border-radius:12px;padding:12px;font-family:'Nunito';font-size:14px;font-weight:700;color:var(--text);cursor:pointer;text-align:left;transition:.15s;line-height:1.35;}
+.opt-btn.correct{background:var(--green-light);border-color:var(--green);color:var(--green-dark);}
+.opt-btn.wrong{background:var(--pink-light);border-color:var(--pink);color:#c0566a;opacity:.7;}
+.opt-btn.disabled{pointer-events:none;}
+.hvis-fb{margin-top:10px;font-size:13px;font-weight:700;padding:10px 12px;border-radius:10px;display:none;line-height:1.45;}
+.hvis-fb.show{display:block;}
+.hvis-fb.good{background:var(--green-light);color:var(--green-dark);}
+
+.closing{background:var(--yellow-light);border:2px dashed var(--yellow);border-radius:16px;padding:16px;margin-top:14px;font-size:15px;font-weight:700;color:#8a6d1e;line-height:1.55;text-align:center;}
+</style>
+</head>
+<body>
+<div class="head">
+  <div class="ico">🧠💛</div>
+  <h1>Hvorfor mister<br>noen kontrollen?</h1>
+  <div class="sub">Om rusmidler – forklart enkelt</div>
+</div>
+
+<div class="wrap">
+  <div class="intro">
+    Noen ganger ser vi mennesker på gata som oppfører seg rart. Mamma sier: «Hold deg unna, de kan være farlige.» <b>Men hvorfor?</b> La oss forstå det sammen. 💛
+  </div>
+
+  <!-- 3 STEPS -->
+  <div class="shead"><span class="ico">🔢</span><h2>Slik skjer det – 3 steg</h2></div>
+  <div class="steps3">
+    <div class="s3">
+      <div class="n">1</div>
+      <div class="e">🍶</div>
+      <div class="tx">Et <b>rusmiddel</b> er noe som går inn i kroppen. (For eksempel alkohol eller andre stoffer.)</div>
+    </div>
+    <div class="arrow3">↓</div>
+    <div class="s3">
+      <div class="n">2</div>
+      <div class="e">🧠</div>
+      <div class="tx">Rusmiddelet <b>forandrer hjernen</b>. Hjernen styrer hva vi gjør – så nå virker den ikke som den skal.</div>
+    </div>
+    <img src="john-hippie-hjernen.png" alt="Hjernen forandrer seg" style="width:100%;border-radius:14px;margin:4px 0 2px;box-shadow:var(--shadow);" onerror="this.style.display='none'">
+    <div class="arrow3">↓</div>
+    <div class="s3">
+      <div class="n">3</div>
+      <div class="e">😵‍💫</div>
+      <div class="tx">Personen <b>mister kontrollen</b>. Vi vet ikke hva de kommer til å gjøre. Derfor holder vi avstand.</div>
+    </div>
+  </div>
+
+  <!-- LINK GAME -->
+  <div class="shead"><span class="ico">🔗</span><h2>Hva fører til hva?</h2></div>
+  <div class="match-intro">Trykk på en <b>årsak</b> til venstre, så på det den <b>fører til</b> til høyre.</div>
+  <div class="match-wrap">
+    <div class="match-cols">
+      <div class="match-col"><h4>Årsak</h4><div id="colA"></div></div>
+      <div class="match-col"><h4>Fører til</h4><div id="colK"></div></div>
+    </div>
+    <div class="match-status" id="matchStatus"></div>
+  </div>
+
+  <!-- TWO HEARTS -->
+  <div class="shead"><span class="ico">💭</span><h2>To ting kan være sanne samtidig</h2></div>
+  <div class="dual">
+    <div class="row">
+      <div class="ic">🛡️</div>
+      <div class="t"><b>Vi holder avstand.</b> Fordi vi ikke vet hva de gjør, passer vi på oss selv. Det er lov å gå unna.</div>
+    </div>
+    <div class="row">
+      <div class="ic">💛</div>
+      <div class="t"><b>Men de er ikke onde.</b> De er ikke slemme mennesker. De er <b>syke</b> – de har et problem som heter rus, og de trenger hjelp.</div>
+    </div>
+  </div>
+
+  <!-- HVIS SÅ PROTECTIVE -->
+  <div class="shead"><span class="ico">🌟</span><h2>Hva gjør jeg hvis …?</h2></div>
+
+  <div class="hvis-card">
+    <div class="hvis-q">Situasjon 1</div>
+    <div class="hvis-frame"><span class="hl">Hvis</span> jeg ser noen på gata som oppfører seg rart, <span class="hl">så</span> …</div>
+    <div class="opts" data-correct="0">
+      <button class="opt-btn">… holder jeg avstand og går videre med en voksen.</button>
+      <button class="opt-btn">… går jeg bort og snakker med dem.</button>
+    </div>
+    <div class="hvis-fb good"></div>
+  </div>
+
+  <div class="hvis-card">
+    <div class="hvis-q">Situasjon 2</div>
+    <div class="hvis-frame"><span class="hl">Hvis</span> noen jeg ikke kjenner gir meg noe å drikke eller spise, <span class="hl">så</span> …</div>
+    <div class="opts" data-correct="1">
+      <button class="opt-btn">… tar jeg imot det, det er sikkert greit.</button>
+      <button class="opt-btn">… sier jeg nei takk, og forteller det til en voksen.</button>
+    </div>
+    <div class="hvis-fb good"></div>
+  </div>
+
+  <div class="hvis-card">
+    <div class="hvis-q">Situasjon 3</div>
+    <div class="hvis-frame"><span class="hl">Hvis</span> en venn presser meg til å gjøre noe jeg ikke vil, <span class="hl">så</span> …</div>
+    <div class="opts" data-correct="0">
+      <button class="opt-btn">… sier jeg «nei, det vil jeg ikke», og det er helt greit.</button>
+      <button class="opt-btn">… gjør jeg det, så de ikke blir sure.</button>
+    </div>
+    <div class="hvis-fb good"></div>
+  </div>
+
+  <div class="hvis-card">
+    <div class="hvis-q">Situasjon 4</div>
+    <div class="hvis-frame"><span class="hl">Hvis</span> jeg er redd eller usikker, <span class="hl">så</span> …</div>
+    <div class="opts" data-correct="0">
+      <button class="opt-btn">… snakker jeg med mamma eller en voksen jeg stoler på.</button>
+      <button class="opt-btn">… holder jeg det hemmelig.</button>
+    </div>
+    <div class="hvis-fb good"></div>
+  </div>
+
+  <div class="hvis-card">
+    <div class="hvis-q">Situasjon 5</div>
+    <div class="hvis-frame"><span class="hl">Hvis</span> noen jeg møter på nettet vil treffe meg i virkeligheten, <span class="hl">så</span> …</div>
+    <div class="opts" data-correct="1">
+      <button class="opt-btn">… møter jeg dem alene uten å si det til noen.</button>
+      <button class="opt-btn">… sier jeg det til mamma først, og møter aldri noen alene.</button>
+    </div>
+    <div class="hvis-fb good"></div>
+  </div>
+
+  <div class="hvis-card">
+    <div class="hvis-q">Situasjon 6</div>
+    <div class="hvis-frame"><span class="hl">Hvis</span> noen sier «alle gjør det» for å få meg med, <span class="hl">så</span> …</div>
+    <div class="opts" data-correct="0">
+      <button class="opt-btn">… husker jeg at jeg bestemmer over meg selv, og kan si nei.</button>
+      <button class="opt-btn">… gjør jeg det, for da er det sikkert greit.</button>
+    </div>
+    <div class="hvis-fb good"></div>
+  </div>
+
+  <div class="closing">
+    💛 Husk, Edel: Du passer på deg selv <b>og</b> kan synes synd på dem samtidig.<br>
+    En person med rusproblemer trenger <b>hjelp</b> – ikke kjeft.
+  </div>
+</div>
+
+<script>
+/* LINK GAME: cause → effect (the bridge that was missing) */
+const PAIRS=[
+  {a:"Et rusmiddel går inn i kroppen", k:"Hjernen forandrer seg"},
+  {a:"Hjernen virker ikke som den skal", k:"Personen mister kontrollen"},
+  {a:"Vi vet ikke hva de vil gjøre", k:"Vi holder avstand"},
+  {a:"De har et problem som heter rus", k:"De trenger hjelp, ikke kjeft"}
+];
+let matchScore=0;
+const colA=document.getElementById('colA'),colK=document.getElementById('colK');
+const shuffle=a=>a.map(v=>[Math.random(),v]).sort((x,y)=>x[0]-y[0]).map(z=>z[1]);
+PAIRS.forEach((p,i)=>{const c=document.createElement('div');c.className='mcard';c.dataset.id=i;c.textContent=p.a;colA.appendChild(c);});
+shuffle(PAIRS.map((p,i)=>({...p,id:i}))).forEach(p=>{const c=document.createElement('div');c.className='mcard';c.dataset.id=p.id;c.textContent=p.k;colK.appendChild(c);});
+let selA=null;
+function clearSel(){document.querySelectorAll('.mcard.sel').forEach(c=>c.classList.remove('sel'));}
+colA.querySelectorAll('.mcard').forEach(c=>c.addEventListener('click',()=>{if(c.classList.contains('matched'))return;clearSel();selA=c;c.classList.add('sel');}));
+colK.querySelectorAll('.mcard').forEach(c=>c.addEventListener('click',()=>{
+  if(c.classList.contains('matched')||!selA)return;
+  if(c.dataset.id===selA.dataset.id){c.classList.add('matched');selA.classList.add('matched');selA.classList.remove('sel');selA=null;matchScore++;
+    document.getElementById('matchStatus').textContent=matchScore===PAIRS.length?'🌟 Du forsto hele kjeden! Bra jobba, Edel!':`${matchScore} av ${PAIRS.length} riktige`;}
+  else{const b=c;b.style.borderColor='#f4a0b0';setTimeout(()=>{b.style.borderColor='';},500);document.getElementById('matchStatus').textContent='💪 Ikke helt – prøv en annen!';}
+}));
+
+/* HVIS SÅ situations */
+const FB=[
+  'Riktig! 🛡️ Det er trygt å holde avstand og være med en voksen.',
+  'Riktig! 🙅 Du sier nei takk og forteller en voksen. Smart!',
+  'Riktig! 💪 Du bestemmer over deg selv. «Nei» er et helt greit svar.',
+  'Riktig! 💛 En voksen du stoler på kan alltid hjelpe deg.',
+  'Riktig! 🛡️ Aldri møt noen alene. Si det alltid til mamma først.',
+  'Riktig! 💪 «Alle gjør det» er ikke sant – og du bestemmer selv.'
+];
+document.querySelectorAll('.hvis-card').forEach((card,ci)=>{
+  const opts=card.querySelector('.opts');
+  const correct=parseInt(opts.dataset.correct);
+  const fb=card.querySelector('.hvis-fb');
+  let done=false;
+  opts.querySelectorAll('.opt-btn').forEach((btn,idx)=>{
+    btn.addEventListener('click',()=>{
+      if(done)return;
+      if(idx===correct){done=true;btn.classList.add('correct');opts.querySelectorAll('.opt-btn').forEach(b=>b.classList.add('disabled'));fb.textContent=FB[ci];fb.classList.add('show');}
+      else{btn.classList.add('wrong');btn.classList.add('disabled');}
+    });
+  });
+});
+</script>
+</body>
+</html>
