@@ -1,0 +1,300 @@
+<!DOCTYPE html>
+<html lang="no">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+<title>Edels Mattelek – Pluss & Minus</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800;900&family=Fredoka+One&display=swap');
+*{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent;}
+:root{
+  --green:#5a9e6f;--green-light:#e8f5ec;--green-dark:#3d7a52;
+  --warm:#f9f4ed;--pink:#f4a0b0;--pink-light:#fdeef1;
+  --yellow:#f7d97a;--yellow-light:#fef9e7;
+  --sky:#5B8BB0;--sky-light:#e3eef5;
+  --purple:#9b7bb5;--purple-light:#efe7f5;--purple-dark:#6d4f87;
+  --text:#3a3228;--text-soft:#7a6e64;
+  --radius:20px;--shadow:0 4px 20px rgba(0,0,0,0.10);
+}
+html{scroll-behavior:smooth;}
+body{font-family:'Nunito',sans-serif;background:linear-gradient(160deg,#e8f5ec 0%,#e3eef5 55%,#fef9e7 100%);color:var(--text);padding-bottom:60px;}
+.wrap{max-width:640px;margin:0 auto;padding:0 16px;}
+
+.head{text-align:center;padding:30px 20px 6px;}
+.head .ico{font-size:44px;}
+.head h1{font-family:'Fredoka One',cursive;font-size:26px;color:var(--green-dark);}
+.head .sub{font-size:14px;color:var(--text-soft);margin-top:4px;}
+
+/* TABS */
+.tabs{display:flex;gap:8px;margin:16px 0 18px;position:sticky;top:8px;z-index:30;}
+.tab{flex:1;background:white;border:2.5px solid #e0d8d0;border-radius:14px;padding:11px 6px;text-align:center;cursor:pointer;font-weight:800;font-size:13px;color:var(--text-soft);transition:.15s;box-shadow:0 2px 8px rgba(0,0,0,.05);}
+.tab .te{font-size:22px;display:block;margin-bottom:2px;}
+.tab.active{border-color:var(--green);background:var(--green-light);color:var(--green-dark);}
+
+.page{display:none;}
+.page.active{display:block;}
+
+.card{background:white;border-radius:var(--radius);box-shadow:var(--shadow);padding:18px;margin-bottom:14px;}
+.intro{background:var(--sky-light);border-radius:16px;padding:14px 16px;margin-bottom:16px;font-size:15px;font-weight:700;color:var(--sky);line-height:1.5;}
+.intro b{color:var(--green-dark);}
+
+/* ===== SUBTRACTION GRID (timed + riddle share style) ===== */
+.mathgrid{display:grid;grid-template-columns:repeat(auto-fill,minmax(135px,1fr));gap:11px;}
+.mathbox{background:white;border-radius:14px;box-shadow:var(--shadow);padding:12px 10px;}
+.mathbox .num{font-family:'Fredoka One',cursive;font-size:22px;text-align:right;letter-spacing:2px;line-height:1.25;color:var(--text);}
+.mathbox .op{display:flex;justify-content:space-between;align-items:baseline;}
+.mathbox .op .sign{color:var(--pink);font-size:20px;}
+.mathbox .line{border-top:2.5px solid var(--text);margin:4px 0 8px;}
+.mathbox input{width:100%;border:2.5px solid var(--line,#e0d8d0);border-radius:10px;padding:8px;font:inherit;font-size:20px;font-family:'Fredoka One',cursive;text-align:right;letter-spacing:2px;background:var(--warm);color:var(--green-dark);}
+.mathbox input:focus{outline:none;border-color:var(--green);background:white;}
+.mathbox input.correct{border-color:var(--green);background:var(--green-light);}
+.mathbox input.wrong{border-color:var(--pink);background:var(--pink-light);}
+.mathbox .qnum{font-size:11px;font-weight:800;color:var(--text-soft);}
+
+.check-btn{display:block;width:100%;background:var(--green);color:white;border:none;border-radius:50px;padding:13px;font-family:'Fredoka One',cursive;font-size:16px;cursor:pointer;box-shadow:0 4px 0 var(--green-dark);margin-top:8px;}
+.check-btn:active{transform:translateY(3px);box-shadow:0 1px 0 var(--green-dark);}
+.score-line{text-align:center;font-weight:800;color:var(--green-dark);margin-top:12px;font-size:16px;min-height:20px;}
+
+/* truket 99 helper */
+.helper{background:var(--yellow-light);border:2px dashed var(--yellow);border-radius:14px;padding:14px 16px;margin-bottom:16px;font-size:14px;line-height:1.6;}
+.helper b{color:#b88a1e;}
+.helper .ex{font-family:'Fredoka One',cursive;color:var(--green-dark);font-size:16px;margin-top:6px;}
+
+/* timer */
+.timer-row{display:flex;align-items:center;justify-content:space-between;background:white;border-radius:14px;padding:10px 16px;margin-bottom:14px;box-shadow:var(--shadow);}
+.timer-row .t-label{font-weight:800;color:var(--text-soft);font-size:14px;}
+.timer-row .t-val{font-family:'Fredoka One',cursive;font-size:24px;color:var(--sky);}
+.timer-row .t-btn{background:var(--sky);color:white;border:none;border-radius:50px;padding:8px 18px;font-family:'Fredoka One',cursive;font-size:14px;cursor:pointer;}
+
+/* ===== RIDDLE ===== */
+.riddle-q{font-family:'Fredoka One',cursive;font-size:18px;color:var(--purple-dark);text-align:center;margin-bottom:6px;}
+.riddle-slots{display:flex;flex-wrap:wrap;gap:6px;justify-content:center;margin:14px 0 4px;}
+.slot{width:30px;height:38px;border-bottom:3px solid var(--purple);display:flex;align-items:center;justify-content:center;font-family:'Fredoka One',cursive;font-size:22px;color:var(--purple-dark);}
+.slot .sn{position:absolute;font-size:9px;color:var(--text-soft);margin-top:34px;}
+.slot.space{border:none;width:14px;}
+.riddle-answer{text-align:center;font-family:'Fredoka One',cursive;font-size:20px;color:var(--green-dark);margin-top:10px;min-height:24px;}
+
+/* ===== BUDGET ===== */
+.budget-menu{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:16px;}
+.food{background:white;border:2.5px solid #e0d8d0;border-radius:14px;padding:12px;cursor:pointer;transition:.15s;text-align:center;}
+.food:active{transform:scale(.97);}
+.food.picked{border-color:var(--green);background:var(--green-light);}
+.food .fe{font-size:30px;}
+.food .fn{font-weight:800;font-size:14px;margin-top:4px;}
+.food .fp{font-size:13px;color:var(--text-soft);font-weight:700;}
+.food .picked-tag{font-size:11px;color:var(--green-dark);font-weight:800;height:14px;}
+.budget-bar{position:sticky;bottom:0;background:white;border-radius:16px 16px 0 0;box-shadow:0 -4px 20px rgba(0,0,0,.1);padding:14px 18px;margin:0 -16px;}
+.budget-bar .row{display:flex;justify-content:space-between;font-weight:800;font-size:15px;margin-bottom:4px;}
+.budget-bar .row.total{font-size:18px;color:var(--green-dark);font-family:'Fredoka One',cursive;}
+.budget-bar .row.left{color:var(--sky);}
+.budget-bar .warn{color:var(--pink);font-size:13px;font-weight:800;text-align:center;margin-top:4px;min-height:16px;}
+.budget-bar .bar{height:10px;background:#eee;border-radius:10px;overflow:hidden;margin:8px 0 4px;}
+.budget-bar .fill{height:100%;background:var(--green);width:0%;transition:width .3s;}
+</style>
+</head>
+<body>
+<div class="head">
+  <div class="ico">🧮</div>
+  <h1>Edels Mattelek</h1>
+  <div class="sub">Pluss, minus og penger</div>
+</div>
+
+<div class="wrap">
+  <div class="tabs">
+    <div class="tab active" data-tab="minus"><span class="te">➖</span>Minus på tid</div>
+    <div class="tab" data-tab="gate"><span class="te">🧩</span>Gåten</div>
+    <div class="tab" data-tab="budsjett"><span class="te">🛒</span>Budsjett</div>
+  </div>
+
+  <!-- ===== TAB 1: TIMED SUBTRACTION ===== -->
+  <div class="page active" id="page-minus">
+    <div class="intro">Hvor mange klarer du? Ta deg god tid – det er ikke en konkurranse. 💪</div>
+    <div class="helper">
+      <b>Huskeregel – «99-trikset» for minus med låning:</b><br>
+      Når du må låne, tenk på 99 først. Trekk fra, og legg til 1 på slutten.
+      <div class="ex">Eks: 100 − 42 → 99 − 42 = 57 → 57 + 1 = 58</div>
+    </div>
+    <div class="timer-row">
+      <span class="t-label">⏱️ Tid (frivillig)</span>
+      <span class="t-val" id="timer">0:00</span>
+      <button class="t-btn" id="timerBtn">Start</button>
+    </div>
+    <div class="mathgrid" id="minusGrid"></div>
+    <button class="check-btn" id="minusCheck">Sjekk svarene mine ✓</button>
+    <div class="score-line" id="minusScore"></div>
+  </div>
+
+  <!-- ===== TAB 2: RIDDLE ===== -->
+  <div class="page" id="page-gate">
+    <div class="intro">Regn ut hvert stykke. Skriv svaret. Bokstavene løser <b>gåten</b>! 🧩</div>
+    <div class="card">
+      <div class="riddle-q" id="riddleQ"></div>
+      <div class="riddle-slots" id="riddleSlots"></div>
+      <div class="riddle-answer" id="riddleAnswer"></div>
+    </div>
+    <div class="mathgrid" id="riddleGrid"></div>
+    <button class="check-btn" id="riddleCheck">Løs gåten ✓</button>
+    <div class="score-line" id="riddleScore"></div>
+  </div>
+
+  <!-- ===== TAB 3: BUDGET ===== -->
+  <div class="page" id="page-budsjett">
+    <div class="intro">Du har <b>100 kr</b> til en kosekveld med Pipoka og familien. Velg det du vil kjøpe. Pass på at du ikke bruker for mye! 🐕</div>
+    <div class="budget-menu" id="budgetMenu"></div>
+    <div class="budget-bar">
+      <div class="bar"><div class="fill" id="budgetFill"></div></div>
+      <div class="row total"><span>Brukt:</span><span id="budgetSpent">0 kr</span></div>
+      <div class="row left"><span>Igjen:</span><span id="budgetLeft">100 kr</span></div>
+      <div class="warn" id="budgetWarn"></div>
+    </div>
+  </div>
+</div>
+
+<script>
+/* ===================== TAB 1: TIMED SUBTRACTION ===================== */
+/* DLD-tilpasset: færre stykker (12 i stedet for 48), tydelig, med låning */
+const MINUS=[
+  [247,125],[586,424],[663,39],[374,258],
+  [592,355],[458,239],[750,22],[824,36],
+  [507,254],[916,377],[506,218],[745,287]
+];
+const mGrid=document.getElementById('minusGrid');
+MINUS.forEach((p,i)=>{
+  const box=document.createElement('div');box.className='mathbox';
+  box.innerHTML=`
+    <div class="qnum">${i+1}.</div>
+    <div class="num">${p[0]}</div>
+    <div class="op"><span class="sign">−</span><span class="num" style="flex:1">${p[1]}</span></div>
+    <div class="line"></div>
+    <input type="number" inputmode="numeric" data-ans="${p[0]-p[1]}">`;
+  mGrid.appendChild(box);
+});
+document.getElementById('minusCheck').addEventListener('click',()=>{
+  let ok=0;const ins=mGrid.querySelectorAll('input');
+  ins.forEach(inp=>{
+    if(inp.value==='')return;
+    if(parseInt(inp.value)===parseInt(inp.dataset.ans)){inp.classList.add('correct');inp.classList.remove('wrong');ok++;}
+    else{inp.classList.add('wrong');inp.classList.remove('correct');}
+  });
+  document.getElementById('minusScore').textContent=`Du har ${ok} av ${MINUS.length} riktige! ${ok===MINUS.length?'🌟 Perfekt!':'💪 Bra jobba!'}`;
+  if(timerRunning)stopTimer();
+});
+
+/* timer */
+let timerRunning=false,timerSec=0,timerInt=null;
+function fmt(s){return Math.floor(s/60)+':'+String(s%60).padStart(2,'0');}
+function stopTimer(){clearInterval(timerInt);timerRunning=false;document.getElementById('timerBtn').textContent='Start';}
+document.getElementById('timerBtn').addEventListener('click',()=>{
+  if(timerRunning){stopTimer();}
+  else{timerRunning=true;document.getElementById('timerBtn').textContent='Stopp';
+    timerInt=setInterval(()=>{timerSec++;document.getElementById('timer').textContent=fmt(timerSec);},1000);}
+});
+
+/* ===================== TAB 2: RIDDLE ===================== */
+/* Norsk gåte. Svaret staves av bokstavene fra regnestykkene. */
+/* Gåte: "Hvorfor gikk tomaten rød?" → svar: "DEN SÅ SALATEN" (DEN SÅ DRESSINGEN). 
+   Vi bruker et enklere norsk svar: "FORDI" via tall. Holder kort for DLD. */
+/* Svar-ord: "GODT GJORT" (9 bokstaver + mellomrom) */
+const RIDDLE_ANSWER="GODT GJORT"; // det Edel ser når hun er ferdig
+const RIDDLE_Q="Hva sier vi når noen klarer noe vanskelig?";
+/* Hver oppgave gir et tall, og en bokstav som hører til. Bokstavene staver svaret. */
+const RIDDLE_PROBLEMS=[
+  [247,125,'G'], //122
+  [586,424,'O'], //162
+  [758,134,'D'], //624
+  [358,242,'T'], //116
+  [493,256,'G'], //237
+  [743,524,'J'], //219
+  [780,52,'O'],  //728
+  [663,124,'R'], //539
+  [697,239,'T']  //458
+];
+const rGrid=document.getElementById('riddleGrid');
+RIDDLE_PROBLEMS.forEach((p,i)=>{
+  const box=document.createElement('div');box.className='mathbox';
+  box.innerHTML=`
+    <div class="qnum">${i+1}. (bokstav ${p[2]})</div>
+    <div class="num">${p[0]}</div>
+    <div class="op"><span class="sign">−</span><span class="num" style="flex:1">${p[1]}</span></div>
+    <div class="line"></div>
+    <input type="number" inputmode="numeric" data-ans="${p[0]-p[1]}" data-letter="${p[2]}">`;
+  rGrid.appendChild(box);
+});
+/* build slots */
+document.getElementById('riddleQ').textContent=RIDDLE_Q;
+const slotsBox=document.getElementById('riddleSlots');
+[...RIDDLE_ANSWER].forEach(ch=>{
+  const s=document.createElement('div');
+  if(ch===' '){s.className='slot space';}
+  else{s.className='slot';s.dataset.ch=ch;s.textContent='';}
+  slotsBox.appendChild(s);
+});
+document.getElementById('riddleCheck').addEventListener('click',()=>{
+  let ok=0;const ins=rGrid.querySelectorAll('input');
+  const solved=new Set();
+  ins.forEach(inp=>{
+    if(inp.value==='')return;
+    if(parseInt(inp.value)===parseInt(inp.dataset.ans)){inp.classList.add('correct');inp.classList.remove('wrong');ok++;solved.add(inp.dataset.letter);}
+    else{inp.classList.add('wrong');inp.classList.remove('correct');}
+  });
+  // fill slots for solved letters
+  document.querySelectorAll('.slot').forEach(s=>{
+    if(s.dataset.ch && solved.has(s.dataset.ch))s.textContent=s.dataset.ch;
+  });
+  if(ok===RIDDLE_PROBLEMS.length){
+    document.getElementById('riddleAnswer').textContent='🎉 '+RIDDLE_ANSWER+'! 🎉';
+    document.getElementById('riddleScore').textContent='Du løste gåten! 🌟';
+  }else{
+    document.getElementById('riddleScore').textContent=`${ok} av ${RIDDLE_PROBLEMS.length} riktige – fortsett!`;
+  }
+});
+
+/* ===================== TAB 3: BUDGET (Edel-context) ===================== */
+const FOODS=[
+  {e:'🍿',n:'Popcorn',p:15},
+  {e:'🍙',n:'Onigiri',p:20},
+  {e:'🍜',n:'Ramen',p:25},
+  {e:'🥟',n:'Mandu (dumplings)',p:18},
+  {e:'🍫',n:'Pepero',p:12},
+  {e:'🧃',n:'Juice',p:10},
+  {e:'🍓',n:'Jordbær',p:14},
+  {e:'🦴',n:'Hundekjeks (Pipoka)',p:8}
+];
+const BUDGET=100;
+let spent=0;const picked=new Set();
+const bMenu=document.getElementById('budgetMenu');
+FOODS.forEach((f,i)=>{
+  const c=document.createElement('div');c.className='food';c.dataset.i=i;
+  c.innerHTML=`<div class="fe">${f.e}</div><div class="fn">${f.n}</div><div class="fp">${f.p} kr</div><div class="picked-tag"></div>`;
+  c.addEventListener('click',()=>{
+    if(picked.has(i)){picked.delete(i);c.classList.remove('picked');c.querySelector('.picked-tag').textContent='';}
+    else{picked.add(i);c.classList.add('picked');c.querySelector('.picked-tag').textContent='✓ valgt';}
+    updateBudget();
+  });
+  bMenu.appendChild(c);
+});
+function updateBudget(){
+  spent=0;picked.forEach(i=>spent+=FOODS[i].p);
+  const left=BUDGET-spent;
+  document.getElementById('budgetSpent').textContent=spent+' kr';
+  document.getElementById('budgetLeft').textContent=left+' kr';
+  document.getElementById('budgetFill').style.width=Math.min(100,(spent/BUDGET)*100)+'%';
+  const warn=document.getElementById('budgetWarn');
+  const fill=document.getElementById('budgetFill');
+  if(left<0){warn.textContent='⚠️ Du har brukt for mye! Ta bort noe.';fill.style.background='var(--pink)';}
+  else if(left===0){warn.textContent='🎯 Akkurat 100 kr – perfekt!';fill.style.background='var(--green)';}
+  else{warn.textContent='';fill.style.background='var(--green)';}
+}
+
+/* ===================== TABS ===================== */
+document.querySelectorAll('.tab').forEach(tab=>{
+  tab.addEventListener('click',()=>{
+    document.querySelectorAll('.tab').forEach(t=>t.classList.remove('active'));
+    document.querySelectorAll('.page').forEach(p=>p.classList.remove('active'));
+    tab.classList.add('active');
+    document.getElementById('page-'+tab.dataset.tab).classList.add('active');
+  });
+});
+</script>
+</body>
+</html>
