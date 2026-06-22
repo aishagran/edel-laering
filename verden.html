@@ -351,6 +351,40 @@ const WEEKS = [
         {type:'fillin', sentence:'Edels ___ hjelper Petter å lære.',opts:['visdom','forvirring'], correct:'visdom', fb:'✅!'},
       ]}
     ]
+  },
+  {
+    week: 7,
+    title: 'Uke 7 – Sagaen: Valg, frihet & ansvar',
+    chapters: [
+      {name: 'Frihet og valg', emoji: '🕊️', desc: 'Ord fra sagaen', steps: [
+        {type:'scene', scenes:[{num:1, text:'I sagaen lærer Edel om frihet. Heather vil velge selv.', speech:'– Jeg vil bare være fri.'},{num:2, text:'Men frihet betyr også å tenke på andre.'}]},
+        {type:'multiple', q:'Hva ville Heather?', opts:[{t:'Velge selv',c:true},{t:'Sove lenge',c:false}], fb:'✅ Riktig! Hun ville være fri til å velge selv.'},
+        {type:'words', subtitle:'🌟 Nye ord denne uka', words:[{w:'frihet', m:'å kunne velge sitt eget liv', ex:'Heather drømte om frihet.', neg:false},{w:'valg', m:'når du bestemmer mellom flere ting', ex:'Hvert valg er viktig.', neg:false},{w:'ansvar', m:'noe du må passe på eller hjelpe med', ex:'Frihet betyr også ansvar.', neg:false}]},
+        {type:'fillin', sentence:'Å være fri betyr også å ta ___.',opts:['ansvar','ferie'], correct:'ansvar', fb:'✅ Riktig! Frihet og ansvar hører sammen.'},
+        {type:'writein', prompt:'Skriv en setning med ordet «valg».', hint:'F.eks: «Jeg tok et godt valg da jeg ...»'},
+      ]},
+      {name: 'Fred og fellesskap', emoji: '☮️', desc: 'Hippienes drøm', steps: [
+        {type:'scene', scenes:[{num:1, text:'Hippiene ønsket fred, ikke krig.', speech:'– Make love, not war!'},{num:2, text:'De ville leve i fellesskap og hjelpe hverandre.'}]},
+        {type:'multiple', q:'Hva ønsket hippiene?', opts:[{t:'Fred',c:true},{t:'Krig',c:false}], fb:'✅ Riktig! De ønsket fred.'},
+        {type:'words', subtitle:'🌟 Nye ord denne uka', words:[{w:'fred', m:'når det ikke er krig eller krangling', ex:'Hippiene kjempet for fred.', neg:false},{w:'fellesskap', m:'når mennesker er sammen og hjelper hverandre', ex:'De levde i fellesskap.', neg:false},{w:'respekt', m:'å behandle andre fint, uansett hvem de er', ex:'Vis respekt for alle.', neg:false}]},
+        {type:'fillin', sentence:'Hippiene ville leve i ___ og hjelpe hverandre.',opts:['fellesskap','ensomhet'], correct:'fellesskap', fb:'✅ Riktig!'},
+        {type:'writein', prompt:'Skriv en setning med ordet «fred» eller «respekt».', hint:'F.eks: «Jeg viser respekt når jeg ...»'},
+      ]},
+      {name: 'Årsak og konsekvens', emoji: '🔗', desc: 'Hvorfor skjer ting?', steps: [
+        {type:'scene', scenes:[{num:1, text:'Foreldrene til Heather vokste opp med krig og frykt.', speech:'– Vi vil bare beskytte deg.'},{num:2, text:'Det er årsaken til at de ønsker trygghet.'}]},
+        {type:'multiple', q:'Hvorfor ønsker foreldrene trygghet?', opts:[{t:'De vokste opp med krig og frykt',c:true},{t:'De liker regler',c:false}], fb:'✅ Riktig! Barndommen formet dem.'},
+        {type:'words', subtitle:'🌟 Nye ord denne uka', words:[{w:'årsak', m:'grunnen til at noe skjer', ex:'Krigen var årsaken.', neg:false},{w:'konsekvens', m:'det som skjer etterpå, på grunn av et valg', ex:'Hvert valg har en konsekvens.', neg:false},{w:'trygghet', m:'følelsen av at alt er i orden', ex:'De ønsket trygghet.', neg:false}]},
+        {type:'fillin', sentence:'Hvert valg har en ___.',opts:['konsekvens','farge'], correct:'konsekvens', fb:'✅ Riktig!'},
+        {type:'writein', prompt:'Skriv en hvis-setning med «hvis ... så ...».', hint:'F.eks: «Hvis jeg tar et valg, så får det en konsekvens.»'},
+      ]},
+      {name: 'Repeter: gamle ord 🔁', emoji: '🔁', desc: 'Husker du disse?', steps: [
+        {type:'scene', scenes:[{num:1, text:'Edel husker ord hun har lært før. Å repetere hjelper henne å ikke glemme!', speech:'– Jeg husker disse ordene!'}]},
+        {type:'multiple', q:'Hva betyr «ekskludert»? (fra Uke 1)', opts:[{t:'Når du ikke får være med',c:true},{t:'Når du er glad',c:false}], fb:'✅ Riktig! Det lærte du i Uke 1.'},
+        {type:'words', subtitle:'🔁 Gamle ord – repetisjon', words:[{w:'ekskludert (Uke 1)', m:'når du ikke får være med', ex:'Edel følte seg ekskludert.', neg:false},{w:'resiliens (Uke 6)', m:'å tåle motgang', ex:'Hun har resiliens.', neg:false},{w:'visdom (Uke 6)', m:'klok forståelse', ex:'Hun viser visdom.', neg:false}]},
+        {type:'multiple', q:'Hva betyr «resiliens»? (fra Uke 6)', opts:[{t:'Å gi opp',c:false},{t:'Å tåle motgang',c:true}], fb:'✅ Riktig! Du husker det fra Uke 6.'},
+        {type:'fillin', sentence:'Når jeg repeterer gamle ord, så ___ jeg dem ikke.',opts:['glemmer','spiser'], correct:'glemmer', fb:'✅ Riktig! Repetisjon hjelper deg å huske.'},
+      ]}
+    ]
   }
 ];
 
