@@ -1,0 +1,614 @@
+<!DOCTYPE html>
+<html lang="no">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Rosa Parks – Edels Verden</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Baloo+2:wght@500;600;700&family=Nunito:wght@400;600;700&display=swap');
+
+  :root{
+    --lilla:#6c5ce7;
+    --lilla-mork:#5a4bd1;
+    --gronn:#27ae60;
+    --gronn-lys:#eafaf0;
+    --rod:#e17055;
+    --rod-lys:#fdeee9;
+    --gul:#f6c945;
+    --bg:#f4f1ea;
+    --kort:#ffffff;
+    --tekst:#2d3436;
+    --gratone:#dfe4ea;
+  }
+
+  *{box-sizing:border-box;margin:0;padding:0;}
+
+  body{
+    font-family:'Nunito',sans-serif;
+    background:var(--bg);
+    color:var(--tekst);
+    line-height:1.5;
+    padding:16px;
+    min-height:100vh;
+  }
+
+  .wrap{max-width:640px;margin:0 auto;}
+
+  header{
+    text-align:center;
+    padding:20px 16px 8px;
+  }
+  header h1{
+    font-family:'Baloo 2',cursive;
+    font-size:2rem;
+    color:var(--lilla);
+    line-height:1.1;
+  }
+  header p{
+    font-size:1rem;
+    color:#636e72;
+    margin-top:4px;
+  }
+
+  /* Framdriftslinje */
+  .framdrift{
+    height:12px;
+    background:var(--gratone);
+    border-radius:99px;
+    overflow:hidden;
+    margin:16px 0 8px;
+  }
+  .framdrift-fyll{
+    height:100%;
+    width:0%;
+    background:linear-gradient(90deg,var(--lilla),var(--gronn));
+    border-radius:99px;
+    transition:width .4s ease;
+  }
+  .teller{
+    text-align:center;
+    font-size:.9rem;
+    color:#636e72;
+    margin-bottom:16px;
+    font-weight:600;
+  }
+
+  /* Kort */
+  .kort{
+    background:var(--kort);
+    border-radius:24px;
+    padding:24px 20px;
+    box-shadow:0 6px 20px rgba(108,92,231,.10);
+  }
+
+  .merkelapp{
+    display:inline-block;
+    font-family:'Baloo 2',cursive;
+    font-size:.8rem;
+    padding:4px 14px;
+    border-radius:99px;
+    margin-bottom:14px;
+  }
+  .merkelapp.fakta{background:var(--lilla);color:#fff;}
+  .merkelapp.empati{background:var(--gul);color:#5a4500;}
+  .merkelapp.hvis{background:var(--rod);color:#fff;}
+
+  .sporsmal{
+    font-family:'Baloo 2',cursive;
+    font-size:1.4rem;
+    margin-bottom:6px;
+    line-height:1.25;
+  }
+  .hjelpetekst{
+    font-size:.95rem;
+    color:#636e72;
+    margin-bottom:18px;
+  }
+
+  /* Svar-knapper */
+  .svar{
+    display:block;
+    width:100%;
+    text-align:left;
+    background:#fff;
+    border:3px solid var(--gratone);
+    border-radius:16px;
+    padding:14px 16px;
+    margin-bottom:12px;
+    font-family:'Nunito',sans-serif;
+    font-size:1.05rem;
+    font-weight:600;
+    color:var(--tekst);
+    cursor:pointer;
+    transition:transform .1s, border-color .2s, background .2s;
+  }
+  .svar:hover{border-color:var(--lilla);transform:translateY(-2px);}
+  .svar:active{transform:scale(.99);}
+  .svar:disabled{cursor:default;}
+  .svar.riktig{
+    border-color:var(--gronn);
+    background:var(--gronn-lys);
+  }
+  .svar.feil{
+    border-color:var(--rod);
+    background:var(--rod-lys);
+    opacity:.85;
+  }
+  .svar .emoji{margin-right:6px;}
+
+  /* Tilbakemelding */
+  .tilbake{
+    margin-top:8px;
+    padding:16px;
+    border-radius:16px;
+    font-size:1rem;
+    font-weight:600;
+    display:none;
+  }
+  .tilbake.vis{display:block;}
+  .tilbake.bra{background:var(--gronn-lys);color:#1e7a45;}
+  .tilbake.naer{background:#fff8e1;color:#8a6d00;}
+
+  /* For empati: ingen feil-svar, alt er gyldig */
+  .empati-info{
+    background:#fff8e1;
+    color:#8a6d00;
+    border-radius:12px;
+    padding:10px 14px;
+    font-size:.9rem;
+    margin-bottom:16px;
+    font-weight:600;
+  }
+
+  .neste{
+    display:none;
+    width:100%;
+    margin-top:18px;
+    background:var(--lilla);
+    color:#fff;
+    border:none;
+    border-radius:16px;
+    padding:16px;
+    font-family:'Baloo 2',cursive;
+    font-size:1.2rem;
+    cursor:pointer;
+    transition:background .2s, transform .1s;
+  }
+  .neste.vis{display:block;}
+  .neste:hover{background:var(--lilla-mork);}
+  .neste:active{transform:scale(.99);}
+
+  /* Skrive-felt (refleksjon) */
+  .skrivefelt{
+    width:100%;
+    border:3px solid var(--gratone);
+    border-radius:16px;
+    padding:14px;
+    font-family:'Nunito',sans-serif;
+    font-size:1.05rem;
+    margin-top:8px;
+    resize:vertical;
+    min-height:90px;
+  }
+  .skrivefelt:focus{outline:none;border-color:var(--lilla);}
+
+  /* Slutt-skjerm */
+  .slutt{
+    text-align:center;
+    display:none;
+  }
+  .slutt.vis{display:block;}
+  .slutt .stjerne{font-size:3.5rem;}
+  .slutt h2{
+    font-family:'Baloo 2',cursive;
+    font-size:1.8rem;
+    color:var(--lilla);
+    margin:8px 0;
+  }
+  .poeng{
+    font-family:'Baloo 2',cursive;
+    font-size:2.6rem;
+    color:var(--gronn);
+    margin:10px 0;
+  }
+  .slutt p{font-size:1.05rem;margin-bottom:10px;}
+  .laerdom{
+    background:var(--gronn-lys);
+    border-radius:16px;
+    padding:16px;
+    margin:18px 0;
+    font-weight:700;
+    color:#1e7a45;
+  }
+  .paanytt{
+    background:var(--gul);
+    color:#5a4500;
+    border:none;
+    border-radius:16px;
+    padding:14px 28px;
+    font-family:'Baloo 2',cursive;
+    font-size:1.1rem;
+    cursor:pointer;
+    margin-top:6px;
+  }
+  .paanytt:hover{filter:brightness(.97);}
+
+  .sendt-melding{
+    font-size:.85rem;
+    color:#27ae60;
+    margin-top:8px;
+    font-weight:600;
+    display:none;
+  }
+  .sendt-melding.vis{display:block;}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <header>
+    <h1>Rosa Parks</h1>
+    <p>En modig dame som endret reglene</p>
+  </header>
+
+  <div class="framdrift"><div class="framdrift-fyll" id="fyll"></div></div>
+  <div class="teller" id="teller">Spørsmål 1</div>
+
+  <!-- Quiz-kort -->
+  <div class="kort" id="kort">
+    <span class="merkelapp fakta" id="merkelapp">Fakta</span>
+    <div class="sporsmal" id="sporsmal"></div>
+    <div class="hjelpetekst" id="hjelpetekst"></div>
+    <div class="empati-info" id="empatiInfo" style="display:none;">
+      💛 Her finnes det ingen gale svar. Velg det du kjenner mest.
+    </div>
+    <div id="svarliste"></div>
+    <textarea class="skrivefelt" id="skrivefelt" placeholder="Skriv her hvis du vil …" style="display:none;"></textarea>
+    <div class="tilbake" id="tilbake"></div>
+    <button class="neste" id="nesteKnapp">Neste →</button>
+  </div>
+
+  <!-- Slutt -->
+  <div class="kort slutt" id="slutt">
+    <div class="stjerne">🌟</div>
+    <h2>Bra jobba, Edel!</h2>
+    <div class="poeng" id="poeng"></div>
+    <p>Du har lært om Rosa Parks og hvor modig hun var.</p>
+    <div class="laerdom">
+      Én modig person kan hjelpe til å endre urettferdige regler. 💪
+    </div>
+    <p style="font-size:.95rem;color:#636e72;">Trykk om igjen for å øve mer.</p>
+    <button class="paanytt" id="paanytt">Spill om igjen 🔁</button>
+    <div class="sendt-melding" id="sendtMelding">✓ Svarene dine er sendt til mamma</div>
+  </div>
+</div>
+
+<script>
+/* ---------- FORMSPREE ---------- */
+const FORMSPREE = "https://formspree.io/f/mqeolldg";
+const FELT = "Tekst_hun_skrev";
+
+/* ---------- SPØRSMÅL ----------
+   type: "fakta" | "empati" | "hvis" | "refleksjon"
+   For fakta/empati/hvis: alternativ med riktig:true/false
+   For empati: alle er gyldige (riktig:true), berre velg
+   refleksjon: fritt skrivefelt
+------------------------------------ */
+const sporsmaal = [
+  // ---- FAKTA ----
+  {
+    type:"fakta",
+    sporsmal:"Hvor langt bak måtte svarte personer sitte på bussen i 1955?",
+    hjelp:"Tenk på reglene fra fortellingen.",
+    alt:[
+      {tekst:"Helt foran", riktig:false},
+      {tekst:"Bakerst", riktig:true, emoji:"🚌"},
+      {tekst:"De fikk ikke være med", riktig:false}
+    ],
+    rett:"Ja! Svarte måtte sitte bakerst. Det var en urettferdig regel.",
+    naer:"Nesten. De måtte sitte bakerst på bussen."
+  },
+  {
+    type:"fakta",
+    sporsmal:"Hva sa Rosa da sjåføren ba henne reise seg?",
+    hjelp:"Hun var rolig, men bestemt.",
+    alt:[
+      {tekst:"«Ja, beklager.»", riktig:false},
+      {tekst:"«Nei, jeg blir her.»", riktig:true, emoji:"✋"},
+      {tekst:"Hun sa ingenting og gikk", riktig:false}
+    ],
+    rett:"Helt riktig! Hun sa rolig «Nei, jeg blir her.»",
+    naer:"Nesten. Hun sa «Nei, jeg blir her.»"
+  },
+  {
+    type:"fakta",
+    sporsmal:"Hva skjedde med Rosa fordi hun ikke flyttet seg?",
+    hjelp:"Politiet kom.",
+    alt:[
+      {tekst:"Hun ble arrestert", riktig:true, emoji:"👮"},
+      {tekst:"Hun fikk en premie", riktig:false},
+      {tekst:"Ingenting skjedde", riktig:false}
+    ],
+    rett:"Riktig. Hun ble arrestert – men hun holdt seg rolig og modig.",
+    naer:"Nesten. Hun ble arrestert på grunn av den urettferdige regelen."
+  },
+  {
+    type:"fakta",
+    sporsmal:"Hva gjorde mange svarte mennesker etter det Rosa gjorde?",
+    hjelp:"De ville vise at regelen var urettferdig.",
+    alt:[
+      {tekst:"De sluttet å ta bussen", riktig:true, emoji:"🚶"},
+      {tekst:"De kjøpte flere busser", riktig:false},
+      {tekst:"De flyttet til et annet land", riktig:false}
+    ],
+    rett:"Ja! De sluttet å ta bussen og gikk til fots. Det heter en boikott.",
+    naer:"Nesten. De sluttet å ta bussen – det er en boikott."
+  },
+  {
+    type:"fakta",
+    sporsmal:"Hva er en boikott?",
+    hjelp:"Tenk på hva alle gjorde sammen.",
+    alt:[
+      {tekst:"Når mange sier NEI sammen ved å slutte å bruke noe", riktig:true, emoji:"🤝"},
+      {tekst:"En type buss", riktig:false},
+      {tekst:"Et navn på en person", riktig:false}
+    ],
+    rett:"Helt riktig! En boikott = mange sier NEI sammen.",
+    naer:"Nesten. En boikott er når mange slutter å bruke noe sammen."
+  },
+  {
+    type:"fakta",
+    sporsmal:"Hva skjedde til slutt?",
+    hjelp:"Etter lang tid …",
+    alt:[
+      {tekst:"Loven endret seg – bussene ble rettferdige for alle", riktig:true, emoji:"🎉"},
+      {tekst:"Ingenting endret seg", riktig:false},
+      {tekst:"Bussene forsvant", riktig:false}
+    ],
+    rett:"Ja! Loven endret seg, og alle kunne sitte der de ville.",
+    naer:"Nesten. Loven endret seg og bussene ble rettferdige for alle."
+  },
+
+  // ---- EMPATI ----
+  {
+    type:"empati",
+    sporsmal:"Hvordan tror du Rosa følte seg på bussen?",
+    hjelp:"Det finnes ikke ett riktig svar – hva tenker du?",
+    alt:[
+      {tekst:"Litt redd, men modig", riktig:true, emoji:"😟"},
+      {tekst:"Rolig og bestemt", riktig:true, emoji:"😌"},
+      {tekst:"Trist over den urettferdige regelen", riktig:true, emoji:"😢"}
+    ],
+    rett:"Fint tenkt. Hun følte kanskje alt dette på én gang – og var modig likevel."
+  },
+  {
+    type:"empati",
+    sporsmal:"Hvorfor tror du folk gikk til fots i over ett år?",
+    hjelp:"Selv om det var slitsomt.",
+    alt:[
+      {tekst:"Fordi de ville endre noe urettferdig", riktig:true, emoji:"💪"},
+      {tekst:"Fordi de stod sammen", riktig:true, emoji:"🤝"},
+      {tekst:"Fordi de ikke ville gi opp", riktig:true, emoji:"🔥"}
+    ],
+    rett:"Ja, alt dette stemmer. Sammen var de sterke."
+  },
+
+  // ---- HVIS-SÅ (empati / handling) ----
+  {
+    type:"hvis",
+    sporsmal:"HVIS du ser noen bli behandlet urettferdig … hva kan du gjøre?",
+    hjelp:"Tenk på hva som er trygt og snilt.",
+    alt:[
+      {tekst:"Si ifra til en voksen", riktig:true, emoji:"🗣️"},
+      {tekst:"Late som du ikke ser det", riktig:false},
+      {tekst:"Le av den som blir plaget", riktig:false}
+    ],
+    rett:"Ja! Å si ifra til en voksen er modig og trygt.",
+    naer:"Tenk igjen – det modige er å si ifra til en voksen."
+  },
+  {
+    type:"hvis",
+    sporsmal:"HVIS en venn blir holdt utenfor … hva kan du gjøre?",
+    hjelp:"Husk følelsen av å høre til.",
+    alt:[
+      {tekst:"Spørre om de vil være med deg", riktig:true, emoji:"🤗"},
+      {tekst:"Gå vekk", riktig:false},
+      {tekst:"Si at det ikke er ditt problem", riktig:false}
+    ],
+    rett:"Så fint! Å invitere noen med gjør at de føler at de hører til.",
+    naer:"Tenk igjen – du kan spørre om de vil være med deg."
+  },
+  {
+    type:"hvis",
+    sporsmal:"HVIS en regel virker urettferdig … hva kan du gjøre?",
+    hjelp:"Slik Rosa gjorde det – rolig.",
+    alt:[
+      {tekst:"Snakke rolig med en voksen om det", riktig:true, emoji:"💬"},
+      {tekst:"Bli sint og rope", riktig:false},
+      {tekst:"Bare godta det uten å tenke", riktig:false}
+    ],
+    rett:"Ja! Rosa var rolig og modig. Du kan snakke rolig med en voksen.",
+    naer:"Tenk på Rosa – hun var rolig. Du kan snakke rolig med en voksen."
+  },
+
+  // ---- REFLEKSJON (skrivefelt) ----
+  {
+    type:"refleksjon",
+    sporsmal:"Skriv én setning: Hva betyr det å være modig?",
+    hjelp:"Det finnes ikke ett riktig svar. Skriv det du tenker.",
+    plassholder:"Å være modig er …"
+  }
+];
+
+/* ---------- TILSTAND ---------- */
+let n = 0;
+let poeng = 0;
+let maxFakta = sporsmaal.filter(s=>s.type==="fakta"||s.type==="hvis").length;
+let svarLogg = [];
+
+const elKort = document.getElementById("kort");
+const elSlutt = document.getElementById("slutt");
+const elMerke = document.getElementById("merkelapp");
+const elSpm = document.getElementById("sporsmal");
+const elHjelp = document.getElementById("hjelpetekst");
+const elEmpatiInfo = document.getElementById("empatiInfo");
+const elSvarliste = document.getElementById("svarliste");
+const elSkrivefelt = document.getElementById("skrivefelt");
+const elTilbake = document.getElementById("tilbake");
+const elNeste = document.getElementById("nesteKnapp");
+const elFyll = document.getElementById("fyll");
+const elTeller = document.getElementById("teller");
+
+function visSporsmal(){
+  const s = sporsmaal[n];
+
+  // Framdrift
+  elFyll.style.width = ((n)/sporsmaal.length*100) + "%";
+  elTeller.textContent = "Spørsmål " + (n+1) + " av " + sporsmaal.length;
+
+  // Reset
+  elSvarliste.innerHTML = "";
+  elTilbake.className = "tilbake";
+  elTilbake.textContent = "";
+  elNeste.className = "neste";
+  elSkrivefelt.style.display = "none";
+  elSkrivefelt.value = "";
+  elEmpatiInfo.style.display = "none";
+
+  // Merkelapp
+  if(s.type==="fakta"){ elMerke.className="merkelapp fakta"; elMerke.textContent="Fakta"; }
+  else if(s.type==="empati"){ elMerke.className="merkelapp empati"; elMerke.textContent="Hva tenker du?"; }
+  else if(s.type==="hvis"){ elMerke.className="merkelapp hvis"; elMerke.textContent="Hvis – så"; }
+  else { elMerke.className="merkelapp empati"; elMerke.textContent="Skriv selv"; }
+
+  elSpm.textContent = s.sporsmal;
+  elHjelp.textContent = s.hjelp || "";
+
+  if(s.type==="empati"){ elEmpatiInfo.style.display="block"; }
+
+  // Refleksjon = skrivefelt
+  if(s.type==="refleksjon"){
+    elSkrivefelt.style.display="block";
+    elSkrivefelt.placeholder = s.plassholder || "Skriv her …";
+    elNeste.className = "neste vis";
+    elNeste.textContent = (n === sporsmaal.length-1) ? "Ferdig 🎉" : "Neste →";
+    return;
+  }
+
+  // Bygg svar-knappar (blanda rekkefølgje for fakta/hvis)
+  let alternativ = s.alt.map((a,i)=>({...a, _i:i}));
+  if(s.type==="fakta"||s.type==="hvis"){
+    alternativ = bland(alternativ);
+  }
+
+  alternativ.forEach(a=>{
+    const b = document.createElement("button");
+    b.className = "svar";
+    b.innerHTML = (a.emoji ? '<span class="emoji">'+a.emoji+'</span>' : '') + a.tekst;
+    b.onclick = ()=> velg(b, a, s);
+    elSvarliste.appendChild(b);
+  });
+}
+
+function velg(knapp, alt, s){
+  // Lås alle
+  const knapper = elSvarliste.querySelectorAll(".svar");
+  knapper.forEach(k=> k.disabled = true);
+
+  if(s.type==="empati"){
+    // Alt er gyldig
+    knapp.classList.add("riktig");
+    elTilbake.className = "tilbake vis bra";
+    elTilbake.textContent = s.rett;
+    svarLogg.push("[Empati] " + s.sporsmal + " → " + alt.tekst);
+  } else {
+    // fakta / hvis
+    if(alt.riktig){
+      knapp.classList.add("riktig");
+      poeng++;
+      elTilbake.className = "tilbake vis bra";
+      elTilbake.textContent = s.rett;
+    } else {
+      knapp.classList.add("feil");
+      // Marker det riktige
+      knapper.forEach(k=>{
+        if(k.textContent.includes(finnRiktigTekst(s))) k.classList.add("riktig");
+      });
+      elTilbake.className = "tilbake vis naer";
+      elTilbake.textContent = s.naer || s.rett;
+    }
+    svarLogg.push((alt.riktig?"✓":"✗") + " " + s.sporsmal + " → " + alt.tekst);
+  }
+
+  elNeste.className = "neste vis";
+  elNeste.textContent = (n === sporsmaal.length-1) ? "Ferdig 🎉" : "Neste →";
+}
+
+function finnRiktigTekst(s){
+  const r = s.alt.find(a=>a.riktig);
+  return r ? r.tekst : "";
+}
+
+function bland(arr){
+  for(let i=arr.length-1;i>0;i--){
+    const j = Math.floor(Math.random()*(i+1));
+    [arr[i],arr[j]]=[arr[j],arr[i]];
+  }
+  return arr;
+}
+
+elNeste.onclick = ()=>{
+  const s = sporsmaal[n];
+  if(s.type==="refleksjon"){
+    const t = elSkrivefelt.value.trim();
+    if(t) svarLogg.push("[Refleksjon] " + s.sporsmal + " → " + t);
+  }
+  n++;
+  if(n >= sporsmaal.length){
+    visSlutt();
+  } else {
+    visSporsmal();
+  }
+};
+
+function visSlutt(){
+  elFyll.style.width = "100%";
+  elTeller.style.display = "none";
+  elKort.style.display = "none";
+  elSlutt.classList.add("vis");
+  document.getElementById("poeng").textContent = poeng + " av " + maxFakta + " riktige 🎯";
+  sendTilMamma();
+}
+
+function sendTilMamma(){
+  const tekst =
+    "ROSA PARKS – Edel sine svar\n" +
+    "Poeng (fakta+hvis): " + poeng + "/" + maxFakta + "\n\n" +
+    svarLogg.join("\n");
+
+  const data = new FormData();
+  data.append(FELT, tekst);
+
+  fetch(FORMSPREE, {
+    method:"POST",
+    body:data,
+    headers:{ "Accept":"application/json" }
+  }).then(r=>{
+    if(r.ok){
+      document.getElementById("sendtMelding").classList.add("vis");
+    }
+  }).catch(()=>{ /* stille feil – øvinga er det viktige */ });
+}
+
+document.getElementById("paanytt").onclick = ()=>{
+  n = 0; poeng = 0; svarLogg = [];
+  elSlutt.classList.remove("vis");
+  elKort.style.display = "block";
+  elTeller.style.display = "block";
+  visSporsmal();
+};
+
+// Start
+visSporsmal();
+</script>
+</body>
+</html>

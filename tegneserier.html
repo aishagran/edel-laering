@@ -35,6 +35,10 @@ body{font-family:'Nunito',sans-serif;background:linear-gradient(160deg,#FFF6FB,#
 .comic-title{font-family:'Baloo 2',cursive;font-size:1.05rem;font-weight:700;flex:1;}
 .comic-open{font-size:0.78rem;background:var(--p2);color:#7A5A00;font-weight:800;padding:5px 12px;border-radius:16px;}
 .comic-card.saga .comic-open{background:#F2A65A;color:#5A3500;}
+/* App-kort (interaktiv – åpner egen side, ikke bildeleser) */
+.comic-card.app{border-color:#9BD49B;background:linear-gradient(135deg,rgba(39,174,96,0.08),rgba(255,255,255,0));}
+.comic-card.app .comic-open{background:var(--p3);color:#0C5A2A;}
+.comic-badge{display:inline-block;font-size:0.62rem;font-weight:800;background:var(--p3);color:#0C5A2A;padding:2px 8px;border-radius:10px;margin-left:6px;vertical-align:middle;letter-spacing:0.3px;}
 
 /* Fullscreen reader – pinch zoom enabled */
 .reader{display:none;position:fixed;inset:0;background:#1a1830;z-index:100;flex-direction:column;}
@@ -107,24 +111,40 @@ const MAMMA = [
 ];
 
 // Historie & Faktaark
+// MERK: kort med "link" åpner en egen HTML-side (interaktiv app) i stedet for bildeleseren.
 const HISTORIE = [
+  {file:"rosa-parks.png", emoji:"✊🏽", title:"Rosa Parks – damen som sa NEI"},
+  {link:"edel-rosa-parks.html", emoji:"🎯", title:"Rosa Parks – spill & spørsmål", badge:"SPILL"},
   {file:"vietnamkrigen.png", emoji:"🕊️", title:"Vietnamkrigen – en forklaring for barn"},
   {file:"kapittel-hippiene-oversikt.png", emoji:"☮️", title:"Hva var hippiene? (det gode & det vanskelige)"},
 ];
 
 function buildCards(arr, container, extraClass){
   arr.forEach(c=>{
+    const isApp = !!c.link;
     const card = document.createElement('div');
-    card.className = 'comic-card' + (extraClass ? ' '+extraClass : '');
-    card.innerHTML = `
-      <img class="comic-thumb" src="${c.file}" alt=""
-           onerror="this.outerHTML='<div class=\\'comic-thumb missing\\'>Last opp «${c.file}» på GitHub, så vises historien her 😊</div>'">
-      <div class="comic-info">
-        <span class="comic-emoji">${c.emoji}</span>
-        <span class="comic-title">${c.title}</span>
-        <span class="comic-open">Les →</span>
-      </div>`;
-    card.onclick = ()=>openReader(c);
+    card.className = 'comic-card' + (extraClass ? ' '+extraClass : '') + (isApp ? ' app' : '');
+
+    if(isApp){
+      // Interaktivt kort — ingen bilde-thumb, åpner egen side
+      card.innerHTML = `
+        <div class="comic-info">
+          <span class="comic-emoji">${c.emoji}</span>
+          <span class="comic-title">${c.title}${c.badge ? '<span class="comic-badge">'+c.badge+'</span>' : ''}</span>
+          <span class="comic-open">Start →</span>
+        </div>`;
+      card.onclick = ()=>{ window.location.href = c.link; };
+    } else {
+      card.innerHTML = `
+        <img class="comic-thumb" src="${c.file}" alt=""
+             onerror="this.outerHTML='<div class=\\'comic-thumb missing\\'>Last opp «${c.file}» på GitHub, så vises historien her 😊</div>'">
+        <div class="comic-info">
+          <span class="comic-emoji">${c.emoji}</span>
+          <span class="comic-title">${c.title}</span>
+          <span class="comic-open">Les →</span>
+        </div>`;
+      card.onclick = ()=>openReader(c);
+    }
     container.appendChild(card);
   });
 }
