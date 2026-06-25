@@ -1,0 +1,568 @@
+<!DOCTYPE html>
+<html lang="no">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Intervju med Pipoka – Edels Verden</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Baloo+2:wght@500;600;700&family=Nunito:wght@400;600;700&display=swap');
+
+  :root{
+    --lilla:#6c5ce7;
+    --lilla-mork:#5a4bd1;
+    --gronn:#27ae60;
+    --gronn-lys:#eafaf0;
+    --rod:#e17055;
+    --rod-lys:#fdeee9;
+    --gul:#f6c945;
+    --bg:#f4f1ea;
+    --kort:#ffffff;
+    --tekst:#2d3436;
+    --gratone:#dfe4ea;
+  }
+
+  *{box-sizing:border-box;margin:0;padding:0;}
+
+  body{
+    font-family:'Nunito',sans-serif;
+    background:var(--bg);
+    color:var(--tekst);
+    line-height:1.5;
+    padding:16px;
+    min-height:100vh;
+  }
+
+  .wrap{max-width:640px;margin:0 auto;}
+
+  header{
+    text-align:center;
+    padding:20px 16px 8px;
+  }
+  header .hund{font-size:2.6rem;}
+  header h1{
+    font-family:'Baloo 2',cursive;
+    font-size:1.9rem;
+    color:var(--lilla);
+    line-height:1.1;
+  }
+  header p{
+    font-size:1rem;
+    color:#636e72;
+    margin-top:4px;
+  }
+
+  .framdrift{
+    height:12px;
+    background:var(--gratone);
+    border-radius:99px;
+    overflow:hidden;
+    margin:16px 0 8px;
+  }
+  .framdrift-fyll{
+    height:100%;
+    width:0%;
+    background:linear-gradient(90deg,var(--lilla),var(--gronn));
+    border-radius:99px;
+    transition:width .4s ease;
+  }
+  .teller{
+    text-align:center;
+    font-size:.9rem;
+    color:#636e72;
+    margin-bottom:16px;
+    font-weight:600;
+  }
+
+  .kort{
+    background:var(--kort);
+    border-radius:24px;
+    padding:24px 20px;
+    box-shadow:0 6px 20px rgba(108,92,231,.10);
+  }
+
+  .merkelapp{
+    display:inline-block;
+    font-family:'Baloo 2',cursive;
+    font-size:.8rem;
+    padding:4px 14px;
+    border-radius:99px;
+    margin-bottom:14px;
+  }
+  .merkelapp.ord{background:var(--lilla);color:#fff;}
+  .merkelapp.bindeord{background:var(--gul);color:#5a4500;}
+  .merkelapp.historie{background:var(--gronn);color:#fff;}
+
+  .sporsmal{
+    font-family:'Baloo 2',cursive;
+    font-size:1.4rem;
+    margin-bottom:6px;
+    line-height:1.25;
+  }
+  .hjelpetekst{
+    font-size:.95rem;
+    color:#636e72;
+    margin-bottom:18px;
+  }
+
+  .svar{
+    display:block;
+    width:100%;
+    text-align:left;
+    background:#fff;
+    border:3px solid var(--gratone);
+    border-radius:16px;
+    padding:14px 16px;
+    margin-bottom:12px;
+    font-family:'Nunito',sans-serif;
+    font-size:1.05rem;
+    font-weight:600;
+    color:var(--tekst);
+    cursor:pointer;
+    transition:transform .1s, border-color .2s, background .2s;
+  }
+  .svar:hover{border-color:var(--lilla);transform:translateY(-2px);}
+  .svar:active{transform:scale(.99);}
+  .svar:disabled{cursor:default;}
+  .svar.riktig{
+    border-color:var(--gronn);
+    background:var(--gronn-lys);
+  }
+  .svar.feil{
+    border-color:var(--rod);
+    background:var(--rod-lys);
+    opacity:.85;
+  }
+  .svar .emoji{margin-right:6px;}
+
+  .tilbake{
+    margin-top:8px;
+    padding:16px;
+    border-radius:16px;
+    font-size:1rem;
+    font-weight:600;
+    display:none;
+  }
+  .tilbake.vis{display:block;}
+  .tilbake.bra{background:var(--gronn-lys);color:#1e7a45;}
+  .tilbake.naer{background:#fff8e1;color:#8a6d00;}
+
+  .neste{
+    display:none;
+    width:100%;
+    margin-top:18px;
+    background:var(--lilla);
+    color:#fff;
+    border:none;
+    border-radius:16px;
+    padding:16px;
+    font-family:'Baloo 2',cursive;
+    font-size:1.2rem;
+    cursor:pointer;
+    transition:background .2s, transform .1s;
+  }
+  .neste.vis{display:block;}
+  .neste:hover{background:var(--lilla-mork);}
+  .neste:active{transform:scale(.99);}
+
+  .slutt{
+    text-align:center;
+    display:none;
+  }
+  .slutt.vis{display:block;}
+  .slutt .stjerne{font-size:3.5rem;}
+  .slutt h2{
+    font-family:'Baloo 2',cursive;
+    font-size:1.8rem;
+    color:var(--lilla);
+    margin:8px 0;
+  }
+  .poeng{
+    font-family:'Baloo 2',cursive;
+    font-size:2.6rem;
+    color:var(--gronn);
+    margin:10px 0;
+  }
+  .slutt p{font-size:1.05rem;margin-bottom:10px;}
+  .laerdom{
+    background:var(--gronn-lys);
+    border-radius:16px;
+    padding:16px;
+    margin:18px 0;
+    font-weight:700;
+    color:#1e7a45;
+  }
+  .paanytt{
+    background:var(--gul);
+    color:#5a4500;
+    border:none;
+    border-radius:16px;
+    padding:14px 28px;
+    font-family:'Baloo 2',cursive;
+    font-size:1.1rem;
+    cursor:pointer;
+    margin-top:6px;
+  }
+  .paanytt:hover{filter:brightness(.97);}
+
+  .sendt-melding{
+    font-size:.85rem;
+    color:#27ae60;
+    margin-top:8px;
+    font-weight:600;
+    display:none;
+  }
+  .sendt-melding.vis{display:block;}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <header>
+    <div class="hund">🐶</div>
+    <h1>Intervju med Pipoka</h1>
+    <p>Hva husker du fra intervjuet?</p>
+  </header>
+
+  <div class="framdrift"><div class="framdrift-fyll" id="fyll"></div></div>
+  <div class="teller" id="teller">Spørsmål 1</div>
+
+  <div class="kort" id="kort">
+    <span class="merkelapp ord" id="merkelapp">Ord</span>
+    <div class="sporsmal" id="sporsmal"></div>
+    <div class="hjelpetekst" id="hjelpetekst"></div>
+    <div id="svarliste"></div>
+    <div class="tilbake" id="tilbake"></div>
+    <button class="neste" id="nesteKnapp">Neste →</button>
+  </div>
+
+  <div class="kort slutt" id="slutt">
+    <div class="stjerne">🌟</div>
+    <h2>Bra jobba, Edel!</h2>
+    <div class="poeng" id="poeng"></div>
+    <p>Du kan masse om intervjuet med Pipoka! 🐾</p>
+    <div class="laerdom">
+      Pipoka er vår lille prinsesse, selv med kort hår! 💛
+    </div>
+    <p style="font-size:.95rem;color:#636e72;">Trykk om igjen for å øve mer.</p>
+    <button class="paanytt" id="paanytt">Spill om igjen 🔁</button>
+    <div class="sendt-melding" id="sendtMelding">✓ Svarene dine er sendt til mamma</div>
+  </div>
+</div>
+
+<script>
+/* ---------- FORMSPREE ---------- */
+const FORMSPREE = "https://formspree.io/f/mqeolldg";
+const FELT = "Tekst_hun_skrev";
+
+/* ---------- SPØRSMÅL ----------
+   type: "ord" | "bindeord" | "historie"
+   Alle har ett riktig svar.
+------------------------------------ */
+const sporsmaal = [
+  // ---- ORD (vokabular fra plakaten) ----
+  {
+    type:"ord",
+    sporsmal:"Hva betyr å «beskrive» noe?",
+    hjelp:"Tenk på ordlista fra intervjuet.",
+    alt:[
+      {tekst:"Å forklare med ord", riktig:true, emoji:"💬"},
+      {tekst:"Å løpe fort", riktig:false},
+      {tekst:"Å spise noe", riktig:false}
+    ],
+    rett:"Ja! Å beskrive = å forklare noe med ord.",
+    naer:"Nesten. Å beskrive betyr å forklare med ord."
+  },
+  {
+    type:"ord",
+    sporsmal:"Hva betyr «nervøs»?",
+    hjelp:"Slik Pipoka følte seg først.",
+    alt:[
+      {tekst:"Redd eller spent", riktig:true, emoji:"😟"},
+      {tekst:"Veldig glad", riktig:false},
+      {tekst:"Sulten", riktig:false}
+    ],
+    rett:"Riktig! Nervøs = å være redd eller spent.",
+    naer:"Nesten. Nervøs betyr redd eller spent."
+  },
+  {
+    type:"ord",
+    sporsmal:"Hva er en «løsning»?",
+    hjelp:"Pipoka fant en til slutt.",
+    alt:[
+      {tekst:"En god idé som hjelper", riktig:true, emoji:"💡"},
+      {tekst:"Et slags godteri", riktig:false},
+      {tekst:"En type buss", riktig:false}
+    ],
+    rett:"Ja! En løsning er en god idé som hjelper.",
+    naer:"Nesten. En løsning er en god idé som hjelper."
+  },
+  {
+    type:"ord",
+    sporsmal:"Hva betyr å være «inkludert»?",
+    hjelp:"Det Pipoka ønsket seg.",
+    alt:[
+      {tekst:"Å være med i noe", riktig:true, emoji:"🤗"},
+      {tekst:"Å være alene", riktig:false},
+      {tekst:"Å være trøtt", riktig:false}
+    ],
+    rett:"Så fint! Inkludert = å være med i noe.",
+    naer:"Nesten. Inkludert betyr å være med i noe."
+  },
+  {
+    type:"ord",
+    sporsmal:"Hva er en «beslutning»?",
+    hjelp:"Noe man gjør når man velger.",
+    alt:[
+      {tekst:"Et valg man tar", riktig:true, emoji:"✅"},
+      {tekst:"En lek ute", riktig:false},
+      {tekst:"En type mat", riktig:false}
+    ],
+    rett:"Riktig! En beslutning er et valg man tar.",
+    naer:"Nesten. En beslutning er et valg man tar."
+  },
+  {
+    type:"ord",
+    sporsmal:"Hva betyr å føle seg «trygg»?",
+    hjelp:"En god og rolig følelse.",
+    alt:[
+      {tekst:"Å føle seg sikker", riktig:true, emoji:"🛡️"},
+      {tekst:"Å føle seg sint", riktig:false},
+      {tekst:"Å føle seg sulten", riktig:false}
+    ],
+    rett:"Ja! Trygg = å føle seg sikker.",
+    naer:"Nesten. Trygg betyr å føle seg sikker."
+  },
+
+  // ---- BINDEORD (sett inn riktig bindeord) ----
+  {
+    type:"bindeord",
+    sporsmal:"___ sa pappa at vi skulle ut. Jeg ble veldig glad.",
+    hjelp:"Hvilket ord starter en fortelling? (det som skjedde nr. 1)",
+    alt:[
+      {tekst:"Først", riktig:true, emoji:"1️⃣"},
+      {tekst:"Til slutt", riktig:false},
+      {tekst:"Men", riktig:false}
+    ],
+    rett:"Ja! «Først» forteller hva som skjedde i begynnelsen.",
+    naer:"Tenk på rekkefølgen – «Først» kommer i begynnelsen."
+  },
+  {
+    type:"bindeord",
+    sporsmal:"Først dro vi til butikken. ___ dro vi til frisøren.",
+    hjelp:"Hva skjedde etterpå?",
+    alt:[
+      {tekst:"Etterpå", riktig:true, emoji:"2️⃣"},
+      {tekst:"Fordi", riktig:false},
+      {tekst:"Men", riktig:false}
+    ],
+    rett:"Riktig! «Etterpå» forteller hva som skjedde etter.",
+    naer:"Nesten. «Etterpå» viser hva som skjedde etter."
+  },
+  {
+    type:"bindeord",
+    sporsmal:"Jeg trodde det skulle bli fint. ___ ble jeg overrasket!",
+    hjelp:"Når noe blir ANNERLEDES enn du trodde.",
+    alt:[
+      {tekst:"Men", riktig:true, emoji:"🔄"},
+      {tekst:"Først", riktig:false},
+      {tekst:"Dessuten", riktig:false}
+    ],
+    rett:"Ja! «Men» bruker vi når noe blir annerledes.",
+    naer:"Tenk – «Men» viser at noe ble annerledes enn ventet."
+  },
+  {
+    type:"bindeord",
+    sporsmal:"Håret vokser ut igjen. ___ sier familien at jeg er søt.",
+    hjelp:"Når du legger til ÉN ting til.",
+    alt:[
+      {tekst:"Dessuten", riktig:true, emoji:"➕"},
+      {tekst:"Først", riktig:false},
+      {tekst:"Men", riktig:false}
+    ],
+    rett:"Flott! «Dessuten» bruker vi for å legge til noe mer.",
+    naer:"Nesten. «Dessuten» legger til én ting til."
+  },
+
+  // ---- HISTORIE (hva skjedde i intervjuet) ----
+  {
+    type:"historie",
+    sporsmal:"Hva hadde skjedd med Pipoka denne dagen?",
+    hjelp:"Tittelen gir et hint.",
+    alt:[
+      {tekst:"Hun hadde klippet håret", riktig:true, emoji:"✂️"},
+      {tekst:"Hun hadde fått en valp", riktig:false},
+      {tekst:"Hun hadde flyttet", riktig:false}
+    ],
+    rett:"Ja! Pipoka hadde klippet håret (klippet pelsen).",
+    naer:"Nesten. Pipoka hadde klippet håret sitt."
+  },
+  {
+    type:"historie",
+    sporsmal:"Hvordan følte Pipoka seg FØRST da hun så seg i speilet?",
+    hjelp:"Før hun fant en løsning.",
+    alt:[
+      {tekst:"Overrasket – hun så ut som en gutt", riktig:true, emoji:"😯"},
+      {tekst:"Veldig sint", riktig:false},
+      {tekst:"Hun brydde seg ikke", riktig:false}
+    ],
+    rett:"Riktig! Hun ble overrasket og syntes hun så ut som en gutt.",
+    naer:"Nesten. Hun ble overrasket av det hun så i speilet."
+  },
+  {
+    type:"historie",
+    sporsmal:"Hva var Pipokas løsning på problemet?",
+    hjelp:"Hva sa hun at hun skulle gjøre?",
+    alt:[
+      {tekst:"Vente til håret vokser ut igjen", riktig:true, emoji:"⏳"},
+      {tekst:"Aldri gå ut mer", riktig:false},
+      {tekst:"Klippe enda mer", riktig:false}
+    ],
+    rett:"Ja! Hun skal vente til håret vokser ut igjen. Det gjør henne trygg.",
+    naer:"Nesten. Løsningen er å vente til håret vokser ut igjen."
+  },
+  {
+    type:"historie",
+    sporsmal:"Hva lærte Pipoka til neste gang?",
+    hjelp:"Om hva hun vil gjøre før frisøren.",
+    alt:[
+      {tekst:"Å stille flere spørsmål og be om en forklaring", riktig:true, emoji:"🙋"},
+      {tekst:"Å ikke snakke med pappa", riktig:false},
+      {tekst:"Å gjemme seg", riktig:false}
+    ],
+    rett:"Så bra! Hun vil stille flere spørsmål og være inkludert i beslutningen.",
+    naer:"Nesten. Hun vil stille flere spørsmål neste gang."
+  }
+];
+
+/* ---------- TILSTAND ---------- */
+let n = 0;
+let poeng = 0;
+let maxPoeng = sporsmaal.length;
+let svarLogg = [];
+
+const elKort = document.getElementById("kort");
+const elSlutt = document.getElementById("slutt");
+const elMerke = document.getElementById("merkelapp");
+const elSpm = document.getElementById("sporsmal");
+const elHjelp = document.getElementById("hjelpetekst");
+const elSvarliste = document.getElementById("svarliste");
+const elTilbake = document.getElementById("tilbake");
+const elNeste = document.getElementById("nesteKnapp");
+const elFyll = document.getElementById("fyll");
+const elTeller = document.getElementById("teller");
+
+function visSporsmal(){
+  const s = sporsmaal[n];
+
+  elFyll.style.width = ((n)/sporsmaal.length*100) + "%";
+  elTeller.textContent = "Spørsmål " + (n+1) + " av " + sporsmaal.length;
+
+  elSvarliste.innerHTML = "";
+  elTilbake.className = "tilbake";
+  elTilbake.textContent = "";
+  elNeste.className = "neste";
+
+  if(s.type==="ord"){ elMerke.className="merkelapp ord"; elMerke.textContent="Hva betyr ordet?"; }
+  else if(s.type==="bindeord"){ elMerke.className="merkelapp bindeord"; elMerke.textContent="Bindeord"; }
+  else { elMerke.className="merkelapp historie"; elMerke.textContent="Hva skjedde?"; }
+
+  elSpm.textContent = s.sporsmal;
+  elHjelp.textContent = s.hjelp || "";
+
+  let alternativ = s.alt.map((a,i)=>({...a, _i:i}));
+  alternativ = bland(alternativ);
+
+  alternativ.forEach(a=>{
+    const b = document.createElement("button");
+    b.className = "svar";
+    b.innerHTML = (a.emoji ? '<span class="emoji">'+a.emoji+'</span>' : '') + a.tekst;
+    b.onclick = ()=> velg(b, a, s);
+    elSvarliste.appendChild(b);
+  });
+}
+
+function velg(knapp, alt, s){
+  const knapper = elSvarliste.querySelectorAll(".svar");
+  knapper.forEach(k=> k.disabled = true);
+
+  if(alt.riktig){
+    knapp.classList.add("riktig");
+    poeng++;
+    elTilbake.className = "tilbake vis bra";
+    elTilbake.textContent = s.rett;
+  } else {
+    knapp.classList.add("feil");
+    knapper.forEach(k=>{
+      if(k.textContent.includes(finnRiktigTekst(s))) k.classList.add("riktig");
+    });
+    elTilbake.className = "tilbake vis naer";
+    elTilbake.textContent = s.naer || s.rett;
+  }
+  svarLogg.push((alt.riktig?"✓":"✗") + " " + s.sporsmal + " → " + alt.tekst);
+
+  elNeste.className = "neste vis";
+  elNeste.textContent = (n === sporsmaal.length-1) ? "Ferdig 🎉" : "Neste →";
+}
+
+function finnRiktigTekst(s){
+  const r = s.alt.find(a=>a.riktig);
+  return r ? r.tekst : "";
+}
+
+function bland(arr){
+  for(let i=arr.length-1;i>0;i--){
+    const j = Math.floor(Math.random()*(i+1));
+    [arr[i],arr[j]]=[arr[j],arr[i]];
+  }
+  return arr;
+}
+
+elNeste.onclick = ()=>{
+  n++;
+  if(n >= sporsmaal.length){
+    visSlutt();
+  } else {
+    visSporsmal();
+  }
+};
+
+function visSlutt(){
+  elFyll.style.width = "100%";
+  elTeller.style.display = "none";
+  elKort.style.display = "none";
+  elSlutt.classList.add("vis");
+  document.getElementById("poeng").textContent = poeng + " av " + maxPoeng + " riktige 🎯";
+  sendTilMamma();
+}
+
+function sendTilMamma(){
+  const tekst =
+    "INTERVJU MED PIPOKA – Edel sine svar\n" +
+    "Poeng: " + poeng + "/" + maxPoeng + "\n\n" +
+    svarLogg.join("\n");
+
+  const data = new FormData();
+  data.append(FELT, tekst);
+
+  fetch(FORMSPREE, {
+    method:"POST",
+    body:data,
+    headers:{ "Accept":"application/json" }
+  }).then(r=>{
+    if(r.ok){
+      document.getElementById("sendtMelding").classList.add("vis");
+    }
+  }).catch(()=>{ /* stille feil */ });
+}
+
+document.getElementById("paanytt").onclick = ()=>{
+  n = 0; poeng = 0; svarLogg = [];
+  elSlutt.classList.remove("vis");
+  elKort.style.display = "block";
+  elTeller.style.display = "block";
+  visSporsmal();
+};
+
+visSporsmal();
+</script>
+</body>
+</html>
