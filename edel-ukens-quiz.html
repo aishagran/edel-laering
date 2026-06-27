@@ -1,0 +1,395 @@
+<!DOCTYPE html>
+<html lang="no">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Ukens quiz 🏆 – Edels Verden</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Baloo+2:wght@500;600;700&family=Nunito:wght@400;600;700&display=swap');
+  :root{
+    --lilla:#6c5ce7;--lilla-mork:#5a4bd1;--gronn:#27ae60;--gronn-lys:#eafaf0;
+    --rod:#e17055;--rod-lys:#fdeee9;--gul:#f6c945;--bg:#f4f1ea;--kort:#fff;
+    --tekst:#2d3436;--gratone:#dfe4ea;--gull:#f1c40f;
+  }
+  *{box-sizing:border-box;margin:0;padding:0;}
+  body{font-family:'Nunito',sans-serif;background:var(--bg);color:var(--tekst);line-height:1.5;padding:14px;min-height:100vh;}
+  .wrap{max-width:640px;margin:0 auto;}
+  header{text-align:center;padding:14px 10px 6px;}
+  header h1{font-family:'Baloo 2',cursive;font-size:1.7rem;color:var(--lilla);line-height:1.1;}
+  header p{font-size:.95rem;color:#636e72;margin-top:2px;}
+
+  /* Day pills */
+  .pills{display:flex;flex-wrap:wrap;gap:7px;justify-content:center;margin:14px 0 10px;}
+  .pill{font-family:'Baloo 2',cursive;font-size:.85rem;padding:7px 12px;border-radius:99px;border:2.5px solid var(--gratone);background:#fff;cursor:pointer;transition:all .15s;white-space:nowrap;}
+  .pill:hover{border-color:var(--lilla);}
+  .pill.aktiv{background:var(--lilla);color:#fff;border-color:var(--lilla);}
+  .pill.test{border-color:var(--gull);}
+  .pill.test.aktiv{background:var(--gull);color:#5a4500;border-color:var(--gull);}
+  .pill .sjekk{color:var(--gronn);font-weight:800;}
+  .pill.aktiv .sjekk{color:#fff;}
+
+  .dag-intro{background:#fff;border-radius:18px;padding:16px 18px;margin-bottom:14px;box-shadow:0 4px 14px rgba(108,92,231,.08);text-align:center;}
+  .dag-intro .ikon{font-size:2.2rem;}
+  .dag-intro h2{font-family:'Baloo 2',cursive;font-size:1.3rem;color:var(--lilla);margin:4px 0;}
+  .dag-intro p{font-size:.95rem;color:#636e72;}
+  .dag-intro.test-intro h2{color:#b8901a;}
+
+  .framdrift{height:11px;background:var(--gratone);border-radius:99px;overflow:hidden;margin:12px 0 6px;}
+  .framdrift-fyll{height:100%;width:0%;background:linear-gradient(90deg,var(--lilla),var(--gronn));border-radius:99px;transition:width .4s;}
+  .teller{text-align:center;font-size:.85rem;color:#636e72;margin-bottom:14px;font-weight:600;}
+
+  .kort{background:var(--kort);border-radius:22px;padding:22px 18px;box-shadow:0 6px 20px rgba(108,92,231,.10);}
+  .merkelapp{display:inline-block;font-family:'Baloo 2',cursive;font-size:.75rem;padding:4px 13px;border-radius:99px;margin-bottom:12px;background:var(--lilla);color:#fff;}
+  .merkelapp.rosa{background:#e84393;}
+  .merkelapp.vietnam{background:#00b894;}
+  .merkelapp.hippie{background:#a29bfe;color:#2d2a4a;}
+  .merkelapp.romfart{background:#0984e3;}
+  .merkelapp.blanda{background:var(--gul);color:#5a4500;}
+
+  .sporsmal{font-family:'Baloo 2',cursive;font-size:1.3rem;margin-bottom:14px;line-height:1.25;}
+  .svar{display:block;width:100%;text-align:left;background:#fff;border:3px solid var(--gratone);border-radius:15px;padding:13px 15px;margin-bottom:11px;font-family:'Nunito',sans-serif;font-size:1.02rem;font-weight:600;color:var(--tekst);cursor:pointer;transition:transform .1s,border-color .2s,background .2s;}
+  .svar:hover{border-color:var(--lilla);transform:translateY(-2px);}
+  .svar:active{transform:scale(.99);}
+  .svar:disabled{cursor:default;}
+  .svar.riktig{border-color:var(--gronn);background:var(--gronn-lys);}
+  .svar.feil{border-color:var(--rod);background:var(--rod-lys);opacity:.85;}
+  .svar .emoji{margin-right:6px;}
+
+  .tilbake{margin-top:6px;padding:14px;border-radius:14px;font-size:.98rem;font-weight:600;display:none;}
+  .tilbake.vis{display:block;}
+  .tilbake.bra{background:var(--gronn-lys);color:#1e7a45;}
+  .tilbake.naer{background:#fff8e1;color:#8a6d00;}
+
+  .neste{display:none;width:100%;margin-top:16px;background:var(--lilla);color:#fff;border:none;border-radius:15px;padding:15px;font-family:'Baloo 2',cursive;font-size:1.15rem;cursor:pointer;transition:background .2s,transform .1s;}
+  .neste.vis{display:block;}
+  .neste:hover{background:var(--lilla-mork);}
+  .neste:active{transform:scale(.99);}
+
+  .slutt{text-align:center;display:none;}
+  .slutt.vis{display:block;}
+  .slutt .stjerne{font-size:3.2rem;}
+  .slutt h2{font-family:'Baloo 2',cursive;font-size:1.6rem;color:var(--lilla);margin:6px 0;}
+  .poeng{font-family:'Baloo 2',cursive;font-size:2.4rem;color:var(--gronn);margin:8px 0;}
+  .slutt p{font-size:1rem;margin-bottom:8px;}
+  .laerdom{background:var(--gronn-lys);border-radius:14px;padding:14px;margin:16px 0;font-weight:700;color:#1e7a45;}
+  .knapp-rad{display:flex;gap:10px;flex-wrap:wrap;justify-content:center;margin-top:10px;}
+  .paanytt,.til-test{border:none;border-radius:14px;padding:13px 22px;font-family:'Baloo 2',cursive;font-size:1.05rem;cursor:pointer;}
+  .paanytt{background:var(--gul);color:#5a4500;}
+  .til-test{background:var(--gull);color:#5a4500;}
+  .paanytt:hover,.til-test:hover{filter:brightness(.97);}
+  .sendt-melding{font-size:.82rem;color:#27ae60;margin-top:8px;font-weight:600;display:none;}
+  .sendt-melding.vis{display:block;}
+
+  .medalje{font-size:1.05rem;font-weight:700;margin:10px 0;padding:10px;border-radius:12px;}
+  .medalje.gull{background:#fff8e1;color:#b8901a;}
+  .medalje.solv{background:#f1f2f6;color:#636e72;}
+  .medalje.bronse{background:#fbeee0;color:#a86b32;}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <header>
+    <h1>🏆 Ukens quiz</h1>
+    <p>Alt vi har lært – én dag om gangen</p>
+  </header>
+
+  <div class="pills" id="pills"></div>
+
+  <div class="dag-intro" id="dagIntro">
+    <div class="ikon" id="introIkon"></div>
+    <h2 id="introTittel"></h2>
+    <p id="introTekst"></p>
+  </div>
+
+  <div class="framdrift"><div class="framdrift-fyll" id="fyll"></div></div>
+  <div class="teller" id="teller"></div>
+
+  <div class="kort" id="kort">
+    <span class="merkelapp" id="merkelapp"></span>
+    <div class="sporsmal" id="sporsmal"></div>
+    <div id="svarliste"></div>
+    <div class="tilbake" id="tilbake"></div>
+    <button class="neste" id="nesteKnapp">Neste →</button>
+  </div>
+
+  <div class="kort slutt" id="slutt">
+    <div class="stjerne">🌟</div>
+    <h2 id="sluttTittel">Bra jobba, Edel!</h2>
+    <div class="poeng" id="poeng"></div>
+    <div class="medalje" id="medalje" style="display:none;"></div>
+    <p id="sluttTekst"></p>
+    <div class="laerdom" id="laerdom"></div>
+    <div class="knapp-rad">
+      <button class="paanytt" id="paanytt">Spill om igjen 🔁</button>
+      <button class="til-test" id="tilTest" style="display:none;">Ta STOR-testen 🏆</button>
+    </div>
+    <div class="sendt-melding" id="sendtMelding">✓ Resultatet er sendt til mamma</div>
+  </div>
+</div>
+
+<script>
+const FORMSPREE = "https://formspree.io/f/mqeolldg";
+const FELT = "Tekst_hun_skrev";
+
+/* ============ DAGER ============
+   Hver dag: navn, ikon, tema, intro, farge (merkelapp-klasse), spørsmål[]
+   spørsmål: {q, opts:[{t,c}], rett, naer}
+   Pedagogikk: spaced repetition – nye dager repeterer litt fra før.
+   Bare FAKTA. Rus er holdt UTENFOR.
+====================================*/
+const UKE = [
+  {
+    navn:"Man", ikon:"🚌", tema:"Rosa Parks", farge:"rosa",
+    intro:{tittel:"Mandag – Rosa Parks", tekst:"Damen som var modig og sa nei til en urettferdig regel."},
+    sp:[
+      {q:"I hvilket år sa Rosa Parks nei på bussen?", opts:[{t:"1955",c:true},{t:"2005",c:false},{t:"1855",c:false}], rett:"Ja! Det var i 1955.", naer:"Nesten – det var i 1955."},
+      {q:"Hvor måtte svarte personer sitte?", opts:[{t:"Bakerst",c:true},{t:"Helt foran",c:false},{t:"Hos sjåføren",c:false}], rett:"Riktig – bakerst. Det var urettferdig.", naer:"De måtte sitte bakerst."},
+      {q:"Hva sa Rosa da sjåføren ba henne reise seg?", opts:[{t:"«Nei, jeg blir her.»",c:true},{t:"«Ja, beklager.»",c:false},{t:"Hun sa ingenting",c:false}], rett:"Ja! Rolig og bestemt.", naer:"Hun sa «Nei, jeg blir her.»"},
+      {q:"Hva skjedde med Rosa fordi hun ikke flyttet seg?", opts:[{t:"Hun ble arrestert",c:true},{t:"Hun fikk en premie",c:false},{t:"Ingenting",c:false}], rett:"Riktig – men hun holdt seg rolig og modig.", naer:"Hun ble arrestert."},
+      {q:"Hva gjorde mange svarte etterpå?", opts:[{t:"Sluttet å ta bussen",c:true},{t:"Kjøpte flere busser",c:false},{t:"Flyttet bort",c:false}], rett:"Ja! De gikk til fots. Det er en boikott.", naer:"De sluttet å ta bussen."},
+      {q:"Hva er en boikott?", opts:[{t:"Mange sier NEI sammen",c:true},{t:"En type buss",c:false},{t:"Et navn",c:false}], rett:"Riktig! Mange slutter å bruke noe sammen.", naer:"Mange sier nei sammen ved å slutte å bruke noe."},
+      {q:"Hva betyr «modig»?", opts:[{t:"Å tørre selv om man er redd",c:true},{t:"Å være sint",c:false},{t:"Å være rask",c:false}], rett:"Ja! Rosa var modig.", naer:"Modig = å tørre selv om man er redd."},
+      {q:"Hva betyr «urettferdig»?", opts:[{t:"Ikke rettferdig",c:true},{t:"Veldig morsomt",c:false},{t:"Helt nytt",c:false}], rett:"Riktig!", naer:"Urettferdig = ikke rettferdig."},
+      {q:"Hvordan var Rosa da hun ble arrestert?", opts:[{t:"Rolig og modig",c:true},{t:"Sint og høy",c:false},{t:"Redd og gråt",c:false}], rett:"Ja – rolig og modig.", naer:"Hun var rolig og modig."},
+      {q:"Hva skjedde til slutt?", opts:[{t:"Loven ble rettferdig for alle",c:true},{t:"Ingenting endret seg",c:false},{t:"Bussene forsvant",c:false}], rett:"Ja! Alle kunne sitte der de ville.", naer:"Loven endret seg – rettferdig for alle."},
+    ]
+  },
+  {
+    navn:"Tir", ikon:"🕊️", tema:"Vietnam", farge:"vietnam",
+    intro:{tittel:"Tirsdag – Vietnamkrigen", tekst:"Folk som ville ha frihet. Vi husker også litt fra i går."},
+    sp:[
+      {q:"Hva ville folk i Vietnam ha?", opts:[{t:"Frihet – bestemme selv",c:true},{t:"Flere busser",c:false},{t:"Mer regn",c:false}], rett:"Ja! De ville bestemme over eget land.", naer:"De ville ha frihet."},
+      {q:"Hvilket land bestemte over Vietnam først?", opts:[{t:"Frankrike",c:true},{t:"Norge",c:false},{t:"Brasil",c:false}], rett:"Riktig – Frankrike.", naer:"Det var Frankrike."},
+      {q:"Hva het lederen som ville ha et fritt Vietnam?", opts:[{t:"Ho Chi Minh",c:true},{t:"Rosa Parks",c:false},{t:"Gagarin",c:false}], rett:"Ja! Ho Chi Minh.", naer:"Han het Ho Chi Minh."},
+      {q:"Hvordan var krigen?", opts:[{t:"Lang og vanskelig",c:true},{t:"Kort og lett",c:false},{t:"Den skjedde ikke",c:false}], rett:"Riktig – mange ble redde.", naer:"Den var lang og vanskelig."},
+      {q:"Hva betyr «frihet»?", opts:[{t:"Å få bestemme selv",c:true},{t:"Å være redd",c:false},{t:"Å sitte stille",c:false}], rett:"Ja!", naer:"Frihet = å bestemme selv."},
+      {q:"Hva skjedde til slutt i Vietnam?", opts:[{t:"Landet ble samlet igjen",c:true},{t:"Det forsvant",c:false},{t:"Frankrike vant",c:false}], rett:"Ja – ett samlet land.", naer:"Vietnam ble et samlet land igjen."},
+      {q:"REPETISJON: Hvem sa nei på bussen?", opts:[{t:"Rosa Parks",c:true},{t:"Ho Chi Minh",c:false},{t:"Laika",c:false}], rett:"Riktig – fra i går!", naer:"Det var Rosa Parks."},
+      {q:"REPETISJON: Hva er en boikott?", opts:[{t:"Mange sier nei sammen",c:true},{t:"En rakett",c:false},{t:"En by",c:false}], rett:"Ja – husket du det!", naer:"Mange sier nei sammen."},
+      {q:"Hva betyr «redd»?", opts:[{t:"Å være engstelig",c:true},{t:"Å være glad",c:false},{t:"Å være sterk",c:false}], rett:"Riktig.", naer:"Redd = engstelig, litt skremt."},
+      {q:"Hva lærte verden av Vietnamkrigen?", opts:[{t:"At fred er viktig",c:true},{t:"At krig er gøy",c:false},{t:"Ingenting",c:false}], rett:"Ja – fred er viktigere enn å vinne.", naer:"At fred er veldig viktig."},
+    ]
+  },
+  {
+    navn:"Ons", ikon:"☮️", tema:"Hippiene", farge:"hippie",
+    intro:{tittel:"Onsdag – Hippiene", tekst:"Unge mennesker som ville ha fred, ikke krig."},
+    sp:[
+      {q:"Hva ville hippiene ha?", opts:[{t:"Fred",c:true},{t:"Krig",c:false},{t:"Flere regler",c:false}], rett:"Ja! Fred, ikke krig.", naer:"De ville ha fred."},
+      {q:"Hva mente hippiene om krigen?", opts:[{t:"At den var urettferdig",c:true},{t:"At den var bra",c:false},{t:"De brydde seg ikke",c:false}], rett:"Riktig.", naer:"De mente den var urettferdig."},
+      {q:"Hva brukte hippiene?", opts:[{t:"Musikk, kjærlighet og fredssymboler",c:true},{t:"Våpen",c:false},{t:"Busser",c:false}], rett:"Ja!", naer:"Musikk, kjærlighet og fredssymboler."},
+      {q:"Hva er det motsatte av krig?", opts:[{t:"Fred",c:true},{t:"Sinne",c:false},{t:"Regel",c:false}], rett:"Riktig – fred.", naer:"Fred er det motsatte av krig."},
+      {q:"Hva lagde hippiene for å vise meningen sin?", opts:[{t:"Protester og marsjer",c:true},{t:"Raketter",c:false},{t:"Skoler",c:false}], rett:"Ja – fredelige protester.", naer:"De lagde protester og marsjer."},
+      {q:"Hva betyr «protest»?", opts:[{t:"Å vise at man er uenig",c:true},{t:"Å sove",c:false},{t:"Å spise",c:false}], rett:"Riktig.", naer:"Protest = å vise at man er uenig."},
+      {q:"REPETISJON: Hva ville folk i Vietnam ha?", opts:[{t:"Frihet",c:true},{t:"Krig",c:false},{t:"Regn",c:false}], rett:"Ja – fra i går!", naer:"De ville ha frihet."},
+      {q:"REPETISJON: Hvordan var Rosa Parks?", opts:[{t:"Modig og rolig",c:true},{t:"Sint",c:false},{t:"Redd",c:false}], rett:"Riktig!", naer:"Hun var modig og rolig."},
+      {q:"Var hippienes protester voldelige?", opts:[{t:"Nei, de var fredelige",c:true},{t:"Ja, veldig",c:false},{t:"Det vet ingen",c:false}], rett:"Riktig – fredelige.", naer:"Nei, de var fredelige."},
+      {q:"Hva betyr «kjærlighet»?", opts:[{t:"Å være glad i noen",c:true},{t:"Å være sint",c:false},{t:"Å løpe",c:false}], rett:"Ja!", naer:"Kjærlighet = å være glad i noen."},
+    ]
+  },
+  {
+    navn:"Tor", ikon:"🚀", tema:"Romfart", farge:"romfart",
+    intro:{tittel:"Torsdag – Romkappløpet", tekst:"To land konkurrerte om verdensrommet. Satellitter og månen!"},
+    sp:[
+      {q:"Hvilke to land konkurrerte i romkappløpet?", opts:[{t:"USA og Sovjetunionen",c:true},{t:"Norge og Brasil",c:false},{t:"Frankrike og Vietnam",c:false}], rett:"Ja!", naer:"USA og Sovjetunionen."},
+      {q:"Hva het den første satellitten?", opts:[{t:"Sputnik",c:true},{t:"Apollo",c:false},{t:"Laika",c:false}], rett:"Riktig – Sputnik, i 1957.", naer:"Den het Sputnik."},
+      {q:"Hvem var det første dyret i rommet?", opts:[{t:"Hunden Laika",c:true},{t:"En katt",c:false},{t:"En fugl",c:false}], rett:"Ja – hunden Laika.", naer:"Det var hunden Laika."},
+      {q:"Hvem var det første mennesket i rommet?", opts:[{t:"Jurij Gagarin",c:true},{t:"Neil Armstrong",c:false},{t:"Rosa Parks",c:false}], rett:"Riktig! Han sa «Jorden er blå».", naer:"Det var Jurij Gagarin."},
+      {q:"Hvem gikk først på månen?", opts:[{t:"Neil Armstrong",c:true},{t:"Gagarin",c:false},{t:"Laika",c:false}], rett:"Ja – i 1969.", naer:"Det var Neil Armstrong."},
+      {q:"Hva er en satellitt?", opts:[{t:"Noe som går rundt en planet",c:true},{t:"En type bil",c:false},{t:"En stjerne",c:false}], rett:"Riktig!", naer:"Noe som går rundt en planet."},
+      {q:"Hva er månen?", opts:[{t:"En stor stein som går rundt jorden",c:true},{t:"En stjerne",c:false},{t:"En planet langt unna",c:false}], rett:"Ja – jordens naturlige satellitt.", naer:"En stor stein rundt jorden."},
+      {q:"Lager månen lys selv?", opts:[{t:"Nei, solen skinner på den",c:true},{t:"Ja, den brenner",c:false},{t:"Ja, om natten",c:false}], rett:"Riktig – vi ser den fordi solen lyser på den.", naer:"Nei – solen skinner på den."},
+      {q:"Hva betyr «observere»?", opts:[{t:"Å se nøye på noe",c:true},{t:"Å løpe",c:false},{t:"Å sove",c:false}], rett:"Ja – forskerne observerte jorden fra rommet.", naer:"Observere = å se nøye på noe."},
+      {q:"Hvordan endte romkappløpet?", opts:[{t:"Landene samarbeidet til slutt",c:true},{t:"Med en stor krig",c:false},{t:"Ingen vet",c:false}], rett:"Ja – de bygde et fellesskap.", naer:"De samarbeidet til slutt."},
+    ]
+  },
+  {
+    navn:"Fre", ikon:"🌍", tema:"Blanda 60/70", farge:"blanda",
+    intro:{tittel:"Fredag – Alt blandet!", tekst:"I dag blander vi alle temaene fra uka. Husker du?"},
+    sp:[
+      {q:"Hvem sa nei på bussen?", opts:[{t:"Rosa Parks",c:true},{t:"Gagarin",c:false},{t:"Ho Chi Minh",c:false}], rett:"Ja!", naer:"Rosa Parks."},
+      {q:"Hvem var det første mennesket i rommet?", opts:[{t:"Jurij Gagarin",c:true},{t:"Armstrong",c:false},{t:"Laika",c:false}], rett:"Riktig!", naer:"Jurij Gagarin."},
+      {q:"Hva ville hippiene ha?", opts:[{t:"Fred",c:true},{t:"Krig",c:false},{t:"Penger",c:false}], rett:"Ja – fred!", naer:"De ville ha fred."},
+      {q:"Hva ville folk i Vietnam ha?", opts:[{t:"Frihet",c:true},{t:"Flere regler",c:false},{t:"Krig",c:false}], rett:"Riktig!", naer:"De ville ha frihet."},
+      {q:"Hva het den første satellitten?", opts:[{t:"Sputnik",c:true},{t:"Laika",c:false},{t:"Apollo",c:false}], rett:"Ja!", naer:"Sputnik."},
+      {q:"Hva er en boikott?", opts:[{t:"Mange sier nei sammen",c:true},{t:"En rakett",c:false},{t:"En by",c:false}], rett:"Riktig!", naer:"Mange sier nei sammen."},
+      {q:"Hva er det motsatte av krig?", opts:[{t:"Fred",c:true},{t:"Sinne",c:false},{t:"Regel",c:false}], rett:"Ja!", naer:"Fred."},
+      {q:"Hva er månen?", opts:[{t:"En stein rundt jorden",c:true},{t:"En stjerne",c:false},{t:"En sol",c:false}], rett:"Riktig!", naer:"En stein som går rundt jorden."},
+      {q:"Hva betyr «modig»?", opts:[{t:"Å tørre selv om man er redd",c:true},{t:"Å være sint",c:false},{t:"Å være rask",c:false}], rett:"Ja!", naer:"Å tørre selv om man er redd."},
+      {q:"Hva er likt med Rosa, hippiene og folk i Vietnam?", opts:[{t:"Alle ville endre noe urettferdig",c:true},{t:"Alle likte busser",c:false},{t:"Alle bodde i rommet",c:false}], rett:"Så fint tenkt! Alle ville en bedre verden.", naer:"Alle ville endre noe urettferdig."},
+    ]
+  },
+  {
+    navn:"Lør", ikon:"🔁", tema:"Repetisjon", farge:"blanda",
+    intro:{tittel:"Lørdag – Repetisjon", tekst:"Vi øver en gang til på de viktigste tingene. Du klarer dette!"},
+    sp:[
+      {q:"I hvilket år sa Rosa nei på bussen?", opts:[{t:"1955",c:true},{t:"1755",c:false},{t:"2015",c:false}], rett:"Ja!", naer:"I 1955."},
+      {q:"Hva betyr «urettferdig»?", opts:[{t:"Ikke rettferdig",c:true},{t:"Morsomt",c:false},{t:"Nytt",c:false}], rett:"Riktig!", naer:"Ikke rettferdig."},
+      {q:"Hva het lederen i Vietnam?", opts:[{t:"Ho Chi Minh",c:true},{t:"Gagarin",c:false},{t:"Armstrong",c:false}], rett:"Ja!", naer:"Ho Chi Minh."},
+      {q:"Hva betyr «frihet»?", opts:[{t:"Å bestemme selv",c:true},{t:"Å sitte stille",c:false},{t:"Å være redd",c:false}], rett:"Riktig!", naer:"Å bestemme selv."},
+      {q:"Hva brukte hippiene i protestene?", opts:[{t:"Musikk og fredssymboler",c:true},{t:"Våpen",c:false},{t:"Raketter",c:false}], rett:"Ja!", naer:"Musikk og fredssymboler."},
+      {q:"Hvem var det første dyret i rommet?", opts:[{t:"Hunden Laika",c:true},{t:"En katt",c:false},{t:"En hest",c:false}], rett:"Riktig!", naer:"Hunden Laika."},
+      {q:"Hva sa Gagarin om jorden?", opts:[{t:"«Jorden er blå»",c:true},{t:"«Jorden er grønn»",c:false},{t:"«Jorden er flat»",c:false}], rett:"Ja!", naer:"«Jorden er blå.»"},
+      {q:"Lager månen lys selv?", opts:[{t:"Nei, solen skinner på den",c:true},{t:"Ja",c:false},{t:"Bare om natten",c:false}], rett:"Riktig!", naer:"Nei – solen skinner på den."},
+      {q:"Hva betyr «observere»?", opts:[{t:"Å se nøye på noe",c:true},{t:"Å løpe",c:false},{t:"Å spise",c:false}], rett:"Ja!", naer:"Å se nøye på noe."},
+      {q:"Hva er likt med alle vi har lært om?", opts:[{t:"De ville gjøre verden bedre",c:true},{t:"De likte raketter",c:false},{t:"De bodde sammen",c:false}], rett:"Så fint!", naer:"De ville gjøre verden bedre."},
+    ]
+  },
+  {
+    navn:"Søn 🏆", ikon:"🏆", tema:"STOR-test", farge:"blanda", erTest:true,
+    intro:{tittel:"Søndag – STOR-testen!", tekst:"Nå tester vi ALT fra hele uka. 18 spørsmål. Lykke til, Edel! 🌟"},
+    sp:[
+      {q:"I hvilket år sa Rosa Parks nei?", opts:[{t:"1955",c:true},{t:"1855",c:false},{t:"2005",c:false}], rett:"✓", naer:"1955."},
+      {q:"Hvor måtte svarte sitte på bussen?", opts:[{t:"Bakerst",c:true},{t:"Foran",c:false},{t:"Hos sjåføren",c:false}], rett:"✓", naer:"Bakerst."},
+      {q:"Hva er en boikott?", opts:[{t:"Mange sier nei sammen",c:true},{t:"En buss",c:false},{t:"En by",c:false}], rett:"✓", naer:"Mange sier nei sammen."},
+      {q:"Hvilket land bestemte over Vietnam først?", opts:[{t:"Frankrike",c:true},{t:"Norge",c:false},{t:"USA",c:false}], rett:"✓", naer:"Frankrike."},
+      {q:"Hva het lederen i Vietnam?", opts:[{t:"Ho Chi Minh",c:true},{t:"Gagarin",c:false},{t:"Rosa",c:false}], rett:"✓", naer:"Ho Chi Minh."},
+      {q:"Hva ville folk i Vietnam ha?", opts:[{t:"Frihet",c:true},{t:"Krig",c:false},{t:"Regn",c:false}], rett:"✓", naer:"Frihet."},
+      {q:"Hva ville hippiene ha?", opts:[{t:"Fred",c:true},{t:"Krig",c:false},{t:"Regler",c:false}], rett:"✓", naer:"Fred."},
+      {q:"Hva brukte hippiene?", opts:[{t:"Musikk og fredssymboler",c:true},{t:"Våpen",c:false},{t:"Biler",c:false}], rett:"✓", naer:"Musikk og fredssymboler."},
+      {q:"Hva er det motsatte av krig?", opts:[{t:"Fred",c:true},{t:"Sinne",c:false},{t:"Regel",c:false}], rett:"✓", naer:"Fred."},
+      {q:"Hvilke land konkurrerte i romkappløpet?", opts:[{t:"USA og Sovjet",c:true},{t:"Norge og Brasil",c:false},{t:"Vietnam og Frankrike",c:false}], rett:"✓", naer:"USA og Sovjet."},
+      {q:"Hva het den første satellitten?", opts:[{t:"Sputnik",c:true},{t:"Apollo",c:false},{t:"Laika",c:false}], rett:"✓", naer:"Sputnik."},
+      {q:"Hvem var første dyr i rommet?", opts:[{t:"Hunden Laika",c:true},{t:"En katt",c:false},{t:"En fugl",c:false}], rett:"✓", naer:"Hunden Laika."},
+      {q:"Hvem var første menneske i rommet?", opts:[{t:"Gagarin",c:true},{t:"Armstrong",c:false},{t:"Rosa",c:false}], rett:"✓", naer:"Gagarin."},
+      {q:"Hvem gikk først på månen?", opts:[{t:"Neil Armstrong",c:true},{t:"Gagarin",c:false},{t:"Laika",c:false}], rett:"✓", naer:"Neil Armstrong."},
+      {q:"Hva er månen?", opts:[{t:"En stein rundt jorden",c:true},{t:"En stjerne",c:false},{t:"En sol",c:false}], rett:"✓", naer:"En stein rundt jorden."},
+      {q:"Hva betyr «modig»?", opts:[{t:"Å tørre selv om man er redd",c:true},{t:"Å være sint",c:false},{t:"Å være rask",c:false}], rett:"✓", naer:"Å tørre selv om man er redd."},
+      {q:"Hva betyr «frihet»?", opts:[{t:"Å bestemme selv",c:true},{t:"Å være redd",c:false},{t:"Å sove",c:false}], rett:"✓", naer:"Å bestemme selv."},
+      {q:"Hva er likt med Rosa, hippiene og Vietnam?", opts:[{t:"Alle ville endre noe urettferdig",c:true},{t:"Alle likte busser",c:false},{t:"Alle bodde i rommet",c:false}], rett:"✓ Så klokt!", naer:"Alle ville endre noe urettferdig."},
+    ]
+  },
+];
+
+/* ============ TILSTAND ============ */
+let dagIdx = 0;
+let n = 0;
+let poeng = 0;
+let logg = [];
+const fullfort = {}; // dagIdx -> poeng
+
+const $ = id => document.getElementById(id);
+
+function bland(arr){ for(let i=arr.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[arr[i],arr[j]]=[arr[j],arr[i]];} return arr; }
+
+function renderPills(){
+  const p = $("pills"); p.innerHTML = "";
+  UKE.forEach((d,i)=>{
+    const b = document.createElement("button");
+    b.className = "pill" + (d.erTest?" test":"") + (i===dagIdx?" aktiv":"");
+    const sjekk = (fullfort[i]!==undefined) ? ' <span class="sjekk">✓</span>' : '';
+    b.innerHTML = d.navn + sjekk;
+    b.onclick = ()=>{ dagIdx=i; startDag(); };
+    p.appendChild(b);
+  });
+}
+
+function startDag(){
+  n=0; poeng=0; logg=[];
+  const d = UKE[dagIdx];
+  $("slutt").classList.remove("vis");
+  $("kort").style.display="block";
+  $("teller").style.display="block";
+  $("dagIntro").style.display="block";
+  $("dagIntro").className = "dag-intro" + (d.erTest?" test-intro":"");
+  $("introIkon").textContent = d.ikon;
+  $("introTittel").textContent = d.intro.tittel;
+  $("introTekst").textContent = d.intro.tekst;
+  renderPills();
+  visSp();
+}
+
+function visSp(){
+  const d = UKE[dagIdx];
+  const s = d.sp[n];
+  $("fyll").style.width = (n/d.sp.length*100)+"%";
+  $("teller").textContent = "Spørsmål "+(n+1)+" av "+d.sp.length;
+  $("merkelapp").className = "merkelapp "+d.farge;
+  $("merkelapp").textContent = d.erTest ? "STOR-test 🏆" : d.tema;
+  $("sporsmal").textContent = s.q;
+  $("tilbake").className="tilbake"; $("tilbake").textContent="";
+  $("nesteKnapp").className="neste";
+
+  const liste = $("svarliste"); liste.innerHTML="";
+  bland(s.opts.map(o=>({...o}))).forEach(o=>{
+    const b=document.createElement("button");
+    b.className="svar";
+    b.textContent=o.t;
+    b.onclick=()=>velg(b,o,s);
+    liste.appendChild(b);
+  });
+}
+
+function velg(knapp, opt, s){
+  $("svarliste").querySelectorAll(".svar").forEach(k=>k.disabled=true);
+  if(opt.c){
+    knapp.classList.add("riktig"); poeng++;
+    $("tilbake").className="tilbake vis bra"; $("tilbake").textContent=s.rett;
+  } else {
+    knapp.classList.add("feil");
+    const rett = s.opts.find(o=>o.c).t;
+    $("svarliste").querySelectorAll(".svar").forEach(k=>{ if(k.textContent===rett) k.classList.add("riktig"); });
+    $("tilbake").className="tilbake vis naer"; $("tilbake").textContent=s.naer;
+  }
+  logg.push((opt.c?"✓":"✗")+" "+s.q+" → "+opt.t);
+  $("nesteKnapp").className="neste vis";
+  $("nesteKnapp").textContent = (n===UKE[dagIdx].sp.length-1) ? "Ferdig 🎉" : "Neste →";
+}
+
+$("nesteKnapp").onclick=()=>{
+  n++;
+  if(n>=UKE[dagIdx].sp.length) visSlutt();
+  else visSp();
+};
+
+function visSlutt(){
+  const d = UKE[dagIdx];
+  const maks = d.sp.length;
+  fullfort[dagIdx] = poeng;
+  $("fyll").style.width="100%";
+  $("teller").style.display="none";
+  $("kort").style.display="none";
+  $("dagIntro").style.display="none";
+  $("slutt").classList.add("vis");
+  $("poeng").textContent = poeng+" av "+maks+" riktige 🎯";
+  renderPills();
+
+  // Medalje bare på STOR-test
+  const med = $("medalje");
+  if(d.erTest){
+    const pct = poeng/maks;
+    med.style.display="block";
+    if(pct>=0.9){ med.className="medalje gull"; med.textContent="🥇 GULL! Helt fantastisk, Edel!"; }
+    else if(pct>=0.7){ med.className="medalje solv"; med.textContent="🥈 SØLV! Veldig bra jobba!"; }
+    else { med.className="medalje bronse"; med.textContent="🥉 BRONSE! Bra forsøk – øv litt til!"; }
+    $("sluttTittel").textContent="STOR-testen er ferdig! 🏆";
+    $("laerdom").textContent="Du har lært om mange modige mennesker som ville gjøre verden bedre. 💛";
+    $("tilTest").style.display="none";
+  } else {
+    med.style.display="none";
+    $("sluttTittel").textContent="Bra jobba, Edel!";
+    $("laerdom").textContent = "Hver dag lærer du litt mer. Velg neste dag øverst! ⬆️";
+    // Vis knapp til testen hvis alle 6 temadager er gjort
+    const temadagerGjort = UKE.slice(0,6).every((_,i)=>fullfort[i]!==undefined);
+    $("tilTest").style.display = temadagerGjort ? "inline-block" : "none";
+  }
+  $("sluttTekst").textContent = "";
+  sendTilMamma();
+}
+
+function sendTilMamma(){
+  const d = UKE[dagIdx];
+  const tekst = "UKENS QUIZ – "+d.intro.tittel+"\nPoeng: "+poeng+"/"+d.sp.length+"\n\n"+logg.join("\n");
+  const fd = new FormData(); fd.append(FELT, tekst);
+  fetch(FORMSPREE,{method:"POST",body:fd,headers:{"Accept":"application/json"}})
+    .then(r=>{ if(r.ok) $("sendtMelding").classList.add("vis"); })
+    .catch(()=>{});
+}
+
+$("paanytt").onclick=()=>startDag();
+$("tilTest").onclick=()=>{ dagIdx=UKE.length-1; startDag(); };
+
+// Start
+startDag();
+</script>
+</body>
+</html>
