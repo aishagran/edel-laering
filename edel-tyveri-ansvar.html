@@ -1,0 +1,274 @@
+<!DOCTYPE html>
+<html lang="no">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Hvis-så: ansvar – Edels Verden</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Baloo+2:wght@500;600;700&family=Nunito:wght@400;600;700&display=swap');
+  :root{
+    --lilla:#6c5ce7;--lilla-mork:#5a4bd1;--gronn:#27ae60;--gronn-lys:#eafaf0;
+    --rod:#e17055;--rod-lys:#fdeee9;--gul:#f6c945;--bg:#f4f1ea;--kort:#fff;
+    --tekst:#2d3436;--gratone:#dfe4ea;
+  }
+  *{box-sizing:border-box;margin:0;padding:0;}
+  body{font-family:'Nunito',sans-serif;background:var(--bg);color:var(--tekst);line-height:1.5;padding:16px;min-height:100vh;}
+  .wrap{max-width:640px;margin:0 auto;}
+  header{text-align:center;padding:20px 16px 8px;}
+  header .ikon{font-size:2.6rem;}
+  header h1{font-family:'Baloo 2',cursive;font-size:1.7rem;color:var(--lilla);line-height:1.15;}
+  header p{font-size:.95rem;color:#636e72;margin-top:4px;}
+
+  .info-boks{background:#fff8e1;color:#8a6d00;border-radius:14px;padding:14px 16px;font-size:.92rem;font-weight:600;margin:14px 0;line-height:1.45;}
+
+  .framdrift{height:12px;background:var(--gratone);border-radius:99px;overflow:hidden;margin:14px 0 8px;}
+  .framdrift-fyll{height:100%;width:0%;background:linear-gradient(90deg,var(--lilla),var(--gronn));border-radius:99px;transition:width .4s;}
+  .teller{text-align:center;font-size:.88rem;color:#636e72;margin-bottom:16px;font-weight:600;}
+
+  .kort{background:var(--kort);border-radius:22px;padding:22px 18px;box-shadow:0 6px 20px rgba(108,92,231,.10);}
+  .merkelapp{display:inline-block;font-family:'Baloo 2',cursive;font-size:.78rem;padding:4px 14px;border-radius:99px;margin-bottom:12px;background:var(--rod);color:#fff;}
+  .situasjon{background:#f4f1fb;border-radius:14px;padding:14px 16px;font-size:1.02rem;margin-bottom:14px;line-height:1.45;}
+  .situasjon .hvis{font-weight:800;color:var(--lilla);}
+  .sporsmal{font-family:'Baloo 2',cursive;font-size:1.25rem;margin-bottom:14px;line-height:1.25;}
+
+  .svar{display:block;width:100%;text-align:left;background:#fff;border:3px solid var(--gratone);border-radius:15px;padding:13px 15px;margin-bottom:11px;font-family:'Nunito',sans-serif;font-size:1.02rem;font-weight:600;color:var(--tekst);cursor:pointer;transition:transform .1s,border-color .2s,background .2s;}
+  .svar:hover{border-color:var(--lilla);transform:translateY(-2px);}
+  .svar:active{transform:scale(.99);}
+  .svar:disabled{cursor:default;}
+  .svar.riktig{border-color:var(--gronn);background:var(--gronn-lys);}
+  .svar.feil{border-color:var(--rod);background:var(--rod-lys);opacity:.85;}
+  .svar .emoji{margin-right:6px;}
+
+  .tilbake{margin-top:6px;padding:14px;border-radius:14px;font-size:.98rem;font-weight:600;display:none;line-height:1.45;}
+  .tilbake.vis{display:block;}
+  .tilbake.bra{background:var(--gronn-lys);color:#1e7a45;}
+  .tilbake.naer{background:#fff8e1;color:#8a6d00;}
+
+  .neste{display:none;width:100%;margin-top:16px;background:var(--lilla);color:#fff;border:none;border-radius:15px;padding:15px;font-family:'Baloo 2',cursive;font-size:1.15rem;cursor:pointer;transition:background .2s,transform .1s;}
+  .neste.vis{display:block;}
+  .neste:hover{background:var(--lilla-mork);}
+  .neste:active{transform:scale(.99);}
+
+  .skrivefelt{width:100%;border:3px solid var(--gratone);border-radius:15px;padding:14px;font-family:'Nunito',sans-serif;font-size:1.02rem;margin-top:6px;resize:vertical;min-height:90px;}
+  .skrivefelt:focus{outline:none;border-color:var(--lilla);}
+
+  .slutt{text-align:center;display:none;}
+  .slutt.vis{display:block;}
+  .slutt .stjerne{font-size:3.2rem;}
+  .slutt h2{font-family:'Baloo 2',cursive;font-size:1.55rem;color:var(--lilla);margin:6px 0;}
+  .slutt p{font-size:1rem;margin-bottom:8px;}
+  .laerdom{background:var(--gronn-lys);border-radius:14px;padding:16px;margin:16px 0;font-weight:700;color:#1e7a45;line-height:1.5;}
+  .paanytt{background:var(--gul);color:#5a4500;border:none;border-radius:14px;padding:13px 26px;font-family:'Baloo 2',cursive;font-size:1.05rem;cursor:pointer;}
+  .paanytt:hover{filter:brightness(.97);}
+  .sendt-melding{font-size:.82rem;color:#27ae60;margin-top:8px;font-weight:600;display:none;}
+  .sendt-melding.vis{display:block;}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <header>
+    <div class="ikon">💛</div>
+    <h1>Hvis-så: Hva gjør jeg da?</h1>
+    <p>Om å være ærlig og ta ansvar</p>
+  </header>
+
+  <div class="info-boks">
+    👩‍👧 Dette er fint å gjøre sammen med en voksen. Her er det ikke ett riktig svar på alt – det viktigste er å tenke: «Hva er ærlig og trygt?»
+  </div>
+
+  <div class="framdrift"><div class="framdrift-fyll" id="fyll"></div></div>
+  <div class="teller" id="teller">Situasjon 1</div>
+
+  <div class="kort" id="kort">
+    <span class="merkelapp">Hvis – så</span>
+    <div class="situasjon" id="situasjon"></div>
+    <div class="sporsmal" id="sporsmal"></div>
+    <div id="svarliste"></div>
+    <textarea class="skrivefelt" id="skrivefelt" placeholder="Skriv her …" style="display:none;"></textarea>
+    <div class="tilbake" id="tilbake"></div>
+    <button class="neste" id="nesteKnapp">Neste →</button>
+  </div>
+
+  <div class="kort slutt" id="slutt">
+    <div class="stjerne">🌟</div>
+    <h2>Så klokt tenkt, Edel!</h2>
+    <p>Du vet hva du skal gjøre hvis noe vanskelig skjer.</p>
+    <div class="laerdom">
+      Små feil kan skje alle. Det viktigste er å være ærlig, si ifra til en voksen, og ta ansvar. 💛<br><br>
+      «Jeg er en god jente som velger det rette.»
+    </div>
+    <p style="font-size:.95rem;color:#636e72;">Trykk om igjen for å øve mer.</p>
+    <button class="paanytt" id="paanytt">Spill om igjen 🔁</button>
+    <div class="sendt-melding" id="sendtMelding">✓ Svarene dine er sendt til mamma</div>
+  </div>
+</div>
+
+<script>
+const FORMSPREE = "https://formspree.io/f/mqeolldg";
+const FELT = "Tekst_hun_skrev";
+
+/* ========= SITUASJONER =========
+   type: "valg" (hvis-så med riktig svar) | "refleksjon" (skrivefelt)
+   Tema: ærlighet, ta ansvar, si ifra. Rolig, varm tone. Basert på en ekte situasjon.
+==================================*/
+const situasjoner = [
+  {
+    type:"valg",
+    situasjon:"<span class='hvis'>Hvis</span> du oppdager at noen har lagt noe i sekken din i en butikk – uten at du visste det …",
+    sp:"Hva gjør du?",
+    alt:[
+      {t:"Forteller det til en voksen jeg stoler på", c:true, emoji:"🗣️"},
+      {t:"Gjemmer det og sier ingenting", c:false, emoji:""},
+      {t:"Kaster det i søpla", c:false, emoji:""}
+    ],
+    rett:"Ja! Å fortelle en voksen er det modige og trygge valget. Da kan dere ordne det sammen.",
+    naer:"Det tryggeste er å fortelle det til en voksen du stoler på."
+  },
+  {
+    type:"valg",
+    situasjon:"<span class='hvis'>Hvis</span> dere finner ut at tingen ble med hjem fra butikken …",
+    sp:"Hva er det rette å gjøre?",
+    alt:[
+      {t:"Levere den tilbake og forklare hva som skjedde", c:true, emoji:"🏪"},
+      {t:"Beholde den, det er jo gratis", c:false, emoji:""},
+      {t:"Late som ingenting", c:false, emoji:""}
+    ],
+    rett:"Riktig! Når man leverer tilbake og forklarer rolig, ordner det seg som regel.",
+    naer:"Det rette er å levere tilbake og forklare hva som skjedde."
+  },
+  {
+    type:"valg",
+    situasjon:"<span class='hvis'>Hvis</span> noen venner sier: «Bare ta den, ingen ser det!» …",
+    sp:"Hva svarer du?",
+    alt:[
+      {t:"«Nei, jeg vil ikke ta noe som ikke er mitt.»", c:true, emoji:"✋"},
+      {t:"«Ok, hvis dere gjør det også.»", c:false, emoji:""},
+      {t:"Tar den for å passe inn", c:false, emoji:""}
+    ],
+    rett:"Så bra! Det er modig å si nei, selv om vennene presser. Du bestemmer over deg selv.",
+    naer:"Det modige er å si nei – også når vennene presser."
+  },
+  {
+    type:"valg",
+    situasjon:"<span class='hvis'>Hvis</span> en voksen i butikken stiller deg spørsmål om hva som skjedde …",
+    sp:"Hvordan svarer du best?",
+    alt:[
+      {t:"Forteller rolig og ærlig hva som skjedde", c:true, emoji:"😌"},
+      {t:"Finner på en historie", c:false, emoji:""},
+      {t:"Løper ut av butikken", c:false, emoji:""}
+    ],
+    rett:"Ja! Når du er rolig og ærlig, forstår de voksne at du vil gjøre det rette.",
+    naer:"Det beste er å være rolig og fortelle ærlig hva som skjedde."
+  },
+  {
+    type:"valg",
+    situasjon:"<span class='hvis'>Hvis</span> politiet snakker med deg og foreldrene dine om noe som skjedde …",
+    sp:"Hva er sant om dette?",
+    alt:[
+      {t:"De vil finne sannheten og hjelpe – det er en samtale, ikke straff", c:true, emoji:"💬"},
+      {t:"De vil sette meg i fengsel med en gang", c:false, emoji:""},
+      {t:"Jeg må være helt stille", c:false, emoji:""}
+    ],
+    rett:"Riktig! Barn under 15 år får ikke straff som voksne. Politiet vil forstå og hjelpe familien.",
+    naer:"Det er en bekymringssamtale – de vil finne sannheten og hjelpe, ikke straffe."
+  },
+  {
+    type:"valg",
+    situasjon:"<span class='hvis'>Hvis</span> du ser at en venn er på vei til å ta noe som ikke er deres …",
+    sp:"Hva kan du gjøre?",
+    alt:[
+      {t:"Si rolig: «Ikke gjør det – det er ikke verdt det.»", c:true, emoji:"🤝"},
+      {t:"Le og heie", c:false, emoji:""},
+      {t:"Hjelpe dem å gjemme det", c:false, emoji:""}
+    ],
+    rett:"Så fint! En ekte venn sier ifra på en snill måte. Det er å bry seg.",
+    naer:"En god venn sier rolig ifra: «Ikke gjør det.»"
+  },
+  {
+    type:"refleksjon",
+    situasjon:"Edel sier: «Jeg tar ansvar for handlingene mine, og behandler andre slik jeg ønsker å bli behandlet.»",
+    sp:"Skriv én setning: Hva betyr det å «ta ansvar»?",
+    placeholder:"Å ta ansvar er …"
+  }
+];
+
+let n=0, poeng=0, maxValg=situasjoner.filter(s=>s.type==="valg").length, logg=[];
+const $ = id => document.getElementById(id);
+function bland(a){for(let i=a.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[a[i],a[j]]=[a[j],a[i]];}return a;}
+
+function vis(){
+  const s = situasjoner[n];
+  $("fyll").style.width=(n/situasjoner.length*100)+"%";
+  $("teller").textContent="Situasjon "+(n+1)+" av "+situasjoner.length;
+  $("situasjon").innerHTML=s.situasjon;
+  $("sporsmal").textContent=s.sp;
+  $("tilbake").className="tilbake"; $("tilbake").textContent="";
+  $("nesteKnapp").className="neste";
+  $("svarliste").innerHTML="";
+  $("skrivefelt").style.display="none"; $("skrivefelt").value="";
+
+  if(s.type==="refleksjon"){
+    $("skrivefelt").style.display="block";
+    $("skrivefelt").placeholder=s.placeholder||"Skriv her …";
+    $("nesteKnapp").className="neste vis";
+    $("nesteKnapp").textContent="Ferdig 🎉";
+    return;
+  }
+
+  bland(s.alt.map(o=>({...o}))).forEach(o=>{
+    const b=document.createElement("button");
+    b.className="svar";
+    b.innerHTML=(o.emoji?'<span class="emoji">'+o.emoji+'</span>':'')+o.t;
+    b.onclick=()=>velg(b,o,s);
+    $("svarliste").appendChild(b);
+  });
+}
+
+function velg(knapp,opt,s){
+  $("svarliste").querySelectorAll(".svar").forEach(k=>k.disabled=true);
+  if(opt.c){
+    knapp.classList.add("riktig"); poeng++;
+    $("tilbake").className="tilbake vis bra"; $("tilbake").textContent=s.rett;
+  } else {
+    knapp.classList.add("feil");
+    const rett=s.alt.find(o=>o.c).t;
+    $("svarliste").querySelectorAll(".svar").forEach(k=>{ if(k.textContent.includes(rett)) k.classList.add("riktig"); });
+    $("tilbake").className="tilbake vis naer"; $("tilbake").textContent=s.naer;
+  }
+  logg.push((opt.c?"✓":"✗")+" "+s.sp+" → "+opt.t);
+  $("nesteKnapp").className="neste vis";
+  $("nesteKnapp").textContent=(n===situasjoner.length-1)?"Ferdig 🎉":"Neste →";
+}
+
+$("nesteKnapp").onclick=()=>{
+  const s=situasjoner[n];
+  if(s.type==="refleksjon"){
+    const t=$("skrivefelt").value.trim();
+    if(t) logg.push("[Refleksjon] "+s.sp+" → "+t);
+  }
+  n++;
+  if(n>=situasjoner.length) slutt();
+  else vis();
+};
+
+function slutt(){
+  $("fyll").style.width="100%";
+  $("teller").style.display="none";
+  $("kort").style.display="none";
+  $("slutt").classList.add("vis");
+  send();
+}
+
+function send(){
+  const tekst="HVIS-SÅ: ANSVAR – Edel sine svar\nPoeng (valg): "+poeng+"/"+maxValg+"\n\n"+logg.join("\n");
+  const fd=new FormData(); fd.append(FELT,tekst);
+  fetch(FORMSPREE,{method:"POST",body:fd,headers:{"Accept":"application/json"}})
+    .then(r=>{ if(r.ok) $("sendtMelding").classList.add("vis"); }).catch(()=>{});
+}
+
+$("paanytt").onclick=()=>{ n=0;poeng=0;logg=[]; $("slutt").classList.remove("vis"); $("kort").style.display="block"; $("teller").style.display="block"; vis(); };
+
+vis();
+</script>
+</body>
+</html>
