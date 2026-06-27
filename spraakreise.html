@@ -299,6 +299,121 @@ const DAYS = [
       {type:"open", head:"6️⃣ Skriv din egen", prompt:"Skriv: Fortell om hele uke di!", placeholder:"Først... etterpå... fordi... men... derfor... til slutt..."},
     ]
   },
+  {
+    icon:"✊🏽", name:"Dag 11", theme:"Rosa Parks",
+    intro:{title:"Modig – å tørre selv om man er redd", text:"Rosa Parks var redd, men hun gjorde noe modig likevel. Vi øver på «men» og «derfor»."},
+    steps:[
+      {type:"visual", head:"1️⃣ Se og les", emoji:"🚌", text:"Sjåføren sa: «Reis deg!» <b>Men</b> Rosa ble sittende."},
+      {type:"rep", head:"2️⃣ Les høyt – 3 ganger", rows:[
+        "For lenge siden var det urettferdige regler på bussen.",
+        "Svarte måtte sitte bakerst.",
+        "Rosa sa nei. Hun var rolig og modig.",
+        "Derfor ble hun arrestert, men hun ga ikke opp.",
+      ], tip:"Les saktere på «modig» og «urettferdig» — det er nye, viktige ord."},
+      {type:"choice", head:"3️⃣ Velg riktig", q:"Sjåføren sa reis deg. <b>___</b> Rosa ble sittende.",
+        opts:[{t:"Fordi",c:false},{t:"Men",c:true},{t:"Først",c:false}],
+        feedback:"✅ Riktig! «Men» viser at hun gjorde noe annet enn det han sa."},
+      {type:"choice", head:"3️⃣ Velg riktig (2)", q:"Hva betyr <b>urettferdig</b>?",
+        opts:[{t:"Noe som ikke er rettferdig",c:true},{t:"Noe som er morsomt",c:false},{t:"Noe som er nytt",c:false}],
+        feedback:"✅ Riktig! Urettferdig = ikke rettferdig."},
+      {type:"speak", head:"4️⃣ Si det høyt selv", emoji:"🗣️", prompt:"Fortell om en gang du var modig, selv om du var litt redd.",
+        help:"Jeg var redd, men jeg... Derfor..."},
+      {type:"build", head:"5️⃣ Bygg setningen", steps:["Rosa sa nei.","Rosa sa nei på bussen.","Rosa sa nei på bussen, for regelen var urettferdig.","Rosa sa nei på bussen, for regelen var urettferdig, og det var veldig modig."]},
+      {type:"open", head:"6️⃣ Skriv din egen", prompt:"Skriv en setning med ordet «modig».", placeholder:"Det er modig å..."},
+    ]
+  },
+  {
+    icon:"☮️", name:"Dag 12", theme:"Hippiene",
+    intro:{title:"Fred – det motsatte av krig", text:"Hippiene ville ha fred. Vi øver på «fordi» som forklarer HVORFOR."},
+    steps:[
+      {type:"visual", head:"1️⃣ Se og les", emoji:"🌸", text:"Hippiene laget protester <b>fordi</b> de ville ha fred."},
+      {type:"rep", head:"2️⃣ Les høyt – 3 ganger", rows:[
+        "Mange unge mennesker likte ikke krigen.",
+        "De mente at krigen var urettferdig.",
+        "De ville ha fred, ikke krig.",
+        "Derfor laget de protester med musikk og blomster.",
+      ], tip:"«Fred» og «protest» er nøkkelord. La henne gjenta dem ekstra."},
+      {type:"choice", head:"3️⃣ Velg riktig", q:"De laget protester <b>___</b> de ville ha fred.",
+        opts:[{t:"men",c:false},{t:"fordi",c:true},{t:"til slutt",c:false}],
+        feedback:"✅ Riktig! «Fordi» forklarer hvorfor de protesterte."},
+      {type:"choice", head:"3️⃣ Velg riktig (2)", q:"Hva er det motsatte av <b>krig</b>?",
+        opts:[{t:"Fred",c:true},{t:"Sinne",c:false},{t:"Regel",c:false}],
+        feedback:"✅ Riktig! Fred er det motsatte av krig."},
+      {type:"speak", head:"4️⃣ Si det høyt selv", emoji:"🗣️", prompt:"Hva betyr fred for deg? Fortell.",
+        help:"Fred er når... Jeg liker fred fordi..."},
+      {type:"build", head:"5️⃣ Bygg setningen", steps:["De ville ha fred.","Mange unge ville ha fred.","Mange unge ville ha fred, ikke krig.","Mange unge ville ha fred, ikke krig, derfor protesterte de sammen."]},
+      {type:"open", head:"6️⃣ Skriv din egen", prompt:"Skriv en setning med ordet «fred».", placeholder:"Fred betyr at..."},
+    ]
+  },
+  {
+    icon:"🕊️", name:"Dag 13", theme:"Vietnamkrigen",
+    intro:{title:"Frihet – å bestemme selv", text:"Folk i Vietnam ville ha frihet. Vi øver på rekkefølge: først… til slutt."},
+    steps:[
+      {type:"visual", head:"1️⃣ Se og les", emoji:"🏳️", text:"<b>Først</b> bestemte Frankrike. <b>Til slutt</b> ble Vietnam fritt."},
+      {type:"rep", head:"2️⃣ Les høyt – 3 ganger", rows:[
+        "For lenge siden var Vietnam ikke et fritt land.",
+        "Mange ville bestemme over sitt eget land.",
+        "Det ble en lang og vanskelig krig.",
+        "Til slutt ble Vietnam et samlet land igjen.",
+      ], tip:"«Frihet» og «fritt» hører sammen. Pek på flagget når dere leser."},
+      {type:"choice", head:"3️⃣ Velg riktig", q:"Hva betyr <b>frihet</b>?",
+        opts:[{t:"Å bestemme selv",c:true},{t:"Å være redd",c:false},{t:"Å sitte stille",c:false}],
+        feedback:"✅ Riktig! Frihet = å få bestemme selv."},
+      {type:"choice", head:"3️⃣ Velg riktig (2)", q:"<b>___</b> ble Vietnam et samlet land.",
+        opts:[{t:"Først",c:false},{t:"Til slutt",c:true},{t:"Fordi",c:false}],
+        feedback:"✅ Riktig! «Til slutt» viser hva som skjedde sist."},
+      {type:"speak", head:"4️⃣ Si det høyt selv", emoji:"🗣️", prompt:"Fortell om noe du fikk bestemme selv. Hvordan føltes det?",
+        help:"Jeg fikk bestemme... Det føltes... fordi..."},
+      {type:"build", head:"5️⃣ Bygg setningen", steps:["Folk ville ha frihet.","Folk i Vietnam ville ha frihet.","Folk i Vietnam ville ha frihet og bestemme selv.","Folk i Vietnam ville ha frihet og bestemme selv, og til slutt ble landet fritt."]},
+      {type:"open", head:"6️⃣ Skriv din egen", prompt:"Skriv en setning med ordet «frihet».", placeholder:"Frihet er når..."},
+    ]
+  },
+  {
+    icon:"🧠", name:"Dag 14", theme:"Rus & hjernen",
+    intro:{title:"Forstå – ikke dømme", text:"Noen mennesker blir syke av rus. De trenger hjelp, ikke kjeft. Vi øver på «derfor» og medfølelse."},
+    steps:[
+      {type:"visual", head:"1️⃣ Se og les", emoji:"💛", text:"Hjernen kan bli syk av rus. <b>Derfor</b> trenger personen hjelp."},
+      {type:"rep", head:"2️⃣ Les høyt – 3 ganger", rows:[
+        "Rus kan endre hvordan hjernen virker.",
+        "Noen mister kontrollen, selv om de vil slutte.",
+        "De er syke — ikke onde.",
+        "Derfor trenger de hjelp og omsorg, ikke kjeft.",
+      ], tip:"Dette er et tema for samtale med voksen. Hold rolig, varm tone. Fokus: medfølelse."},
+      {type:"choice", head:"3️⃣ Velg riktig", q:"Hjernen kan bli syk. <b>___</b> trenger personen hjelp.",
+        opts:[{t:"Men",c:false},{t:"Derfor",c:true},{t:"Først",c:false}],
+        feedback:"✅ Riktig! «Derfor» viser hva som følger av noe."},
+      {type:"choice", head:"3️⃣ Velg riktig (2)", q:"Hva trenger en som er syk av rus?",
+        opts:[{t:"Hjelp og omsorg",c:true},{t:"Kjeft",c:false},{t:"At ingen bryr seg",c:false}],
+        feedback:"✅ Riktig! Hjelp og omsorg — de er syke, ikke onde."},
+      {type:"speak", head:"4️⃣ Si det høyt selv", emoji:"🗣️", prompt:"Hva kan du gjøre hvis noen du kjenner har det vanskelig?",
+        help:"Jeg kan... Jeg kan si ifra til en voksen fordi..."},
+      {type:"build", head:"5️⃣ Bygg setningen", steps:["De trenger hjelp.","Syke mennesker trenger hjelp.","Syke mennesker trenger hjelp, ikke kjeft.","Syke mennesker trenger hjelp, ikke kjeft, derfor er det viktig å være snill."]},
+      {type:"open", head:"6️⃣ Skriv din egen", prompt:"Skriv en setning med ordet «hjelp».", placeholder:"Det er fint å hjelpe når..."},
+    ]
+  },
+  {
+    icon:"🌟", name:"Dag 15", theme:"60- og 70-tallet",
+    intro:{title:"Repetisjon – alt vi har lært", text:"I dag samler vi alt: Rosa Parks, hippiene og Vietnam. Bruk så mange bindeord du kan!"},
+    steps:[
+      {type:"visual", head:"1️⃣ Se og les", emoji:"🌍", text:"<b>Først</b> kjempet Rosa for rettferdighet. <b>Etterpå</b> ville hippiene ha fred."},
+      {type:"rep", head:"2️⃣ Les høyt – 3 ganger", rows:[
+        "Rosa Parks var modig og sa nei til urettferdighet.",
+        "Hippiene ville ha fred, ikke krig.",
+        "I Vietnam kjempet folk for frihet.",
+        "Alle ville gjøre verden litt bedre.",
+      ], tip:"Dette knytter de tre temaene sammen. Spør: «Hva er likt med dem alle?»"},
+      {type:"choice", head:"3️⃣ Velg riktig", q:"Hvem var modig og sa nei på bussen?",
+        opts:[{t:"Rosa Parks",c:true},{t:"Ho Chi Minh",c:false},{t:"En hippie",c:false}],
+        feedback:"✅ Riktig! Rosa Parks."},
+      {type:"choice", head:"3️⃣ Velg riktig (2)", q:"Hva ville hippiene ha?",
+        opts:[{t:"Krig",c:false},{t:"Fred",c:true},{t:"Regler",c:false}],
+        feedback:"✅ Riktig! Fred."},
+      {type:"speak", head:"4️⃣ Si det høyt selv", emoji:"🗣️", prompt:"Hva er likt med Rosa, hippiene og folk i Vietnam? Fortell.",
+        help:"Alle ville... fordi... Først... etterpå... til slutt..."},
+      {type:"build", head:"5️⃣ Bygg setningen", steps:["De ville endre noe.","Mange modige mennesker ville endre noe.","Mange modige mennesker ville endre noe urettferdig.","Mange modige mennesker ville endre noe urettferdig, derfor sto de sammen for en bedre verden."]},
+      {type:"open", head:"6️⃣ Skriv din egen", prompt:"Skriv: Hva betyr det å være modig?", placeholder:"Å være modig er..."},
+    ]
+  },
 ];
 
 let currentDay = 0;
