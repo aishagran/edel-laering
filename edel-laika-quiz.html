@@ -1,0 +1,184 @@
+<!DOCTYPE html>
+<html lang="no">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Laika – spill & spørsmål – Edels Verden</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Baloo+2:wght@500;600;700&family=Nunito:wght@400;600;700&display=swap');
+  :root{
+    --lilla:#6c5ce7;--lilla-mork:#5a4bd1;--gronn:#27ae60;--gronn-lys:#eafaf0;
+    --rod:#e17055;--rod-lys:#fdeee9;--gul:#f6c945;--bg:#f4f1ea;--kort:#fff;
+    --tekst:#2d3436;--gratone:#dfe4ea;
+  }
+  *{box-sizing:border-box;margin:0;padding:0;}
+  body{font-family:'Nunito',sans-serif;background:var(--bg);color:var(--tekst);line-height:1.5;padding:16px;min-height:100vh;}
+  .wrap{max-width:640px;margin:0 auto;}
+  header{text-align:center;padding:20px 16px 8px;}
+  header .hund{font-size:2.6rem;}
+  header h1{font-family:'Baloo 2',cursive;font-size:1.8rem;color:var(--lilla);line-height:1.1;}
+  header p{font-size:1rem;color:#636e72;margin-top:4px;}
+  .framdrift{height:12px;background:var(--gratone);border-radius:99px;overflow:hidden;margin:16px 0 8px;}
+  .framdrift-fyll{height:100%;width:0%;background:linear-gradient(90deg,var(--lilla),var(--gronn));border-radius:99px;transition:width .4s;}
+  .teller{text-align:center;font-size:.9rem;color:#636e72;margin-bottom:16px;font-weight:600;}
+  .kort{background:var(--kort);border-radius:24px;padding:24px 20px;box-shadow:0 6px 20px rgba(108,92,231,.10);}
+  .merkelapp{display:inline-block;font-family:'Baloo 2',cursive;font-size:.8rem;padding:4px 14px;border-radius:99px;margin-bottom:14px;}
+  .merkelapp.fakta{background:var(--lilla);color:#fff;}
+  .merkelapp.ord{background:#0984e3;color:#fff;}
+  .sporsmal{font-family:'Baloo 2',cursive;font-size:1.4rem;margin-bottom:6px;line-height:1.25;}
+  .hjelpetekst{font-size:.95rem;color:#636e72;margin-bottom:18px;}
+  .svar{display:block;width:100%;text-align:left;background:#fff;border:3px solid var(--gratone);border-radius:16px;padding:14px 16px;margin-bottom:12px;font-family:'Nunito',sans-serif;font-size:1.05rem;font-weight:600;color:var(--tekst);cursor:pointer;transition:transform .1s,border-color .2s,background .2s;}
+  .svar:hover{border-color:var(--lilla);transform:translateY(-2px);}
+  .svar:active{transform:scale(.99);}
+  .svar:disabled{cursor:default;}
+  .svar.riktig{border-color:var(--gronn);background:var(--gronn-lys);}
+  .svar.feil{border-color:var(--rod);background:var(--rod-lys);opacity:.85;}
+  .svar .emoji{margin-right:6px;}
+  .tilbake{margin-top:8px;padding:16px;border-radius:16px;font-size:1rem;font-weight:600;display:none;line-height:1.45;}
+  .tilbake.vis{display:block;}
+  .tilbake.bra{background:var(--gronn-lys);color:#1e7a45;}
+  .tilbake.naer{background:#fff8e1;color:#8a6d00;}
+  .neste{display:none;width:100%;margin-top:18px;background:var(--lilla);color:#fff;border:none;border-radius:16px;padding:16px;font-family:'Baloo 2',cursive;font-size:1.2rem;cursor:pointer;transition:background .2s,transform .1s;}
+  .neste.vis{display:block;}
+  .neste:hover{background:var(--lilla-mork);}
+  .neste:active{transform:scale(.99);}
+  .slutt{text-align:center;display:none;}
+  .slutt.vis{display:block;}
+  .slutt .stjerne{font-size:3.5rem;}
+  .slutt h2{font-family:'Baloo 2',cursive;font-size:1.8rem;color:var(--lilla);margin:8px 0;}
+  .poeng{font-family:'Baloo 2',cursive;font-size:2.6rem;color:var(--gronn);margin:10px 0;}
+  .slutt p{font-size:1.05rem;margin-bottom:10px;}
+  .laerdom{background:var(--gronn-lys);border-radius:16px;padding:16px;margin:18px 0;font-weight:700;color:#1e7a45;line-height:1.5;}
+  .paanytt{background:var(--gul);color:#5a4500;border:none;border-radius:16px;padding:14px 28px;font-family:'Baloo 2',cursive;font-size:1.1rem;cursor:pointer;}
+  .paanytt:hover{filter:brightness(.97);}
+  .sendt-melding{font-size:.85rem;color:#27ae60;margin-top:8px;font-weight:600;display:none;}
+  .sendt-melding.vis{display:block;}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <header>
+    <div class="hund">🐕</div>
+    <h1>Laika – spill & spørsmål</h1>
+    <p>Den første hunden i verdensrommet</p>
+  </header>
+
+  <div class="framdrift"><div class="framdrift-fyll" id="fyll"></div></div>
+  <div class="teller" id="teller">Spørsmål 1</div>
+
+  <div class="kort" id="kort">
+    <span class="merkelapp fakta" id="merkelapp">Fakta</span>
+    <div class="sporsmal" id="sporsmal"></div>
+    <div class="hjelpetekst" id="hjelpetekst"></div>
+    <div id="svarliste"></div>
+    <div class="tilbake" id="tilbake"></div>
+    <button class="neste" id="nesteKnapp">Neste →</button>
+  </div>
+
+  <div class="kort slutt" id="slutt">
+    <div class="stjerne">🌟</div>
+    <h2>Bra jobba, Edel!</h2>
+    <div class="poeng" id="poeng"></div>
+    <p>Du kan masse om Laika og verdensrommet! 🐾</p>
+    <div class="laerdom">
+      Laika var en modig pioner. 💜 Det hun var med på, gjorde det tryggere for menneskene som reiste ut i rommet senere.
+    </div>
+    <p style="font-size:.95rem;color:#636e72;">Trykk om igjen for å øve mer.</p>
+    <button class="paanytt" id="paanytt">Spill om igjen 🔁</button>
+    <div class="sendt-melding" id="sendtMelding">✓ Svarene dine er sendt til mamma</div>
+  </div>
+</div>
+
+<script>
+const FORMSPREE = "https://formspree.io/f/mqeolldg";
+const FELT = "Tekst_hun_skrev";
+
+/* Fakta + vokabular. Rolig, respektfull tone. Fokus på fakta og ord (satellitt, bane, atmosfære, eksperiment, stress). */
+const sporsmaal = [
+  // FAKTA
+  {type:"fakta", sporsmal:"Hva var Laika?", hjelp:"Tenk på hvem hun var.",
+    alt:[{tekst:"Den første hunden i verdensrommet", riktig:true, emoji:"🐕"},{tekst:"En forsker", riktig:false},{tekst:"En rakett", riktig:false}],
+    rett:"Ja! Laika var den første hunden som reiste ut i verdensrommet.", naer:"Laika var den første hunden i verdensrommet."},
+  {type:"fakta", sporsmal:"Hvilket land sendte Laika opp?", hjelp:"Det samme landet som sendte Sputnik.",
+    alt:[{tekst:"Sovjetunionen", riktig:true, emoji:"🚀"},{tekst:"Norge", riktig:false},{tekst:"Brasil", riktig:false}],
+    rett:"Riktig! Sovjetunionen sendte Laika opp i 1957.", naer:"Det var Sovjetunionen."},
+  {type:"fakta", sporsmal:"Med hvilken satellitt reiste Laika?", hjelp:"Den andre Sputnik-en.",
+    alt:[{tekst:"Sputnik 2", riktig:true, emoji:"🛰️"},{tekst:"Apollo 11", riktig:false},{tekst:"Sputnik 10", riktig:false}],
+    rett:"Ja! Laika reiste med Sputnik 2.", naer:"Hun reiste med Sputnik 2."},
+  {type:"fakta", sporsmal:"Hva gjorde Laika i verdensrommet?", hjelp:"Hun fløy rundt jorden.",
+    alt:[{tekst:"Gikk i bane rundt jorda", riktig:true, emoji:"🌍"},{tekst:"Landet på månen", riktig:false},{tekst:"Bygde en rakett", riktig:false}],
+    rett:"Riktig! Laika gikk i bane rundt jorda.", naer:"Hun gikk i bane rundt jorda."},
+  {type:"fakta", sporsmal:"Betyr navnet «Laika» noe?", hjelp:"Visste du? – på russisk.",
+    alt:[{tekst:"«Bjeffer» på russisk", riktig:true, emoji:"🐶"},{tekst:"«Stjerne» på russisk", riktig:false},{tekst:"«Rakett» på russisk", riktig:false}],
+    rett:"Ja! Laika betyr «bjeffer» på russisk. Hun var en gatehund.", naer:"Laika betyr «bjeffer» på russisk."},
+  {type:"fakta", sporsmal:"Hvorfor var Laikas reise viktig?", hjelp:"Tenk på hva som kom etterpå.",
+    alt:[{tekst:"Den gjorde det mulig å sende mennesker til rommet senere", riktig:true, emoji:"🚀"},{tekst:"Den var bare for gøy", riktig:false},{tekst:"Den var ikke viktig", riktig:false}],
+    rett:"Riktig! Det forskerne lærte, gjorde senere reiser tryggere for mennesker.", naer:"Den gjorde senere reiser mulig og tryggere for mennesker."},
+
+  // VOKABULAR
+  {type:"ord", sporsmal:"Hva er en «satellitt»?", hjelp:"Fra Viktige ord.",
+    alt:[{tekst:"Et objekt som går i bane rundt jorda", riktig:true, emoji:"🛰️"},{tekst:"En type mat", riktig:false},{tekst:"En stjerne", riktig:false}],
+    rett:"Ja! En satellitt går i bane rundt jorda.", naer:"En satellitt går i bane rundt jorda."},
+  {type:"ord", sporsmal:"Hva betyr «bane» (orbit)?", hjelp:"Slik Laika reiste.",
+    alt:[{tekst:"En vei rundt jorda i verdensrommet", riktig:true, emoji:"🔄"},{tekst:"En stol", riktig:false},{tekst:"Et hus", riktig:false}],
+    rett:"Riktig! En bane er en vei rundt jorda.", naer:"Bane = en vei rundt jorda i verdensrommet."},
+  {type:"ord", sporsmal:"Hva er «atmosfæren»?", hjelp:"Laget rundt jorda.",
+    alt:[{tekst:"Laget av gass som omgir jorda", riktig:true, emoji:"🌍"},{tekst:"En type rakett", riktig:false},{tekst:"En dyp innsjø", riktig:false}],
+    rett:"Ja! Atmosfæren er laget av gass rundt jorda.", naer:"Atmosfæren er laget av gass som omgir jorda."},
+  {type:"ord", sporsmal:"Hva er et «eksperiment»?", hjelp:"Forskerne gjorde et.",
+    alt:[{tekst:"En test for å lære noe nytt", riktig:true, emoji:"🔬"},{tekst:"En lek ute", riktig:false},{tekst:"En sang", riktig:false}],
+    rett:"Riktig! Et eksperiment er en test for å lære noe nytt.", naer:"Eksperiment = en test for å lære noe nytt."},
+  {type:"ord", sporsmal:"Hva betyr «stress»?", hjelp:"Når kroppen ikke har det bra.",
+    alt:[{tekst:"Når kroppen blir sliten og ikke har det bra", riktig:true, emoji:"😥"},{tekst:"Når man er veldig glad", riktig:false},{tekst:"Når man sover godt", riktig:false}],
+    rett:"Ja! Stress er når kroppen blir sliten og ikke har det bra.", naer:"Stress = når kroppen blir sliten og ikke har det bra."},
+  {type:"ord", sporsmal:"Hva betyr det at noe «går i bane rundt» jorda?", hjelp:"Som månen og satellitter.",
+    alt:[{tekst:"Det beveger seg rundt og rundt jorda", riktig:true, emoji:"🌙"},{tekst:"Det står helt stille", riktig:false},{tekst:"Det faller rett ned", riktig:false}],
+    rett:"Riktig! Det går rundt og rundt jorda.", naer:"Det beveger seg rundt og rundt jorda."},
+];
+
+let n=0, poeng=0, maxPoeng=sporsmaal.length, logg=[];
+const $ = id => document.getElementById(id);
+function bland(a){for(let i=a.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[a[i],a[j]]=[a[j],a[i]];}return a;}
+
+function vis(){
+  const s=sporsmaal[n];
+  $("fyll").style.width=(n/sporsmaal.length*100)+"%";
+  $("teller").textContent="Spørsmål "+(n+1)+" av "+sporsmaal.length;
+  if(s.type==="fakta"){ $("merkelapp").className="merkelapp fakta"; $("merkelapp").textContent="Fakta"; }
+  else { $("merkelapp").className="merkelapp ord"; $("merkelapp").textContent="Hva betyr ordet?"; }
+  $("sporsmal").textContent=s.sporsmal;
+  $("hjelpetekst").textContent=s.hjelp||"";
+  $("tilbake").className="tilbake"; $("tilbake").textContent="";
+  $("nesteKnapp").className="neste";
+  $("svarliste").innerHTML="";
+  bland(s.alt.map(o=>({...o}))).forEach(o=>{
+    const b=document.createElement("button");
+    b.className="svar";
+    b.innerHTML=(o.emoji?'<span class="emoji">'+o.emoji+'</span>':'')+o.tekst;
+    b.onclick=()=>velg(b,o,s);
+    $("svarliste").appendChild(b);
+  });
+}
+function velg(knapp,opt,s){
+  $("svarliste").querySelectorAll(".svar").forEach(k=>k.disabled=true);
+  if(opt.riktig){ knapp.classList.add("riktig"); poeng++; $("tilbake").className="tilbake vis bra"; $("tilbake").textContent=s.rett; }
+  else{ knapp.classList.add("feil"); const r=s.alt.find(o=>o.riktig).tekst; $("svarliste").querySelectorAll(".svar").forEach(k=>{if(k.textContent.includes(r))k.classList.add("riktig");}); $("tilbake").className="tilbake vis naer"; $("tilbake").textContent=s.naer; }
+  logg.push((opt.riktig?"✓":"✗")+" "+s.sporsmal+" → "+opt.tekst);
+  $("nesteKnapp").className="neste vis";
+  $("nesteKnapp").textContent=(n===sporsmaal.length-1)?"Ferdig 🎉":"Neste →";
+}
+$("nesteKnapp").onclick=()=>{ n++; if(n>=sporsmaal.length) slutt(); else vis(); };
+function slutt(){
+  $("fyll").style.width="100%"; $("teller").style.display="none"; $("kort").style.display="none";
+  $("slutt").classList.add("vis"); $("poeng").textContent=poeng+" av "+maxPoeng+" riktige 🎯"; send();
+}
+function send(){
+  const tekst="LAIKA – Edel sine svar\nPoeng: "+poeng+"/"+maxPoeng+"\n\n"+logg.join("\n");
+  const fd=new FormData(); fd.append(FELT,tekst);
+  fetch(FORMSPREE,{method:"POST",body:fd,headers:{"Accept":"application/json"}}).then(r=>{if(r.ok)$("sendtMelding").classList.add("vis");}).catch(()=>{});
+}
+$("paanytt").onclick=()=>{ n=0;poeng=0;logg=[]; $("slutt").classList.remove("vis"); $("kort").style.display="block"; $("teller").style.display="block"; vis(); };
+vis();
+</script>
+</body>
+</html>
