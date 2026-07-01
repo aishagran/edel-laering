@@ -1,0 +1,299 @@
+<!DOCTYPE html>
+<html lang="no">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Ukens ordkort 📖 – Edels Verden</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Baloo+2:wght@500;600;700&family=Nunito:wght@400;600;700&display=swap');
+  :root{
+    --lilla:#6c5ce7;--lilla-mork:#5a4bd1;--gronn:#27ae60;--gronn-lys:#eafaf0;
+    --rod:#e17055;--rod-lys:#fdeee9;--gul:#f6c945;--bg:#f4f1ea;--kort:#fff;
+    --tekst:#2d3436;--gratone:#dfe4ea;
+    --rosa:#e84393;--vietnam:#00b894;--hippie:#a29bfe;--romfart:#0984e3;--laika:#8e44ad;
+  }
+  *{box-sizing:border-box;margin:0;padding:0;}
+  body{font-family:'Nunito',sans-serif;background:var(--bg);color:var(--tekst);line-height:1.5;padding:14px;min-height:100vh;}
+  .wrap{max-width:640px;margin:0 auto;}
+  header{text-align:center;padding:16px 10px 6px;}
+  header h1{font-family:'Baloo 2',cursive;font-size:1.7rem;color:var(--lilla);line-height:1.1;}
+  header p{font-size:.95rem;color:#636e72;margin-top:2px;}
+
+  /* Tabs */
+  .tabs{display:flex;gap:8px;justify-content:center;margin:16px 0;}
+  .tab{font-family:'Baloo 2',cursive;font-size:1rem;padding:10px 20px;border-radius:99px;border:3px solid var(--gratone);background:#fff;cursor:pointer;transition:all .15s;}
+  .tab.aktiv{background:var(--lilla);color:#fff;border-color:var(--lilla);}
+
+  .panel{display:none;}
+  .panel.aktiv{display:block;}
+
+  /* Tema-filter */
+  .temaer{display:flex;flex-wrap:wrap;gap:6px;justify-content:center;margin-bottom:14px;}
+  .tema-pill{font-size:.82rem;font-weight:700;padding:6px 12px;border-radius:99px;border:2px solid var(--gratone);background:#fff;cursor:pointer;transition:all .15s;}
+  .tema-pill.aktiv{color:#fff;}
+  .tema-pill[data-t="alle"].aktiv{background:var(--lilla);border-color:var(--lilla);}
+  .tema-pill[data-t="rosa"].aktiv{background:var(--rosa);border-color:var(--rosa);}
+  .tema-pill[data-t="vietnam"].aktiv{background:var(--vietnam);border-color:var(--vietnam);}
+  .tema-pill[data-t="hippie"].aktiv{background:var(--hippie);border-color:var(--hippie);color:#2d2a4a;}
+  .tema-pill[data-t="romfart"].aktiv{background:var(--romfart);border-color:var(--romfart);}
+  .tema-pill[data-t="laika"].aktiv{background:var(--laika);border-color:var(--laika);}
+
+  /* FLIP CARDS */
+  .flip-teller{text-align:center;font-size:.88rem;color:#636e72;margin-bottom:12px;font-weight:600;}
+  .flip-scene{perspective:1200px;margin-bottom:16px;}
+  .flip{position:relative;width:100%;min-height:280px;transition:transform .5s;transform-style:preserve-3d;cursor:pointer;}
+  .flip.snudd{transform:rotateY(180deg);}
+  .flip-side{position:absolute;inset:0;backface-visibility:hidden;border-radius:24px;padding:28px 24px;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;box-shadow:0 6px 20px rgba(108,92,231,.12);background:#fff;}
+  .flip-front{border:4px solid var(--lilla);}
+  .flip-back{transform:rotateY(180deg);border:4px solid var(--gronn);background:var(--gronn-lys);}
+  .flip-tema{font-size:.78rem;font-weight:800;text-transform:uppercase;letter-spacing:.5px;padding:3px 12px;border-radius:99px;margin-bottom:14px;color:#fff;}
+  .flip-ord{font-family:'Baloo 2',cursive;font-size:2.2rem;color:var(--tekst);line-height:1.1;}
+  .flip-hint{font-size:.85rem;color:#999;margin-top:16px;}
+  .flip-betyr{font-size:1.15rem;font-weight:700;color:#1e7a45;margin-bottom:14px;}
+  .flip-eksempel{font-size:1rem;color:#555;font-style:italic;line-height:1.45;background:#fff;border-radius:12px;padding:12px 14px;border:2px solid #cdefd8;}
+  .flip-nav{display:flex;gap:10px;justify-content:center;align-items:center;}
+  .flip-btn{background:var(--lilla);color:#fff;border:none;border-radius:14px;padding:12px 20px;font-family:'Baloo 2',cursive;font-size:1.05rem;cursor:pointer;transition:background .2s;}
+  .flip-btn:hover{background:var(--lilla-mork);}
+  .flip-btn:disabled{background:var(--gratone);cursor:default;}
+  .flip-snu{background:var(--gul);color:#5a4500;flex:1;max-width:240px;}
+
+  /* MATCH */
+  .match-intro{background:#fff8e1;color:#8a6d00;border-radius:12px;padding:12px 14px;font-size:.9rem;font-weight:600;margin-bottom:14px;text-align:center;}
+  .match-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;}
+  .match-col h3{font-family:'Baloo 2',cursive;font-size:1rem;text-align:center;margin-bottom:8px;color:var(--lilla);}
+  .match-item{background:#fff;border:3px solid var(--gratone);border-radius:14px;padding:12px;margin-bottom:9px;font-weight:600;font-size:.98rem;cursor:pointer;transition:all .15s;text-align:center;}
+  .match-item:hover{border-color:var(--lilla);}
+  .match-item.valgt{border-color:var(--lilla);background:#f4f1fb;}
+  .match-item.riktig{border-color:var(--gronn);background:var(--gronn-lys);cursor:default;pointer-events:none;opacity:.7;}
+  .match-item.feil-blink{border-color:var(--rod);background:var(--rod-lys);animation:shake .4s;}
+  @keyframes shake{0%,100%{transform:translateX(0);}25%{transform:translateX(-5px);}75%{transform:translateX(5px);}}
+  .match-ord{font-weight:700;}
+  .match-status{text-align:center;margin-top:14px;font-weight:700;font-size:1.05rem;color:#1e7a45;min-height:28px;}
+  .match-nytt{display:block;margin:14px auto 0;background:var(--gul);color:#5a4500;border:none;border-radius:14px;padding:12px 24px;font-family:'Baloo 2',cursive;font-size:1.05rem;cursor:pointer;}
+
+  .ferdig{text-align:center;background:var(--gronn-lys);border-radius:16px;padding:20px;margin-top:14px;display:none;}
+  .ferdig.vis{display:block;}
+  .ferdig .stj{font-size:2.6rem;}
+  .ferdig h2{font-family:'Baloo 2',cursive;color:var(--lilla);font-size:1.4rem;margin:6px 0;}
+  .sendt{font-size:.8rem;color:#27ae60;margin-top:8px;font-weight:600;display:none;}
+  .sendt.vis{display:block;}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <header>
+    <h1>📖 Ukens ordkort</h1>
+    <p>Lær ordene – og test deg selv!</p>
+  </header>
+
+  <div class="tabs">
+    <button class="tab aktiv" id="tabFlip">📖 Lær (kort)</button>
+    <button class="tab" id="tabMatch">🔗 Test (koble)</button>
+  </div>
+
+  <!-- ===== FLIP ===== -->
+  <div class="panel aktiv" id="panelFlip">
+    <div class="temaer" id="temaerFlip"></div>
+    <div class="flip-teller" id="flipTeller"></div>
+    <div class="flip-scene">
+      <div class="flip" id="flipCard">
+        <div class="flip-side flip-front">
+          <span class="flip-tema" id="flipTemaF"></span>
+          <div class="flip-ord" id="flipOrd"></div>
+          <div class="flip-hint">Trykk for å se hva det betyr 👆</div>
+        </div>
+        <div class="flip-side flip-back">
+          <div class="flip-betyr" id="flipBetyr"></div>
+          <div class="flip-eksempel" id="flipEksempel"></div>
+          <div class="flip-hint">Trykk for å snu tilbake</div>
+        </div>
+      </div>
+    </div>
+    <div class="flip-nav">
+      <button class="flip-btn" id="flipPrev">← Forrige</button>
+      <button class="flip-btn flip-snu" id="flipSnu">Snu kortet 🔄</button>
+      <button class="flip-btn" id="flipNext">Neste →</button>
+    </div>
+  </div>
+
+  <!-- ===== MATCH ===== -->
+  <div class="panel" id="panelMatch">
+    <div class="temaer" id="temaerMatch"></div>
+    <div class="match-intro">Trykk på et ord, så på riktig forklaring. Klarer du alle? 💪</div>
+    <div class="match-grid">
+      <div class="match-col">
+        <h3>Ord</h3>
+        <div id="matchOrd"></div>
+      </div>
+      <div class="match-col">
+        <h3>Betyr</h3>
+        <div id="matchBetyr"></div>
+      </div>
+    </div>
+    <div class="match-status" id="matchStatus"></div>
+    <div class="ferdig" id="matchFerdig">
+      <div class="stj">🌟</div>
+      <h2 id="ferdigTittel">Bra jobba, Edel!</h2>
+      <p id="ferdigTekst"></p>
+      <button class="match-nytt" id="matchNytt">Prøv igjen 🔁</button>
+      <div class="sendt" id="matchSendt">✓ Resultatet er sendt til mamma</div>
+    </div>
+  </div>
+</div>
+
+<script>
+const FORMSPREE="https://formspree.io/f/mqeolldg";
+const FELT="Tekst_hun_skrev";
+
+/* 15 ord – 3 per tema. Bokmål. betyr = enkel forklaring, eksempel = setning som viser bruk. */
+const ORD = [
+  // ROSA PARKS
+  {tema:"rosa", farge:"#e84393", ord:"modig", betyr:"å tørre selv om man er redd", eksempel:"Rosa var modig da hun sa nei på bussen."},
+  {tema:"rosa", farge:"#e84393", ord:"urettferdig", betyr:"noe som ikke er rettferdig", eksempel:"Regelen på bussen var urettferdig."},
+  {tema:"rosa", farge:"#e84393", ord:"boikott", betyr:"når mange slutter å bruke noe sammen", eksempel:"De startet en boikott av bussen."},
+  // VIETNAM
+  {tema:"vietnam", farge:"#00b894", ord:"frihet", betyr:"å få bestemme selv", eksempel:"Folk i Vietnam ville ha frihet."},
+  {tema:"vietnam", farge:"#00b894", ord:"leder", betyr:"en som går foran og bestemmer", eksempel:"Ho Chi Minh var en leder."},
+  {tema:"vietnam", farge:"#00b894", ord:"samlet", betyr:"satt sammen til én ting igjen", eksempel:"Til slutt ble landet samlet."},
+  // HIPPIE
+  {tema:"hippie", farge:"#6c5ce7", ord:"fred", betyr:"det motsatte av krig", eksempel:"Hippiene ville ha fred."},
+  {tema:"hippie", farge:"#6c5ce7", ord:"protest", betyr:"å vise at man er uenig", eksempel:"De lagde en protest mot krigen."},
+  {tema:"hippie", farge:"#6c5ce7", ord:"kjærlighet", betyr:"å være glad i noen", eksempel:"Hippiene trodde på kjærlighet."},
+  // ROMFART
+  {tema:"romfart", farge:"#0984e3", ord:"satellitt", betyr:"noe som går i bane rundt jorda", eksempel:"Sputnik var den første satellitten."},
+  {tema:"romfart", farge:"#0984e3", ord:"observere", betyr:"å se nøye på noe", eksempel:"Forskerne kunne observere jorda fra rommet."},
+  {tema:"romfart", farge:"#0984e3", ord:"konkurrere", betyr:"å prøve å bli best", eksempel:"USA og Sovjet ville konkurrere om rommet."},
+  // LAIKA
+  {tema:"laika", farge:"#8e44ad", ord:"bane", betyr:"en vei rundt jorda i rommet", eksempel:"Laika gikk i bane rundt jorda."},
+  {tema:"laika", farge:"#8e44ad", ord:"eksperiment", betyr:"en test for å lære noe nytt", eksempel:"Reisen var et viktig eksperiment."},
+  {tema:"laika", farge:"#8e44ad", ord:"omsorg", betyr:"å bry seg om og passe på noen", eksempel:"Dyr fortjener omsorg."},
+];
+
+const TEMA_NAVN={alle:"Alle",rosa:"Rosa Parks",vietnam:"Vietnam",hippie:"Hippiene",romfart:"Romfart",laika:"Laika"};
+const $=id=>document.getElementById(id);
+function bland(a){for(let i=a.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[a[i],a[j]]=[a[j],a[i]];}return a;}
+
+/* ===== TABS ===== */
+$("tabFlip").onclick=()=>bytt("flip");
+$("tabMatch").onclick=()=>bytt("match");
+function bytt(hvilken){
+  $("tabFlip").classList.toggle("aktiv",hvilken==="flip");
+  $("tabMatch").classList.toggle("aktiv",hvilken==="match");
+  $("panelFlip").classList.toggle("aktiv",hvilken==="flip");
+  $("panelMatch").classList.toggle("aktiv",hvilken==="match");
+}
+
+/* ===== TEMA-FILTER (bygges to steder) ===== */
+function byggTemaer(container, aktivtTema, onValg){
+  container.innerHTML="";
+  ["alle","rosa","vietnam","hippie","romfart","laika"].forEach(t=>{
+    const b=document.createElement("button");
+    b.className="tema-pill"+(t===aktivtTema?" aktiv":"");
+    b.dataset.t=t;
+    b.textContent=TEMA_NAVN[t];
+    b.onclick=()=>onValg(t);
+    container.appendChild(b);
+  });
+}
+
+/* ===== FLIP ===== */
+let flipTema="alle", flipListe=[], flipIdx=0;
+function flipData(){ return flipTema==="alle"?ORD:ORD.filter(o=>o.tema===flipTema); }
+function velgFlipTema(t){
+  flipTema=t; flipListe=flipData(); flipIdx=0;
+  byggTemaer($("temaerFlip"),flipTema,velgFlipTema);
+  visFlip();
+}
+function initFlip(){
+  byggTemaer($("temaerFlip"),flipTema,velgFlipTema);
+  flipListe=flipData(); flipIdx=0; visFlip();
+}
+function visFlip(){
+  const o=flipListe[flipIdx];
+  $("flipCard").classList.remove("snudd");
+  $("flipTeller").textContent="Kort "+(flipIdx+1)+" av "+flipListe.length;
+  $("flipTemaF").textContent=TEMA_NAVN[o.tema];
+  $("flipTemaF").style.background=o.farge;
+  $("flipOrd").textContent=o.ord;
+  $("flipBetyr").textContent=o.betyr;
+  $("flipEksempel").textContent="«"+o.eksempel+"»";
+  $("flipPrev").disabled=(flipIdx===0);
+  $("flipNext").disabled=(flipIdx===flipListe.length-1);
+}
+$("flipCard").onclick=()=>$("flipCard").classList.toggle("snudd");
+$("flipSnu").onclick=(e)=>{e.stopPropagation();$("flipCard").classList.toggle("snudd");};
+$("flipPrev").onclick=()=>{if(flipIdx>0){flipIdx--;visFlip();}};
+$("flipNext").onclick=()=>{if(flipIdx<flipListe.length-1){flipIdx++;visFlip();}};
+
+/* ===== MATCH ===== */
+let matchTema="alle", valgtOrd=null, riktigeMatch=0, totalMatch=0, matchLogg=[];
+function matchData(){ return matchTema==="alle"?ORD:ORD.filter(o=>o.tema===matchTema); }
+function velgMatchTema(t){
+  matchTema=t;
+  byggTemaer($("temaerMatch"),matchTema,velgMatchTema);
+  byggMatch();
+}
+function initMatch(){
+  byggTemaer($("temaerMatch"),matchTema,velgMatchTema);
+  byggMatch();
+}
+function byggMatch(){
+  const data=matchData();
+  totalMatch=data.length; riktigeMatch=0; valgtOrd=null; matchLogg=[];
+  $("matchFerdig").classList.remove("vis");
+  $("matchStatus").textContent="";
+  const ordListe=bland(data.map(o=>({...o})));
+  const betyrListe=bland(data.map(o=>({...o})));
+  $("matchOrd").innerHTML="";
+  $("matchBetyr").innerHTML="";
+  ordListe.forEach(o=>{
+    const el=document.createElement("div");
+    el.className="match-item match-ord"; el.textContent=o.ord; el.dataset.ord=o.ord;
+    el.onclick=()=>velgOrd(el,o);
+    $("matchOrd").appendChild(el);
+  });
+  betyrListe.forEach(o=>{
+    const el=document.createElement("div");
+    el.className="match-item"; el.textContent=o.betyr; el.dataset.ord=o.ord;
+    el.onclick=()=>velgBetyr(el,o);
+    $("matchBetyr").appendChild(el);
+  });
+}
+function velgOrd(el,o){
+  if(el.classList.contains("riktig"))return;
+  $("matchOrd").querySelectorAll(".match-item").forEach(k=>k.classList.remove("valgt"));
+  el.classList.add("valgt"); valgtOrd=o;
+}
+function velgBetyr(el,o){
+  if(el.classList.contains("riktig"))return;
+  if(!valgtOrd){ $("matchStatus").textContent="Velg et ord først 👆"; return; }
+  if(o.ord===valgtOrd.ord){
+    // riktig
+    $("matchOrd").querySelector('[data-ord="'+CSS.escape(o.ord)+'"]').classList.add("riktig");
+    el.classList.add("riktig");
+    $("matchOrd").querySelectorAll(".match-item").forEach(k=>k.classList.remove("valgt"));
+    riktigeMatch++; valgtOrd=null;
+    matchLogg.push("✓ "+o.ord+" = "+o.betyr);
+    $("matchStatus").textContent="Riktig! ✅ ("+riktigeMatch+"/"+totalMatch+")";
+    if(riktigeMatch===totalMatch) ferdigMatch();
+  } else {
+    el.classList.add("feil-blink");
+    setTimeout(()=>el.classList.remove("feil-blink"),400);
+    $("matchStatus").textContent="Prøv igjen 🤔";
+  }
+}
+function ferdigMatch(){
+  $("ferdigTekst").textContent="Du koblet alle "+totalMatch+" ordene riktig! 🎯";
+  $("matchFerdig").classList.add("vis");
+  const tekst="UKENS ORDKORT (koble) – "+TEMA_NAVN[matchTema]+"\nAlle "+totalMatch+" riktig!\n\n"+matchLogg.join("\n");
+  const fd=new FormData(); fd.append(FELT,tekst);
+  fetch(FORMSPREE,{method:"POST",body:fd,headers:{"Accept":"application/json"}}).then(r=>{if(r.ok)$("matchSendt").classList.add("vis");}).catch(()=>{});
+}
+$("matchNytt").onclick=()=>byggMatch();
+
+// Start
+initFlip();
+initMatch();
+</script>
+</body>
+</html>
