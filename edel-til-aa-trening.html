@@ -1,0 +1,539 @@
+<!DOCTYPE html>
+<html lang="nb">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>TIL å — dagens 15</title>
+<link href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@500;600;700;800&family=Nunito:ital,wght@0,400;0,600;0,700;0,800;1,400&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bg:#FBF7F0;
+    --ink:#3B3355;
+    --ink-soft:#6E6590;
+    --card:#FFFFFF;
+    --lilla:#7C6FDE;
+    --lilla-dyp:#5B4FC7;
+    --gron:#3FA97C;
+    --gron-lys:#E3F4EC;
+    --gul:#F5B841;
+    --gul-lys:#FDF3DC;
+    --rosa:#E8739E;
+    --rosa-lys:#FBE7EF;
+    --linje:#EDE7DA;
+    --radius:18px;
+  }
+  *{box-sizing:border-box;margin:0;padding:0;}
+  body{
+    font-family:'Nunito',sans-serif;
+    background:var(--bg);
+    color:var(--ink);
+    line-height:1.55;
+    padding-bottom:60px;
+  }
+  .wrap{max-width:640px;margin:0 auto;padding:0 18px;}
+
+  header{
+    background:linear-gradient(135deg,var(--lilla-dyp),var(--lilla));
+    color:#fff;
+    padding:28px 0 64px;
+    position:relative;overflow:hidden;
+  }
+  header::after{
+    content:"";position:absolute;left:0;right:0;bottom:-2px;height:34px;
+    background:var(--bg);border-radius:50% 50% 0 0 / 100% 100% 0 0;
+  }
+  .eyebrow{font-size:.75rem;font-weight:800;letter-spacing:.14em;text-transform:uppercase;opacity:.85;}
+  h1{font-family:'Baloo 2',cursive;font-size:clamp(1.6rem,5vw,2.1rem);font-weight:800;line-height:1.15;}
+  .dagens-dato{opacity:.9;font-size:.9rem;margin-top:4px;}
+
+  /* REGEL-KORT */
+  .regel{
+    margin-top:-46px;position:relative;z-index:2;
+    background:var(--card);border-radius:var(--radius);
+    box-shadow:0 8px 28px rgba(59,51,85,.10);
+    padding:20px;
+  }
+  .regel h2{font-family:'Baloo 2',cursive;font-size:1.05rem;font-weight:800;margin-bottom:8px;}
+  .regel-ord{display:flex;flex-wrap:wrap;gap:8px;margin-top:6px;}
+  .regel-ord span{
+    background:var(--gul-lys);border:1.5px solid var(--gul);
+    font-weight:800;font-size:.9rem;
+    padding:6px 12px;border-radius:999px;
+  }
+  .regel-ord b{color:var(--lilla-dyp);}
+
+  /* FREMDRIFT */
+  .fremdrift{margin-top:22px;}
+  .fremdrift .tall{
+    display:flex;justify-content:space-between;
+    font-size:.8rem;font-weight:800;color:var(--ink-soft);margin-bottom:6px;
+  }
+  .bar-ytre{height:14px;background:#EFE9DC;border-radius:999px;overflow:hidden;}
+  .bar-indre{
+    height:100%;width:0%;
+    background:linear-gradient(90deg,var(--gron),#5BC79A);
+    border-radius:999px;transition:width .4s ease;
+  }
+
+  /* OPPGAVE */
+  .oppgave{
+    background:var(--card);border:1.5px solid var(--linje);
+    border-radius:var(--radius);padding:22px;margin-top:18px;
+  }
+  .type-merke{
+    display:inline-block;font-family:'Baloo 2',cursive;font-weight:700;font-size:.72rem;
+    letter-spacing:.08em;text-transform:uppercase;
+    padding:4px 12px;border-radius:999px;margin-bottom:12px;
+  }
+  .type-merke.velg{background:var(--gron-lys);color:var(--gron);}
+  .type-merke.skriv{background:var(--gul-lys);color:#B8860B;}
+  .type-merke.fri{background:var(--rosa-lys);color:var(--rosa);}
+  .setning{font-size:1.2rem;font-weight:700;line-height:1.5;}
+  .setning .hull{
+    display:inline-block;min-width:64px;border-bottom:3px dashed var(--lilla);
+    text-align:center;color:var(--lilla-dyp);font-weight:800;
+  }
+
+  .valg{display:flex;flex-wrap:wrap;gap:10px;margin-top:18px;}
+  .valg button{
+    font-family:'Baloo 2',cursive;font-size:1.05rem;font-weight:700;
+    padding:12px 26px;border-radius:14px;
+    border:2px solid var(--linje);background:#fff;color:var(--ink);
+    cursor:pointer;transition:transform .1s ease;
+  }
+  .valg button:hover{transform:translateY(-2px);border-color:var(--lilla);}
+  .valg button:focus-visible{outline:3px solid var(--gul);outline-offset:2px;}
+  .valg button.riktig{background:var(--gron);border-color:var(--gron);color:#fff;}
+  .valg button.feil{background:var(--rosa);border-color:var(--rosa);color:#fff;}
+  .valg button:disabled{cursor:default;}
+
+  .skriv-felt{margin-top:16px;display:flex;gap:10px;flex-wrap:wrap;}
+  .skriv-felt input,.skriv-felt textarea{
+    flex:1;min-width:220px;
+    font-family:'Nunito',sans-serif;font-size:1.05rem;font-weight:600;
+    padding:12px 14px;border-radius:12px;
+    border:2px solid var(--linje);background:#fff;color:var(--ink);
+  }
+  .skriv-felt textarea{min-height:88px;resize:vertical;}
+  .skriv-felt input:focus,.skriv-felt textarea:focus{outline:none;border-color:var(--lilla);}
+  .knapp{
+    font-family:'Baloo 2',cursive;font-size:1rem;font-weight:700;
+    padding:12px 24px;border-radius:14px;border:none;cursor:pointer;
+    background:var(--lilla);color:#fff;
+  }
+  .knapp:hover{background:var(--lilla-dyp);}
+  .knapp:focus-visible{outline:3px solid var(--gul);outline-offset:2px;}
+  .knapp:disabled{opacity:.5;cursor:default;}
+
+  .tips-hoyt{
+    margin-top:12px;font-size:.85rem;font-weight:700;color:var(--ink-soft);
+    background:var(--gul-lys);border-radius:10px;padding:10px 12px;
+  }
+
+  .tilbakemelding{
+    margin-top:14px;padding:14px;border-radius:12px;
+    font-weight:700;font-size:.95rem;display:none;
+  }
+  .tilbakemelding.riktig{display:block;background:var(--gron-lys);color:var(--gron);}
+  .tilbakemelding.feil{display:block;background:var(--rosa-lys);color:var(--rosa);}
+  .tilbakemelding .regel-mini{
+    display:block;margin-top:6px;color:var(--ink);font-weight:600;font-size:.88rem;
+  }
+
+  .neste-rad{margin-top:16px;text-align:right;}
+  .neste-rad .knapp{display:none;}
+  .neste-rad .knapp.vis{display:inline-block;}
+
+  /* SLUTT */
+  .slutt{
+    display:none;text-align:center;
+    background:var(--card);border:1.5px solid var(--linje);
+    border-radius:var(--radius);padding:36px 22px;margin-top:18px;
+  }
+  .slutt.vis{display:block;}
+  .medalje{font-size:4rem;line-height:1;}
+  .slutt h2{font-family:'Baloo 2',cursive;font-size:1.5rem;font-weight:800;margin-top:10px;}
+  .slutt p{color:var(--ink-soft);margin-top:6px;}
+  .slutt .score{
+    font-family:'Baloo 2',cursive;font-size:2rem;font-weight:800;color:var(--lilla-dyp);
+    margin-top:8px;
+  }
+
+  @media (prefers-reduced-motion:reduce){
+    *{transition:none!important;}
+  }
+</style>
+</head>
+<body>
+
+<header>
+  <div class="wrap">
+    <div class="eyebrow">Dagens øving · 15 oppgaver</div>
+    <h1>💜 TIL å — jeg klarer det!</h1>
+    <div class="dagens-dato" id="datoTekst"></div>
+  </div>
+</header>
+
+<div class="wrap">
+
+  <!-- REGEL FØRST (eksplisitt instruksjon) -->
+  <div class="regel">
+    <h2>🔑 Husk regelen</h2>
+    <div>Disse ordene vil alltid ha <b style="color:var(--lilla-dyp);">TIL å</b> etter seg:</div>
+    <div class="regel-ord">
+      <span>lyst <b>til å</b></span>
+      <span>mot <b>til å</b></span>
+      <span>frihet <b>til å</b></span>
+      <span>rett <b>til å</b></span>
+      <span>tid <b>til å</b></span>
+      <span>sjanse <b>til å</b></span>
+      <span>glede seg <b>til å</b></span>
+    </div>
+    <div style="margin-top:12px;">Men når svaret er <b style="color:var(--rosa);">HVORFOR?</b> (mål) → bruk <b style="color:var(--rosa);">FOR å</b>:</div>
+    <div class="regel-ord">
+      <span style="background:var(--rosa-lys);border-color:var(--rosa);">Jeg gikk ut <b style="color:var(--rosa);">for å</b> leke</span>
+      <span style="background:var(--rosa-lys);border-color:var(--rosa);">Hun trente <b style="color:var(--rosa);">for å</b> bli bedre</span>
+    </div>
+  </div>
+
+  <div class="fremdrift">
+    <div class="tall">
+      <span id="fremTekst">Oppgave 1 av 15</span>
+      <span id="poengTekst">⭐ 0</span>
+    </div>
+    <div class="bar-ytre"><div class="bar-indre" id="barIndre"></div></div>
+  </div>
+
+  <div class="oppgave" id="oppgaveKort">
+    <span class="type-merke velg" id="typeMerke">Velg riktig</span>
+    <div class="setning" id="setningTekst"></div>
+    <div class="valg" id="valgRad"></div>
+    <div class="skriv-felt" id="skrivRad" style="display:none;">
+      <input type="text" id="skrivInput" autocomplete="off" placeholder="Skriv her…">
+      <button class="knapp" id="skrivSjekk">Sjekk</button>
+    </div>
+    <div class="skriv-felt" id="friRad" style="display:none;">
+      <textarea id="friInput" placeholder="Skriv hele setningen din her…"></textarea>
+      <button class="knapp" id="friSend">Send</button>
+    </div>
+    <div class="tips-hoyt" id="tipsHoyt" style="display:none;">🎤 Si hele setningen <b>høyt</b> før du skriver!</div>
+    <div class="tilbakemelding" id="tilbake"></div>
+    <div class="neste-rad"><button class="knapp" id="nesteKnapp">Neste →</button></div>
+  </div>
+
+  <div class="slutt" id="sluttKort">
+    <div class="medalje" id="medalje">🏅</div>
+    <h2>Ferdig for i dag!</h2>
+    <div class="score" id="sluttScore"></div>
+    <p id="sluttTekst"></p>
+    <p style="margin-top:14px;">Kom tilbake i morgen — da venter 15 nye! 💜</p>
+  </div>
+
+</div>
+
+<script>
+/* =========================================================
+   OPPGAVEBANK — DLD-prinsipper:
+   - eksplisitt regel først
+   - valg → utfylling → fri produksjon (økende krav)
+   - umiddelbar feedback med regel-påminnelse
+   - kjente temaer: håndball, taekwondo, Pipoka, snacks, reise
+   - spaced: banken roterer etter dato → nye 15 hver dag
+   ========================================================= */
+
+const VELG = [ // {s: setning med ___, r: riktig, alt: [distraktorer]}
+  {s:"Jeg har lyst ___ å spille håndball i dag.", r:"til", alt:["av","på"]},
+  {s:"Edel har mot ___ å prøve nye ting.", r:"til", alt:["av","med"]},
+  {s:"Rosa Parks hadde mot ___ å si nei.", r:"til", alt:["av","på"]},
+  {s:"Alle har rett ___ å bli behandlet rettferdig.", r:"til", alt:["av","med"]},
+  {s:"Jeg gleder meg ___ å se Pipoka etter skolen.", r:"til", alt:["av","på"]},
+  {s:"Vi har tid ___ å øve litt taekwondo.", r:"til", alt:["av","med"]},
+  {s:"Hun fikk sjansen ___ å vise hva hun kan.", r:"til", alt:["av","på"]},
+  {s:"Jeg ville ha frihet ___ å reise.", r:"til", alt:["av","med"]},
+  {s:"Har du lyst ___ å smake koreansk snacks?", r:"til", alt:["av","på"]},
+  {s:"Pipoka har lyst ___ å gå tur nå!", r:"til", alt:["av","med"]},
+  {s:"Jeg trenger tid ___ å tenke.", r:"til", alt:["av","på"]},
+  {s:"Hun hadde grunn ___ å være stolt.", r:"til", alt:["av","med"]},
+  {s:"Vi gleder oss ___ å dra på hytta.", r:"til", alt:["av","på"]},
+  {s:"Alle barn har rett ___ å lære på sin måte.", r:"til", alt:["av","med"]},
+  {s:"Jeg har lyst ___ å skrive en historie om Laika.", r:"til", alt:["av","på"]},
+  {s:"Han hadde mot ___ å stå opp for vennen sin.", r:"til", alt:["av","med"]},
+  {s:"Får jeg sjansen ___ å prøve igjen?", r:"til", alt:["av","på"]},
+  {s:"Vi har frihet ___ å velge selv.", r:"til", alt:["av","med"]},
+  {s:"Jeg gleder meg ___ å vise mamma quizen min.", r:"til", alt:["av","på"]},
+  {s:"Edel har lyst ___ å lære mer om historie.", r:"til", alt:["av","med"]},
+  {s:"Hun tok seg tid ___ å hjelpe meg.", r:"til", alt:["av","på"]},
+  {s:"Ingen har rett ___ å være slem mot andre.", r:"til", alt:["av","med"]},
+  {s:"Jeg har ikke lyst ___ å gi opp.", r:"til", alt:["av","på"]},
+  {s:"Vi fikk muligheten ___ å se kampen.", r:"til", alt:["av","med"]},
+  {s:"Pipoka venter på sjansen ___ å få en godbit.", r:"til", alt:["av","på"]},
+];
+
+const TILFOR = [ // {s: setning, r: "til" eller "for"}
+  {s:"Jeg gikk til butikken ___ å kjøpe melk.", r:"for"},
+  {s:"Jeg har lyst ___ å bade.", r:"til"},
+  {s:"Hun trente hver dag ___ å bli bedre i håndball.", r:"for"},
+  {s:"Vi har tid ___ å leke litt til.", r:"til"},
+  {s:"Han sparte penger ___ å kjøpe ny sykkel.", r:"for"},
+  {s:"Edel gleder seg ___ å se filmen.", r:"til"},
+  {s:"Jeg tok med paraply ___ å ikke bli våt.", r:"for"},
+  {s:"Alle har rett ___ å si sin mening.", r:"til"},
+  {s:"Pipoka bjeffet ___ å få en godbit.", r:"for"},
+  {s:"Jeg fikk sjansen ___ å prøve igjen.", r:"til"},
+  {s:"Rosa Parks ble sittende ___ å endre noe urettferdig.", r:"for"},
+  {s:"Jeg har ikke lyst ___ å gi opp.", r:"til"},
+];
+
+const SKRIV = [ // {s: setning, hull vises som ___, fasit inneholder "til å"}
+  {s:"Jeg har lyst ___ spille håndball.", fasit:"til å"},
+  {s:"Hun hadde mot ___ si ifra.", fasit:"til å"},
+  {s:"Alle har rett ___ være seg selv.", fasit:"til å"},
+  {s:"Jeg gleder meg ___ se deg!", fasit:"til å"},
+  {s:"Vi har tid ___ leke litt.", fasit:"til å"},
+  {s:"Edel fikk sjansen ___ vise talentet sitt.", fasit:"til å"},
+  {s:"Jeg ville ha frihet ___ velge selv.", fasit:"til å"},
+  {s:"Pipoka har lyst ___ løpe i parken.", fasit:"til å"},
+  {s:"Han tok seg tid ___ forklare det.", fasit:"til å"},
+  {s:"Vi gleder oss ___ dra på ferie.", fasit:"til å"},
+];
+
+const FRI = [ // startere — svaret må inneholde "til å"
+  {start:"Jeg har lyst til å…", tema:"Skriv hva DU har lyst til å gjøre i dag."},
+  {start:"Jeg gleder meg til å…", tema:"Skriv noe du gleder deg til."},
+  {start:"Alle har rett til å…", tema:"Skriv noe alle har rett til."},
+  {start:"Jeg hadde mot til å…", tema:"Skriv om en gang du var modig."},
+  {start:"Pipoka har lyst til å…", tema:"Skriv hva Pipoka har lyst til å gjøre."},
+  {start:"Jeg vil ha frihet til å…", tema:"Skriv hva du vil ha frihet til."},
+  {start:"I sommer har jeg tid til å…", tema:"Skriv hva du har tid til i sommer."},
+  {start:"Jeg fikk sjansen til å…", tema:"Skriv om en sjanse du fikk."},
+];
+
+/* ---------- daglig rotasjon (spaced repetition) ---------- */
+function dagIndeks(){
+  const nå = new Date();
+  // dager siden 1. juli 2026 — roterer banken deterministisk per dag
+  return Math.floor((nå - new Date(2026,6,1)) / 86400000);
+}
+function plukk(bank, antall, offset){
+  const ut = [];
+  for(let i=0;i<antall;i++){
+    ut.push(bank[(offset*antall + i) % bank.length]);
+  }
+  return ut;
+}
+const d = Math.max(0, dagIndeks());
+const dagens = [
+  ...plukk(VELG, 7, d).map(o=>({type:"velg", ...o})),
+  ...plukk(TILFOR, 3, d).map(o=>({type:"tilfor", ...o})),
+  ...plukk(SKRIV, 3, d).map(o=>({type:"skriv", ...o})),
+  ...plukk(FRI, 2, d).map(o=>({type:"fri", ...o})),
+];
+
+/* ---------- tilstand ---------- */
+let idx = 0, poeng = 0, besvart = false;
+
+const datoTekst = document.getElementById("datoTekst");
+const fremTekst = document.getElementById("fremTekst");
+const poengTekst = document.getElementById("poengTekst");
+const barIndre = document.getElementById("barIndre");
+const typeMerke = document.getElementById("typeMerke");
+const setningTekst = document.getElementById("setningTekst");
+const valgRad = document.getElementById("valgRad");
+const skrivRad = document.getElementById("skrivRad");
+const skrivInput = document.getElementById("skrivInput");
+const skrivSjekk = document.getElementById("skrivSjekk");
+const friRad = document.getElementById("friRad");
+const friInput = document.getElementById("friInput");
+const friSend = document.getElementById("friSend");
+const tipsHoyt = document.getElementById("tipsHoyt");
+const tilbake = document.getElementById("tilbake");
+const nesteKnapp = document.getElementById("nesteKnapp");
+const oppgaveKort = document.getElementById("oppgaveKort");
+const sluttKort = document.getElementById("sluttKort");
+
+const dager = ["søndag","mandag","tirsdag","onsdag","torsdag","fredag","lørdag"];
+const nå = new Date();
+datoTekst.textContent = "I dag: " + dager[nå.getDay()] + " " + nå.getDate() + "." + (nå.getMonth()+1) + "." + nå.getFullYear();
+
+function bland(arr){
+  const a = [...arr];
+  for(let i=a.length-1;i>0;i--){
+    const j = Math.floor(Math.random()*(i+1));
+    [a[i],a[j]]=[a[j],a[i]];
+  }
+  return a;
+}
+
+function visOppgave(){
+  besvart = false;
+  const o = dagens[idx];
+  fremTekst.textContent = "Oppgave " + (idx+1) + " av 15";
+  poengTekst.textContent = "⭐ " + poeng;
+  barIndre.style.width = (idx/15*100) + "%";
+  tilbake.className = "tilbakemelding";
+  tilbake.textContent = "";
+  nesteKnapp.classList.remove("vis");
+  valgRad.style.display = "none";
+  skrivRad.style.display = "none";
+  friRad.style.display = "none";
+  tipsHoyt.style.display = "none";
+  valgRad.innerHTML = "";
+  skrivInput.value = "";
+  friInput.value = "";
+  skrivInput.disabled = false; skrivSjekk.disabled = false;
+  friInput.disabled = false; friSend.disabled = false;
+
+  if(o.type === "velg"){
+    typeMerke.className = "type-merke velg";
+    typeMerke.textContent = "Velg riktig";
+    setningTekst.innerHTML = o.s.replace("___", '<span class="hull">___</span>');
+    valgRad.style.display = "flex";
+    bland([o.r, ...o.alt]).forEach(v=>{
+      const b = document.createElement("button");
+      b.textContent = v;
+      b.onclick = ()=>svarVelg(b, v, o.r);
+      valgRad.appendChild(b);
+    });
+  } else if(o.type === "tilfor"){
+    typeMerke.className = "type-merke velg";
+    typeMerke.textContent = "TIL å eller FOR å?";
+    setningTekst.innerHTML = o.s.replace("___", '<span class="hull">___</span>');
+    valgRad.style.display = "flex";
+    bland(["til","for"]).forEach(v=>{
+      const b = document.createElement("button");
+      b.textContent = v;
+      b.onclick = ()=>svarTilFor(b, v, o.r);
+      valgRad.appendChild(b);
+    });
+  } else if(o.type === "skriv"){
+    typeMerke.className = "type-merke skriv";
+    typeMerke.textContent = "Skriv det som mangler";
+    setningTekst.innerHTML = o.s.replace("___", '<span class="hull">___</span>');
+    skrivRad.style.display = "flex";
+    skrivInput.focus();
+  } else {
+    typeMerke.className = "type-merke fri";
+    typeMerke.textContent = "Din egen setning";
+    setningTekst.innerHTML = o.tema + '<br><span style="color:var(--lilla-dyp);">' + o.start + '</span>';
+    friRad.style.display = "flex";
+    tipsHoyt.style.display = "block";
+    friInput.value = o.start.replace("…"," ");
+  }
+}
+
+function svarVelg(knapp, valgt, riktig){
+  if(besvart) return;
+  besvart = true;
+  [...valgRad.children].forEach(b=>b.disabled = true);
+  if(valgt === riktig){
+    knapp.classList.add("riktig");
+    poeng++;
+    tilbake.className = "tilbakemelding riktig";
+    tilbake.innerHTML = "🎉 Riktig! <b>TIL å</b> — akkurat som regelen sier.";
+  } else {
+    knapp.classList.add("feil");
+    [...valgRad.children].find(b=>b.textContent===riktig)?.classList.add("riktig");
+    tilbake.className = "tilbakemelding feil";
+    tilbake.innerHTML = "Nesten! Riktig svar er <b>til</b>.<span class=\"regel-mini\">🔑 Husk: lyst / mot / frihet / rett / tid / sjanse → alltid <b>TIL å</b></span>";
+  }
+  poengTekst.textContent = "⭐ " + poeng;
+  nesteKnapp.classList.add("vis");
+}
+
+function svarTilFor(knapp, valgt, riktig){
+  if(besvart) return;
+  besvart = true;
+  [...valgRad.children].forEach(b=>b.disabled = true);
+  if(valgt === riktig){
+    knapp.classList.add("riktig");
+    poeng++;
+    tilbake.className = "tilbakemelding riktig";
+    tilbake.innerHTML = riktig === "til"
+      ? "🎉 Riktig! Ordet foran (lyst/rett/tid/sjanse…) vil ha <b>TIL å</b>."
+      : "🎉 Riktig! Setningen svarer på <b>hvorfor?</b> → <b>FOR å</b>.";
+  } else {
+    knapp.classList.add("feil");
+    [...valgRad.children].find(b=>b.textContent===riktig)?.classList.add("riktig");
+    tilbake.className = "tilbakemelding feil";
+    tilbake.innerHTML = "Nesten! Riktig svar er <b>" + riktig + "</b>.<span class=\"regel-mini\">🔑 lyst / mot / rett / tid / sjanse → <b>TIL å</b> · Hvorfor gjorde du det? (mål) → <b>FOR å</b></span>";
+  }
+  poengTekst.textContent = "⭐ " + poeng;
+  nesteKnapp.classList.add("vis");
+}
+
+skrivSjekk.onclick = ()=>{
+  if(besvart) return;
+  const svar = skrivInput.value.trim().toLowerCase().replace(/\s+/g," ");
+  besvart = true;
+  skrivInput.disabled = true; skrivSjekk.disabled = true;
+  if(svar === "til å" || svar === "til a"){
+    poeng++;
+    tilbake.className = "tilbakemelding riktig";
+    tilbake.innerHTML = "🎉 Perfekt! <b>til å</b> — du husket regelen!";
+  } else {
+    tilbake.className = "tilbakemelding feil";
+    tilbake.innerHTML = "Riktig svar: <b>til å</b>.<span class=\"regel-mini\">🔑 lyst / mot / rett / tid / sjanse → alltid <b>TIL å</b></span>";
+  }
+  poengTekst.textContent = "⭐ " + poeng;
+  nesteKnapp.classList.add("vis");
+};
+skrivInput.addEventListener("keydown", e=>{ if(e.key==="Enter") skrivSjekk.click(); });
+
+friSend.onclick = ()=>{
+  if(besvart) return;
+  const tekst = friInput.value.trim();
+  if(tekst.length < 12){
+    tilbake.className = "tilbakemelding feil";
+    tilbake.textContent = "Skriv litt mer — en hel setning! 💪";
+    return;
+  }
+  if(!/til\s+å/i.test(tekst)){
+    tilbake.className = "tilbakemelding feil";
+    tilbake.innerHTML = "Setningen din må ha <b>til å</b> i seg. Prøv igjen!<span class=\"regel-mini\">🔑 F.eks.: «Jeg har lyst <b>til å</b> bade.»</span>";
+    return;
+  }
+  besvart = true;
+  friInput.disabled = true; friSend.disabled = true;
+  poeng++;
+  poengTekst.textContent = "⭐ " + poeng;
+  tilbake.className = "tilbakemelding riktig";
+  tilbake.innerHTML = "🌟 Flott setning! Den sendes til mamma.";
+  nesteKnapp.classList.add("vis");
+  // send til Formspree (samme endepunkt som resten av siden)
+  fetch("https://formspree.io/f/mqeolldg",{
+    method:"POST",
+    headers:{"Content-Type":"application/json"},
+    body:JSON.stringify({
+      Tekst_hun_skrev:"[TIL å-øving " + nå.toLocaleDateString("nb-NO") + "] " + tekst
+    })
+  }).catch(()=>{});
+};
+
+nesteKnapp.onclick = ()=>{
+  idx++;
+  if(idx < dagens.length){
+    visOppgave();
+  } else {
+    ferdig();
+  }
+};
+
+function ferdig(){
+  oppgaveKort.style.display = "none";
+  document.querySelector(".fremdrift .bar-indre").style.width = "100%";
+  barIndre.style.width = "100%";
+  fremTekst.textContent = "Ferdig!";
+  sluttKort.classList.add("vis");
+  document.getElementById("sluttScore").textContent = poeng + " av 15 ⭐";
+  const medalje = document.getElementById("medalje");
+  const tekst = document.getElementById("sluttTekst");
+  if(poeng >= 14){ medalje.textContent = "🥇"; tekst.textContent = "GULL! Du er en TIL å-mester!"; }
+  else if(poeng >= 11){ medalje.textContent = "🥈"; tekst.textContent = "Sølv! Kjempebra jobbet!"; }
+  else if(poeng >= 8){ medalje.textContent = "🥉"; tekst.textContent = "Bronse! Du blir bedre for hver dag!"; }
+  else { medalje.textContent = "💪"; tekst.textContent = "Godt forsøk! I morgen klarer du enda flere."; }
+}
+
+visOppgave();
+</script>
+</body>
+</html>
