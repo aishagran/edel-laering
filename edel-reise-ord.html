@@ -1,0 +1,176 @@
+<!DOCTYPE html>
+<html lang="no">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Reise-ord – Edels Verden</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Baloo+2:wght@500;600;700&family=Nunito:wght@400;600;700&display=swap');
+  :root{--lilla:#6c5ce7;--lilla-mork:#5a4bd1;--gronn:#27ae60;--gronn-lys:#eafaf0;--rod:#e17055;--rod-lys:#fdeee9;--gul:#f6c945;--bg:#f4f1ea;--kort:#fff;--tekst:#2d3436;--gratone:#dfe4ea;}
+  *{box-sizing:border-box;margin:0;padding:0;}
+  body{font-family:'Nunito',sans-serif;background:var(--bg);color:var(--tekst);line-height:1.5;padding:16px;min-height:100vh;}
+  .wrap{max-width:640px;margin:0 auto;}
+  header{text-align:center;padding:20px 16px 8px;}
+  header .ikon{font-size:2.6rem;}
+  header h1{font-family:'Baloo 2',cursive;font-size:1.7rem;color:var(--lilla);line-height:1.1;}
+  header p{font-size:.95rem;color:#636e72;margin-top:4px;}
+  .info{background:#eef6ff;color:#2c5a82;border-radius:12px;padding:12px 14px;font-size:.9rem;font-weight:600;margin:14px 0;text-align:center;}
+  .framdrift{height:12px;background:var(--gratone);border-radius:99px;overflow:hidden;margin:14px 0 8px;}
+  .framdrift-fyll{height:100%;width:0%;background:linear-gradient(90deg,var(--lilla),var(--gronn));border-radius:99px;transition:width .4s;}
+  .teller{text-align:center;font-size:.9rem;color:#636e72;margin-bottom:16px;font-weight:600;}
+  .kort{background:var(--kort);border-radius:24px;padding:24px 20px;box-shadow:0 6px 20px rgba(108,92,231,.10);}
+  .merkelapp{display:inline-block;font-family:'Baloo 2',cursive;font-size:.78rem;padding:4px 14px;border-radius:99px;margin-bottom:14px;background:#0984e3;color:#fff;}
+  .merkelapp.alvo{background:#e67e22;}
+  .ordvise{text-align:center;margin-bottom:16px;}
+  .ordvise .ord{font-family:'Baloo 2',cursive;font-size:2.3rem;color:var(--lilla);line-height:1.1;}
+  .ordvise .kontekst{font-size:.92rem;color:#888;font-style:italic;margin-top:8px;background:#f7f5fc;border-radius:10px;padding:9px 12px;}
+  .sporsmal{font-family:'Baloo 2',cursive;font-size:1.15rem;margin-bottom:14px;text-align:center;color:#636e72;}
+  .svar{display:block;width:100%;text-align:left;background:#fff;border:3px solid var(--gratone);border-radius:16px;padding:14px 16px;margin-bottom:12px;font-family:'Nunito',sans-serif;font-size:1.05rem;font-weight:600;color:var(--tekst);cursor:pointer;transition:transform .1s,border-color .2s,background .2s;}
+  .svar:hover{border-color:var(--lilla);transform:translateY(-2px);}
+  .svar:active{transform:scale(.99);}
+  .svar:disabled{cursor:default;}
+  .svar.riktig{border-color:var(--gronn);background:var(--gronn-lys);}
+  .svar.feil{border-color:var(--rod);background:var(--rod-lys);opacity:.85;}
+  .tilbake{margin-top:8px;padding:16px;border-radius:16px;font-size:1rem;font-weight:600;display:none;line-height:1.45;}
+  .tilbake.vis{display:block;}
+  .tilbake.bra{background:var(--gronn-lys);color:#1e7a45;}
+  .tilbake.naer{background:#fff8e1;color:#8a6d00;}
+  .neste{display:none;width:100%;margin-top:18px;background:var(--lilla);color:#fff;border:none;border-radius:16px;padding:16px;font-family:'Baloo 2',cursive;font-size:1.2rem;cursor:pointer;transition:background .2s,transform .1s;}
+  .neste.vis{display:block;}
+  .neste:hover{background:var(--lilla-mork);}
+  .neste:active{transform:scale(.99);}
+  .slutt{text-align:center;display:none;}
+  .slutt.vis{display:block;}
+  .slutt .stjerne{font-size:3.5rem;}
+  .slutt h2{font-family:'Baloo 2',cursive;font-size:1.8rem;color:var(--lilla);margin:8px 0;}
+  .poeng{font-family:'Baloo 2',cursive;font-size:2.6rem;color:var(--gronn);margin:10px 0;}
+  .slutt p{font-size:1.05rem;margin-bottom:10px;}
+  .laerdom{background:var(--gronn-lys);border-radius:16px;padding:16px;margin:18px 0;font-weight:700;color:#1e7a45;line-height:1.5;}
+  .paanytt{background:var(--gul);color:#5a4500;border:none;border-radius:16px;padding:14px 28px;font-family:'Baloo 2',cursive;font-size:1.1rem;cursor:pointer;}
+  .paanytt:hover{filter:brightness(.97);}
+  .sendt-melding{font-size:.85rem;color:#27ae60;margin-top:8px;font-weight:600;display:none;}
+  .sendt-melding.vis{display:block;}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <header>
+    <div class="ikon">🚂</div>
+    <h1>Reise-ord</h1>
+    <p>Ordene fra «Edels reise til Lillehammer»</p>
+  </header>
+
+  <div class="info">💡 Les historien først. Hva betyr ordene?</div>
+
+  <div class="framdrift"><div class="framdrift-fyll" id="fyll"></div></div>
+  <div class="teller" id="teller">Ord 1</div>
+
+  <div class="kort" id="kort">
+    <span class="merkelapp" id="merkelapp">Hva betyr ordet?</span>
+    <div class="ordvise">
+      <div class="ord" id="ordVis"></div>
+      <div class="kontekst" id="kontekst"></div>
+    </div>
+    <div class="sporsmal">Hva betyr dette ordet?</div>
+    <div id="svarliste"></div>
+    <div class="tilbake" id="tilbake"></div>
+    <button class="neste" id="nesteKnapp">Neste →</button>
+  </div>
+
+  <div class="kort slutt" id="slutt">
+    <div class="stjerne">🌟</div>
+    <h2>Bra jobba, Edel!</h2>
+    <div class="poeng" id="poeng"></div>
+    <p>Du kan ordene fra Edels reise! 🚂</p>
+    <div class="laerdom">
+      Akkurat som Edel: når du kan ordene, kan du beskrive og forklare det du opplever. 💛
+    </div>
+    <p style="font-size:.95rem;color:#636e72;">Trykk om igjen for å øve mer.</p>
+    <button class="paanytt" id="paanytt">Spill om igjen 🔁</button>
+    <div class="sendt-melding" id="sendtMelding">✓ Svarene dine er sendt til mamma</div>
+  </div>
+</div>
+
+<script>
+const FORMSPREE="https://formspree.io/f/mqeolldg";
+const FELT="Tekst_hun_skrev";
+
+/* Vokabular fra teksten. alvo=true er ukens ord (akademiske). kontekst = setning fra historien. */
+const ORD=[
+  {ord:"observere", alvo:true, kontekst:"«Hun måtte observere hva som skjedde rundt henne.»",
+    alt:[{t:"å se nøye på noe", c:true},{t:"å løpe fort", c:false},{t:"å sove", c:false}],
+    rett:"Ja! Observere = å se nøye på noe. Edel så på skiltene og menneskene.", naer:"Observere betyr å se nøye på noe."},
+  {ord:"undersøke", alvo:true, kontekst:"«Hun måtte undersøke hvor lenge hun skulle sitte på toget.»",
+    alt:[{t:"å finne ut mer om noe", c:true},{t:"å spise", c:false},{t:"å synge", c:false}],
+    rett:"Riktig! Undersøke = å finne ut mer. Edel så på billetten.", naer:"Undersøke betyr å finne ut mer om noe."},
+  {ord:"beskrive", alvo:true, kontekst:"«Senere kunne Edel beskrive reisen sin.»",
+    alt:[{t:"å fortelle om noe med ord", c:true},{t:"å tegne et hus", c:false},{t:"å hoppe", c:false}],
+    rett:"Ja! Beskrive = å fortelle om noe med ord.", naer:"Beskrive betyr å fortelle om noe med ord."},
+  {ord:"forklare", alvo:true, kontekst:"«Da kunne hun forklare hva som hadde skjedd.»",
+    alt:[{t:"å gjøre noe lett å forstå", c:true},{t:"å bli sint", c:false},{t:"å løpe vekk", c:false}],
+    rett:"Riktig! Forklare = å gjøre noe lett å forstå for andre.", naer:"Forklare betyr å gjøre noe lett å forstå."},
+  {ord:"nervøs", kontekst:"«Edel ble nervøs, men hun prøvde å være rolig.»",
+    alt:[{t:"litt redd eller urolig", c:true},{t:"veldig glad", c:false},{t:"sulten", c:false}],
+    rett:"Ja! Nervøs = litt redd eller urolig. Men Edel klarte å være rolig.", naer:"Nervøs betyr litt redd eller urolig."},
+  {ord:"trygghet", kontekst:"«Edel følte seg trygg fordi hun hadde en plan.»",
+    alt:[{t:"å føle seg sikker", c:true},{t:"å være rask", c:false},{t:"å være trøtt", c:false}],
+    rett:"Riktig! Trygghet = å føle seg sikker.", naer:"Trygghet betyr å føle seg sikker."},
+  {ord:"ansvar", kontekst:"«Hun viste ansvar da noe uventet skjedde.»",
+    alt:[{t:"å passe på det du skal gjøre", c:true},{t:"å leke ute", c:false},{t:"en type mat", c:false}],
+    rett:"Ja! Ansvar = å passe på det du skal gjøre.", naer:"Ansvar betyr å passe på det du skal gjøre."},
+  {ord:"mestre", kontekst:"«Edel mestret reisen alene.»",
+    alt:[{t:"å klare noe som er vanskelig", c:true},{t:"å gi opp", c:false},{t:"å sove lenge", c:false}],
+    rett:"Riktig! Mestre = å klare noe som er vanskelig. Edel klarte det!", naer:"Mestre betyr å klare noe som er vanskelig."},
+  {ord:"løsning", kontekst:"«Hun fant en løsning da noe uventet skjedde.»",
+    alt:[{t:"en måte å løse et problem på", c:true},{t:"et slags godteri", c:false},{t:"en type tog", c:false}],
+    rett:"Ja! En løsning = en måte å løse et problem på.", naer:"En løsning er en måte å løse et problem på."},
+  {ord:"rolig", kontekst:"«Hun prøvde å være rolig på toget.»",
+    alt:[{t:"stille og avslappet", c:true},{t:"veldig sint", c:false},{t:"veldig rask", c:false}],
+    rett:"Riktig! Rolig = stille og avslappet.", naer:"Rolig betyr stille og avslappet."},
+];
+
+let n=0, poeng=0, maxPoeng=ORD.length, logg=[];
+const $=id=>document.getElementById(id);
+function bland(a){for(let i=a.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[a[i],a[j]]=[a[j],a[i]];}return a;}
+
+function vis(){
+  const o=ORD[n];
+  $("fyll").style.width=(n/ORD.length*100)+"%";
+  $("teller").textContent="Ord "+(n+1)+" av "+ORD.length;
+  $("merkelapp").className="merkelapp"+(o.alvo?" alvo":"");
+  $("merkelapp").textContent=o.alvo?"⭐ Ukens ord":"Hva betyr ordet?";
+  $("ordVis").textContent=o.ord;
+  $("kontekst").textContent=o.kontekst;
+  $("tilbake").className="tilbake"; $("tilbake").textContent="";
+  $("nesteKnapp").className="neste";
+  $("svarliste").innerHTML="";
+  bland(o.alt.map(a=>({...a}))).forEach(a=>{
+    const b=document.createElement("button");
+    b.className="svar"; b.textContent=a.t;
+    b.onclick=()=>velg(b,a,o);
+    $("svarliste").appendChild(b);
+  });
+}
+function velg(knapp,alt,o){
+  $("svarliste").querySelectorAll(".svar").forEach(k=>k.disabled=true);
+  if(alt.c){ knapp.classList.add("riktig"); poeng++; $("tilbake").className="tilbake vis bra"; $("tilbake").textContent=o.rett; }
+  else{ knapp.classList.add("feil"); const r=o.alt.find(a=>a.c).t; $("svarliste").querySelectorAll(".svar").forEach(k=>{if(k.textContent===r)k.classList.add("riktig");}); $("tilbake").className="tilbake vis naer"; $("tilbake").textContent=o.naer; }
+  logg.push((alt.c?"✓":"✗")+" "+o.ord+" → "+alt.t);
+  $("nesteKnapp").className="neste vis";
+  $("nesteKnapp").textContent=(n===ORD.length-1)?"Ferdig 🎉":"Neste →";
+}
+$("nesteKnapp").onclick=()=>{ n++; if(n>=ORD.length) slutt(); else vis(); };
+function slutt(){
+  $("fyll").style.width="100%"; $("teller").style.display="none"; $("kort").style.display="none";
+  $("slutt").classList.add("vis"); $("poeng").textContent=poeng+" av "+maxPoeng+" riktige 🎯"; send();
+}
+function send(){
+  const tekst="REISE-ORD (Lillehammer) – Edel sine svar\nPoeng: "+poeng+"/"+maxPoeng+"\n\n"+logg.join("\n");
+  const fd=new FormData(); fd.append(FELT,tekst);
+  fetch(FORMSPREE,{method:"POST",body:fd,headers:{"Accept":"application/json"}}).then(r=>{if(r.ok)$("sendtMelding").classList.add("vis");}).catch(()=>{});
+}
+$("paanytt").onclick=()=>{ n=0;poeng=0;logg=[]; $("slutt").classList.remove("vis"); $("kort").style.display="block"; $("teller").style.display="block"; vis(); };
+vis();
+</script>
+</body>
+</html>
