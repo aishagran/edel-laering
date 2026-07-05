@@ -50,9 +50,17 @@ main{max-width:600px;margin:0 auto;padding:0 1rem;}
 .les-hjelp{text-align:center;font-size:0.82rem;color:var(--muted);background:#eef6ff;border-radius:10px;padding:0.6rem;margin-bottom:1rem;}
 
 /* ── SE (bilde) ── */
-.bilde-wrap{background:#fff;border-radius:16px;box-shadow:var(--shadow);padding:0.5rem;overflow:hidden;}
+.bilde-wrap{background:#fff;border-radius:16px;box-shadow:var(--shadow);padding:0.5rem;overflow:hidden;cursor:zoom-in;}
 .bilde-wrap img{width:100%;border-radius:12px;display:block;}
 .bilde-mangler{padding:2.5rem 1rem;text-align:center;color:var(--muted);font-size:0.9rem;}
+.bilde-hint{text-align:center;font-size:0.82rem;color:var(--muted);margin-top:0.6rem;}
+.leser{display:none;position:fixed;inset:0;background:#1a1830;z-index:100;flex-direction:column;}
+.leser.open{display:flex;}
+.leser-bar{padding:0.8rem 1rem;display:flex;justify-content:flex-end;}
+.leser-lukk{background:#fff;border:none;border-radius:12px;padding:0.5rem 1.1rem;font-family:'Nunito',sans-serif;font-weight:800;font-size:0.9rem;cursor:pointer;}
+.leser-scroll{flex:1;overflow:auto;-webkit-overflow-scrolling:touch;touch-action:pan-x pan-y pinch-zoom;padding:0 0.5rem;}
+.leser-scroll img{width:100%;height:auto;display:block;border-radius:8px;}
+.leser-tips{color:rgba(255,255,255,0.6);text-align:center;font-size:0.78rem;padding:0.6rem;}
 
 /* ── TENK ── */
 .sporsmal-kort{background:var(--card);border-radius:16px;box-shadow:var(--shadow);padding:1.1rem 1.2rem;margin-bottom:0.9rem;}
@@ -149,10 +157,11 @@ main{max-width:600px;margin:0 auto;padding:0 1rem;}
 
   <!-- ===== SE ===== -->
   <div class="panel" id="p-se">
-    <div class="bilde-wrap">
+    <div class="bilde-wrap" id="bildeWrap">
       <img src="laika-komplett.png" alt="Laika tegneserie"
            onerror="this.outerHTML='<div class=\'bilde-mangler\'>Last opp «laika-komplett.png» på GitHub, så vises tegneserien her 🐕</div>'">
     </div>
+    <div class="bilde-hint">🔍 Trykk på bildet for å se det stort</div>
   </div>
 
   <!-- ===== TENK ===== -->
@@ -173,10 +182,21 @@ main{max-width:600px;margin:0 auto;padding:0 1rem;}
   </div>
 </main>
 
+<div class="leser" id="leser">
+  <div class="leser-bar"><button class="leser-lukk" onclick="lukkLeser()">✕ Lukk</button></div>
+  <div class="leser-scroll"><img id="leserImg" src="" alt=""></div>
+  <div class="leser-tips">Zoom med to fingre 🤏</div>
+</div>
+
 <script>
 const FORMSPREE="https://formspree.io/f/mqeolldg";
 const FELT="Tekst_hun_skrev";
 const $=id=>document.getElementById(id);
+
+/* Bilde-leser (fullscreen zoom) */
+const bw=$('bildeWrap');
+if(bw){ bw.onclick=()=>{ const img=bw.querySelector('img'); if(img){ $('leserImg').src=img.src; $('leser').classList.add('open'); } }; }
+function lukkLeser(){ $('leser').classList.remove('open'); }
 
 /* ── TABS ── */
 document.querySelectorAll('.tab').forEach(t=>{
