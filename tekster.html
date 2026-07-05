@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="no">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Tekster 📖 – Edels Verden</title>
+<link href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@600;700;800&family=Nunito:wght@400;600;700&display=swap" rel="stylesheet">
+<style>
+:root{
+  --grape:#7C3AED;--grape-light:#EDE9FE;--berry:#E84A8A;--sun:#D97706;--sun-light:#FEF3C7;
+  --ink:#1E1B4B;--muted:#6B7280;--bg:#FBF7FF;--card:#fff;--shadow:0 2px 16px rgba(124,58,237,0.08);
+}
+*{box-sizing:border-box;margin:0;padding:0;}
+body{font-family:'Nunito',sans-serif;background:var(--bg);color:var(--ink);min-height:100vh;padding-bottom:3rem;}
+
+.topbar{background:#fff;padding:0.9rem 1.1rem;display:flex;align-items:center;gap:0.75rem;box-shadow:0 2px 12px rgba(124,58,237,0.06);position:sticky;top:0;z-index:40;}
+.home-btn{text-decoration:none;font-size:1.3rem;background:var(--grape-light);border-radius:12px;padding:0.35rem 0.7rem;}
+.topbar .tittel{font-family:'Baloo 2',cursive;font-weight:800;font-size:1.15rem;color:var(--ink);}
+
+.hero{text-align:center;padding:1.8rem 1.25rem 1.2rem;}
+.hero .ikon{font-size:2.6rem;}
+.hero h1{font-family:'Baloo 2',cursive;font-size:1.9rem;font-weight:800;color:var(--grape);margin-top:0.3rem;}
+.hero p{color:var(--muted);font-size:0.95rem;margin-top:0.3rem;line-height:1.5;max-width:34ch;margin-left:auto;margin-right:auto;}
+
+main{max-width:600px;margin:0 auto;padding:0 1rem;}
+
+.saga-intro{background:linear-gradient(135deg,var(--sun-light),#FFF8E8);border-radius:16px;padding:1.1rem 1.25rem;margin-bottom:1.4rem;border:2px solid #F5D98A;}
+.saga-intro .navn{font-family:'Baloo 2',cursive;font-weight:700;font-size:1.05rem;color:var(--sun);display:flex;align-items:center;gap:0.5rem;margin-bottom:0.4rem;}
+.saga-intro .tekst{font-size:0.9rem;color:#8a6d3b;line-height:1.5;}
+
+.seksjon-tittel{font-family:'Baloo 2',cursive;font-weight:700;font-size:1rem;color:var(--muted);margin:1.4rem 0.25rem 0.7rem;display:flex;align-items:center;gap:0.5rem;}
+
+.kap-liste{display:flex;flex-direction:column;gap:0.9rem;}
+.kap-kort{background:var(--card);border-radius:16px;box-shadow:var(--shadow);text-decoration:none;color:var(--ink);display:flex;align-items:center;gap:1rem;padding:1.1rem 1.2rem;border:3px solid transparent;transition:all 0.15s;}
+.kap-kort:active{transform:scale(0.98);}
+.kap-kort.k1{border-color:#F2C879;background:linear-gradient(135deg,rgba(242,166,90,0.08),rgba(255,255,255,0));}
+.kap-kort.k2{border-color:#C9B3DE;background:linear-gradient(135deg,rgba(155,123,181,0.1),rgba(255,255,255,0));}
+.kap-ikon{font-size:2.2rem;flex-shrink:0;}
+.kap-info{flex:1;}
+.kap-navn{font-family:'Baloo 2',cursive;font-weight:700;font-size:1.1rem;line-height:1.15;margin-bottom:0.25rem;}
+.kap-desc{font-size:0.82rem;color:var(--muted);line-height:1.4;}
+.kap-pil{color:var(--grape);font-size:1.2rem;font-weight:800;flex-shrink:0;}
+
+.kryss-link{display:block;text-align:center;margin-top:1.6rem;padding:0.9rem;text-decoration:none;color:var(--grape);font-weight:700;font-size:0.9rem;background:var(--grape-light);border-radius:14px;transition:all 0.15s;}
+.kryss-link:active{transform:scale(0.98);}
+
+.footer{text-align:center;font-size:0.8rem;color:#aaa;margin-top:2.5rem;padding:1.25rem;}
+</style>
+</head>
+<body>
+
+<div class="topbar">
+  <a class="home-btn" href="index.html">🏠</a>
+  <span class="tittel">📖 Tekster</span>
+</div>
+
+<div class="hero">
+  <div class="ikon">📖</div>
+  <h1>Tekster</h1>
+  <p>Les historiene om Edel som reiser gjennom tiden med Skjebnehjulet.</p>
+</div>
+
+<main>
+  <div class="saga-intro">
+    <div class="navn">🎡 Sagaen om Skjebnehjulet</div>
+    <div class="tekst">Edel får et magisk hjul av Esmeralda. Med det reiser hun gjennom tiden – usynlig – for å lære hvordan mennesker levde før. Les kapitlene i rekkefølge!</div>
+  </div>
+
+  <div class="seksjon-tittel">📚 Kapitler</div>
+  <div class="kap-liste">
+    <a class="kap-kort k1" href="edel-1968.html">
+      <span class="kap-ikon">🌼</span>
+      <div class="kap-info">
+        <div class="kap-navn">Kapittel 1: 1968 – Frit valg?</div>
+        <div class="kap-desc">Valg, verdier og framtid · 12 oppgaver</div>
+      </div>
+      <span class="kap-pil">→</span>
+    </a>
+    <a class="kap-kort k2" href="edel-1943.html">
+      <span class="kap-ikon">🕰️</span>
+      <div class="kap-info">
+        <div class="kap-navn">Kapittel 2: 1943 – Hva formet foreldrene?</div>
+        <div class="kap-desc">Krig, frykt og trygghet · årsak → konsekvens</div>
+      </div>
+      <span class="kap-pil">→</span>
+    </a>
+  </div>
+  <a class="kryss-link" href="tegneserier.html">
+    🎨 Vil du se sagaen som tegneserie? →
+  </a>
+</main>
+
+<div class="footer">✨ Flere kapitler kommer ✨</div>
+
+</body>
+</html>

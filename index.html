@@ -3,190 +3,769 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Edels Verden 🏠</title>
-<link href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@600;700;800&family=Nunito:wght@400;600;700;800&display=swap" rel="stylesheet">
+<title>Edels Verden 🐶</title>
+<link href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@400;600;700;800&family=Nunito:wght@400;600;700&display=swap" rel="stylesheet">
 <style>
-:root{--p1:#FF6B9D;--p2:#FFC75F;--p3:#6BCB77;--p4:#4D96FF;--p5:#C780E8;--ink:#2D2A4A;--shadow:rgba(45,42,74,0.14);}
-*{box-sizing:border-box;margin:0;padding:0;}
-body{font-family:'Nunito',sans-serif;background:linear-gradient(160deg,#E8F5EC,#FFF0F5);min-height:100vh;color:var(--ink);padding:20px 18px 80px;}
-.container{max-width:560px;margin:0 auto;}
-.banner{text-align:center;margin-bottom:30px;padding:20px;background:white;border-radius:18px;box-shadow:0 4px 16px var(--shadow);}
-.banner img{width:100%;max-width:500px;border-radius:14px;margin-bottom:16px;box-shadow:0 6px 20px rgba(0,0,0,0.15);}
-.banner-title{font-family:'Baloo 2',cursive;font-size:1.8rem;color:var(--ink);margin-bottom:8px;}
-.banner-sub{font-size:0.95rem;color:#666;line-height:1.5;}
-.menu{display:flex;flex-direction:column;gap:12px;margin-bottom:20px;}
-.section-label{font-family:'Baloo 2',cursive;font-size:1rem;color:var(--ink);font-weight:700;margin:14px 2px 2px;opacity:.75;}
-.menu-card{background:white;border-radius:18px;overflow:hidden;box-shadow:0 4px 16px var(--shadow);border:3px solid #d4eeda;cursor:pointer;transition:all 0.15s;text-decoration:none;display:flex;align-items:center;gap:16px;padding:16px;}
-.menu-card:active{transform:scale(0.97);}
-.menu-card.featured{border-color:var(--p1);background:linear-gradient(135deg,rgba(255,107,157,0.05),rgba(200,128,232,0.05));}
-.menu-card.logic{border-color:#3DD6A0;background:linear-gradient(135deg,rgba(61,214,160,0.10),rgba(14,58,74,0.05));}
-.menu-card.butikk{border-color:#C99BE0;background:linear-gradient(135deg,rgba(201,155,224,0.12),rgba(26,21,48,0.05));}
-.menu-card.setning{border-color:#5B8BB0;background:linear-gradient(135deg,rgba(91,139,176,0.12),rgba(242,166,90,0.08));}
-.menu-card.tankekart{border-color:#9b7bb5;background:linear-gradient(135deg,rgba(155,123,181,0.12),rgba(91,139,176,0.06));}
-.menu-card.saga{border-color:#F2A65A;background:linear-gradient(135deg,rgba(242,166,90,0.12),rgba(107,203,119,0.06));}
-.menu-card.dld{border-color:#7C6FDE;background:linear-gradient(135deg,rgba(124,111,222,0.14),rgba(232,115,158,0.06));}
-.menu-emoji{font-size:40px;flex-shrink:0;}
-.menu-info{flex:1;text-align:left;}
-.menu-title{font-family:'Baloo 2',cursive;font-size:1.1rem;color:var(--ink);font-weight:700;margin-bottom:4px;}
-.menu-desc{font-size:0.85rem;color:#888;line-height:1.4;}
-.menu-badge{background:var(--p1);color:white;padding:4px 10px;border-radius:50px;font-size:0.75rem;font-weight:800;text-transform:uppercase;}
-.book-section{background:linear-gradient(135deg,#FFE8F0,#F5E8FF);border-radius:18px;padding:20px;margin-bottom:20px;box-shadow:0 4px 16px var(--shadow);}
-.book-title{font-family:'Baloo 2',cursive;font-size:1.3rem;color:var(--p1);margin-bottom:12px;display:flex;align-items:center;gap:8px;}
-.book-desc{font-size:0.9rem;color:#555;line-height:1.6;margin-bottom:14px;}
-.book-btn{background:var(--p1);color:white;border:none;border-radius:50px;padding:12px 24px;font-family:'Baloo 2',cursive;font-weight:700;font-size:0.95rem;cursor:pointer;box-shadow:0 3px 0 rgba(255,107,157,0.3);transition:all 0.1s;width:100%;}
-.book-btn:active{transform:translateY(2px);box-shadow:0 1px 0 rgba(255,107,157,0.3);}
-.footer{text-align:center;font-size:0.8rem;color:#999;margin-top:30px;padding:20px;background:white;border-radius:12px;}
+  :root {
+    --bg: #FBF7FF;
+    --card: #FFFFFF;
+    --ink: #1E1B4B;
+    --muted: #6B7280;
+    --grape: #7C3AED;
+    --grape-light: #EDE9FE;
+    --sky: #0EA5E9;
+    --sky-light: #E0F2FE;
+    --berry: #E84A8A;
+    --berry-light: #FDF2F8;
+    --leaf: #16A34A;
+    --leaf-light: #DCFCE7;
+    --sun: #D97706;
+    --sun-light: #FEF3C7;
+    --teal: #0D9488;
+    --teal-light: #CCFBF1;
+    --radius: 16px;
+    --shadow: 0 2px 16px rgba(124,58,237,0.08);
+  }
+
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    font-family: 'Nunito', sans-serif;
+    background: var(--bg);
+    color: var(--ink);
+    min-height: 100vh;
+    padding-bottom: 3rem;
+  }
+
+  /* ── HERO BANNER ── */
+  .hero {
+    position: relative;
+    width: 100%;
+    /* Bakgrunnsbilde legges her når du har generert banner-hero.png.
+       Fallback: myk lilla gradient hvis bildet mangler. */
+    background:
+      linear-gradient(180deg, rgba(30,27,75,0) 30%, rgba(30,27,75,0.55) 100%),
+      linear-gradient(135deg, #C4B5FD 0%, #F5D0E8 50%, #FDE9C8 100%);
+    background-size: cover;
+    background-position: center;
+    min-height: 300px;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end;
+    padding: 1.25rem 1.25rem 2.75rem;
+    text-align: center;
+  }
+  /* Når du har bildet: bytt ut linjen under kommentaren over med:
+     background-image:
+       linear-gradient(180deg, rgba(30,27,75,0) 30%, rgba(30,27,75,0.55) 100%),
+       url('banner-hero.png');  */
+  .hero.med-bilde {
+    background-image:
+      linear-gradient(180deg, rgba(30,27,75,0) 35%, rgba(30,27,75,0.6) 100%),
+      url('banner-hero.png');
+  }
+  .hero h1 {
+    font-family: 'Baloo 2', sans-serif;
+    font-size: 2.6rem;
+    font-weight: 800;
+    color: #fff;
+    letter-spacing: -0.5px;
+    line-height: 1;
+    text-shadow: 0 2px 12px rgba(30,27,75,0.35);
+  }
+  .hero-tagline {
+    display: inline-block;
+    margin: 0.6rem auto 0;
+    background: rgba(255,255,255,0.92);
+    color: var(--grape);
+    font-family: 'Baloo 2', sans-serif;
+    font-weight: 700;
+    font-size: 0.78rem;
+    letter-spacing: 0.5px;
+    text-transform: uppercase;
+    padding: 0.35rem 1rem;
+    border-radius: 99px;
+    box-shadow: 0 2px 10px rgba(30,27,75,0.15);
+  }
+  .hero-motto {
+    color: #fff;
+    font-size: 0.9rem;
+    margin-top: 0.7rem;
+    text-shadow: 0 1px 8px rgba(30,27,75,0.4);
+    max-width: 30ch;
+    margin-left: auto;
+    margin-right: auto;
+    line-height: 1.4;
+  }
+
+  /* ── NAV-BAR (ekte knapper) ── */
+  .toppnav {
+    position: sticky;
+    top: 0;
+    z-index: 40;
+    background: rgba(255,255,255,0.95);
+    backdrop-filter: blur(8px);
+    box-shadow: 0 2px 12px rgba(124,58,237,0.08);
+    display: flex;
+    gap: 0.25rem;
+    overflow-x: auto;
+    padding: 0.5rem 0.75rem;
+    -webkit-overflow-scrolling: touch;
+  }
+  .toppnav a {
+    flex: 0 0 auto;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 2px;
+    text-decoration: none;
+    color: var(--muted);
+    font-size: 0.7rem;
+    font-weight: 700;
+    padding: 0.3rem 0.7rem;
+    border-radius: 12px;
+    transition: all 0.15s;
+    white-space: nowrap;
+  }
+  .toppnav a:hover, .toppnav a.aktiv {
+    color: var(--grape);
+    background: var(--grape-light);
+  }
+  .toppnav a .nav-ikon { font-size: 1.2rem; }
+
+  /* ── MAIN CONTAINER ── */
+  main {
+    max-width: 640px;
+    margin: 1.25rem auto 0;
+    padding: 0 1rem;
+  }
+
+  /* ── TODAY CARD ── */
+  .today-card {
+    background: var(--card);
+    border-radius: var(--radius);
+    box-shadow: var(--shadow);
+    padding: 1.5rem;
+    margin-bottom: 1.25rem;
+  }
+  .day-label {
+    font-size: 0.75rem;
+    font-weight: 700;
+    color: var(--grape);
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    margin-bottom: 0.5rem;
+  }
+  .day-word {
+    font-family: 'Baloo 2', sans-serif;
+    font-size: 2.25rem;
+    font-weight: 800;
+    color: var(--ink);
+    margin-bottom: 0.25rem;
+    line-height: 1.1;
+  }
+  .day-meaning {
+    color: var(--muted);
+    font-size: 0.9rem;
+    margin-bottom: 1.25rem;
+  }
+
+  /* Progress bar */
+  .progress-wrap {
+    margin-bottom: 1.25rem;
+  }
+  .progress-meta {
+    display: flex;
+    justify-content: space-between;
+    font-size: 0.8rem;
+    color: var(--muted);
+    margin-bottom: 0.4rem;
+  }
+  .progress-bar {
+    height: 8px;
+    background: var(--grape-light);
+    border-radius: 99px;
+    overflow: hidden;
+  }
+  .progress-fill {
+    height: 100%;
+    background: linear-gradient(90deg, var(--grape), var(--berry));
+    border-radius: 99px;
+    transition: width 0.6s ease;
+  }
+
+  /* Start button */
+  .btn-start {
+    display: block;
+    width: 100%;
+    padding: 1rem;
+    background: linear-gradient(135deg, var(--grape) 0%, var(--berry) 100%);
+    color: #fff;
+    font-family: 'Baloo 2', sans-serif;
+    font-size: 1.15rem;
+    font-weight: 700;
+    border: none;
+    border-radius: 12px;
+    text-align: center;
+    text-decoration: none;
+    cursor: pointer;
+    box-shadow: 0 4px 14px rgba(124,58,237,0.35);
+    transition: transform 0.15s, box-shadow 0.15s;
+  }
+  .btn-start:hover { transform: translateY(-1px); box-shadow: 0 6px 18px rgba(124,58,237,0.4); }
+  .btn-start:active { transform: translateY(0); }
+  .btn-start span { opacity: 0.85; font-size: 0.85rem; display: block; margin-top: 0.1rem; }
+
+  /* Quick links */
+  .quick-links {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 0.6rem;
+    margin-top: 1rem;
+  }
+  .quick-link {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0.6rem 0.8rem;
+    background: var(--grape-light);
+    border-radius: 10px;
+    text-decoration: none;
+    color: var(--grape);
+    font-size: 0.85rem;
+    font-weight: 600;
+    transition: background 0.15s;
+  }
+  .quick-link:hover { background: #DDD6FE; }
+
+  /* ── SECTION HEADER ── */
+  .section-header {
+    display: flex;
+    align-items: center;
+    gap: 0.6rem;
+    margin: 1.75rem 0 0.75rem;
+    font-family: 'Baloo 2', sans-serif;
+    font-size: 1.1rem;
+    font-weight: 700;
+    color: var(--ink);
+  }
+  .section-header .dot {
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+    flex-shrink: 0;
+  }
+
+  /* ── WEEK CARDS ── */
+  .week-card {
+    background: var(--card);
+    border-radius: var(--radius);
+    box-shadow: var(--shadow);
+    margin-bottom: 1rem;
+    overflow: hidden;
+    border-left: 4px solid;
+    transition: transform 0.15s;
+  }
+  .week-card:hover { transform: translateY(-1px); }
+  .week-card.done { border-left-color: var(--leaf); opacity: 0.85; }
+  .week-card.active { border-left-color: var(--grape); }
+  .week-card.upcoming { border-left-color: #E5E7EB; opacity: 0.7; }
+
+  .week-header {
+    padding: 1rem 1.25rem 0.75rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+  }
+  .week-title {
+    font-family: 'Baloo 2', sans-serif;
+    font-weight: 700;
+    font-size: 1.05rem;
+  }
+  .week-subtitle {
+    font-size: 0.78rem;
+    color: var(--muted);
+    margin-top: 0.15rem;
+  }
+  .week-badge {
+    font-size: 0.72rem;
+    font-weight: 700;
+    padding: 0.25rem 0.6rem;
+    border-radius: 99px;
+    white-space: nowrap;
+  }
+  .badge-done { background: var(--leaf-light); color: var(--leaf); }
+  .badge-active { background: var(--grape-light); color: var(--grape); }
+  .badge-locked { background: #F3F4F6; color: var(--muted); }
+
+  .week-words {
+    display: flex;
+    gap: 0.5rem;
+    padding: 0 1.25rem;
+    flex-wrap: wrap;
+  }
+  .word-chip {
+    font-size: 0.8rem;
+    font-weight: 700;
+    padding: 0.2rem 0.6rem;
+    border-radius: 99px;
+    border: 2px solid;
+  }
+
+  .week-apps {
+    padding: 0.75rem 1.25rem 1rem;
+    display: flex;
+    gap: 0.5rem;
+    flex-wrap: wrap;
+  }
+  .app-link {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.35rem;
+    padding: 0.4rem 0.75rem;
+    border-radius: 8px;
+    text-decoration: none;
+    font-size: 0.8rem;
+    font-weight: 600;
+    transition: opacity 0.15s;
+  }
+  .app-link:hover { opacity: 0.8; }
+
+  /* Colors per week */
+  .week-1 .week-title, .week-1 .week-subtitle strong { color: var(--grape); }
+  .week-1 .word-chip { border-color: var(--grape); color: var(--grape); }
+  .week-1 .app-link { background: var(--grape-light); color: var(--grape); }
+
+  .week-2 .week-title, .week-2 .week-subtitle strong { color: var(--sky); }
+  .week-2 .word-chip { border-color: var(--sky); color: var(--sky); }
+  .week-2 .app-link { background: var(--sky-light); color: #0369A1; }
+  .week-card.week-2 { border-left-color: var(--sky) !important; }
+
+  .week-3 .week-title, .week-3 .week-subtitle strong { color: var(--teal); }
+  .week-3 .word-chip { border-color: var(--teal); color: var(--teal); }
+  .week-3 .app-link { background: var(--teal-light); color: #0F766E; }
+  .week-card.week-3 { border-left-color: var(--teal) !important; }
+
+  .week-4 .week-title, .week-4 .week-subtitle strong { color: var(--sun); }
+  .week-4 .word-chip { border-color: var(--sun); color: var(--sun); }
+  .week-4 .app-link { background: var(--sun-light); color: #92400E; }
+  .week-card.week-4 { border-left-color: var(--sun) !important; }
+
+  /* ── MATTE ── */
+  .matte-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 0.75rem;
+  }
+  .matte-card {
+    background: var(--card);
+    border-radius: 12px;
+    box-shadow: var(--shadow);
+    padding: 1rem;
+    text-decoration: none;
+    color: var(--ink);
+    display: flex;
+    flex-direction: column;
+    gap: 0.25rem;
+    transition: transform 0.15s;
+  }
+  .matte-card:hover { transform: translateY(-2px); }
+  .matte-card .icon { font-size: 1.5rem; }
+  .matte-card .name {
+    font-family: 'Baloo 2', sans-serif;
+    font-weight: 700;
+    font-size: 0.9rem;
+  }
+  .matte-card .desc {
+    font-size: 0.75rem;
+    color: var(--muted);
+  }
+
+  /* ── STORIES ── */
+  .story-list {
+    display: flex;
+    flex-direction: column;
+    gap: 0.6rem;
+  }
+  .story-link {
+    background: var(--card);
+    border-radius: 12px;
+    box-shadow: var(--shadow);
+    padding: 1rem 1.25rem;
+    text-decoration: none;
+    color: var(--ink);
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    transition: transform 0.15s;
+  }
+  .story-link:hover { transform: translateY(-1px); }
+  .story-link .icon { font-size: 1.5rem; flex-shrink: 0; }
+  .story-link .info .name {
+    font-family: 'Baloo 2', sans-serif;
+    font-weight: 700;
+    font-size: 0.95rem;
+  }
+  .story-link .info .desc { font-size: 0.78rem; color: var(--muted); }
+
+  /* ── MAMMA SECTION ── */
+  .mamma-link {
+    background: #FFF7ED;
+    border: 1.5px solid #FED7AA;
+    border-radius: 12px;
+    padding: 1rem 1.25rem;
+    text-decoration: none;
+    color: #92400E;
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    font-size: 0.9rem;
+    font-weight: 600;
+  }
+
+  /* ── FOOTER ── */
+  footer {
+    text-align: center;
+    padding: 2.5rem 1rem 1rem;
+    color: var(--muted);
+    font-size: 0.8rem;
+  }
+  footer .dog { font-size: 2rem; display: block; margin-bottom: 0.5rem; }
+
+  /* ── DAY ADJUST ── */
+  .day-adjust {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    margin-top: 0.75rem;
+    justify-content: center;
+  }
+  .day-btn {
+    background: var(--grape-light);
+    border: none;
+    border-radius: 8px;
+    padding: 0.3rem 0.8rem;
+    color: var(--grape);
+    font-weight: 700;
+    font-size: 0.9rem;
+    cursor: pointer;
+  }
+  .day-num {
+    font-family: 'Baloo 2', sans-serif;
+    font-weight: 700;
+    font-size: 1rem;
+    color: var(--grape);
+    min-width: 80px;
+    text-align: center;
+  }
 </style>
 </head>
 <body>
 
-<div class="container">
-  <div class="banner">
-    <img src="Famille.png" alt="Edels Familie" style="width:100%;border-radius:14px;">
-    <div class="banner-title">Edels Verden 🏠</div>
-    <div class="banner-sub">Lær nye ord, følelser og vennskap gjennom historier!</div>
+<nav class="toppnav">
+  <a href="index.html" class="aktiv"><span class="nav-ikon">🏠</span>Hjem</a>
+  <a href="tegneserier.html"><span class="nav-ikon">📖</span>Temaer</a>
+  <a href="edel-hvis-setninger.html"><span class="nav-ikon">💡</span>Tenk & forklar</a>
+  <a href="folelser.html"><span class="nav-ikon">💗</span>Følelser</a>
+  <a href="edel-ordkort.html"><span class="nav-ikon">📓</span>Ordliste</a>
+</nav>
+
+<header class="hero med-bilde">
+  <h1>Edels Verden</h1>
+  <span class="hero-tagline">Lær · Tenk · Forstå · Endre verden</span>
+  <p class="hero-motto">Vi lærer av fortiden, tenker sammen i dag, og drømmer om en bedre verden.</p>
+</header>
+
+<main>
+
+  <!-- TODAY CARD -->
+  <div class="today-card">
+    <div class="day-label" id="dayLabel">Dag 1 av 24 · Uke 1</div>
+    <div class="day-word" id="dayWord">ekskludert</div>
+    <div class="day-meaning" id="dayMeaning">når noen ikke får lov til å være med</div>
+
+    <div class="progress-wrap">
+      <div class="progress-meta">
+        <span id="progressText">Dag 1 av 24</span>
+        <span id="progressPct">4%</span>
+      </div>
+      <div class="progress-bar">
+        <div class="progress-fill" id="progressFill" style="width:4%"></div>
+      </div>
+    </div>
+
+    <a class="btn-start" id="startBtn" href="#">
+      ▶ Start dagens økt
+      <span id="startDesc">10 min ord · 10 min setning</span>
+    </a>
+
+    <div class="quick-links">
+      <a class="quick-link" href="edel-tankekart.html">🧠 Tankekart</a>
+      <a class="quick-link" href="edel-hvis-setninger.html">🔗 Hvis-setninger</a>
+      <a class="quick-link" href="edel-til-aa-trening.html">📌 TIL å</a>
+      <a class="quick-link" href="spraakreise.html">🦜 Språkreisen</a>
+    </div>
+
+    <div class="day-adjust">
+      <button class="day-btn" onclick="changeDay(-1)">← Forrige</button>
+      <span class="day-num" id="dayNumDisplay">Dag 1</span>
+      <button class="day-btn" onclick="changeDay(1)">Neste →</button>
+    </div>
   </div>
 
-  <div class="book-section">
-    <div class="book-title">📚 Månedsboken: Lars er lol</div>
-    <div class="book-desc">Denne måneden lærer vi om første kjærlighet, nervositet og ekte vennskap gjennom Amanda, Sari og Kay sin eventyr. En historie som snakker direkte til hjertet!</div>
-    <button class="book-btn" onclick="window.location.href='amanda-storia.html'">Kom inn i historien →</button>
+  <!-- UKER -->
+  <div class="section-header">
+    <span class="dot" style="background:var(--grape)"></span>
+    Måned 1 — 4 uker · 12 ord
   </div>
 
-  <div class="menu">
-
-    <div class="section-label">💜 Dagens øving</div>
-
-    <a href="edel-til-aa-trening.html" class="menu-card dld">
-      <div class="menu-emoji">💜</div>
-      <div class="menu-info">
-        <div class="menu-title">TIL å — dagens 15</div>
-        <div class="menu-desc">15 nye oppgaver hver dag! Til å eller for å?</div>
+  <!-- UKE 1 -->
+  <div class="week-card week-1" id="card-week1">
+    <div class="week-header">
+      <div>
+        <div class="week-title">Uke 1 — Forsvarerord</div>
+        <div class="week-subtitle">Sosiale situasjoner · 6 dager</div>
       </div>
-      <span class="menu-badge" style="background:#7C6FDE">Ny</span>
+      <span class="week-badge" id="badge-week1">Dag 1–6</span>
+    </div>
+    <div class="week-words">
+      <span class="word-chip">ekskludert</span>
+      <span class="word-chip">respekt</span>
+      <span class="word-chip">modig</span>
+    </div>
+    <div class="week-apps">
+      <a class="app-link" href="verden.html">📚 Ukens ord</a>
+      <a class="app-link" href="edel-tankekart.html">🧠 Tankekart</a>
+      <a class="app-link" href="edel-hvis-setninger.html">🔗 Hvis-setninger</a>
+    </div>
+  </div>
+
+  <!-- UKE 2 -->
+  <div class="week-card week-2" id="card-week2">
+    <div class="week-header">
+      <div>
+        <div class="week-title">Uke 2 — Akademiske ord</div>
+        <div class="week-subtitle">Skole og forklaring · 6 dager</div>
+      </div>
+      <span class="week-badge" id="badge-week2">Dag 7–12</span>
+    </div>
+    <div class="week-words">
+      <span class="word-chip">forklare</span>
+      <span class="word-chip">løsning</span>
+      <span class="word-chip">næring</span>
+    </div>
+    <div class="week-apps">
+      <a class="app-link" href="verden.html">📚 Ukens ord</a>
+      <a class="app-link" href="edel-tankekart.html">🧠 Tankekart</a>
+      <a class="app-link" href="edel-hvis-setninger.html">🔗 Hvis-setninger</a>
+    </div>
+  </div>
+
+  <!-- UKE 3 -->
+  <div class="week-card week-3" id="card-week3">
+    <div class="week-header">
+      <div>
+        <div class="week-title">Uke 3 — Observasjonsord</div>
+        <div class="week-subtitle">Natur og vitenskap · 6 dager</div>
+      </div>
+      <span class="week-badge" id="badge-week3">Dag 13–18</span>
+    </div>
+    <div class="week-words">
+      <span class="word-chip">observere</span>
+      <span class="word-chip">undersøke</span>
+      <span class="word-chip">beskrive</span>
+    </div>
+    <div class="week-apps">
+      <a class="app-link" href="verden.html">📚 Ukens ord</a>
+      <a class="app-link" href="edel-tankekart.html">🧠 Tankekart</a>
+      <a class="app-link" href="spraakreise.html">🦜 Språkreisen</a>
+    </div>
+  </div>
+
+  <!-- UKE 4 -->
+  <div class="week-card week-4" id="card-week4">
+    <div class="week-header">
+      <div>
+        <div class="week-title">Uke 4 — TIL å + Revisjon</div>
+        <div class="week-subtitle">Preposisjon + alle 9 ord · 6 dager</div>
+      </div>
+      <span class="week-badge" id="badge-week4">Dag 19–24</span>
+    </div>
+    <div class="week-words">
+      <span class="word-chip">lyst TIL å</span>
+      <span class="word-chip">frihet TIL å</span>
+      <span class="word-chip">mot TIL å</span>
+    </div>
+    <div class="week-apps">
+      <a class="app-link" href="edel-til-aa-trening.html">📌 TIL å-trening</a>
+      <a class="app-link" href="verden.html">📚 Ukens ord</a>
+      <a class="app-link" href="edel-hvis-setninger.html">🔗 Hvis-setninger</a>
+    </div>
+  </div>
+
+  <!-- MATTE -->
+  <div class="section-header">
+    <span class="dot" style="background:var(--sky)"></span>
+    Matte — øv når du vil
+  </div>
+
+  <div class="matte-grid">
+    <a class="matte-card" href="edels-logic.html">
+      <span class="icon">🧮</span>
+      <span class="name">Edels Logic</span>
+      <span class="desc">Matte i butikken</span>
     </a>
-
-    <a href="verden.html" class="menu-card">
-      <div class="menu-emoji">📚</div>
-      <div class="menu-info">
-        <div class="menu-title">Ukens ord</div>
-        <div class="menu-desc">6 uker med 18 kapitler</div>
-      </div>
+    <a class="matte-card" href="edels-butikk.html">
+      <span class="icon">🛍️</span>
+      <span class="name">Edels Butikk</span>
+      <span class="desc">Veksel og minus</span>
     </a>
-
-    <a href="edel-tankekart.html" class="menu-card tankekart">
-      <div class="menu-emoji">🧠</div>
-      <div class="menu-info">
-        <div class="menu-title">Edels Tankekart</div>
-        <div class="menu-desc">30 skoleord – norsk, samfunnsfag & naturfag</div>
-      </div>
-      <span class="menu-badge" style="background:#9b7bb5">Ny</span>
+    <a class="matte-card" href="edel-laaning.html">
+      <span class="icon">➖</span>
+      <span class="name">Minus med låning</span>
+      <span class="desc">Steg for steg</span>
     </a>
-
-    <a href="edel-hvis-setninger.html" class="menu-card setning">
-      <div class="menu-emoji">🔗</div>
-      <div class="menu-info">
-        <div class="menu-title">Hvis … så</div>
-        <div class="menu-desc">Bygg hele setninger – øv på «hvis» og «så»</div>
-      </div>
-      <span class="menu-badge" style="background:#5B8BB0">Ny</span>
-    </a>
-
-    <a href="edels-logic.html" class="menu-card logic">
-      <div class="menu-emoji">🧮</div>
-      <div class="menu-info">
-        <div class="menu-title">Edels Logic</div>
-        <div class="menu-desc">Matte i butikken – regn med penger</div>
-      </div>
-    </a>
-
-    <a href="edels-butikk.html" class="menu-card butikk">
-      <div class="menu-emoji">🛍️</div>
-      <div class="menu-info">
-        <div class="menu-title">Edels Butikk</div>
-        <div class="menu-desc">Veksel & minus – regn ut hvor mye igjen</div>
-      </div>
-    </a>
-
-    <a href="edel-laaning.html" class="menu-card butikk">
-      <div class="menu-emoji">➖</div>
-      <div class="menu-info">
-        <div class="menu-title">Minus med låning</div>
-        <div class="menu-desc">Lær steg for steg – slik låner du 🤝</div>
-      </div>
-      <span class="menu-badge" style="background:#9b7bb5">Lær</span>
-    </a>
-
-    <a href="edel-mattelek.html" class="menu-card logic">
-      <div class="menu-emoji">🧮</div>
-      <div class="menu-info">
-        <div class="menu-title">Edels Mattelek</div>
-        <div class="menu-desc">Minus på tid, gåte & budsjett med Pipoka</div>
-      </div>
-      <span class="menu-badge" style="background:#3DD6A0">Ny</span>
-    </a>
-
-    <div class="section-label">🎡 Sagaen om Skjebnehjulet</div>
-
-    <a href="edel-1968.html" class="menu-card saga">
-      <div class="menu-emoji">🌼</div>
-      <div class="menu-info">
-        <div class="menu-title">Kapittel 1: 1968 – Frit valg?</div>
-        <div class="menu-desc">Valg, verdier og framtid · 12 oppgaver</div>
-      </div>
-    </a>
-
-    <a href="edel-1943.html" class="menu-card saga">
-      <div class="menu-emoji">🕰️</div>
-      <div class="menu-info">
-        <div class="menu-title">Kapittel 2: 1943 – Hva formet foreldrene?</div>
-        <div class="menu-desc">Krig, frykt og trygghet · årsak → konsekvens</div>
-      </div>
-    </a>
-
-    <div class="section-label">🌍 Mer å utforske</div>
-
-    <a href="spraakreise.html" class="menu-card">
-      <div class="menu-emoji">🦜</div>
-      <div class="menu-info">
-        <div class="menu-title">Språkreisen</div>
-        <div class="menu-desc">10 dager med bindeord</div>
-      </div>
-    </a>
-
-    <a href="folelser.html" class="menu-card">
-      <div class="menu-emoji">💗</div>
-      <div class="menu-info">
-        <div class="menu-title">Følelser</div>
-        <div class="menu-desc">Lær å forstå følelser</div>
-      </div>
-    </a>
-
-    <a href="tegneserier.html" class="menu-card">
-      <div class="menu-emoji">📖</div>
-      <div class="menu-info">
-        <div class="menu-title">Tegneserier</div>
-        <div class="menu-desc">Historier i bilder</div>
-      </div>
-    </a>
-
-    <div class="section-label">🗣️ Snakk med mamma</div>
-
-    <a href="edel-rus-forstaaelse.html" class="menu-card" style="border-color:#C9B3DE;background:linear-gradient(135deg,rgba(155,123,181,0.08),rgba(255,255,255,0));">
-      <div class="menu-emoji">🧠</div>
-      <div class="menu-info">
-        <div class="menu-title">Hvorfor mister noen kontrollen?</div>
-        <div class="menu-desc">Om rus – forklart enkelt, med hjernen 💛</div>
-      </div>
-      <span class="menu-badge" style="background:#9b7bb5">Ny</span>
+    <a class="matte-card" href="edel-mattelek.html">
+      <span class="icon">⏱️</span>
+      <span class="name">Edels Mattelek</span>
+      <span class="desc">Minus på tid</span>
     </a>
   </div>
 
-  <div class="footer">
-    <p>✨ Laget med kjærlighet for Edel ✨</p>
-    <p style="margin-top:8px;font-size:0.75rem;">Hvert ord er en dør til en ny verden 🌍</p>
+  <!-- HISTORIER -->
+  <div class="section-header">
+    <span class="dot" style="background:var(--berry)"></span>
+    Historier — les og utforsk
   </div>
-</div>
 
+  <div class="story-list">
+    <a class="story-link" href="tekster.html">
+      <span class="icon">📖</span>
+      <div class="info">
+        <div class="name">Tekster</div>
+        <div class="desc">Sagaen om Skjebnehjulet — alle kapitlene</div>
+      </div>
+    </a>
+    <a class="story-link" href="tegneserier.html">
+      <span class="icon">🎨</span>
+      <div class="info">
+        <div class="name">Tegneserier</div>
+        <div class="desc">Historier om Pipocão og familien</div>
+      </div>
+    </a>
+    <a class="story-link" href="folelser.html">
+      <span class="icon">💗</span>
+      <div class="info">
+        <div class="name">Følelser</div>
+        <div class="desc">Lær å forstå og sette ord på følelsene dine</div>
+      </div>
+    </a>
+  </div>
+
+  <!-- MAMMA -->
+  <div class="section-header">
+    <span class="dot" style="background:var(--sun)"></span>
+    Snakk med mamma
+  </div>
+  <a class="mamma-link" href="edel-rus-forstaaelse.html">
+    🧠 Hvorfor mister noen kontrollen? &nbsp;·&nbsp; Om rus, hjernen og valg
+  </a>
+
+</main>
+
+<footer>
+  <span class="dog">🐶</span>
+  Hvert ord er en dør til en ny verden 🌍<br>
+  Laget med kjærlighet for Edel ✨
+</footer>
+
+<script>
+  // ── DATA ──
+  const DAYS = [
+    // Uke 1 (dag 1-6): Forsvarerord
+    {week:1, word:"ekskludert",  meaning:"når noen ikke får lov til å være med", app:"verden.html"},
+    {week:1, word:"ekskludert",  meaning:"øv og beskriv med egne ord",           app:"edel-tankekart.html"},
+    {week:1, word:"respekt",     meaning:"behandle andre og seg selv godt",       app:"verden.html"},
+    {week:1, word:"respekt + ekskludert", meaning:"revisjon begge ord",          app:"edel-hvis-setninger.html"},
+    {week:1, word:"modig",       meaning:"gjøre noe selv om det er skummelt",     app:"verden.html"},
+    {week:1, word:"alle 3 ord",  meaning:"ekskludert · respekt · modig",         app:"edel-hvis-setninger.html"},
+    // Uke 2 (dag 7-12): Akademiske ord
+    {week:2, word:"forklare",    meaning:"gjøre noe lett å forstå",              app:"verden.html"},
+    {week:2, word:"forklare",    meaning:"beskriv med dine egne ord",            app:"edel-tankekart.html"},
+    {week:2, word:"løsning",     meaning:"svaret på et problem",                 app:"verden.html"},
+    {week:2, word:"løsning + forklare", meaning:"revisjon begge ord",           app:"edel-hvis-setninger.html"},
+    {week:2, word:"næring",      meaning:"det kroppen trenger for å vokse",      app:"verden.html"},
+    {week:2, word:"alle 3 ord",  meaning:"forklare · løsning · næring",         app:"edel-hvis-setninger.html"},
+    // Uke 3 (dag 13-18): Observasjonsord
+    {week:3, word:"observere",   meaning:"se nøye på noe og legge merke til det",app:"verden.html"},
+    {week:3, word:"observere",   meaning:"øv med egne eksempler",               app:"edel-tankekart.html"},
+    {week:3, word:"undersøke",   meaning:"finne ut mer om noe",                 app:"verden.html"},
+    {week:3, word:"undersøke + observere", meaning:"revisjon begge ord",        app:"spraakreise.html"},
+    {week:3, word:"beskrive",    meaning:"fortelle om noe med ord",              app:"verden.html"},
+    {week:3, word:"alle 3 ord",  meaning:"observere · undersøke · beskrive",    app:"spraakreise.html"},
+    // Uke 4 (dag 19-24): TIL å + revisjon
+    {week:4, word:"lyst TIL å",  meaning:"ønske om å gjøre noe",               app:"edel-til-aa-trening.html"},
+    {week:4, word:"frihet TIL å",meaning:"muligheten til å velge",              app:"edel-til-aa-trening.html"},
+    {week:4, word:"mot TIL å",   meaning:"modig nok til å gjøre noe",           app:"edel-til-aa-trening.html"},
+    {week:4, word:"TIL å — revisjon", meaning:"alle preposisjoner + setninger", app:"edel-til-aa-trening.html"},
+    {week:4, word:"alle 9 ord",  meaning:"ekskludert · respekt · modig · forklare · løsning · næring · observere · undersøke · beskrive", app:"verden.html"},
+    {week:4, word:"Gratulerer! 🎉", meaning:"du har fullført måned 1 — 24 dager · 12 ord",  app:"verden.html"},
+  ];
+
+  // ── STATE ──
+  let currentDay = parseInt(localStorage.getItem('edel_day') || '1');
+  if (currentDay < 1) currentDay = 1;
+  if (currentDay > 24) currentDay = 24;
+
+  function changeDay(delta) {
+    currentDay = Math.max(1, Math.min(24, currentDay + delta));
+    localStorage.setItem('edel_day', currentDay);
+    render();
+  }
+
+  function render() {
+    const d = DAYS[currentDay - 1];
+    const pct = Math.round((currentDay / 24) * 100);
+
+    document.getElementById('dayLabel').textContent = `Dag ${currentDay} av 24 · Uke ${d.week}`;
+    document.getElementById('dayWord').textContent = d.word;
+    document.getElementById('dayMeaning').textContent = d.meaning;
+    document.getElementById('progressText').textContent = `Dag ${currentDay} av 24`;
+    document.getElementById('progressPct').textContent = `${pct}%`;
+    document.getElementById('progressFill').style.width = `${pct}%`;
+    document.getElementById('startBtn').href = d.app;
+    document.getElementById('dayNumDisplay').textContent = `Dag ${currentDay}`;
+
+    const desc = currentDay % 3 === 1 ? '10 min · nytt ord' :
+                 currentDay % 3 === 2 ? '10 min · øv og beskriv' :
+                 '20 min · revisjon alle ord';
+    document.getElementById('startDesc').textContent = desc;
+
+    // Update week cards
+    for (let w = 1; w <= 4; w++) {
+      const card = document.getElementById(`card-week${w}`);
+      const badge = document.getElementById(`badge-week${w}`);
+      const ranges = [[1,6],[7,12],[13,18],[19,24]];
+      const [start, end] = ranges[w-1];
+
+      card.className = `week-card week-${w}`;
+      if (currentDay > end) {
+        card.classList.add('done');
+        badge.className = 'week-badge badge-done';
+        badge.textContent = '✅ Fullført';
+      } else if (currentDay >= start) {
+        card.classList.add('active');
+        badge.className = 'week-badge badge-active';
+        badge.textContent = `← Du er her! Dag ${currentDay}`;
+      } else {
+        card.classList.add('upcoming');
+        badge.className = 'week-badge badge-locked';
+        badge.textContent = `Dag ${start}–${end}`;
+      }
+    }
+  }
+
+  render();
+</script>
 </body>
 </html>
