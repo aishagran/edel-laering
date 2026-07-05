@@ -1,0 +1,322 @@
+<!DOCTYPE html>
+<html lang="no">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Den uendelige historien – tekst – Edels Verden</title>
+<link href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@600;700;800&family=Nunito:wght@400;600;700&display=swap" rel="stylesheet">
+<style>
+:root{
+  --grape:#7C3AED;--grape-light:#EDE9FE;--berry:#E84A8A;--gronn:#16A34A;--gronn-light:#DCFCE7;
+  --rod:#e17055;--rod-light:#fdeee9;--sun:#D97706;--sun-light:#FEF3C7;
+  --ink:#1E1B4B;--muted:#6B7280;--bg:#FBF7FF;--card:#fff;--line:#E5E7EB;
+  --shadow:0 2px 16px rgba(124,58,237,0.08);
+}
+*{box-sizing:border-box;margin:0;padding:0;}
+body{font-family:'Nunito',sans-serif;background:var(--bg);color:var(--ink);min-height:100vh;padding-bottom:3rem;line-height:1.6;}
+.topbar{background:#fff;padding:0.9rem 1.1rem;display:flex;align-items:center;gap:0.75rem;box-shadow:0 2px 12px rgba(124,58,237,0.06);position:sticky;top:0;z-index:40;}
+.home-btn{text-decoration:none;font-size:1.3rem;background:var(--grape-light);border-radius:12px;padding:0.35rem 0.7rem;}
+.topbar .tittel{font-family:'Baloo 2',cursive;font-weight:800;font-size:1.1rem;color:var(--ink);}
+.hero{text-align:center;padding:1.6rem 1.25rem 1rem;}
+.hero .ikon{font-size:2.6rem;}
+.hero h1{font-family:'Baloo 2',cursive;font-size:1.6rem;font-weight:800;color:var(--grape);margin-top:0.3rem;line-height:1.1;}
+.hero p{color:var(--muted);font-size:0.9rem;margin-top:0.3rem;}
+main{max-width:600px;margin:0 auto;padding:0 1rem;}
+.voksen-merke{background:#f3ecfb;border:2px solid #C9B3DE;border-radius:14px;padding:0.8rem 1rem;margin:0.5rem 0 1rem;font-size:0.88rem;color:#6b4e8e;font-weight:600;text-align:center;}
+.tabs{display:flex;gap:0.4rem;margin:0.5rem 0 1.2rem;position:sticky;top:3.4rem;background:var(--bg);padding:0.6rem 0;z-index:30;}
+.tab{flex:1;font-family:'Baloo 2',cursive;font-size:0.82rem;font-weight:700;padding:0.6rem 0.3rem;border-radius:12px;border:2.5px solid var(--line);background:#fff;color:var(--muted);cursor:pointer;transition:all 0.15s;display:flex;flex-direction:column;align-items:center;gap:2px;}
+.tab .t-ikon{font-size:1.1rem;}
+.tab.aktiv{background:var(--grape);color:#fff;border-color:var(--grape);}
+.panel{display:none;animation:fade 0.3s;}
+.panel.aktiv{display:block;}
+@keyframes fade{from{opacity:0;transform:translateY(6px);}to{opacity:1;transform:translateY(0);}}
+.blokk{background:var(--card);border-radius:16px;box-shadow:var(--shadow);padding:1.2rem 1.3rem;margin-bottom:1rem;}
+.blokk-tittel{font-family:'Baloo 2',cursive;font-weight:700;font-size:0.78rem;color:var(--grape);text-transform:uppercase;letter-spacing:0.5px;margin-bottom:0.7rem;}
+.blokk p{font-size:1.08rem;margin-bottom:0.6rem;}
+.blokk p:last-child{margin-bottom:0;}
+.def{display:block;background:var(--gronn-light);border-left:4px solid var(--gronn);border-radius:8px;padding:0.5rem 0.8rem;margin:0.5rem 0;font-size:0.98rem;color:#15803d;font-style:italic;}
+.ord{background:var(--sun-light);color:var(--sun);font-weight:700;padding:1px 7px;border-radius:6px;border:1.5px solid #F5D98A;cursor:pointer;white-space:nowrap;}
+.ord:hover{filter:brightness(0.96);}
+.les-hjelp{text-align:center;font-size:0.82rem;color:var(--muted);background:#eef6ff;border-radius:10px;padding:0.6rem;margin-bottom:1rem;}
+.bilde-wrap{background:#fff;border-radius:16px;box-shadow:var(--shadow);padding:0.5rem;overflow:hidden;cursor:zoom-in;}
+.bilde-wrap img{width:100%;border-radius:12px;display:block;}
+.bilde-mangler{padding:2.5rem 1rem;text-align:center;color:var(--muted);font-size:0.9rem;}
+.bilde-hint{text-align:center;font-size:0.82rem;color:var(--muted);margin-top:0.6rem;}
+.leser{display:none;position:fixed;inset:0;background:#1a1830;z-index:100;flex-direction:column;}
+.leser.open{display:flex;}
+.leser-bar{padding:0.8rem 1rem;display:flex;justify-content:flex-end;}
+.leser-lukk{background:#fff;border:none;border-radius:12px;padding:0.5rem 1.1rem;font-family:'Nunito',sans-serif;font-weight:800;font-size:0.9rem;cursor:pointer;}
+.leser-scroll{flex:1;overflow:auto;-webkit-overflow-scrolling:touch;touch-action:pan-x pan-y pinch-zoom;padding:0 0.5rem;}
+.leser-scroll img{width:100%;height:auto;display:block;border-radius:8px;}
+.leser-tips{color:rgba(255,255,255,0.6);text-align:center;font-size:0.78rem;padding:0.6rem;}
+.sporsmal-kort{background:var(--card);border-radius:16px;box-shadow:var(--shadow);padding:1.1rem 1.2rem;margin-bottom:0.9rem;}
+.sporsmal-nr{display:inline-flex;align-items:center;justify-content:center;width:28px;height:28px;background:var(--grape);color:#fff;border-radius:50%;font-family:'Baloo 2',cursive;font-weight:700;font-size:0.85rem;margin-right:0.5rem;flex-shrink:0;}
+.sporsmal-tekst{font-size:1.02rem;font-weight:600;}
+.svar-felt{width:100%;border:2.5px solid var(--line);border-radius:12px;padding:0.8rem;font-family:'Nunito',sans-serif;font-size:1rem;margin-top:0.7rem;resize:vertical;min-height:70px;}
+.svar-felt:focus{outline:none;border-color:var(--grape);}
+.send-btn{display:block;width:100%;background:var(--grape);color:#fff;border:none;border-radius:14px;padding:0.9rem;font-family:'Baloo 2',cursive;font-size:1.05rem;cursor:pointer;margin-top:0.5rem;}
+.send-btn:active{transform:scale(0.99);}
+.send-ok{text-align:center;color:var(--gronn);font-weight:700;font-size:0.9rem;margin-top:0.7rem;display:none;}
+.send-ok.vis{display:block;}
+.hjelp-btn{background:none;border:2px dashed #C9B3DE;color:var(--grape);font-family:'Nunito',sans-serif;font-weight:700;font-size:0.85rem;padding:0.5rem 0.9rem;border-radius:10px;cursor:pointer;margin-top:0.6rem;}
+.hjelp-btn:hover{background:var(--grape-light);}
+.hjelp-boks{display:none;margin-top:0.7rem;border-radius:12px;overflow:hidden;border:2px solid var(--grape-light);}
+.hjelp-boks.vis{display:block;animation:fade 0.3s;}
+.hjelp-rad{padding:0.7rem 0.9rem;font-size:0.92rem;border-bottom:1px solid var(--grape-light);}
+.hjelp-rad:last-child{border-bottom:none;}
+.hjelp-rad .etikett{font-weight:800;font-size:0.72rem;text-transform:uppercase;letter-spacing:0.4px;display:block;margin-bottom:0.25rem;}
+.hjelp-start{background:#eef6ff;}
+.hjelp-start .etikett{color:#2563eb;}
+.hjelp-start .innhold{color:#1e40af;font-style:italic;}
+.hjelp-ordbank{background:var(--sun-light);}
+.hjelp-ordbank .etikett{color:var(--sun);}
+.ordbank-ord{display:inline-block;background:#fff;border:1.5px solid #F5D98A;color:var(--sun);font-weight:700;padding:2px 9px;border-radius:99px;margin:2px 3px;font-size:0.85rem;cursor:pointer;}
+.ordbank-ord:hover{background:#fff8e8;}
+.hjelp-eksempel{background:var(--gronn-light);}
+.hjelp-eksempel .etikett{color:var(--gronn);}
+.hjelp-eksempel .innhold{color:#15803d;font-style:italic;}
+.ord-kort{background:var(--card);border-radius:16px;box-shadow:var(--shadow);padding:1.2rem 1.3rem;margin-bottom:0.9rem;border-left:5px solid var(--sun);}
+.ord-navn{font-family:'Baloo 2',cursive;font-weight:800;font-size:1.4rem;color:var(--sun);}
+.ord-betyr{font-size:1rem;color:#15803d;font-weight:600;margin:0.3rem 0 0.6rem;}
+.ord-eksempel{font-size:0.98rem;color:var(--muted);font-style:italic;background:#f7f5fc;border-radius:10px;padding:0.6rem 0.8rem;}
+.ord-intro{background:var(--sun-light);border-radius:12px;padding:0.8rem 1rem;font-size:0.9rem;color:#8a6d3b;font-weight:600;margin-bottom:1rem;text-align:center;}
+</style>
+</head>
+<body>
+
+<div class="topbar">
+  <a class="home-btn" href="tekster.html">📖</a>
+  <span class="tittel">Den uendelige historien</span>
+</div>
+
+<div class="hero">
+  <div class="ikon">📖</div>
+  <h1>Den uendelige historien</h1>
+  <p>Les · Se · Tenk · Lær ordene</p>
+</div>
+
+<main>
+  <div class="voksen-merke">💛 Denne historien handler om sorg og mot. Det er fint å lese den sammen med en voksen.</div>
+
+  <div class="tabs">
+    <button class="tab aktiv" data-p="les"><span class="t-ikon">📖</span>Les</button>
+    <button class="tab" data-p="se"><span class="t-ikon">🖼️</span>Se</button>
+    <button class="tab" data-p="tenk"><span class="t-ikon">💬</span>Tenk</button>
+    <button class="tab" data-p="ord"><span class="t-ikon">🎯</span>Ord</button>
+  </div>
+
+  <!-- ===== LES ===== -->
+  <div class="panel aktiv" id="p-les">
+    <div class="les-hjelp">💡 Les rolig. Ta pauser. Trykk på de <span class="ord">gule ordene</span> for å se hva de betyr.</div>
+
+    <div class="blokk">
+      <div class="blokk-tittel">1 · Gutten Bastian</div>
+      <p>Bastian er en gutt på Edels alder.</p>
+      <p>Han liker bøker veldig godt.</p>
+      <p>Men Bastian har det ikke så lett.</p>
+      <p>Moren hans er død. Han savner henne mye.</p>
+      <p>På skolen blir han plaget av noen gutter.</p>
+    </div>
+
+    <div class="blokk">
+      <div class="blokk-tittel">2 · En magisk bok</div>
+      <p>En dag løper Bastian inn i en bokhandel.</p>
+      <p>Der finner han en bok. Den heter «Den uendelige historien».</p>
+      <p>Bastian begynner å lese.</p>
+      <p>Men denne boken er ikke vanlig.</p>
+      <p>Det føles som om boken vet hvem Bastian er.</p>
+    </div>
+
+    <div class="blokk">
+      <div class="blokk-tittel">3 · Landet Fantasia</div>
+      <p>I boken finnes et magisk land. Det heter Fantasia.</p>
+      <p>Men noe farlig skjer.</p>
+      <p>Fantasia blir ødelagt av «Intet».</p>
+      <span class="def">🌫️ Intet betyr tomhet – noe som gjør at alt forsvinner.</span>
+      <p>Trær forsvinner. Fjell forsvinner. Håp forsvinner.</p>
+    </div>
+
+    <div class="blokk">
+      <div class="blokk-tittel">4 · Atreyu får et oppdrag</div>
+      <p>I Fantasia bor gutten Atreyu.</p>
+      <p>Han får et viktig <span class="ord" data-d="en viktig oppgave">oppdrag</span>.</p>
+      <span class="def">🎯 Et oppdrag er en viktig oppgave.</span>
+      <p>Han må finne en måte å redde Fantasia på.</p>
+      <p>Atreyu er <span class="ord" data-d="å gjøre noe vanskelig selv om man er redd">modig</span>.</p>
+      <p>Han er ikke modig fordi han aldri er redd.</p>
+      <p>Han er modig fordi han fortsetter selv om han er redd.</p>
+    </div>
+
+    <div class="blokk">
+      <div class="blokk-tittel">5 · Atreyu mister Artax</div>
+      <p>Atreyu reiser sammen med hesten sin. Hesten heter Artax.</p>
+      <p>Artax er vennen hans.</p>
+      <p>De kommer til en farlig sump. Den heter Sorgens sump.</p>
+      <p>I denne sumpen blir man tung inni seg. Man mister håp.</p>
+      <p>Artax blir for trist. Han synker ned i sumpen og dør.</p>
+      <p>Atreyu blir knust. Han mister en venn.</p>
+      <span class="def">💧 Sorg betyr å være veldig lei seg fordi man har mistet noen.</span>
+      <p>Likevel må Atreyu gå videre.</p>
+      <p>Det betyr ikke at han ikke bryr seg.</p>
+      <p>Det betyr at <span class="ord" data-d="en viktig oppgave">oppdraget</span> fortsatt er viktig.</p>
+    </div>
+
+    <div class="blokk">
+      <div class="blokk-tittel">6 · Bastian er en del av historien</div>
+      <p>Fantasia har en leder. Hun heter Barnekeiserinnen.</p>
+      <p>Hun er syk. Når hun blir svakere, blir Fantasia også svakere.</p>
+      <p>Bastian sitter og leser boken.</p>
+      <p>Etter hvert forstår han noe viktig.</p>
+      <p>Historien trenger ham også.</p>
+      <p>Bastian må også være modig. Han må tro på historien.</p>
+      <p>Han gir Barnekeiserinnen et nytt navn.</p>
+      <p>Da kommer Fantasia tilbake!</p>
+    </div>
+
+    <div class="blokk">
+      <div class="blokk-tittel">7 · Hva handler historien om?</div>
+      <p>Historien handler om fantasi.</p>
+      <p>Men den handler også om <span class="ord" data-d="å være veldig lei seg fordi man har mistet noen">sorg</span>, <span class="ord" data-d="å gjøre noe vanskelig selv om man er redd">mot</span> og <span class="ord" data-d="å tro at noe kan bli bedre">håp</span>.</p>
+      <span class="def">🕊️ Håp betyr å tro at noe kan bli bedre.</span>
+      <p>Bastian har mistet moren sin. Atreyu mister Artax.</p>
+      <p>Begge opplever sorg. Men begge finner en måte å fortsette på.</p>
+      <p>Å fortsette betyr ikke at sorgen er borte.</p>
+      <p>Det betyr at man fortsatt kan finne håp. 💛</p>
+    </div>
+  </div>
+
+  <!-- ===== SE ===== -->
+  <div class="panel" id="p-se">
+    <div class="bilde-wrap" id="bildeWrap">
+      <img src="uendelige-historien.png" alt="Den uendelige historien"
+           onerror="this.outerHTML='<div class=\'bilde-mangler\'>Last opp «uendelige-historien.png» på GitHub, så vises bildet her 📖</div>'">
+    </div>
+    <div class="bilde-hint">🔍 Trykk på bildet for å se det stort</div>
+  </div>
+
+  <!-- ===== TENK ===== -->
+  <div class="panel" id="p-tenk">
+    <div class="ord-intro">💬 Tenk og forklar. Trenger du hjelp? Trykk på knappen under hvert spørsmål.</div>
+    <div id="sporsmalListe"></div>
+    <button class="send-btn" id="sendTenk">Send svarene til mamma 💌</button>
+    <div class="send-ok" id="sendOk">✓ Svarene dine er sendt til mamma</div>
+  </div>
+
+  <!-- ===== ORD ===== -->
+  <div class="panel" id="p-ord">
+    <div class="ord-intro">🎯 Ukens ord – øv på disse fire. Trykk deg gjennom dem flere ganger!</div>
+    <div id="ordListe"></div>
+  </div>
+</main>
+
+<div class="leser" id="leser">
+  <div class="leser-bar"><button class="leser-lukk" onclick="lukkLeser()">✕ Lukk</button></div>
+  <div class="leser-scroll"><img id="leserImg" src="" alt=""></div>
+  <div class="leser-tips">Zoom med to fingre 🤏</div>
+</div>
+
+<script>
+const FORMSPREE="https://formspree.io/f/mqeolldg";
+const FELT="Tekst_hun_skrev";
+const $=id=>document.getElementById(id);
+
+const bw=$('bildeWrap');
+if(bw){ bw.onclick=()=>{ const img=bw.querySelector('img'); if(img){ $('leserImg').src=img.src; $('leser').classList.add('open'); } }; }
+function lukkLeser(){ $('leser').classList.remove('open'); }
+
+document.querySelectorAll('.tab').forEach(t=>{
+  t.onclick=()=>{
+    document.querySelectorAll('.tab').forEach(x=>x.classList.remove('aktiv'));
+    document.querySelectorAll('.panel').forEach(x=>x.classList.remove('aktiv'));
+    t.classList.add('aktiv');
+    $('p-'+t.dataset.p).classList.add('aktiv');
+    window.scrollTo({top:0,behavior:'smooth'});
+  };
+});
+document.querySelectorAll('.ord[data-d]').forEach(o=>{
+  o.onclick=()=>{ alert(o.textContent+" = "+o.dataset.d); };
+});
+
+const SPORSMAL=[
+  {
+    q:"Beskriv hvorfor Bastian har det vanskelig i begynnelsen.",
+    start:"Bastian har det vanskelig fordi …",
+    ordbank:["moren","død","savner","plaget","skolen"],
+    eksempel:"Bastian har det vanskelig fordi moren hans er død, og han blir plaget på skolen."
+  },
+  {
+    q:"Hva betyr det at Atreyu er modig?",
+    start:"Atreyu er modig fordi …",
+    ordbank:["fortsetter","selv om","redd","oppdrag","viktig"],
+    eksempel:"Atreyu er modig fordi han fortsetter selv om han er redd."
+  },
+  {
+    q:"Hvorfor må Atreyu gå videre selv om Artax dør?",
+    start:"Atreyu må gå videre fordi …",
+    ordbank:["oppdraget","viktig","redde Fantasia","sorg","håp"],
+    eksempel:"Atreyu må gå videre fordi oppdraget fortsatt er viktig, selv om han er full av sorg."
+  },
+  {
+    q:"Hva tror du historien vil lære oss om sorg og håp? Skriv med egne ord.",
+    start:"Jeg tror historien vil lære oss at …",
+    ordbank:["sorg","håp","fortsette","mistet","bli bedre"],
+    eksempel:"Jeg tror historien vil lære oss at selv når vi har sorg, kan vi fortsatt finne håp."
+  },
+];
+SPORSMAL.forEach((s,i)=>{
+  const d=document.createElement('div');
+  d.className='sporsmal-kort';
+  const ordChips=s.ordbank.map(o=>'<span class="ordbank-ord" data-ord="'+o+'">'+o+'</span>').join('');
+  d.innerHTML=
+    '<div><span class="sporsmal-nr">'+(i+1)+'</span><span class="sporsmal-tekst">'+s.q+'</span></div>'+
+    '<textarea class="svar-felt" data-q="'+i+'" placeholder="Skriv her …"></textarea>'+
+    '<button class="hjelp-btn" data-h="'+i+'">Trenger du hjelp? 💡</button>'+
+    '<div class="hjelp-boks" id="hjelp-'+i+'">'+
+      '<div class="hjelp-rad hjelp-start"><span class="etikett">✏️ Start slik</span><span class="innhold">'+s.start+'</span></div>'+
+      '<div class="hjelp-rad hjelp-ordbank"><span class="etikett">🔤 Ord du kan bruke (trykk for å sette inn)</span><div>'+ordChips+'</div></div>'+
+      '<div class="hjelp-rad hjelp-eksempel"><span class="etikett">🌟 Et eksempel</span><span class="innhold">«'+s.eksempel+'»</span></div>'+
+    '</div>';
+  $('sporsmalListe').appendChild(d);
+});
+document.querySelectorAll('.hjelp-btn').forEach(b=>{
+  b.onclick=()=>{
+    const boks=$('hjelp-'+b.dataset.h);
+    const vis=boks.classList.toggle('vis');
+    b.textContent = vis ? "Skjul hjelp 🙈" : "Trenger du hjelp? 💡";
+  };
+});
+document.querySelectorAll('.ordbank-ord').forEach(o=>{
+  o.onclick=()=>{
+    const kort=o.closest('.sporsmal-kort');
+    const felt=kort.querySelector('.svar-felt');
+    felt.value=(felt.value+" "+o.dataset.ord).trim();
+    felt.focus();
+  };
+});
+$('sendTenk').onclick=()=>{
+  let linjer=[];
+  document.querySelectorAll('.svar-felt').forEach(f=>{
+    const i=f.dataset.q; const t=f.value.trim();
+    if(t) linjer.push((parseInt(i)+1)+". "+SPORSMAL[i].q+"\n   → "+t);
+  });
+  const tekst="DEN UENDELIGE HISTORIEN – Tenk og forklar\n\n"+(linjer.length?linjer.join("\n\n"):"(tomt)");
+  const fd=new FormData(); fd.append(FELT,tekst);
+  fetch(FORMSPREE,{method:"POST",body:fd,headers:{"Accept":"application/json"}})
+    .then(r=>{if(r.ok)$('sendOk').classList.add('vis');}).catch(()=>{});
+};
+
+const ORD=[
+  {ord:"sorg", betyr:"å være veldig lei seg fordi man har mistet noen eller noe", eksempel:"Bastian følte sorg da moren hans døde."},
+  {ord:"mot", betyr:"å gjøre noe vanskelig selv om man er redd", eksempel:"Atreyu viste mot da han fortsatte alene."},
+  {ord:"håp", betyr:"å tro at noe kan bli bedre", eksempel:"Selv i sorgen fant de håp."},
+  {ord:"oppdrag", betyr:"en viktig oppgave", eksempel:"Atreyu fikk et oppdrag: å redde Fantasia."},
+];
+ORD.forEach(o=>{
+  const d=document.createElement('div');
+  d.className='ord-kort';
+  d.innerHTML='<div class="ord-navn">'+o.ord+'</div><div class="ord-betyr">'+o.betyr+'</div><div class="ord-eksempel">«'+o.eksempel+'»</div>';
+  $('ordListe').appendChild(d);
+});
+</script>
+</body>
+</html>
