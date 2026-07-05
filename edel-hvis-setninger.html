@@ -28,6 +28,10 @@
 
   /* HERO */
   header{text-align:center;padding:46px 20px 26px;background:radial-gradient(120% 90% at 50% -10%, var(--sky-soft) 0%, transparent 60%);}
+  .dagens-banner{max-width:640px;margin:18px auto 0;background:linear-gradient(135deg,var(--sun-soft),#fff);border:2px solid var(--sun);border-radius:18px;padding:14px 20px;text-align:center;box-shadow:var(--shadow);}
+  .dagens-banner .dag-tittel{font-family:'Fraunces',serif;font-weight:900;font-size:1.15rem;color:var(--sun);display:flex;align-items:center;justify-content:center;gap:8px;}
+  .dagens-banner .dag-dato{font-size:0.92rem;color:var(--plum);font-weight:700;margin-top:2px;text-transform:capitalize;}
+  .dagens-banner .dag-info{font-size:0.82rem;color:#8a7a6a;margin-top:4px;}
   .eyebrow{font-weight:800;letter-spacing:.18em;text-transform:uppercase;font-size:.72rem;color:var(--sky);margin-bottom:14px;}
   h1{font-family:'Fraunces',serif;font-weight:900;font-size:clamp(2rem,8vw,3rem);line-height:1.04;}
   h1 .hvis{color:var(--sky);font-style:italic;}
@@ -105,6 +109,8 @@
   <h1>Hvis <span class="hvis">···</span><br>så <span class="saa">···</span></h1>
   <div class="subtitle">Å tenke på «hvis» og «så»</div>
 </header>
+
+<div class="dagens-banner" id="dagensBanner"></div>
 
 <div class="wrap">
 
@@ -258,7 +264,46 @@ const BUILDERS = [
 ];
 
 const bbox = document.getElementById('builders');
-BUILDERS.forEach((b,i)=>{
+
+/* ── DAGENS ØKT: velg 10 scenarioer basert på dagens dato ── */
+// Samme dag = samme 10. Ny dag = 10 nye. Roterer gjennom alle.
+const ANT_PER_DAG = 10;
+function dagsNummer(){
+  // Antall dager siden 1. jan 2024 – gir et stabilt tall per dag
+  const start = new Date(2024,0,1);
+  const naa = new Date();
+  return Math.floor((naa - start) / (1000*60*60*24));
+}
+function velgDagens(liste, antall, frø){
+  // Deterministisk utvalg: roter startpunkt + bland med frø-basert seed
+  const n = liste.length;
+  const idx = [];
+  for(let k=0;k<n;k++) idx.push(k);
+  // enkel seeded shuffle (mulberry-aktig)
+  let s = frø*2654435761 % 4294967296;
+  for(let i=n-1;i>0;i--){
+    s = (s*1103515245 + 12345) & 0x7fffffff;
+    const j = s % (i+1);
+    [idx[i],idx[j]] = [idx[j],idx[i]];
+  }
+  return idx.slice(0, Math.min(antall,n)).map(i=>liste[i]);
+}
+
+// Vis dato i banner
+const UKEDAGER = ["søndag","mandag","tirsdag","onsdag","torsdag","fredag","lørdag"];
+const MANEDER = ["januar","februar","mars","april","mai","juni","juli","august","september","oktober","november","desember"];
+(function visBanner(){
+  const d = new Date();
+  const dato = UKEDAGER[d.getDay()] + " " + d.getDate() + ". " + MANEDER[d.getMonth()];
+  document.getElementById('dagensBanner').innerHTML =
+    '<div class="dag-tittel">🌟 Dagens økt</div>'+
+    '<div class="dag-dato">'+dato+'</div>'+
+    '<div class="dag-info">'+ANT_PER_DAG+' setninger å øve på i dag. I morgen kommer nye!</div>';
+})();
+
+const DAGENS = velgDagens(BUILDERS, ANT_PER_DAG, dagsNummer());
+
+DAGENS.forEach((b,i)=>{
   const el=document.createElement('div');
   el.className='build reveal';
   el.innerHTML=`
