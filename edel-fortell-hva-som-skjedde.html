@@ -1,0 +1,346 @@
+<!DOCTYPE html>
+<html lang="nb">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Fortell hva som skjedde – Edels Verden</title>
+<link href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@500;600;700&family=Nunito:wght@400;600;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --blekk:#20303d; --papir:#fdfaf3; --kort:#ffffff; --linje:#e3dccd;
+    --sti:#3f7d6e; --sti-lys:#e6f0ec; --gull:#e8b34b; --dempet:#7d7566;
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  body{font-family:'Nunito',sans-serif;background:var(--papir);color:var(--blekk);
+    line-height:1.65;padding:16px;max-width:760px;margin:0 auto}
+  h1{font-family:'Baloo 2',cursive;font-size:1.9rem;line-height:1.2;margin-bottom:4px}
+  h2{font-family:'Baloo 2',cursive;font-size:1.3rem;margin-bottom:4px}
+  .undertittel{color:var(--dempet);margin-bottom:20px;font-size:.98rem}
+  .dagmerke{display:inline-block;background:var(--gull);color:#fff;
+    font-family:'Baloo 2',cursive;font-size:.85rem;padding:3px 12px;
+    border-radius:20px;margin-bottom:14px}
+  .sti{display:flex;margin:0 0 24px;background:var(--kort);
+    border:2px solid var(--linje);border-radius:16px;padding:14px 8px}
+  .steg{flex:1;text-align:center;font-size:.74rem;font-weight:700;
+    color:var(--dempet);padding:4px 2px}
+  .steg .prikk{width:26px;height:26px;border-radius:50%;background:var(--linje);
+    color:#fff;display:flex;align-items:center;justify-content:center;
+    margin:0 auto 5px;font-size:.85rem;transition:transform .3s, background .3s}
+  .steg.aktiv .prikk{background:var(--sti);transform:scale(1.15)}
+  .steg.aktiv{color:var(--sti)}
+  .steg.ferdig .prikk{background:var(--gull)}
+  .kort{background:var(--kort);border:2px solid var(--linje);
+    border-radius:18px;padding:20px;margin-bottom:20px}
+  .oppgave-hint{color:var(--dempet);font-size:.92rem;margin-bottom:16px}
+  .bilder{display:flex;gap:10px;overflow-x:auto;padding-bottom:8px;margin-bottom:18px}
+  .bilde{flex:0 0 auto;width:150px;border-radius:12px;border:2px solid var(--linje);
+    background:var(--sti-lys);aspect-ratio:1/1;display:flex;align-items:center;
+    justify-content:center;font-size:3rem;position:relative;overflow:hidden}
+  .bilde img{width:100%;height:100%;object-fit:cover}
+  .bilde .nr{position:absolute;top:6px;left:8px;font-family:'Baloo 2',cursive;
+    font-size:1rem;color:var(--sti);background:#fff;width:24px;height:24px;
+    border-radius:50%;display:flex;align-items:center;justify-content:center;z-index:2}
+  .bilder.skjult{display:none}
+  .starter-rad{display:flex;align-items:flex-start;gap:10px;margin-bottom:12px}
+  .starter-ord{font-family:'Baloo 2',cursive;background:var(--sti-lys);color:var(--sti);
+    padding:9px 14px;border-radius:10px;font-size:1rem;white-space:nowrap;
+    min-width:92px;text-align:center}
+  .starter-rad input{flex:1;font-family:'Nunito',sans-serif;font-size:1rem;
+    padding:9px 12px;border:2px solid var(--linje);border-radius:10px;
+    background:#fff;color:var(--blekk)}
+  .starter-rad input:focus{outline:2px solid var(--sti);outline-offset:1px;border-color:var(--sti)}
+  textarea{width:100%;min-height:150px;font-family:'Nunito',sans-serif;font-size:1.05rem;
+    line-height:1.6;padding:14px;border:2px solid var(--linje);border-radius:12px;
+    background:#fff;color:var(--blekk);resize:vertical}
+  textarea:focus{outline:2px solid var(--sti);outline-offset:1px;border-color:var(--sti)}
+  .hjelp-knapp{background:none;border:2px dashed var(--linje);color:var(--dempet);
+    font-family:'Nunito',sans-serif;font-weight:700;font-size:.9rem;padding:9px 16px;
+    border-radius:10px;cursor:pointer;margin-bottom:14px}
+  .hjelp-knapp:hover{border-color:var(--sti);color:var(--sti)}
+  .hjelp-boks{display:none;background:var(--sti-lys);border-left:4px solid var(--sti);
+    border-radius:0 10px 10px 0;padding:14px 16px;margin-bottom:16px;font-size:.95rem}
+  .hjelp-boks.vis{display:block}
+  .hjelp-boks strong{font-family:'Baloo 2',cursive;color:var(--sti);display:block;margin-bottom:6px}
+  .ordbank{display:flex;flex-wrap:wrap;gap:8px;margin-top:10px}
+  .ord{background:#fff;border:2px solid var(--sti);color:var(--sti);padding:5px 12px;
+    border-radius:20px;font-size:.88rem;font-weight:700;cursor:pointer}
+  .ord:hover{background:var(--sti);color:#fff}
+  .knapper{display:flex;gap:10px;flex-wrap:wrap;margin-top:6px}
+  button.hoved{font-family:'Baloo 2',cursive;font-size:1.05rem;background:var(--sti);
+    color:#fff;border:none;padding:12px 26px;border-radius:12px;cursor:pointer}
+  button.hoved:hover{background:#356b5e}
+  button.hoved:disabled{background:var(--linje);cursor:not-allowed}
+  button.andre{font-family:'Baloo 2',cursive;font-size:1.05rem;background:#fff;
+    color:var(--blekk);border:2px solid var(--linje);padding:10px 22px;
+    border-radius:12px;cursor:pointer}
+  button:focus-visible{outline:3px solid var(--gull);outline-offset:2px}
+  .kvittering{display:none;background:var(--sti-lys);border:2px solid var(--sti);
+    border-radius:14px;padding:18px;text-align:center;font-family:'Baloo 2',cursive;
+    font-size:1.15rem;color:var(--sti);margin-top:16px}
+  .kvittering.vis{display:block}
+  .huskelapp{font-size:.88rem;color:var(--dempet);margin-bottom:16px;font-style:italic}
+  .tilbake{display:inline-block;margin-top:24px;color:var(--dempet);
+    text-decoration:none;font-weight:700;font-size:.95rem}
+  .tilbake:hover{color:var(--sti)}
+  @media (max-width:520px){
+    .starter-rad{flex-direction:column;gap:6px}
+    .starter-ord{min-width:0;align-self:flex-start}
+    .bilde{width:120px;font-size:2.4rem}
+    h1{font-size:1.6rem}
+    .steg{font-size:.68rem}
+  }
+  @media (prefers-reduced-motion:reduce){*{transition:none!important}}
+</style>
+</head>
+<body>
+
+<h1>Fortell hva som skjedde</h1>
+<p class="undertittel">Se på bildene. Fortell historien med dine egne ord.</p>
+
+<span class="dagmerke" id="dagmerke">Dag 1</span>
+
+<div class="sti">
+  <div class="steg" data-niva="1"><div class="prikk">1</div>Med ord</div>
+  <div class="steg" data-niva="2"><div class="prikk">2</div>Uten ord</div>
+  <div class="steg" data-niva="3"><div class="prikk">3</div>Fritt</div>
+  <div class="steg" data-niva="4"><div class="prikk">4</div>Fra minnet</div>
+</div>
+
+<div class="kort">
+  <h2 id="oppgave-tittel"></h2>
+  <p class="oppgave-hint" id="oppgave-hint"></p>
+
+  <div class="bilder" id="bilder"></div>
+
+  <p class="huskelapp" id="minne-beskjed" style="display:none">
+    Bildene er borte nå. Fortell det du husker.
+  </p>
+
+  <div id="startere"></div>
+
+  <div id="fritt-omrade" style="display:none">
+    <button class="hjelp-knapp" id="hjelp-knapp">Jeg trenger hjelp med ord</button>
+    <div class="hjelp-boks" id="hjelp-boks">
+      <strong>Ord du kan bruke</strong>
+      Trykk på et ord for å sette det inn.
+      <div class="ordbank" id="ordbank"></div>
+    </div>
+    <textarea id="fritekst" placeholder="Fortell hva som skjedde…"></textarea>
+  </div>
+
+  <div class="knapper">
+    <button class="hoved" id="send">Send til mamma</button>
+    <button class="andre" id="bytt-niva">Neste steg</button>
+  </div>
+
+  <div class="kvittering" id="kvittering">
+    Bra jobbet, Edel. Mamma får se det du skrev.
+  </div>
+</div>
+
+<a href="index.html" class="tilbake">← Tilbake til Edels Verden</a>
+
+<script>
+const FORMSPREE = "https://formspree.io/f/mqeolldg";
+
+/* ============================================================
+   SJU HISTORIER — hver brukes to dager (til sammen 14 økter).
+   Dag A: stillas høyt (starter på nivå 1).
+   Dag B: stillas lavt (starter på nivå 3).
+
+   BILDER: bytt ut emoji med filnavn, f.eks. "bilder/andalsnes-1.png"
+   Alle filnavn med små bokstaver.
+   ============================================================ */
+
+const HISTORIER = [
+  { id:"andalsnes",
+    tittel:"Turen til pappa i Åndalsnes",
+    hint:"Fortell om reisen. Hva skjedde først? Hvordan følte du deg?",
+    bilder:["🚂","🏔️","👨‍👧","🎣","👋"],
+    ordbank:["Først","Så","Etterpå","Fordi","Plutselig","Men","Til slutt","gledet meg","var trist"] },
+
+  { id:"vaiana",
+    tittel:"På kino med mamma – Vaiana",
+    hint:"Fortell om kinoturen. Fortell også hva som skjedde i filmen.",
+    bilder:["🎟️","🍿","🎬","🌊","🏝️"],
+    ordbank:["Først","Så","Etterpå","Fordi","Derfor","Men","Til slutt","handlet om"] },
+
+  { id:"skolen",
+    tittel:"En dag på skolen",
+    hint:"Fortell om en vanlig dag. Hva gjorde du? Hvem var du sammen med?",
+    bilder:["🎒","📖","🥪","⚽","🚶‍♀️"],
+    ordbank:["Først","Så","Etterpå","I friminuttet","Fordi","Men","Til slutt"] },
+
+  { id:"pipoka",
+    tittel:"Da Pipoka ble borte",
+    hint:"Her er det et problem. Hva gikk galt? Hvordan ble det løst?",
+    bilder:["🐕","🚪","😰","🔍","🤗"],
+    ordbank:["Først","Plutselig","Fordi","Derfor","Men","Etterpå","Til slutt","ble redd","ble glad"] },
+
+  { id:"handball",
+    tittel:"Den første håndballkampen",
+    hint:"Fortell om noe som var vanskelig, og hva som skjedde til slutt.",
+    bilder:["🏐","😬","🏃‍♀️","🥅","🎉"],
+    ordbank:["Først","Så","Fordi","Plutselig","Men","Derfor","Til slutt","var nervøs","var stolt"] },
+
+  { id:"gutten",
+    tittel:"Gutten som mistet båten sin",
+    hint:"Denne historien handler om noen andre. Fortell hva som skjedde med ham.",
+    bilder:["👦","⛵","🌬️","😢","🛠️"],
+    ordbank:["En dag","Først","Plutselig","Fordi","Derfor","Men","Til slutt","han ble","han følte"] },
+
+  { id:"jenta",
+    tittel:"Jenta som gikk seg vill i skogen",
+    hint:"Fortell historien om henne. Hvorfor skjedde det? Hva gjorde hun?",
+    bilder:["👧","🌲","🌫️","🦉","🏡"],
+    ordbank:["En dag","Først","Plutselig","Fordi","Derfor","Men","Etterpå","Til slutt","hun ble"] }
+];
+
+const STARTERE = ["Først","Så","Etterpå","Fordi","Til slutt"];
+
+function dagIndeks(){
+  const start = new Date(2026, 0, 1);
+  const naa = new Date();
+  const dager = Math.floor((naa - start) / 86400000);
+  return ((dager % 14) + 14) % 14;
+}
+
+const okt = dagIndeks();
+const historie = HISTORIER[Math.floor(okt / 2)];
+const andreDag = okt % 2 === 1;
+let niva = andreDag ? 3 : 1;
+
+const stiSteg = document.querySelectorAll('.steg');
+const bilderEl = document.getElementById('bilder');
+const startereEl = document.getElementById('startere');
+const frittOmrade = document.getElementById('fritt-omrade');
+const fritekst = document.getElementById('fritekst');
+const minneBeskjed = document.getElementById('minne-beskjed');
+const hjelpKnapp = document.getElementById('hjelp-knapp');
+const hjelpBoks = document.getElementById('hjelp-boks');
+const ordbankEl = document.getElementById('ordbank');
+const kvittering = document.getElementById('kvittering');
+const sendKnapp = document.getElementById('send');
+
+document.getElementById('dagmerke').textContent = 'Dag ' + (okt + 1) + ' av 14';
+document.getElementById('oppgave-tittel').textContent = historie.tittel;
+document.getElementById('oppgave-hint').textContent = historie.hint;
+
+historie.bilder.forEach((b,i)=>{
+  const d = document.createElement('div');
+  d.className = 'bilde';
+  const innhold = b.indexOf('/') > -1 ? '<img src="'+b+'" alt="">' : b;
+  d.innerHTML = '<span class="nr">'+(i+1)+'</span>' + innhold;
+  bilderEl.appendChild(d);
+});
+
+historie.ordbank.forEach(o=>{
+  const s = document.createElement('span');
+  s.className = 'ord';
+  s.textContent = o;
+  s.addEventListener('click', ()=>{
+    const pos = fritekst.selectionStart;
+    const ord = o + ' ';
+    fritekst.value = fritekst.value.slice(0,pos) + ord + fritekst.value.slice(pos);
+    fritekst.focus();
+    fritekst.selectionStart = fritekst.selectionEnd = pos + ord.length;
+  });
+  ordbankEl.appendChild(s);
+});
+
+STARTERE.forEach(ord=>{
+  const rad = document.createElement('div');
+  rad.className = 'starter-rad';
+  rad.innerHTML = '<span class="starter-ord">'+ord+'</span><input type="text" placeholder="…">';
+  startereEl.appendChild(rad);
+});
+
+function tegnNiva(){
+  stiSteg.forEach(s=>{
+    const n = parseInt(s.dataset.niva);
+    s.classList.toggle('aktiv', n === niva);
+    s.classList.toggle('ferdig', n < niva);
+  });
+
+  const medStartere = niva <= 2;
+  startereEl.style.display = medStartere ? 'block' : 'none';
+  frittOmrade.style.display = medStartere ? 'none' : 'block';
+
+  bilderEl.classList.toggle('skjult', niva === 4);
+  minneBeskjed.style.display = niva === 4 ? 'block' : 'none';
+
+  document.querySelectorAll('.starter-ord').forEach((el,i)=>{
+    if(niva === 2){
+      el.textContent = '…';
+      el.style.background = '#fff';
+      el.style.border = '2px dashed var(--linje)';
+    } else {
+      el.textContent = STARTERE[i];
+      el.style.background = 'var(--sti-lys)';
+      el.style.border = 'none';
+    }
+  });
+
+  hjelpBoks.classList.remove('vis');
+  kvittering.classList.remove('vis');
+  sendKnapp.disabled = false;
+  sendKnapp.textContent = 'Send til mamma';
+}
+
+document.getElementById('bytt-niva').addEventListener('click', ()=>{
+  niva = niva < 4 ? niva + 1 : 1;
+  tegnNiva();
+  window.scrollTo({top:0,behavior:'smooth'});
+});
+
+hjelpKnapp.addEventListener('click', ()=> hjelpBoks.classList.toggle('vis'));
+
+function samleTekst(){
+  if(niva <= 2){
+    const rader = document.querySelectorAll('.starter-rad');
+    return [].slice.call(rader).map(function(r){
+      const ord = r.querySelector('.starter-ord').textContent;
+      const svar = r.querySelector('input').value.trim();
+      if(!svar) return '';
+      return (niva === 1 ? ord + ' ' : '') + svar;
+    }).filter(Boolean).join('\n');
+  }
+  return fritekst.value.trim();
+}
+
+sendKnapp.addEventListener('click', async function(){
+  const tekst = samleTekst();
+  if(!tekst){
+    alert('Skriv litt først, så sender vi det til mamma.');
+    return;
+  }
+  sendKnapp.disabled = true;
+  sendKnapp.textContent = 'Sender…';
+
+  const nivaNavn = ['Med ord','Uten ord','Fritt','Fra minnet'][niva-1];
+
+  try{
+    await fetch(FORMSPREE,{
+      method:'POST',
+      headers:{'Content-Type':'application/json','Accept':'application/json'},
+      body: JSON.stringify({
+        Tekst_hun_skrev: tekst,
+        historie: historie.tittel,
+        okt: 'Dag ' + (okt+1) + ' av 14',
+        niva: niva + ' – ' + nivaNavn,
+        dato: new Date().toLocaleDateString('nb-NO')
+      })
+    });
+    kvittering.classList.add('vis');
+    sendKnapp.textContent = 'Sendt';
+  }catch(e){
+    sendKnapp.disabled = false;
+    sendKnapp.textContent = 'Prøv igjen';
+  }
+});
+
+tegnNiva();
+</script>
+
+</body>
+</html>
