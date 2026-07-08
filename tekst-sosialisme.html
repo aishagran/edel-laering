@@ -86,6 +86,11 @@ main{max-width:600px;margin:0 auto;padding:0 1rem;}
 .ord-betyr{font-size:1rem;color:#15803d;font-weight:600;margin:0.3rem 0 0.6rem;}
 .ord-eksempel{font-size:0.98rem;color:var(--muted);font-style:italic;background:#f7f5fc;border-radius:10px;padding:0.6rem 0.8rem;}
 .ord-intro{background:var(--sun-light);border-radius:12px;padding:0.8rem 1rem;font-size:0.9rem;color:#8a6d3b;font-weight:600;margin-bottom:1rem;text-align:center;}
+.ukens-repetisjon{background:#eef6ff;border:2px solid #bfdbfe;border-radius:14px;padding:0.9rem 1.1rem;margin-top:0.2rem;}
+.ukens-repetisjon .ur-tittel{font-family:'Baloo 2',cursive;font-weight:800;font-size:0.85rem;color:#2563eb;margin-bottom:0.5rem;display:flex;align-items:center;gap:0.4rem;}
+.ukens-repetisjon .ur-tekst{font-size:0.86rem;color:#1e40af;margin-bottom:0.6rem;}
+.ur-ord{display:inline-block;background:#fff;border:1.5px solid #93c5fd;color:#2563eb;font-weight:700;padding:3px 10px;border-radius:99px;margin:2px 4px 2px 0;font-size:0.85rem;cursor:pointer;}
+.ur-ord:hover{background:#dbeafe;}
 </style>
 </head>
 <body>
@@ -120,6 +125,7 @@ main{max-width:600px;margin:0 auto;padding:0 1rem;}
       <p>En dag gikk Pipoka og Pinga på tur.</p>
       <p>De så at noen hunder hadde mange bein.</p>
       <p>Andre hunder hadde ingen bein.</p>
+      <p>Pipoka og Pinga <span class="ord" data-d="å se nøye på noe">observerte</span> nøye hvordan de andre hundene hadde det.</p>
       <div class="replikk">🐶 Pipoka spurte: — Er dette <span class="ord" data-d="når alle blir behandlet likt og på en fin måte">rettferdig</span>?</div>
       <span class="def">⚖️ Rettferdig betyr at alle blir behandlet likt og på en fin måte.</span>
       <div class="replikk">🐶 Pinga svarte: — Mange mennesker tenkte det samme. Da kom en idé som heter sosialisme.</div>
@@ -141,6 +147,7 @@ main{max-width:600px;margin:0 auto;padding:0 1rem;}
       <p>Pinga stilte et nytt spørsmål.</p>
       <div class="replikk">🐶 — Hva hvis én hund jobbet hardt og laget 20 bein … mens en annen hund sov hele dagen? Skal begge få like mye?</div>
       <p>Dette er ikke lett å svare på.</p>
+      <p>Kanskje må vi <span class="ord" data-d="å finne ut mer om noe">undersøke</span> begge sider nøye før vi bestemmer oss.</p>
     </div>
 
     <div class="blokk">
@@ -157,6 +164,7 @@ main{max-width:600px;margin:0 auto;padding:0 1rem;}
       <div class="blokk-tittel">5 · Derfor …</div>
       <p>Selv i dag <span class="ord" data-d="å snakke om noe og si hva man mener">diskuterer</span> mennesker hvordan et land bør styres.</p>
       <span class="def">🗣️ Å diskutere betyr å snakke om noe og si hva man mener.</span>
+      <p>Voksne kan ofte <span class="ord" data-d="å gjøre noe lettere å forstå">forklare</span> hvorfor de mener det de mener.</p>
       <p>Det finnes ikke ett svar som alle er enige om.</p>
       <p>Noen land bruker flere sosialistiske ideer. Andre bruker færre.</p>
       <p>Mange land bruker en blanding.</p>
@@ -167,6 +175,15 @@ main{max-width:600px;margin:0 auto;padding:0 1rem;}
       <p>❤️ Sosialisme handler om å prøve å gi alle det viktigste.</p>
       <p>❤️ Men mennesker er ikke enige om hvordan det bør gjøres.</p>
       <p>❤️ Derfor finnes det forskjellige meninger.</p>
+    </div>
+
+    <div class="ukens-repetisjon">
+      <div class="ur-tittel">🔁 Ukens ord – repetisjon</div>
+      <div class="ur-tekst">Disse fire ordene øver vi på hver uke. Trykk på dem for å huske hva de betyr!</div>
+      <span class="ur-ord" data-d="å se nøye på noe">observere</span>
+      <span class="ur-ord" data-d="å finne ut mer om noe">undersøke</span>
+      <span class="ur-ord" data-d="å fortelle nøye hvordan noe er eller ser ut">beskrive</span>
+      <span class="ur-ord" data-d="å gjøre noe lettere å forstå">forklare</span>
     </div>
   </div>
 
@@ -226,6 +243,9 @@ document.querySelectorAll('.tab').forEach(t=>{
   };
 });
 document.querySelectorAll('.ord[data-d]').forEach(o=>{
+  o.onclick=()=>{ alert(o.textContent+" = "+o.dataset.d); };
+});
+document.querySelectorAll('.ur-ord[data-d]').forEach(o=>{
   o.onclick=()=>{ alert(o.textContent+" = "+o.dataset.d); };
 });
 

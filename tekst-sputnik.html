@@ -92,6 +92,11 @@ main{max-width:600px;margin:0 auto;padding:0 1rem;}
 .ord-intro{background:var(--sun-light);border-radius:12px;padding:0.8rem 1rem;font-size:0.9rem;color:#8a6d3b;font-weight:600;margin-bottom:1rem;text-align:center;}
 .kryss-nav{display:flex;gap:0.6rem;margin-top:1.4rem;}
 .kryss-nav a{flex:1;text-align:center;text-decoration:none;background:var(--grape-light);color:var(--grape);font-weight:700;font-size:0.85rem;padding:0.8rem;border-radius:12px;}
+.ukens-repetisjon{background:#eef6ff;border:2px solid #bfdbfe;border-radius:14px;padding:0.9rem 1.1rem;margin-top:0.2rem;}
+.ukens-repetisjon .ur-tittel{font-family:'Baloo 2',cursive;font-weight:800;font-size:0.85rem;color:#2563eb;margin-bottom:0.5rem;display:flex;align-items:center;gap:0.4rem;}
+.ukens-repetisjon .ur-tekst{font-size:0.86rem;color:#1e40af;margin-bottom:0.6rem;}
+.ur-ord{display:inline-block;background:#fff;border:1.5px solid #93c5fd;color:#2563eb;font-weight:700;padding:3px 10px;border-radius:99px;margin:2px 4px 2px 0;font-size:0.85rem;cursor:pointer;}
+.ur-ord:hover{background:#dbeafe;}
 </style>
 </head>
 <body>
@@ -145,8 +150,18 @@ main{max-width:600px;margin:0 auto;padding:0 1rem;}
     <div class="blokk">
       <div class="blokk-tittel">4 · Sputnik i dag</div>
       <p>Fordi Sputnik lyktes, ble det mulig å planlegge tryggere romferder.</p>
+      <p>Forskerne kunne <span class="ord" data-d="å finne ut mer om noe">undersøke</span> mer, og etterpå <span class="ord" data-d="å gjøre noe lettere å forstå">forklare</span> det de hadde lært til hele verden.</p>
       <p>I dag bruker vi fortsatt satellitter til GPS, værmeldinger, TV og kommunikasjon.</p>
       <p>Historien om Sputnik minner oss om at små oppfinnelser kan forandre hele verden.</p>
+    </div>
+
+    <div class="ukens-repetisjon">
+      <div class="ur-tittel">🔁 Ukens ord – repetisjon</div>
+      <div class="ur-tekst">Disse fire ordene øver vi på hver uke. Trykk på dem for å huske hva de betyr!</div>
+      <span class="ur-ord" data-d="å se nøye på noe">observere</span>
+      <span class="ur-ord" data-d="å finne ut mer om noe">undersøke</span>
+      <span class="ur-ord" data-d="å fortelle nøye hvordan noe er eller ser ut">beskrive</span>
+      <span class="ur-ord" data-d="å gjøre noe lettere å forstå">forklare</span>
     </div>
   </div>
 
@@ -201,6 +216,9 @@ document.querySelectorAll('.tab').forEach(t=>{
 });
 
 document.querySelectorAll('.ord[data-d]').forEach(o=>{
+  o.onclick=()=>{ alert(o.textContent+" = "+o.dataset.d); };
+});
+document.querySelectorAll('.ur-ord[data-d]').forEach(o=>{
   o.onclick=()=>{ alert(o.textContent+" = "+o.dataset.d); };
 });
 
