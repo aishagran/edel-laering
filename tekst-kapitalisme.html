@@ -1,0 +1,422 @@
+<!DOCTYPE html>
+<html lang="no">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Hva er kapitalisme? – tekst – Edels Verden</title>
+<link href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@600;700;800&family=Nunito:wght@400;600;700&display=swap" rel="stylesheet">
+<style>
+:root{
+  --grape:#7C3AED;--grape-light:#EDE9FE;--berry:#E84A8A;--gronn:#16A34A;--gronn-light:#DCFCE7;
+  --rod:#e17055;--rod-light:#fdeee9;--sun:#D97706;--sun-light:#FEF3C7;
+  --ink:#1E1B4B;--muted:#6B7280;--bg:#FBF7FF;--card:#fff;--line:#E5E7EB;
+  --shadow:0 2px 16px rgba(124,58,237,0.08);
+}
+*{box-sizing:border-box;margin:0;padding:0;}
+body{font-family:'Nunito',sans-serif;background:var(--bg);color:var(--ink);min-height:100vh;padding-bottom:3rem;line-height:1.6;}
+.topbar{background:#fff;padding:0.9rem 1.1rem;display:flex;align-items:center;gap:0.75rem;box-shadow:0 2px 12px rgba(124,58,237,0.06);position:sticky;top:0;z-index:40;}
+.home-btn{text-decoration:none;font-size:1.3rem;background:var(--grape-light);border-radius:12px;padding:0.35rem 0.7rem;}
+.topbar .tittel{font-family:'Baloo 2',cursive;font-weight:800;font-size:1.1rem;color:var(--ink);}
+.hero{text-align:center;padding:1.6rem 1.25rem 1rem;}
+.hero .ikon{font-size:2.6rem;}
+.hero h1{font-family:'Baloo 2',cursive;font-size:1.6rem;font-weight:800;color:var(--grape);margin-top:0.3rem;line-height:1.1;}
+.hero p{color:var(--muted);font-size:0.9rem;margin-top:0.3rem;}
+main{max-width:600px;margin:0 auto;padding:0 1rem;}
+.tabs{display:flex;gap:0.35rem;margin:0.5rem 0 1.2rem;position:sticky;top:3.4rem;background:var(--bg);padding:0.6rem 0;z-index:30;}
+.tab{flex:1;font-family:'Baloo 2',cursive;font-size:0.76rem;font-weight:700;padding:0.55rem 0.2rem;border-radius:12px;border:2.5px solid var(--line);background:#fff;color:var(--muted);cursor:pointer;transition:all 0.15s;display:flex;flex-direction:column;align-items:center;gap:2px;}
+.tab .t-ikon{font-size:1.05rem;}
+.tab.aktiv{background:var(--grape);color:#fff;border-color:var(--grape);}
+.panel{display:none;animation:fade 0.3s;}
+.panel.aktiv{display:block;}
+@keyframes fade{from{opacity:0;transform:translateY(6px);}to{opacity:1;transform:translateY(0);}}
+.blokk{background:var(--card);border-radius:16px;box-shadow:var(--shadow);padding:1.2rem 1.3rem;margin-bottom:1rem;}
+.blokk-tittel{font-family:'Baloo 2',cursive;font-weight:700;font-size:0.78rem;color:var(--grape);text-transform:uppercase;letter-spacing:0.5px;margin-bottom:0.7rem;}
+.blokk p{font-size:1.08rem;margin-bottom:0.6rem;}
+.blokk p:last-child{margin-bottom:0;}
+.def{display:block;background:var(--gronn-light);border-left:4px solid var(--gronn);border-radius:8px;padding:0.5rem 0.8rem;margin:0.5rem 0;font-size:0.98rem;color:#15803d;font-style:italic;}
+.ord{background:var(--sun-light);color:var(--sun);font-weight:700;padding:1px 7px;border-radius:6px;border:1.5px solid #F5D98A;cursor:pointer;white-space:nowrap;}
+.ord:hover{filter:brightness(0.96);}
+.regne-boks{background:#eef6ff;border:2px solid #93c5fd;border-radius:12px;padding:0.9rem 1rem;margin:0.6rem 0;font-size:1.02rem;color:#1e40af;}
+.regne-boks .regne-linje{display:flex;justify-content:space-between;padding:0.25rem 0;border-bottom:1px dashed #bfdbfe;}
+.regne-boks .regne-linje:last-child{border-bottom:none;font-weight:800;color:#15803d;padding-top:0.5rem;}
+.punkt-liste{list-style:none;padding:0;}
+.punkt-liste li{background:#f7f5fc;border-radius:10px;padding:0.5rem 0.8rem;margin-bottom:0.4rem;font-size:1.02rem;}
+.les-hjelp{text-align:center;font-size:0.82rem;color:var(--muted);background:#eef6ff;border-radius:10px;padding:0.6rem;margin-bottom:1rem;}
+.ukens-repetisjon{background:linear-gradient(135deg,#FEF3C7,#fff);border:2px dashed var(--sun);border-radius:16px;padding:1.1rem 1.3rem;margin-bottom:1rem;}
+.ukens-repetisjon .ur-tittel{font-family:'Baloo 2',cursive;font-weight:800;font-size:0.95rem;color:var(--sun);display:flex;align-items:center;gap:0.4rem;margin-bottom:0.5rem;}
+.ukens-repetisjon .ur-info{font-size:0.86rem;color:#8a6d3b;margin-bottom:0.7rem;}
+.ur-ord{display:flex;flex-wrap:wrap;gap:0.5rem;}
+.ur-chip{background:#fff;border:2px solid #F5D98A;border-radius:99px;padding:0.4rem 0.9rem;font-weight:700;color:var(--sun);font-size:0.92rem;cursor:pointer;}
+.ur-chip:hover{background:#fff8e8;}
+.bilde-wrap{background:#fff;border-radius:16px;box-shadow:var(--shadow);padding:0.5rem;overflow:hidden;cursor:zoom-in;}
+.bilde-wrap img{width:100%;border-radius:12px;display:block;}
+.bilde-mangler{padding:2.5rem 1rem;text-align:center;color:var(--muted);font-size:0.9rem;}
+.bilde-hint{text-align:center;font-size:0.82rem;color:var(--muted);margin-top:0.6rem;}
+.leser{display:none;position:fixed;inset:0;background:#1a1830;z-index:100;flex-direction:column;}
+.leser.open{display:flex;}
+.leser-bar{padding:0.8rem 1rem;display:flex;justify-content:flex-end;}
+.leser-lukk{background:#fff;border:none;border-radius:12px;padding:0.5rem 1.1rem;font-family:'Nunito',sans-serif;font-weight:800;font-size:0.9rem;cursor:pointer;}
+.leser-scroll{flex:1;overflow:auto;-webkit-overflow-scrolling:touch;touch-action:pan-x pan-y pinch-zoom;padding:0 0.5rem;}
+.leser-scroll img{width:100%;height:auto;display:block;border-radius:8px;}
+.leser-tips{color:rgba(255,255,255,0.6);text-align:center;font-size:0.78rem;padding:0.6rem;}
+.sporsmal-kort{background:var(--card);border-radius:16px;box-shadow:var(--shadow);padding:1.1rem 1.2rem;margin-bottom:0.9rem;}
+.sporsmal-nr{display:inline-flex;align-items:center;justify-content:center;width:28px;height:28px;background:var(--grape);color:#fff;border-radius:50%;font-family:'Baloo 2',cursive;font-weight:700;font-size:0.85rem;margin-right:0.5rem;flex-shrink:0;}
+.sporsmal-tekst{font-size:1.02rem;font-weight:600;}
+.svar-felt{width:100%;border:2.5px solid var(--line);border-radius:12px;padding:0.8rem;font-family:'Nunito',sans-serif;font-size:1rem;margin-top:0.7rem;resize:vertical;min-height:70px;}
+.svar-felt:focus{outline:none;border-color:var(--grape);}
+.send-btn{display:block;width:100%;background:var(--grape);color:#fff;border:none;border-radius:14px;padding:0.9rem;font-family:'Baloo 2',cursive;font-size:1.05rem;cursor:pointer;margin-top:0.5rem;}
+.send-btn:active{transform:scale(0.99);}
+.send-ok{text-align:center;color:var(--gronn);font-weight:700;font-size:0.9rem;margin-top:0.7rem;display:none;}
+.send-ok.vis{display:block;}
+.hjelp-btn{background:none;border:2px dashed #C9B3DE;color:var(--grape);font-family:'Nunito',sans-serif;font-weight:700;font-size:0.85rem;padding:0.5rem 0.9rem;border-radius:10px;cursor:pointer;margin-top:0.6rem;}
+.hjelp-btn:hover{background:var(--grape-light);}
+.hjelp-boks{display:none;margin-top:0.7rem;border-radius:12px;overflow:hidden;border:2px solid var(--grape-light);}
+.hjelp-boks.vis{display:block;animation:fade 0.3s;}
+.hjelp-rad{padding:0.7rem 0.9rem;font-size:0.92rem;border-bottom:1px solid var(--grape-light);}
+.hjelp-rad:last-child{border-bottom:none;}
+.hjelp-rad .etikett{font-weight:800;font-size:0.72rem;text-transform:uppercase;letter-spacing:0.4px;display:block;margin-bottom:0.25rem;}
+.hjelp-start{background:#eef6ff;}
+.hjelp-start .etikett{color:#2563eb;}
+.hjelp-start .innhold{color:#1e40af;font-style:italic;}
+.hjelp-ordbank{background:var(--sun-light);}
+.hjelp-ordbank .etikett{color:var(--sun);}
+.ordbank-ord{display:inline-block;background:#fff;border:1.5px solid #F5D98A;color:var(--sun);font-weight:700;padding:2px 9px;border-radius:99px;margin:2px 3px;font-size:0.85rem;cursor:pointer;}
+.ordbank-ord:hover{background:#fff8e8;}
+.hjelp-eksempel{background:var(--gronn-light);}
+.hjelp-eksempel .etikett{color:var(--gronn);}
+.hjelp-eksempel .innhold{color:#15803d;font-style:italic;}
+.ord-kort{background:var(--card);border-radius:16px;box-shadow:var(--shadow);padding:1.2rem 1.3rem;margin-bottom:0.9rem;border-left:5px solid var(--sun);}
+.ord-navn{font-family:'Baloo 2',cursive;font-weight:800;font-size:1.4rem;color:var(--sun);}
+.ord-betyr{font-size:1rem;color:#15803d;font-weight:600;margin:0.3rem 0 0.6rem;}
+.ord-eksempel{font-size:0.98rem;color:var(--muted);font-style:italic;background:#f7f5fc;border-radius:10px;padding:0.6rem 0.8rem;}
+.ord-intro{background:var(--sun-light);border-radius:12px;padding:0.8rem 1rem;font-size:0.9rem;color:#8a6d3b;font-weight:600;margin-bottom:1rem;text-align:center;}
+/* QUIZ */
+.quiz-kort{background:var(--card);border-radius:20px;box-shadow:var(--shadow);padding:1.4rem 1.3rem;}
+.quiz-teller{text-align:center;font-size:0.85rem;color:var(--muted);font-weight:700;margin-bottom:0.8rem;}
+.quiz-sp{font-family:'Baloo 2',cursive;font-size:1.3rem;margin-bottom:1rem;line-height:1.25;text-align:center;}
+.quiz-svar{display:block;width:100%;text-align:left;background:#fff;border:3px solid var(--line);border-radius:14px;padding:0.85rem 1rem;margin-bottom:0.7rem;font-family:'Nunito',sans-serif;font-size:1.02rem;font-weight:600;color:var(--ink);cursor:pointer;transition:all 0.15s;}
+.quiz-svar:hover{border-color:var(--grape);}
+.quiz-svar:disabled{cursor:default;}
+.quiz-svar.riktig{border-color:var(--gronn);background:var(--gronn-light);}
+.quiz-svar.feil{border-color:var(--rod);background:var(--rod-light);opacity:0.85;}
+.quiz-tilbake{margin-top:0.5rem;padding:0.9rem;border-radius:12px;font-weight:600;display:none;font-size:0.98rem;}
+.quiz-tilbake.vis{display:block;}
+.quiz-tilbake.bra{background:var(--gronn-light);color:#15803d;}
+.quiz-tilbake.naer{background:#fff8e1;color:#8a6d00;}
+.quiz-neste{display:none;width:100%;margin-top:0.9rem;background:var(--grape);color:#fff;border:none;border-radius:14px;padding:0.9rem;font-family:'Baloo 2',cursive;font-size:1.1rem;cursor:pointer;}
+.quiz-neste.vis{display:block;}
+.quiz-slutt{text-align:center;display:none;}
+.quiz-slutt.vis{display:block;}
+.quiz-slutt .stj{font-size:3rem;}
+.quiz-slutt h2{font-family:'Baloo 2',cursive;color:var(--grape);font-size:1.5rem;margin:0.4rem 0;}
+.quiz-poeng{font-family:'Baloo 2',cursive;font-size:2.2rem;color:var(--gronn);margin:0.5rem 0;}
+.quiz-nytt{background:var(--sun);color:#fff;border:none;border-radius:14px;padding:0.8rem 1.6rem;font-family:'Baloo 2',cursive;font-size:1rem;cursor:pointer;margin-top:0.6rem;}
+</style>
+</head>
+<body>
+
+<div class="topbar">
+  <a class="home-btn" href="tekster.html">📖</a>
+  <span class="tittel">Hva er kapitalisme?</span>
+</div>
+
+<div class="hero">
+  <div class="ikon">🐄</div>
+  <h1>Hva er kapitalisme?</h1>
+  <p>Les · Se · Tenk · Ord · Quiz</p>
+</div>
+
+<main>
+  <div class="tabs">
+    <button class="tab aktiv" data-p="les"><span class="t-ikon">📖</span>Les</button>
+    <button class="tab" data-p="se"><span class="t-ikon">🖼️</span>Se</button>
+    <button class="tab" data-p="tenk"><span class="t-ikon">💬</span>Tenk</button>
+    <button class="tab" data-p="ord"><span class="t-ikon">🎯</span>Ord</button>
+    <button class="tab" data-p="quiz"><span class="t-ikon">🎮</span>Quiz</button>
+  </div>
+
+  <!-- ===== LES ===== -->
+  <div class="panel aktiv" id="p-les">
+    <div class="les-hjelp">💡 Les rolig. Ta pauser. Trykk på de <span class="ord">gule ordene</span> for å se hva de betyr.</div>
+
+    <div class="blokk">
+      <div class="blokk-tittel">1 · Edel har to kuer</div>
+      <p>Tenk at Edel har to kuer. 🐄 🐄</p>
+      <p>Kuene lager melk.</p>
+      <p>Edel kan <span class="ord" data-d="å gi noe og få penger for det">selge</span> melken.</p>
+      <span class="def">💰 Å selge betyr at du gir noe og får penger.</span>
+      <p>Når hun selger melken, får hun penger.</p>
+    </div>
+
+    <div class="blokk">
+      <div class="blokk-tittel">2 · Hva kan hun gjøre med pengene?</div>
+      <p>For pengene kan Edel <span class="ord" data-d="å betale for å få noe">kjøpe</span> mat til kuene.</p>
+      <span class="def">🛒 Å kjøpe betyr at du betaler for å få noe.</span>
+      <p>Hun kan også spare pengene.</p>
+      <p>Eller hun kan kjøpe en ny ku.</p>
+      <p>Dette er et enkelt eksempel på kapitalisme.</p>
+    </div>
+
+    <div class="blokk">
+      <div class="blokk-tittel">3 · Kapitalisme betyr:</div>
+      <ul class="punkt-liste">
+        <li>🏠 Du kan <span class="ord" data-d="at noe er ditt">eie</span> ting.</li>
+        <li>🔨 Du kan lage noe.</li>
+        <li>💰 Du kan selge det.</li>
+        <li>💵 Du kan <span class="ord" data-d="å få penger for arbeid eller salg">tjene</span> penger.</li>
+        <li>🏦 Du kan bruke eller spare pengene.</li>
+      </ul>
+      <span class="def">🏠 Å eie betyr at noe er ditt.</span>
+      <span class="def">💵 Å tjene penger betyr at du får penger for arbeid eller salg.</span>
+    </div>
+
+    <div class="blokk">
+      <div class="blokk-tittel">4 · Edel baker boller</div>
+      <p>Edel lager ti boller.</p>
+      <p>Hun selger én bolle for 20 kroner.</p>
+      <p>Når noen kjøper bollen, får Edel penger.</p>
+      <p>Men Edel måtte også kjøpe mel, sukker og egg.</p>
+    </div>
+
+    <div class="blokk">
+      <div class="blokk-tittel">5 · Fortjeneste</div>
+      <p>Pengene som er igjen kalles <span class="ord" data-d="pengene som er igjen etter at utgiftene er betalt">fortjeneste</span>.</p>
+      <span class="def">🧮 Fortjeneste er pengene som er igjen etter at du har betalt for alt.</span>
+      <div class="regne-boks">
+        <div class="regne-linje"><span>Edel får for bollene</span><span>100 kr</span></div>
+        <div class="regne-linje"><span>Hun betalte for mel, sukker, egg</span><span>− 60 kr</span></div>
+        <div class="regne-linje"><span>Fortjeneste</span><span>= 40 kr</span></div>
+      </div>
+      <p>Edel kan spare de 40 kronene. Eller hun kan kjøpe mer mel og bake igjen!</p>
+    </div>
+
+    <div class="blokk">
+      <div class="blokk-tittel">6 · Husk!</div>
+      <p>❤️ I kapitalisme kan man eie, lage, selge og tjene penger.</p>
+      <p>❤️ I sosialisme deler man mer, så alle får det viktigste.</p>
+      <p>❤️ Mange land bruker litt av begge deler.</p>
+      <p>❤️ Folk <span class="ord" data-d="å snakke om noe og si hva man mener">diskuterer</span> fortsatt hva som er best.</p>
+    </div>
+
+    <div class="ukens-repetisjon">
+      <div class="ur-tittel">🔁 Ukens ord – husker du disse?</div>
+      <div class="ur-info">Dette er ordene vi øver på hele uka. Trykk for å se hva de betyr!</div>
+      <div class="ur-ord">
+        <span class="ur-chip" data-d="å se nøye på noe">⭐ observere</span>
+        <span class="ur-chip" data-d="å finne ut mer om noe">⭐ undersøke</span>
+        <span class="ur-chip" data-d="å fortelle om noe med ord">⭐ beskrive</span>
+        <span class="ur-chip" data-d="å gjøre noe lett å forstå">⭐ forklare</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- ===== SE ===== -->
+  <div class="panel" id="p-se">
+    <div class="bilde-wrap" id="bildeWrap">
+      <img src="kapitalisme.png" alt="Kapitalisme – Edel og de to kuene"
+           onerror="this.outerHTML='<div class=\'bilde-mangler\'>Last opp «kapitalisme.png» på GitHub, så vises tegneserien her 🐄</div>'">
+    </div>
+    <div class="bilde-hint">🔍 Trykk på bildet for å se det stort</div>
+  </div>
+
+  <!-- ===== TENK ===== -->
+  <div class="panel" id="p-tenk">
+    <div class="ord-intro">💬 Tenk og forklar. Trenger du hjelp? Trykk på knappen under hvert spørsmål.</div>
+    <div id="sporsmalListe"></div>
+    <button class="send-btn" id="sendTenk">Send svarene til mamma 💌</button>
+    <div class="send-ok" id="sendOk">✓ Svarene dine er sendt til mamma</div>
+  </div>
+
+  <!-- ===== ORD ===== -->
+  <div class="panel" id="p-ord">
+    <div class="ord-intro">🎯 Ordene i denne teksten – øv på dem flere ganger!</div>
+    <div id="ordListe"></div>
+  </div>
+
+  <!-- ===== QUIZ ===== -->
+  <div class="panel" id="p-quiz">
+    <div class="quiz-kort" id="quizKort">
+      <div class="quiz-teller" id="quizTeller"></div>
+      <div class="quiz-sp" id="quizSp"></div>
+      <div id="quizSvar"></div>
+      <div class="quiz-tilbake" id="quizTilbake"></div>
+      <button class="quiz-neste" id="quizNeste">Neste →</button>
+    </div>
+    <div class="quiz-kort quiz-slutt" id="quizSlutt">
+      <div class="stj">🌟</div>
+      <h2>Bra jobba, Edel!</h2>
+      <div class="quiz-poeng" id="quizPoeng"></div>
+      <p>Nå kan du ordene om kapitalisme! 💰</p>
+      <button class="quiz-nytt" id="quizNytt">Prøv igjen 🔁</button>
+      <div class="send-ok" id="quizSendt">✓ Resultatet er sendt til mamma</div>
+    </div>
+  </div>
+</main>
+
+<div class="leser" id="leser">
+  <div class="leser-bar"><button class="leser-lukk" onclick="lukkLeser()">✕ Lukk</button></div>
+  <div class="leser-scroll"><img id="leserImg" src="" alt=""></div>
+  <div class="leser-tips">Zoom med to fingre 🤏</div>
+</div>
+
+<script>
+const FORMSPREE="https://formspree.io/f/mqeolldg";
+const FELT="Tekst_hun_skrev";
+const $=id=>document.getElementById(id);
+function bland(a){for(let i=a.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[a[i],a[j]]=[a[j],a[i]];}return a;}
+
+const bw=$('bildeWrap');
+if(bw){ bw.onclick=()=>{ const img=bw.querySelector('img'); if(img){ $('leserImg').src=img.src; $('leser').classList.add('open'); } }; }
+function lukkLeser(){ $('leser').classList.remove('open'); }
+
+document.querySelectorAll('.tab').forEach(t=>{
+  t.onclick=()=>{
+    document.querySelectorAll('.tab').forEach(x=>x.classList.remove('aktiv'));
+    document.querySelectorAll('.panel').forEach(x=>x.classList.remove('aktiv'));
+    t.classList.add('aktiv');
+    $('p-'+t.dataset.p).classList.add('aktiv');
+    window.scrollTo({top:0,behavior:'smooth'});
+  };
+});
+document.querySelectorAll('.ord[data-d], .ur-chip[data-d]').forEach(o=>{
+  o.onclick=()=>{ alert(o.textContent.replace('⭐ ','')+" = "+o.dataset.d); };
+});
+
+/* TENK */
+const SPORSMAL=[
+  {
+    q:"Beskriv hva Edel gjør med melken fra kuene.",
+    start:"Edel selger melken, og da …",
+    ordbank:["selger","melken","får penger","kjøpe mat","spare"],
+    eksempel:"Edel selger melken, og da får hun penger. For pengene kan hun kjøpe mat til kuene."
+  },
+  {
+    q:"Forklar hva ordet «fortjeneste» betyr. Bruk egne ord.",
+    start:"Fortjeneste betyr …",
+    ordbank:["pengene","igjen","betalt","utgifter","tjent"],
+    eksempel:"Fortjeneste betyr pengene som er igjen etter at man har betalt for alt."
+  },
+  {
+    q:"Edel får 100 kroner for bollene. Hun brukte 60 kroner på mel og egg. Hvor mye er fortjenesten? Forklar hvordan du regnet.",
+    start:"Fortjenesten er … fordi jeg regnet …",
+    ordbank:["100 kroner","60 kroner","minus","40 kroner","igjen"],
+    eksempel:"Fortjenesten er 40 kroner, fordi 100 minus 60 er 40."
+  },
+  {
+    q:"Hva er forskjellen på kapitalisme og sosialisme? Skriv med egne ord.",
+    start:"I kapitalisme kan man … Men i sosialisme …",
+    ordbank:["eie","selge","tjene","dele","alle får","rettferdig"],
+    eksempel:"I kapitalisme kan man eie og selge ting for å tjene penger. Men i sosialisme deler man mer, så alle får det viktigste."
+  },
+];
+SPORSMAL.forEach((s,i)=>{
+  const d=document.createElement('div');
+  d.className='sporsmal-kort';
+  const chips=s.ordbank.map(o=>'<span class="ordbank-ord" data-ord="'+o+'">'+o+'</span>').join('');
+  d.innerHTML='<div><span class="sporsmal-nr">'+(i+1)+'</span><span class="sporsmal-tekst">'+s.q+'</span></div>'+
+    '<textarea class="svar-felt" data-q="'+i+'" placeholder="Skriv her …"></textarea>'+
+    '<button class="hjelp-btn" data-h="'+i+'">Trenger du hjelp? 💡</button>'+
+    '<div class="hjelp-boks" id="hjelp-'+i+'">'+
+      '<div class="hjelp-rad hjelp-start"><span class="etikett">✏️ Start slik</span><span class="innhold">'+s.start+'</span></div>'+
+      '<div class="hjelp-rad hjelp-ordbank"><span class="etikett">🔤 Ord du kan bruke (trykk for å sette inn)</span><div>'+chips+'</div></div>'+
+      '<div class="hjelp-rad hjelp-eksempel"><span class="etikett">🌟 Et eksempel</span><span class="innhold">«'+s.eksempel+'»</span></div>'+
+    '</div>';
+  $('sporsmalListe').appendChild(d);
+});
+document.querySelectorAll('.hjelp-btn').forEach(b=>{
+  b.onclick=()=>{ const boks=$('hjelp-'+b.dataset.h); const vis=boks.classList.toggle('vis'); b.textContent = vis ? "Skjul hjelp 🙈" : "Trenger du hjelp? 💡"; };
+});
+document.querySelectorAll('.ordbank-ord').forEach(o=>{
+  o.onclick=()=>{ const kort=o.closest('.sporsmal-kort'); const felt=kort.querySelector('.svar-felt'); felt.value=(felt.value+" "+o.dataset.ord).trim(); felt.focus(); };
+});
+$('sendTenk').onclick=()=>{
+  let linjer=[];
+  document.querySelectorAll('.svar-felt').forEach(f=>{ const i=f.dataset.q; const t=f.value.trim(); if(t) linjer.push((parseInt(i)+1)+". "+SPORSMAL[i].q+"\n   → "+t); });
+  const tekst="KAPITALISME – Tenk og forklar\n\n"+(linjer.length?linjer.join("\n\n"):"(tomt)");
+  const fd=new FormData(); fd.append(FELT,tekst);
+  fetch(FORMSPREE,{method:"POST",body:fd,headers:{"Accept":"application/json"}}).then(r=>{if(r.ok)$('sendOk').classList.add('vis');}).catch(()=>{});
+};
+
+/* ORD */
+const ORD=[
+  {ord:"eie", betyr:"at noe er ditt", eksempel:"Edel kan eie to kuer."},
+  {ord:"selge", betyr:"å gi noe og få penger for det", eksempel:"Hun kan selge melken."},
+  {ord:"kjøpe", betyr:"å betale for å få noe", eksempel:"Hun kan kjøpe mat til kuene."},
+  {ord:"tjene penger", betyr:"å få penger for arbeid eller salg", eksempel:"Edel kan tjene penger på bollene."},
+  {ord:"fortjeneste", betyr:"pengene som er igjen etter at utgiftene er betalt", eksempel:"Fortjenesten hennes ble 40 kroner."},
+];
+ORD.forEach(o=>{
+  const d=document.createElement('div');
+  d.className='ord-kort';
+  d.innerHTML='<div class="ord-navn">'+o.ord+'</div><div class="ord-betyr">'+o.betyr+'</div><div class="ord-eksempel">«'+o.eksempel+'»</div>';
+  $('ordListe').appendChild(d);
+});
+
+/* QUIZ – vokabular */
+const QUIZ=[
+  {q:"Edel baker boller og selger dem. Hva får hun?",
+   alt:[{t:"Penger 💰",c:true},{t:"Melk 🥛",c:false},{t:"En ku 🐄",c:false}],
+   rett:"Ja! Når hun selger noe, får hun penger.", naer:"Når man selger noe, får man penger."},
+  {q:"Hva betyr det å «eie» noe?",
+   alt:[{t:"At det er ditt",c:true},{t:"At du låner det",c:false},{t:"At du kaster det",c:false}],
+   rett:"Riktig! Å eie betyr at noe er ditt.", naer:"Å eie betyr at noe er ditt."},
+  {q:"Edel får 100 kroner for bollene. Hun brukte 60 kroner på mel og egg. Hvor mye er igjen?",
+   alt:[{t:"40 kroner",c:true},{t:"160 kroner",c:false},{t:"60 kroner",c:false}],
+   rett:"Ja! 100 − 60 = 40 kroner. Det er fortjenesten hennes.", naer:"100 minus 60 er 40 kroner."},
+  {q:"Hva betyr «fortjeneste»?",
+   alt:[{t:"Pengene som er igjen etter at alt er betalt",c:true},{t:"All maten i butikken",c:false},{t:"En type ku",c:false}],
+   rett:"Riktig! Fortjeneste = det som er igjen.", naer:"Fortjeneste er pengene som er igjen etter at utgiftene er betalt."},
+  {q:"Hva betyr å «kjøpe»?",
+   alt:[{t:"Å betale for å få noe",c:true},{t:"Å gi bort gratis",c:false},{t:"Å gjemme noe",c:false}],
+   rett:"Ja! Å kjøpe = å betale for å få noe.", naer:"Å kjøpe betyr å betale for å få noe."},
+  {q:"Hva betyr å «selge»?",
+   alt:[{t:"Å gi noe og få penger",c:true},{t:"Å spise noe",c:false},{t:"Å låne noe",c:false}],
+   rett:"Riktig!", naer:"Å selge betyr å gi noe og få penger."},
+  {q:"Hva betyr «å tjene penger»?",
+   alt:[{t:"Å få penger for arbeid eller salg",c:true},{t:"Å miste penger",c:false},{t:"Å telle penger",c:false}],
+   rett:"Ja! Man tjener penger når man jobber eller selger noe.", naer:"Å tjene penger = å få penger for arbeid eller salg."},
+  {q:"REPETISJON ⭐ Hva betyr «forklare»?",
+   alt:[{t:"Å gjøre noe lett å forstå",c:true},{t:"Å løpe fort",c:false},{t:"Å kjøpe noe",c:false}],
+   rett:"Ja! Ukens ord – godt husket! 🌟", naer:"Å forklare betyr å gjøre noe lett å forstå."},
+];
+let qn=0,qp=0,qlogg=[];
+function visQuiz(){
+  const s=QUIZ[qn];
+  $('quizSlutt').classList.remove('vis');
+  $('quizKort').style.display='block';
+  $('quizTeller').textContent="Spørsmål "+(qn+1)+" av "+QUIZ.length;
+  $('quizSp').textContent=s.q;
+  $('quizTilbake').className='quiz-tilbake';
+  $('quizNeste').className='quiz-neste';
+  $('quizSvar').innerHTML='';
+  bland(s.alt.map(a=>({...a}))).forEach(a=>{
+    const b=document.createElement('button');
+    b.className='quiz-svar'; b.textContent=a.t;
+    b.onclick=()=>velgQuiz(b,a,s);
+    $('quizSvar').appendChild(b);
+  });
+}
+function velgQuiz(knapp,alt,s){
+  $('quizSvar').querySelectorAll('.quiz-svar').forEach(k=>k.disabled=true);
+  if(alt.c){ knapp.classList.add('riktig'); qp++; $('quizTilbake').className='quiz-tilbake vis bra'; $('quizTilbake').textContent=s.rett; }
+  else{ knapp.classList.add('feil'); const r=s.alt.find(a=>a.c).t;
+    $('quizSvar').querySelectorAll('.quiz-svar').forEach(k=>{if(k.textContent===r)k.classList.add('riktig');});
+    $('quizTilbake').className='quiz-tilbake vis naer'; $('quizTilbake').textContent=s.naer; }
+  qlogg.push((alt.c?"✓":"✗")+" "+s.q+" → "+alt.t);
+  $('quizNeste').className='quiz-neste vis';
+  $('quizNeste').textContent=(qn===QUIZ.length-1)?"Ferdig 🎉":"Neste →";
+}
+$('quizNeste').onclick=()=>{ qn++; if(qn>=QUIZ.length) sluttQuiz(); else visQuiz(); };
+function sluttQuiz(){
+  $('quizKort').style.display='none';
+  $('quizSlutt').classList.add('vis');
+  $('quizPoeng').textContent=qp+" av "+QUIZ.length+" riktige 🎯";
+  const tekst="KAPITALISME – Quiz\nPoeng: "+qp+"/"+QUIZ.length+"\n\n"+qlogg.join("\n");
+  const fd=new FormData(); fd.append(FELT,tekst);
+  fetch(FORMSPREE,{method:"POST",body:fd,headers:{"Accept":"application/json"}}).then(r=>{if(r.ok)$('quizSendt').classList.add('vis');}).catch(()=>{});
+}
+$('quizNytt').onclick=()=>{ qn=0;qp=0;qlogg=[]; visQuiz(); };
+visQuiz();
+</script>
+</body>
+</html>
