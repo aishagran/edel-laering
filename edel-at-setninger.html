@@ -1,0 +1,274 @@
+<!DOCTYPE html>
+<html lang="no">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Setninger med «at» – Edels Verden</title>
+<link href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@600;700;800&family=Nunito:wght@400;600;700&display=swap" rel="stylesheet">
+<style>
+:root{
+  --grape:#7C3AED;--grape-light:#EDE9FE;--berry:#E84A8A;--gronn:#16A34A;--gronn-light:#DCFCE7;
+  --rod:#e17055;--rod-light:#fdeee9;--sun:#D97706;--sun-light:#FEF3C7;
+  --ink:#1E1B4B;--muted:#6B7280;--bg:#FBF7FF;--card:#fff;--line:#E5E7EB;
+  --shadow:0 2px 16px rgba(124,58,237,0.08);
+}
+*{box-sizing:border-box;margin:0;padding:0;}
+body{font-family:'Nunito',sans-serif;background:var(--bg);color:var(--ink);min-height:100vh;padding-bottom:3rem;line-height:1.6;}
+.topbar{background:#fff;padding:0.9rem 1.1rem;display:flex;align-items:center;gap:0.75rem;box-shadow:0 2px 12px rgba(124,58,237,0.06);position:sticky;top:0;z-index:40;}
+.home-btn{text-decoration:none;font-size:1.3rem;background:var(--grape-light);border-radius:12px;padding:0.35rem 0.7rem;}
+.topbar .tittel{font-family:'Baloo 2',cursive;font-weight:800;font-size:1.1rem;color:var(--ink);}
+.hero{text-align:center;padding:1.6rem 1.25rem 1rem;}
+.hero .ikon{font-size:2.6rem;}
+.hero h1{font-family:'Baloo 2',cursive;font-size:1.7rem;font-weight:800;color:var(--grape);margin-top:0.3rem;line-height:1.15;}
+.hero p{color:var(--muted);font-size:0.9rem;margin-top:0.3rem;}
+main{max-width:600px;margin:0 auto;padding:0 1rem;}
+
+/* Regel-boks: forklarer MØNSTERET, ikke bare gir øvelser */
+.regel-boks{background:linear-gradient(135deg,#EEF6FF,#fff);border:2px solid #93c5fd;border-radius:18px;padding:1.2rem 1.3rem;margin-bottom:1rem;}
+.regel-tittel{font-family:'Baloo 2',cursive;font-weight:800;font-size:1.05rem;color:#1e40af;margin-bottom:0.6rem;display:flex;align-items:center;gap:0.4rem;}
+.regel-eks{background:#fff;border-radius:10px;padding:0.6rem 0.9rem;margin-top:0.5rem;font-size:0.98rem;}
+.regel-eks .ja{color:#15803d;font-weight:700;}
+.regel-eks .nei{color:#b91c1c;font-weight:700;text-decoration:line-through;}
+.at-ord{background:var(--sun-light);color:var(--sun);font-weight:800;padding:1px 8px;border-radius:6px;border:1.5px solid #F5D98A;}
+
+.tabs{display:flex;gap:0.4rem;margin:0.5rem 0 1.2rem;position:sticky;top:3.4rem;background:var(--bg);padding:0.6rem 0;z-index:30;}
+.tab{flex:1;font-family:'Baloo 2',cursive;font-size:0.82rem;font-weight:700;padding:0.6rem 0.3rem;border-radius:12px;border:2.5px solid var(--line);background:#fff;color:var(--muted);cursor:pointer;transition:all 0.15s;display:flex;flex-direction:column;align-items:center;gap:2px;}
+.tab .t-ikon{font-size:1.1rem;}
+.tab.aktiv{background:var(--grape);color:#fff;border-color:var(--grape);}
+.panel{display:none;animation:fade 0.3s;}
+.panel.aktiv{display:block;}
+@keyframes fade{from{opacity:0;transform:translateY(6px);}to{opacity:1;transform:translateY(0);}}
+
+/* ===== VELG (multiple choice: skal det være "at" her?) ===== */
+.sp-kort{background:var(--card);border-radius:20px;box-shadow:var(--shadow);padding:1.4rem 1.3rem;}
+.sp-teller{text-align:center;font-size:0.85rem;color:var(--muted);font-weight:700;margin-bottom:0.6rem;}
+.sp-setning{font-family:'Baloo 2',cursive;font-size:1.25rem;margin-bottom:1.1rem;line-height:1.4;text-align:center;background:#f7f5fc;border-radius:14px;padding:1rem;}
+.sp-blank{display:inline-block;min-width:70px;border-bottom:3px solid var(--grape);color:var(--grape);}
+.sp-svar{display:block;width:100%;text-align:left;background:#fff;border:3px solid var(--line);border-radius:14px;padding:0.85rem 1rem;margin-bottom:0.7rem;font-family:'Nunito',sans-serif;font-size:1.05rem;font-weight:700;color:var(--ink);cursor:pointer;transition:all 0.15s;}
+.sp-svar:hover{border-color:var(--grape);}
+.sp-svar:disabled{cursor:default;}
+.sp-svar.riktig{border-color:var(--gronn);background:var(--gronn-light);}
+.sp-svar.feil{border-color:var(--rod);background:var(--rod-light);opacity:0.85;}
+.sp-tilbake{margin-top:0.6rem;padding:0.9rem;border-radius:12px;font-weight:600;display:none;font-size:0.96rem;line-height:1.5;}
+.sp-tilbake.vis{display:block;}
+.sp-tilbake.bra{background:var(--gronn-light);color:#15803d;}
+.sp-tilbake.naer{background:#fff8e1;color:#8a6d00;}
+.sp-neste{display:none;width:100%;margin-top:0.9rem;background:var(--grape);color:#fff;border:none;border-radius:14px;padding:0.9rem;font-family:'Baloo 2',cursive;font-size:1.1rem;cursor:pointer;}
+.sp-neste.vis{display:block;}
+.sp-slutt{text-align:center;display:none;}
+.sp-slutt.vis{display:block;}
+.sp-slutt .stj{font-size:3rem;}
+.sp-slutt h2{font-family:'Baloo 2',cursive;color:var(--grape);font-size:1.5rem;margin:0.4rem 0;}
+.sp-poeng{font-family:'Baloo 2',cursive;font-size:2.2rem;color:var(--gronn);margin:0.5rem 0;}
+.sp-nytt{background:var(--sun);color:#fff;border:none;border-radius:14px;padding:0.8rem 1.6rem;font-family:'Baloo 2',cursive;font-size:1rem;cursor:pointer;margin-top:0.6rem;}
+
+/* ===== BYGG (skrivestøtte) ===== */
+.bygg-kort{background:var(--card);border-radius:16px;box-shadow:var(--shadow);padding:1.1rem 1.2rem;margin-bottom:0.9rem;}
+.bygg-start{font-family:'Baloo 2',cursive;font-size:1.1rem;color:var(--grape);margin-bottom:0.8rem;}
+.bygg-start .at-ord{margin:0 2px;}
+.svar-felt{width:100%;border:2.5px solid var(--line);border-radius:12px;padding:0.8rem;font-family:'Nunito',sans-serif;font-size:1rem;resize:vertical;min-height:60px;}
+.svar-felt:focus{outline:none;border-color:var(--grape);}
+.ordbank{display:flex;flex-wrap:wrap;gap:0.4rem;margin-top:0.7rem;}
+.ordbank-ord{background:var(--sun-light);border:1.5px solid #F5D98A;color:var(--sun);font-weight:700;padding:0.3rem 0.75rem;border-radius:99px;font-size:0.88rem;cursor:pointer;}
+.ordbank-ord:hover{background:#fff8e8;}
+.send-btn{display:block;width:100%;background:var(--grape);color:#fff;border:none;border-radius:14px;padding:0.9rem;font-family:'Baloo 2',cursive;font-size:1.05rem;cursor:pointer;margin-top:1rem;}
+.send-ok{text-align:center;color:var(--gronn);font-weight:700;font-size:0.9rem;margin-top:0.7rem;display:none;}
+.send-ok.vis{display:block;}
+</style>
+</head>
+<body>
+
+<div class="topbar">
+  <a class="home-btn" href="index.html">🏠</a>
+  <span class="tittel">Setninger med «at»</span>
+</div>
+
+<div class="hero">
+  <div class="ikon">🔗</div>
+  <h1>Setninger med «at»</h1>
+  <p>Lær når du trenger «at» — og når du ikke gjør det</p>
+</div>
+
+<main>
+  <div class="regel-boks">
+    <div class="regel-tittel">💡 To enkle regler</div>
+    <p><b>Regel 1:</b> Etter <span class="at-ord">fordi</span> trenger du IKKE «at».</p>
+    <div class="regel-eks">
+      <span class="ja">✅ Jeg gruer meg fordi jeg må løpe mye.</span><br>
+      <span class="nei">❌ Jeg gruer meg fordi at jeg må løpe mye.</span>
+    </div>
+    <p style="margin-top:0.9rem;"><b>Regel 2:</b> Etter ord som <i>vet, tror, sier, viser, håper</i> trenger du <span class="at-ord">at</span>.</p>
+    <div class="regel-eks">
+      <span class="ja">✅ Jeg vet at jeg klarer det.</span><br>
+      <span class="nei">❌ Jeg vet jeg klarer det.</span>
+    </div>
+  </div>
+
+  <div class="tabs">
+    <button class="tab aktiv" data-p="velg"><span class="t-ikon">🎯</span>Velg riktig</button>
+    <button class="tab" data-p="bygg"><span class="t-ikon">✏️</span>Bygg selv</button>
+  </div>
+
+  <!-- ===== VELG ===== -->
+  <div class="panel aktiv" id="p-velg">
+    <div class="sp-kort" id="velgKort">
+      <div class="sp-teller" id="velgTeller"></div>
+      <div class="sp-setning" id="velgSetning"></div>
+      <div id="velgSvar"></div>
+      <div class="sp-tilbake" id="velgTilbake"></div>
+      <button class="sp-neste" id="velgNeste">Neste →</button>
+    </div>
+    <div class="sp-kort sp-slutt" id="velgSlutt">
+      <div class="stj">🌟</div>
+      <h2>Bra jobba, Edel!</h2>
+      <div class="sp-poeng" id="velgPoeng"></div>
+      <p>Nå kan du reglene om «at»! 🔗</p>
+      <button class="sp-nytt" id="velgNytt">Prøv igjen 🔁</button>
+      <div class="send-ok" id="velgSendt">✓ Resultatet er sendt til mamma</div>
+    </div>
+  </div>
+
+  <!-- ===== BYGG ===== -->
+  <div class="panel" id="p-bygg">
+    <div id="byggListe"></div>
+    <button class="send-btn" id="sendBygg">Send setningene til mamma 💌</button>
+    <div class="send-ok" id="byggSendt">✓ Setningene er sendt til mamma</div>
+  </div>
+</main>
+
+<script>
+const FORMSPREE="https://formspree.io/f/mqeolldg";
+const FELT="Tekst_hun_skrev";
+const $=id=>document.getElementById(id);
+function bland(a){for(let i=a.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[a[i],a[j]]=[a[j],a[i]];}return a;}
+
+document.querySelectorAll('.tab').forEach(t=>{
+  t.onclick=()=>{
+    document.querySelectorAll('.tab').forEach(x=>x.classList.remove('aktiv'));
+    document.querySelectorAll('.panel').forEach(x=>x.classList.remove('aktiv'));
+    t.classList.add('aktiv');
+    $('p-'+t.dataset.p).classList.add('aktiv');
+    window.scrollTo({top:0,behavior:'smooth'});
+  };
+});
+
+/* ================= VELG: skal det være "at" her? =================
+   Bygget direkte på Edels egne feilmønstre:
+   - "fordi at" (skal IKKE ha at)
+   - "vise/vite/tro/si + at" (MÅ ha at)
+================================================================= */
+const VELG=[
+  { setning:"Jeg gruer meg ___ jeg må løpe mye.",
+    alt:[{t:"fordi",c:true},{t:"fordi at",c:false},{t:"at",c:false}],
+    rett:"Ja! Etter «fordi» trenger du ikke «at».", naer:"Riktig er bare «fordi» — uten «at»." },
+  { setning:"Jeg vet ___ jeg klarer det.",
+    alt:[{t:"at",c:true},{t:"fordi",c:false},{t:"ingenting (bare «Jeg vet jeg klarer det»)",c:false}],
+    rett:"Riktig! Etter «vet» trenger du «at».", naer:"Etter «vet» må du ha «at»: «Jeg vet at …»." },
+  { setning:"Det ble feiring ___ vi vant.",
+    alt:[{t:"fordi",c:true},{t:"at",c:false},{t:"fordi at",c:false}],
+    rett:"Ja! «Fordi vi vant» — uten «at».", naer:"Riktig er «fordi vi vant», uten «at»." },
+  { setning:"Hun sa ___ hun var stolt av deg.",
+    alt:[{t:"at",c:true},{t:"fordi",c:false},{t:"ingenting",c:false}],
+    rett:"Riktig! Etter «sa» trenger du «at».", naer:"Etter «sa» må du ha «at»: «Hun sa at …»." },
+  { setning:"Jeg var glad ___ vi fikk fri.",
+    alt:[{t:"fordi",c:true},{t:"fordi at",c:false},{t:"at",c:false}],
+    rett:"Ja! Bare «fordi», uten «at».", naer:"Riktig er bare «fordi» — uten «at»." },
+  { setning:"Læreren viste ___ hun brydde seg.",
+    alt:[{t:"at",c:true},{t:"fordi",c:false},{t:"ingenting",c:false}],
+    rett:"Riktig! Etter «viste» trenger du «at».", naer:"Etter «viste» må du ha «at»: «viste at …»." },
+  { setning:"Jeg håper ___ det går bra i morgen.",
+    alt:[{t:"at",c:true},{t:"fordi",c:false},{t:"ingenting",c:false}],
+    rett:"Ja! Etter «håper» trenger du «at».", naer:"Etter «håper» må du ha «at»: «håper at …»." },
+  { setning:"Vi må øve mer ___ vi ikke kan alt ennå.",
+    alt:[{t:"fordi",c:true},{t:"fordi at",c:false},{t:"at",c:false}],
+    rett:"Riktig! «Fordi» alene er nok.", naer:"Riktig er bare «fordi» — uten «at»." },
+  { setning:"Pappa tror ___ du klarer denne oppgaven.",
+    alt:[{t:"at",c:true},{t:"fordi",c:false},{t:"ingenting",c:false}],
+    rett:"Ja! Etter «tror» trenger du «at».", naer:"Etter «tror» må du ha «at»: «tror at …»." },
+  { setning:"Jeg mestret reisen ___ jeg hadde en god plan.",
+    alt:[{t:"fordi",c:true},{t:"fordi at",c:false},{t:"at",c:false}],
+    rett:"Riktig! Bare «fordi».", naer:"Riktig er bare «fordi» — uten «at»." },
+];
+
+let vn=0,vp=0,vlogg=[];
+function visVelg(){
+  const s=VELG[vn];
+  $('velgSlutt').classList.remove('vis');
+  $('velgKort').style.display='block';
+  $('velgTeller').textContent="Setning "+(vn+1)+" av "+VELG.length;
+  $('velgSetning').innerHTML=s.setning.replace('___','<span class="sp-blank">___</span>');
+  $('velgTilbake').className='sp-tilbake';
+  $('velgNeste').className='sp-neste';
+  $('velgSvar').innerHTML='';
+  bland(s.alt.map(a=>({...a}))).forEach(a=>{
+    const b=document.createElement('button');
+    b.className='sp-svar'; b.textContent=a.t;
+    b.onclick=()=>velgSvar(b,a,s);
+    $('velgSvar').appendChild(b);
+  });
+}
+function velgSvar(knapp,alt,s){
+  $('velgSvar').querySelectorAll('.sp-svar').forEach(k=>k.disabled=true);
+  if(alt.c){ knapp.classList.add('riktig'); vp++; $('velgTilbake').className='sp-tilbake vis bra'; $('velgTilbake').textContent=s.rett; }
+  else{ knapp.classList.add('feil'); const r=s.alt.find(a=>a.c).t;
+    $('velgSvar').querySelectorAll('.sp-svar').forEach(k=>{if(k.textContent===r)k.classList.add('riktig');});
+    $('velgTilbake').className='sp-tilbake vis naer'; $('velgTilbake').textContent=s.naer; }
+  vlogg.push((alt.c?"✓":"✗")+" "+s.setning+" → "+alt.t);
+  $('velgNeste').className='sp-neste vis';
+  $('velgNeste').textContent=(vn===VELG.length-1)?"Ferdig 🎉":"Neste →";
+}
+$('velgNeste').onclick=()=>{ vn++; if(vn>=VELG.length) sluttVelg(); else visVelg(); };
+function sluttVelg(){
+  $('velgKort').style.display='none';
+  $('velgSlutt').classList.add('vis');
+  $('velgPoeng').textContent=vp+" av "+VELG.length+" riktige 🎯";
+  const tekst="SETNINGER MED AT – Velg riktig\nPoeng: "+vp+"/"+VELG.length+"\n\n"+vlogg.join("\n");
+  const fd=new FormData(); fd.append(FELT,tekst);
+  fetch(FORMSPREE,{method:"POST",body:fd,headers:{"Accept":"application/json"}}).then(r=>{if(r.ok)$('velgSendt').classList.add('vis');}).catch(()=>{});
+}
+$('velgNytt').onclick=()=>{ vn=0;vp=0;vlogg=[]; visVelg(); };
+
+/* ================= BYGG: fullfør setningen selv =================
+   Setningsstartere hentet fra mønstre hun allerede bruker (håndball,
+   Pipoka, skole), men nå med riktig "at"-struktur.
+================================================================= */
+const BYGG=[
+  { start:"Jeg vet at ", hjelp:["jeg klarer det","håndball er gøy","Pipoka er glad i meg"] },
+  { start:"Jeg tror at ", hjelp:["i morgen blir en god dag","vi vinner kampen","det blir gøy"] },
+  { start:"Jeg gruer meg fordi ", hjelp:["jeg må løpe mye","det er en vanskelig oppgave","jeg er litt nervøs"] },
+  { start:"Læreren viste at ", hjelp:["hun brydde seg","hun forsto meg","hun ville hjelpe"] },
+  { start:"Jeg håper at ", hjelp:["det går bra","vi får fri","jeg mestrer det"] },
+];
+BYGG.forEach((b,i)=>{
+  const d=document.createElement('div');
+  d.className='bygg-kort';
+  const chips=b.hjelp.map(h=>'<span class="ordbank-ord" data-txt="'+h+'">'+h+'</span>').join('');
+  d.innerHTML=
+    '<div class="bygg-start">'+b.start.replace('at ','<span class="at-ord">at</span> ').replace('fordi ','<span class="at-ord">fordi</span> ')+'…</div>'+
+    '<textarea class="svar-felt" data-i="'+i+'" data-start="'+b.start+'" placeholder="Fullfør setningen …"></textarea>'+
+    '<div class="ordbank">'+chips+'</div>';
+  $('byggListe').appendChild(d);
+});
+document.querySelectorAll('.ordbank-ord').forEach(o=>{
+  o.onclick=()=>{
+    const kort=o.closest('.bygg-kort');
+    const felt=kort.querySelector('.svar-felt');
+    felt.value=o.dataset.txt;
+    felt.focus();
+  };
+});
+$('sendBygg').onclick=()=>{
+  let linjer=[];
+  document.querySelectorAll('#byggListe .svar-felt').forEach(f=>{
+    const t=f.value.trim();
+    if(t) linjer.push(f.dataset.start+t);
+  });
+  const tekst="SETNINGER MED AT – Bygg selv\n\n"+(linjer.length?linjer.join("\n"):"(tomt)");
+  const fd=new FormData(); fd.append(FELT,tekst);
+  fetch(FORMSPREE,{method:"POST",body:fd,headers:{"Accept":"application/json"}}).then(r=>{if(r.ok)$('byggSendt').classList.add('vis');}).catch(()=>{});
+};
+
+visVelg();
+</script>
+</body>
+</html>
