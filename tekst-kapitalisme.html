@@ -111,6 +111,17 @@ main{max-width:600px;margin:0 auto;padding:0 1rem;}
 .quiz-slutt h2{font-family:'Baloo 2',cursive;color:var(--grape);font-size:1.5rem;margin:0.4rem 0;}
 .quiz-poeng{font-family:'Baloo 2',cursive;font-size:2.2rem;color:var(--gronn);margin:0.5rem 0;}
 .quiz-nytt{background:var(--sun);color:#fff;border:none;border-radius:14px;padding:0.8rem 1.6rem;font-family:'Baloo 2',cursive;font-size:1rem;cursor:pointer;margin-top:0.6rem;}
+.mini-sjekk{background:#fff;border-radius:16px;box-shadow:0 2px 16px rgba(124,58,237,0.08);padding:1.1rem 1.2rem;margin-bottom:1rem;border:2px solid #DCFCE7;}
+.mini-sjekk .ms-tittel{font-family:'Baloo 2',cursive;font-weight:800;font-size:0.95rem;color:#16A34A;margin-bottom:0.3rem;display:flex;align-items:center;gap:0.4rem;}
+.mini-sjekk .ms-info{font-size:0.82rem;color:#6B7280;margin-bottom:0.9rem;}
+.ms-sp{margin-bottom:1.1rem;}
+.ms-sp:last-child{margin-bottom:0;}
+.ms-q{font-weight:700;font-size:0.98rem;margin-bottom:0.5rem;}
+.ms-alt{display:flex;flex-wrap:wrap;gap:0.5rem;}
+.ms-btn{background:#f7f5fc;border:2px solid #E5E7EB;border-radius:10px;padding:0.5rem 0.9rem;font-family:'Nunito',sans-serif;font-weight:700;font-size:0.9rem;cursor:pointer;color:#1E1B4B;}
+.ms-btn.riktig{background:#DCFCE7;border-color:#16A34A;color:#15803d;}
+.ms-btn.feil{background:#fdeee9;border-color:#e17055;color:#b91c1c;opacity:0.8;}
+.ms-btn:disabled{cursor:default;}
 </style>
 </head>
 <body>
@@ -206,6 +217,32 @@ main{max-width:600px;margin:0 auto;padding:0 1rem;}
         <span class="ur-chip" data-d="å finne ut mer om noe">⭐ undersøke</span>
         <span class="ur-chip" data-d="å fortelle om noe med ord">⭐ beskrive</span>
         <span class="ur-chip" data-d="å gjøre noe lett å forstå">⭐ forklare</span>
+      </div>
+    </div>
+
+    <div class="mini-sjekk">
+      <div class="ms-tittel">✅ Sjekk deg selv</div>
+      <div class="ms-info">Skjønte du teksten? Trykk på svaret du tror er riktig!</div>
+      <div class="ms-sp">
+        <div class="ms-q">1. Hva kan Edel gjøre med melken fra kuene?</div>
+        <div class="ms-alt">
+          <button class="ms-btn" data-riktig="true">Selge den</button>
+          <button class="ms-btn" data-riktig="false">Kaste den</button>
+        </div>
+      </div>
+      <div class="ms-sp">
+        <div class="ms-q">2. Hva betyr å «eie» noe?</div>
+        <div class="ms-alt">
+          <button class="ms-btn" data-riktig="true">At det er ditt</button>
+          <button class="ms-btn" data-riktig="false">At du låner det</button>
+        </div>
+      </div>
+      <div class="ms-sp">
+        <div class="ms-q">3. Hva er fortjeneste?</div>
+        <div class="ms-alt">
+          <button class="ms-btn" data-riktig="true">Pengene som er igjen etter at du har betalt for alt</button>
+          <button class="ms-btn" data-riktig="false">Alle pengene du har til sammen</button>
+        </div>
       </div>
     </div>
   </div>
@@ -417,6 +454,15 @@ function sluttQuiz(){
 }
 $('quizNytt').onclick=()=>{ qn=0;qp=0;qlogg=[]; visQuiz(); };
 visQuiz();
+document.querySelectorAll(".ms-alt").forEach(grp=>{
+  grp.querySelectorAll(".ms-btn").forEach(b=>{
+    b.onclick=()=>{
+      grp.querySelectorAll(".ms-btn").forEach(x=>x.disabled=true);
+      if(b.dataset.riktig==="true"){ b.classList.add("riktig"); }
+      else{ b.classList.add("feil"); grp.querySelectorAll(".ms-btn").forEach(x=>{if(x.dataset.riktig==="true")x.classList.add("riktig");}); }
+    };
+  });
+});
 </script>
 </body>
 </html>

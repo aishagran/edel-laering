@@ -91,6 +91,17 @@ main{max-width:600px;margin:0 auto;padding:0 1rem;}
 .ukens-repetisjon .ur-tekst{font-size:0.86rem;color:#1e40af;margin-bottom:0.6rem;}
 .ur-ord{display:inline-block;background:#fff;border:1.5px solid #93c5fd;color:#2563eb;font-weight:700;padding:3px 10px;border-radius:99px;margin:2px 4px 2px 0;font-size:0.85rem;cursor:pointer;}
 .ur-ord:hover{background:#dbeafe;}
+.mini-sjekk{background:#fff;border-radius:16px;box-shadow:0 2px 16px rgba(124,58,237,0.08);padding:1.1rem 1.2rem;margin-bottom:1rem;border:2px solid #DCFCE7;}
+.mini-sjekk .ms-tittel{font-family:'Baloo 2',cursive;font-weight:800;font-size:0.95rem;color:#16A34A;margin-bottom:0.3rem;display:flex;align-items:center;gap:0.4rem;}
+.mini-sjekk .ms-info{font-size:0.82rem;color:#6B7280;margin-bottom:0.9rem;}
+.ms-sp{margin-bottom:1.1rem;}
+.ms-sp:last-child{margin-bottom:0;}
+.ms-q{font-weight:700;font-size:0.98rem;margin-bottom:0.5rem;}
+.ms-alt{display:flex;flex-wrap:wrap;gap:0.5rem;}
+.ms-btn{background:#f7f5fc;border:2px solid #E5E7EB;border-radius:10px;padding:0.5rem 0.9rem;font-family:'Nunito',sans-serif;font-weight:700;font-size:0.9rem;cursor:pointer;color:#1E1B4B;}
+.ms-btn.riktig{background:#DCFCE7;border-color:#16A34A;color:#15803d;}
+.ms-btn.feil{background:#fdeee9;border-color:#e17055;color:#b91c1c;opacity:0.8;}
+.ms-btn:disabled{cursor:default;}
 </style>
 </head>
 <body>
@@ -184,6 +195,32 @@ main{max-width:600px;margin:0 auto;padding:0 1rem;}
       <span class="ur-ord" data-d="å finne ut mer om noe">undersøke</span>
       <span class="ur-ord" data-d="å fortelle nøye hvordan noe er eller ser ut">beskrive</span>
       <span class="ur-ord" data-d="å gjøre noe lettere å forstå">forklare</span>
+    </div>
+
+    <div class="mini-sjekk">
+      <div class="ms-tittel">✅ Sjekk deg selv</div>
+      <div class="ms-info">Skjønte du teksten? Trykk på svaret du tror er riktig!</div>
+      <div class="ms-sp">
+        <div class="ms-q">1. Hva handler sosialisme om?</div>
+        <div class="ms-alt">
+          <button class="ms-btn" data-riktig="true">At alle deler</button>
+          <button class="ms-btn" data-riktig="false">At ingen deler</button>
+        </div>
+      </div>
+      <div class="ms-sp">
+        <div class="ms-q">2. Hva får hundene fra den store kurven?</div>
+        <div class="ms-alt">
+          <button class="ms-btn" data-riktig="true">Hjelp til skole, sykehus og veier</button>
+          <button class="ms-btn" data-riktig="false">Ingenting</button>
+        </div>
+      </div>
+      <div class="ms-sp">
+        <div class="ms-q">3. Er alle enige om sosialisme?</div>
+        <div class="ms-alt">
+          <button class="ms-btn" data-riktig="false">Ja, alle er enige</button>
+          <button class="ms-btn" data-riktig="true">Nei, folk mener forskjellige ting</button>
+        </div>
+      </div>
     </div>
   </div>
 
@@ -328,6 +365,15 @@ ORD.forEach(o=>{
   d.className='ord-kort';
   d.innerHTML='<div class="ord-navn">'+o.ord+'</div><div class="ord-betyr">'+o.betyr+'</div><div class="ord-eksempel">«'+o.eksempel+'»</div>';
   $('ordListe').appendChild(d);
+});
+document.querySelectorAll(".ms-alt").forEach(grp=>{
+  grp.querySelectorAll(".ms-btn").forEach(b=>{
+    b.onclick=()=>{
+      grp.querySelectorAll(".ms-btn").forEach(x=>x.disabled=true);
+      if(b.dataset.riktig==="true"){ b.classList.add("riktig"); }
+      else{ b.classList.add("feil"); grp.querySelectorAll(".ms-btn").forEach(x=>{if(x.dataset.riktig==="true")x.classList.add("riktig");}); }
+    };
+  });
 });
 </script>
 </body>
