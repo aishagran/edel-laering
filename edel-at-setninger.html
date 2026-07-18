@@ -21,6 +21,9 @@ body{font-family:'Nunito',sans-serif;background:var(--bg);color:var(--ink);min-h
 .hero .ikon{font-size:2.6rem;}
 .hero h1{font-family:'Baloo 2',cursive;font-size:1.7rem;font-weight:800;color:var(--grape);margin-top:0.3rem;line-height:1.15;}
 .hero p{color:var(--muted);font-size:0.9rem;margin-top:0.3rem;}
+.dagens-banner{max-width:600px;margin:0.5rem auto 1rem;background:linear-gradient(135deg,var(--sun-light),#fff);border:2px solid var(--sun);border-radius:16px;padding:0.8rem 1.1rem;text-align:center;}
+.dagens-banner .dag-tittel{font-family:'Baloo 2',cursive;font-weight:800;font-size:0.98rem;color:var(--sun);}
+.dagens-banner .dag-dato{font-size:0.85rem;color:#8a6d3b;font-weight:700;text-transform:capitalize;}
 main{max-width:600px;margin:0 auto;padding:0 1rem;}
 
 /* Regel-boks: forklarer MØNSTERET, ikke bare gir øvelser */
@@ -90,6 +93,8 @@ main{max-width:600px;margin:0 auto;padding:0 1rem;}
 </div>
 
 <main>
+  <div class="dagens-banner" id="dagensBanner"></div>
+
   <div class="regel-boks">
     <div class="regel-tittel">💡 To enkle regler</div>
     <p><b>Regel 1:</b> Etter <span class="at-ord">fordi</span> trenger du IKKE «at».</p>
@@ -97,7 +102,7 @@ main{max-width:600px;margin:0 auto;padding:0 1rem;}
       <span class="ja">✅ Jeg gruer meg fordi jeg må løpe mye.</span><br>
       <span class="nei">❌ Jeg gruer meg fordi at jeg må løpe mye.</span>
     </div>
-    <p style="margin-top:0.9rem;"><b>Regel 2:</b> Etter ord som <i>vet, tror, sier, viser, håper</i> trenger du <span class="at-ord">at</span>.</p>
+    <p style="margin-top:0.9rem;"><b>Regel 2:</b> Etter ord som <i>vet, tror, sier, viser, håper, synes, husker</i> trenger du <span class="at-ord">at</span>.</p>
     <div class="regel-eks">
       <span class="ja">✅ Jeg vet at jeg klarer det.</span><br>
       <span class="nei">❌ Jeg vet jeg klarer det.</span>
@@ -141,6 +146,57 @@ const FORMSPREE="https://formspree.io/f/mqeolldg";
 const FELT="Tekst_hun_skrev";
 const $=id=>document.getElementById(id);
 function bland(a){for(let i=a.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[a[i],a[j]]=[a[j],a[i]];}return a;}
+
+/* ===== DAGENS ØKT: samme mekanikk som hvis-setninger ===== */
+const ANT_PER_DAG = 8;
+function dagsNummer(){
+  const start = new Date(2024,0,1);
+  const naa = new Date();
+  return Math.floor((naa - start) / (1000*60*60*24));
+}
+function velgDagens(liste, antall, froe, salt){
+  /* Syklisk rotasjon: hele listen blandes ÉN gang per syklus (deterministisk,
+     basert på syklusnummer), og deles i blokker på "antall". Hver dag får
+     én blokk. Dette garanterer at ALLE elementer vises minst én gang før
+     noe gjentas — i motsetning til rent tilfeldig trekning hver dag.
+     "salt" endrer KUN blandingen (så VELG og BYGG ikke får identisk
+     rekkefølge), uten å påvirke hvilken dag som tilhører hvilken blokk. */
+  salt = salt || 1;
+  const n = liste.length;
+  const blokkerPerSyklus = Math.ceil(n / antall);
+  const syklus = Math.floor(froe / blokkerPerSyklus);
+  const blokkIndeks = froe % blokkerPerSyklus;
+
+  const idx = [];
+  for(let k=0;k<n;k++) idx.push(k);
+  let s = (syklus*salt+salt)*2654435761 % 4294967296;
+  for(let i=n-1;i>0;i--){
+    s = (s*1103515245 + 12345) & 0x7fffffff;
+    const j = s % (i+1);
+    [idx[i],idx[j]] = [idx[j],idx[i]];
+  }
+
+  const start = blokkIndeks*antall;
+  const utvalgIdx = idx.slice(start, Math.min(start+antall, n));
+  // Siste blokk i syklusen kan bli kortere enn "antall" hvis n ikke er delelig
+  // med antall — fyll opp fra starten av SAMME blandede liste, uten duplikater.
+  if(utvalgIdx.length < antall){
+    for(let k=0; utvalgIdx.length<antall && k<n; k++){
+      if(!utvalgIdx.includes(idx[k])) utvalgIdx.push(idx[k]);
+    }
+  }
+  return utvalgIdx.map(i=>liste[i]);
+}
+const UKEDAGER = ["søndag","mandag","tirsdag","onsdag","torsdag","fredag","lørdag"];
+const MANEDER = ["januar","februar","mars","april","mai","juni","juli","august","september","oktober","november","desember"];
+(function visBanner(){
+  const d = new Date();
+  const dato = UKEDAGER[d.getDay()] + " " + d.getDate() + ". " + MANEDER[d.getMonth()];
+  $('dagensBanner').innerHTML =
+    '<div class="dag-tittel">🌟 Dagens økt — '+ANT_PER_DAG+' + '+ANT_PER_DAG+' setninger</div>'+
+    '<div class="dag-dato">'+dato+'</div>';
+})();
+const dagensFroe = dagsNummer();
 
 document.querySelectorAll('.tab').forEach(t=>{
   t.onclick=()=>{
@@ -188,14 +244,66 @@ const VELG=[
   { setning:"Jeg mestret reisen ___ jeg hadde en god plan.",
     alt:[{t:"fordi",c:true},{t:"fordi at",c:false},{t:"at",c:false}],
     rett:"Riktig! Bare «fordi».", naer:"Riktig er bare «fordi» — uten «at»." },
+  { setning:"Jeg synes ___ taekwondo er gøy.",
+    alt:[{t:"at",c:true},{t:"fordi",c:false},{t:"ingenting",c:false}],
+    rett:"Ja! Etter «synes» trenger du «at».", naer:"Etter «synes» må du ha «at»: «synes at …»." },
+  { setning:"Pipoka ble glad ___ jeg kom hjem.",
+    alt:[{t:"fordi",c:true},{t:"fordi at",c:false},{t:"at",c:false}],
+    rett:"Riktig! Bare «fordi», uten «at».", naer:"Riktig er bare «fordi» — uten «at»." },
+  { setning:"Jeg oppdaget ___ jeg hadde glemt boken.",
+    alt:[{t:"at",c:true},{t:"fordi",c:false},{t:"ingenting",c:false}],
+    rett:"Ja! Etter «oppdaget» trenger du «at».", naer:"Etter «oppdaget» må du ha «at»: «oppdaget at …»." },
+  { setning:"Vi ble sent ute ___ bussen var forsinket.",
+    alt:[{t:"fordi",c:true},{t:"fordi at",c:false},{t:"at",c:false}],
+    rett:"Riktig! Bare «fordi».", naer:"Riktig er bare «fordi» — uten «at»." },
+  { setning:"Eila fortalte ___ hun hadde flyttet.",
+    alt:[{t:"at",c:true},{t:"fordi",c:false},{t:"ingenting",c:false}],
+    rett:"Ja! Etter «fortalte» trenger du «at».", naer:"Etter «fortalte» må du ha «at»: «fortalte at …»." },
+  { setning:"Jeg ble sliten ___ vi trente lenge.",
+    alt:[{t:"fordi",c:true},{t:"fordi at",c:false},{t:"at",c:false}],
+    rett:"Riktig! Bare «fordi», uten «at».", naer:"Riktig er bare «fordi» — uten «at»." },
+  { setning:"Jeg husker ___ vi lo mye den dagen.",
+    alt:[{t:"at",c:true},{t:"fordi",c:false},{t:"ingenting",c:false}],
+    rett:"Ja! Etter «husker» trenger du «at».", naer:"Etter «husker» må du ha «at»: «husker at …»." },
+  { setning:"Mamma ble stolt ___ jeg klarte kampen alene.",
+    alt:[{t:"fordi",c:true},{t:"fordi at",c:false},{t:"at",c:false}],
+    rett:"Riktig! Bare «fordi».", naer:"Riktig er bare «fordi» — uten «at»." },
+  { setning:"Jeg forstår ___ det var vanskelig for deg.",
+    alt:[{t:"at",c:true},{t:"fordi",c:false},{t:"ingenting",c:false}],
+    rett:"Ja! Etter «forstår» trenger du «at».", naer:"Etter «forstår» må du ha «at»: «forstår at …»." },
+  { setning:"Vi feiret ___ vi endelig hadde sommerferie.",
+    alt:[{t:"fordi",c:true},{t:"fordi at",c:false},{t:"at",c:false}],
+    rett:"Riktig! Bare «fordi», uten «at».", naer:"Riktig er bare «fordi» — uten «at»." },
+  { setning:"Jeg lovet ___ jeg skulle øve hver dag.",
+    alt:[{t:"at",c:true},{t:"fordi",c:false},{t:"ingenting",c:false}],
+    rett:"Ja! Etter «lovet» trenger du «at».", naer:"Etter «lovet» må du ha «at»: «lovet at …»." },
+  { setning:"Jeg var nervøs ___ det var min første kamp.",
+    alt:[{t:"fordi",c:true},{t:"fordi at",c:false},{t:"at",c:false}],
+    rett:"Riktig! Bare «fordi».", naer:"Riktig er bare «fordi» — uten «at»." },
+  { setning:"Jeg synes ___ Pipoka er den beste hunden.",
+    alt:[{t:"at",c:true},{t:"fordi",c:false},{t:"ingenting",c:false}],
+    rett:"Ja! Etter «synes» trenger du «at».", naer:"Etter «synes» må du ha «at»: «synes at …»." },
+  { setning:"Jeg husker ___ vi lekte sammen i Brasil.",
+    alt:[{t:"at",c:true},{t:"fordi",c:false},{t:"ingenting",c:false}],
+    rett:"Riktig! Etter «husker» trenger du «at».", naer:"Etter «husker» må du ha «at»: «husker at …»." },
+  { setning:"Jeg ble glad ___ vi vant håndballkampen.",
+    alt:[{t:"fordi",c:true},{t:"fordi at",c:false},{t:"at",c:false}],
+    rett:"Ja! Bare «fordi», uten «at».", naer:"Riktig er bare «fordi» — uten «at»." },
+  { setning:"Pipoka viste ___ hun var glad for å se meg.",
+    alt:[{t:"at",c:true},{t:"fordi",c:false},{t:"ingenting",c:false}],
+    rett:"Riktig! Etter «viste» trenger du «at».", naer:"Etter «viste» må du ha «at»: «viste at …»." },
+  { setning:"Jeg synes ___ håndball er den beste sporten.",
+    alt:[{t:"at",c:true},{t:"fordi",c:false},{t:"ingenting",c:false}],
+    rett:"Ja! Etter «synes» trenger du «at».", naer:"Etter «synes» må du ha «at»: «synes at …»." },
 ];
 
 let vn=0,vp=0,vlogg=[];
+const VELG_DAGENS = velgDagens(VELG, ANT_PER_DAG, dagensFroe, 1);
 function visVelg(){
-  const s=VELG[vn];
+  const s=VELG_DAGENS[vn];
   $('velgSlutt').classList.remove('vis');
   $('velgKort').style.display='block';
-  $('velgTeller').textContent="Setning "+(vn+1)+" av "+VELG.length;
+  $('velgTeller').textContent="Setning "+(vn+1)+" av "+VELG_DAGENS.length;
   $('velgSetning').innerHTML=s.setning.replace('___','<span class="sp-blank">___</span>');
   $('velgTilbake').className='sp-tilbake';
   $('velgNeste').className='sp-neste';
@@ -215,13 +323,13 @@ function velgSvar(knapp,alt,s){
     $('velgTilbake').className='sp-tilbake vis naer'; $('velgTilbake').textContent=s.naer; }
   vlogg.push((alt.c?"✓":"✗")+" "+s.setning+" → "+alt.t);
   $('velgNeste').className='sp-neste vis';
-  $('velgNeste').textContent=(vn===VELG.length-1)?"Ferdig 🎉":"Neste →";
+  $('velgNeste').textContent=(vn===VELG_DAGENS.length-1)?"Ferdig 🎉":"Neste →";
 }
-$('velgNeste').onclick=()=>{ vn++; if(vn>=VELG.length) sluttVelg(); else visVelg(); };
+$('velgNeste').onclick=()=>{ vn++; if(vn>=VELG_DAGENS.length) sluttVelg(); else visVelg(); };
 function sluttVelg(){
   $('velgKort').style.display='none';
   $('velgSlutt').classList.add('vis');
-  $('velgPoeng').textContent=vp+" av "+VELG.length+" riktige 🎯";
+  $('velgPoeng').textContent=vp+" av "+VELG_DAGENS.length+" riktige 🎯";
   const tekst="SETNINGER MED AT – Velg riktig\nPoeng: "+vp+"/"+VELG.length+"\n\n"+vlogg.join("\n");
   const fd=new FormData(); fd.append(FELT,tekst);
   fetch(FORMSPREE,{method:"POST",body:fd,headers:{"Accept":"application/json"}}).then(r=>{if(r.ok)$('velgSendt').classList.add('vis');}).catch(()=>{});
@@ -238,14 +346,27 @@ const BYGG=[
   { start:"Jeg gruer meg fordi ", hjelp:["jeg må løpe mye","det er en vanskelig oppgave","jeg er litt nervøs"] },
   { start:"Læreren viste at ", hjelp:["hun brydde seg","hun forsto meg","hun ville hjelpe"] },
   { start:"Jeg håper at ", hjelp:["det går bra","vi får fri","jeg mestrer det"] },
+  { start:"Jeg synes at ", hjelp:["taekwondo er gøy","denne boken er spennende","dette er vanskelig"] },
+  { start:"Jeg ble glad fordi ", hjelp:["vi vant kampen","Pipoka kom og hilste","jeg fikk besøk"] },
+  { start:"Jeg oppdaget at ", hjelp:["jeg hadde glemt noe","det var lettere enn jeg trodde","jeg klarte det selv"] },
+  { start:"Hun fortalte at ", hjelp:["hun skulle flytte","hun var glad","hun hadde en overraskelse"] },
+  { start:"Jeg husker at ", hjelp:["vi lo mye den dagen","det var min første kamp","vi hadde det gøy"] },
+  { start:"Mamma ble stolt fordi ", hjelp:["jeg klarte det alene","jeg øvde hver dag","jeg ikke ga opp"] },
+  { start:"Jeg forstår at ", hjelp:["det var vanskelig for deg","alle gjør feil noen ganger","jeg må øve mer"] },
+  { start:"Jeg lovet at ", hjelp:["jeg skulle øve hver dag","jeg skulle prøve mitt beste","jeg skulle si ifra"] },
+  { start:"Jeg var nervøs fordi ", hjelp:["det var min første kamp","jeg ikke visste hva som skulle skje","alle så på meg"] },
+  { start:"Jeg synes at ", hjelp:["Pipoka er den beste hunden","håndball er gøy","Brasil er et fint land"] },
+  { start:"Jeg husker at ", hjelp:["vi lekte sammen i Brasil","Pipoka ble borte en gang","vi hadde det gøy sammen"] },
 ];
-BYGG.forEach((b,i)=>{
+BYGG.forEach((b,i)=>{ b._idx = i; });
+const BYGG_DAGENS = velgDagens(BYGG, ANT_PER_DAG, dagensFroe, 7);
+BYGG_DAGENS.forEach((b,i)=>{
   const d=document.createElement('div');
   d.className='bygg-kort';
   const chips=b.hjelp.map(h=>'<span class="ordbank-ord" data-txt="'+h+'">'+h+'</span>').join('');
   d.innerHTML=
     '<div class="bygg-start">'+b.start.replace('at ','<span class="at-ord">at</span> ').replace('fordi ','<span class="at-ord">fordi</span> ')+'…</div>'+
-    '<textarea class="svar-felt" data-i="'+i+'" data-start="'+b.start+'" placeholder="Fullfør setningen …"></textarea>'+
+    '<textarea class="svar-felt" data-i="'+b._idx+'" data-start="'+b.start+'" placeholder="Fullfør setningen …"></textarea>'+
     '<div class="ordbank">'+chips+'</div>';
   $('byggListe').appendChild(d);
 });
