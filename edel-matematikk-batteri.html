@@ -1,0 +1,315 @@
+<!DOCTYPE html>
+<html lang="no">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Matematikk anvendt – Batteriet – Edels Verden</title>
+<link href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@600;700;800&family=Nunito:wght@400;600;700&display=swap" rel="stylesheet">
+<style>
+:root{
+  --grape:#7C3AED;--grape-light:#EDE9FE;--berry:#E84A8A;--gronn:#16A34A;--gronn-light:#DCFCE7;
+  --rod:#e17055;--rod-light:#fdeee9;--sun:#D97706;--sun-light:#FEF3C7;
+  --ink:#1E1B4B;--muted:#6B7280;--bg:#FBF7FF;--card:#fff;--line:#E5E7EB;
+  --shadow:0 2px 16px rgba(124,58,237,0.08);
+}
+*{box-sizing:border-box;margin:0;padding:0;}
+body{font-family:'Nunito',sans-serif;background:var(--bg);color:var(--ink);min-height:100vh;padding-bottom:3rem;line-height:1.6;}
+.topbar{background:#fff;padding:0.9rem 1.1rem;display:flex;align-items:center;gap:0.75rem;box-shadow:0 2px 12px rgba(124,58,237,0.06);position:sticky;top:0;z-index:40;}
+.home-btn{text-decoration:none;font-size:1.3rem;background:var(--grape-light);border-radius:12px;padding:0.35rem 0.7rem;}
+.topbar .tittel{font-family:'Baloo 2',cursive;font-weight:800;font-size:1.1rem;color:var(--ink);}
+.hero{text-align:center;padding:1.6rem 1.25rem 1rem;}
+.hero .ikon{font-size:2.6rem;}
+.hero h1{font-family:'Baloo 2',cursive;font-size:1.6rem;font-weight:800;color:var(--grape);margin-top:0.3rem;line-height:1.15;}
+.hero p{color:var(--muted);font-size:0.9rem;margin-top:0.3rem;}
+main{max-width:600px;margin:0 auto;padding:0 1rem;}
+
+.tabs{display:flex;gap:0.4rem;margin:0.5rem 0 1.2rem;position:sticky;top:3.4rem;background:var(--bg);padding:0.6rem 0;z-index:30;}
+.tab{flex:1;font-family:'Baloo 2',cursive;font-size:0.82rem;font-weight:700;padding:0.6rem 0.3rem;border-radius:12px;border:2.5px solid var(--line);background:#fff;color:var(--muted);cursor:pointer;transition:all 0.15s;display:flex;flex-direction:column;align-items:center;gap:2px;}
+.tab .t-ikon{font-size:1.1rem;}
+.tab.aktiv{background:var(--grape);color:#fff;border-color:var(--grape);}
+.panel{display:none;animation:fade 0.3s;}
+.panel.aktiv{display:block;}
+@keyframes fade{from{opacity:0;transform:translateY(6px);}to{opacity:1;transform:translateY(0);}}
+
+/* Dialog-bobler */
+.dialog{background:var(--card);border-radius:16px;box-shadow:var(--shadow);padding:1.1rem 1.2rem;margin-bottom:1rem;}
+.snakk{display:flex;gap:0.6rem;margin-bottom:0.8rem;align-items:flex-start;}
+.snakk:last-child{margin-bottom:0;}
+.snakk .navn-boks{flex-shrink:0;width:34px;height:34px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:1.2rem;font-weight:800;}
+.snakk.tiago .navn-boks{background:#DBEAFE;}
+.snakk.julia .navn-boks{background:#FCE7F3;}
+.snakk .boble{background:#f7f5fc;border-radius:14px;padding:0.7rem 0.9rem;font-size:1.02rem;flex:1;}
+.snakk.tiago .boble{background:#EFF6FF;}
+.snakk.julia .boble{background:#FDF2F8;}
+.snakk .navn-tekst{font-family:'Baloo 2',cursive;font-weight:700;font-size:0.82rem;color:var(--muted);margin-bottom:0.2rem;}
+
+/* Steg-visning */
+.steg-rekke{display:flex;flex-direction:column;gap:0.6rem;margin:1rem 0;}
+.steg{display:flex;align-items:center;gap:0.8rem;background:var(--card);border-radius:14px;box-shadow:var(--shadow);padding:0.8rem 1rem;}
+.steg-nr{flex-shrink:0;width:36px;height:36px;border-radius:10px;background:var(--grape);color:#fff;display:flex;align-items:center;justify-content:center;font-family:'Baloo 2',cursive;font-weight:800;font-size:1rem;}
+.steg-bar-wrap{flex:1;}
+.steg-bar-bg{background:#E5E7EB;border-radius:99px;height:20px;overflow:hidden;}
+.steg-bar-fyll{height:100%;background:linear-gradient(90deg,var(--gronn),#22c55e);border-radius:99px;transition:width 0.4s;}
+.steg-regnestykke{font-size:0.85rem;color:var(--muted);margin-top:0.3rem;}
+.steg-pst{flex-shrink:0;font-family:'Baloo 2',cursive;font-weight:800;font-size:1.3rem;color:var(--gronn);min-width:60px;text-align:right;}
+
+.aha-boks{background:linear-gradient(135deg,#FEF3C7,#fff);border:2px solid var(--sun);border-radius:16px;padding:1.1rem 1.3rem;margin:1rem 0;}
+.aha-tittel{font-family:'Baloo 2',cursive;font-weight:800;color:var(--sun);margin-bottom:0.4rem;}
+
+.regnestykke-boks{background:#EEF6FF;border:2px solid #93c5fd;border-radius:14px;padding:1rem 1.2rem;text-align:center;font-family:'Baloo 2',cursive;font-size:1.15rem;color:#1e40af;margin:1rem 0;}
+
+.oppsummering{background:var(--gronn-light);border-radius:14px;padding:1rem 1.2rem;font-weight:700;color:#15803d;margin:1rem 0;text-align:center;}
+
+/* Bilde */
+.bilde-wrap{background:#fff;border-radius:16px;box-shadow:var(--shadow);padding:0.5rem;overflow:hidden;cursor:zoom-in;}
+.bilde-wrap img{width:100%;border-radius:12px;display:block;}
+.bilde-mangler{padding:2.5rem 1rem;text-align:center;color:var(--muted);font-size:0.9rem;}
+.bilde-hint{text-align:center;font-size:0.82rem;color:var(--muted);margin-top:0.6rem;}
+.leser{display:none;position:fixed;inset:0;background:#1a1830;z-index:100;flex-direction:column;}
+.leser.open{display:flex;}
+.leser-bar{padding:0.8rem 1rem;display:flex;justify-content:flex-end;}
+.leser-lukk{background:#fff;border:none;border-radius:12px;padding:0.5rem 1.1rem;font-family:'Nunito',sans-serif;font-weight:800;font-size:0.9rem;cursor:pointer;}
+.leser-scroll{flex:1;overflow:auto;-webkit-overflow-scrolling:touch;touch-action:pan-x pan-y pinch-zoom;padding:0 0.5rem;}
+.leser-scroll img{width:100%;height:auto;display:block;border-radius:8px;}
+.leser-tips{color:rgba(255,255,255,0.6);text-align:center;font-size:0.78rem;padding:0.6rem;}
+
+/* Prøv selv */
+.oppgave-kort{background:var(--card);border-radius:18px;box-shadow:var(--shadow);padding:1.3rem;margin-bottom:1.3rem;}
+.oppgave-tittel{font-family:'Baloo 2',cursive;font-weight:800;font-size:1.1rem;color:var(--grape);margin-bottom:0.3rem;display:flex;align-items:center;gap:0.5rem;}
+.oppgave-story{font-size:0.98rem;color:var(--ink);background:#f7f5fc;border-radius:12px;padding:0.8rem 1rem;margin-bottom:1rem;}
+.steg-input-rekke{display:flex;flex-direction:column;gap:0.5rem;margin-bottom:0.8rem;}
+.steg-input{display:flex;align-items:center;gap:0.7rem;}
+.steg-input .steg-nr{width:30px;height:30px;font-size:0.85rem;}
+.steg-input input{flex:1;border:2.5px solid var(--line);border-radius:10px;padding:0.5rem 0.7rem;font-family:'Baloo 2',cursive;font-size:1.05rem;text-align:center;width:80px;flex:none;}
+.steg-input input:focus{outline:none;border-color:var(--grape);}
+.steg-input input.riktig{border-color:var(--gronn);background:var(--gronn-light);}
+.steg-input input.feil{border-color:var(--rod);background:var(--rod-light);}
+.steg-input .pst-tegn{font-family:'Baloo 2',cursive;color:var(--muted);}
+.sjekk-btn{width:100%;background:var(--grape);color:#fff;border:none;border-radius:12px;padding:0.8rem;font-family:'Baloo 2',cursive;font-size:1rem;cursor:pointer;margin-top:0.4rem;}
+.sjekk-btn:active{transform:scale(0.99);}
+.tilbakemelding{margin-top:0.7rem;padding:0.7rem 0.9rem;border-radius:10px;font-weight:700;font-size:0.92rem;display:none;text-align:center;}
+.tilbakemelding.vis{display:block;}
+.tilbakemelding.bra{background:var(--gronn-light);color:#15803d;}
+.tilbakemelding.naer{background:#fff8e1;color:#8a6d00;}
+.hjelp-btn{background:none;border:2px dashed #C9B3DE;color:var(--grape);font-weight:700;font-size:0.85rem;padding:0.5rem 0.9rem;border-radius:10px;cursor:pointer;margin-top:0.5rem;}
+.hjelp-tekst{display:none;margin-top:0.6rem;background:#eef6ff;border-radius:10px;padding:0.7rem 0.9rem;font-size:0.9rem;color:#1e40af;}
+.hjelp-tekst.vis{display:block;}
+
+.send-btn{display:block;width:100%;background:var(--sun);color:#fff;border:none;border-radius:14px;padding:0.9rem;font-family:'Baloo 2',cursive;font-size:1.05rem;cursor:pointer;margin-top:0.5rem;}
+.send-ok{text-align:center;color:var(--gronn);font-weight:700;font-size:0.9rem;margin-top:0.7rem;display:none;}
+.send-ok.vis{display:block;}
+</style>
+</head>
+<body>
+
+<div class="topbar">
+  <a class="home-btn" href="index.html">🏠</a>
+  <span class="tittel">Matematikk anvendt</span>
+</div>
+
+<div class="hero">
+  <div class="ikon">🔋</div>
+  <h1>Hvordan øker batteriet?</h1>
+  <p>Gjentatt addisjon med prosent</p>
+</div>
+
+<main>
+  <div class="tabs">
+    <button class="tab aktiv" data-p="historie"><span class="t-ikon">📖</span>Historien</button>
+    <button class="tab" data-p="se"><span class="t-ikon">🖼️</span>Se</button>
+    <button class="tab" data-p="prov"><span class="t-ikon">🎯</span>Prøv selv</button>
+  </div>
+
+  <!-- ===== HISTORIEN ===== -->
+  <div class="panel aktiv" id="p-historie">
+    <div class="dialog">
+      <div class="snakk tiago">
+        <div class="navn-boks">🧑</div>
+        <div>
+          <div class="navn-tekst">Tiago</div>
+          <div class="boble">Ah, ok! Den har 20 % her. På steg 2 går den opp til 40 %, på steg 3 til 60 %, så 80 %, og til slutt 100 %.</div>
+        </div>
+      </div>
+      <div class="snakk julia">
+        <div class="navn-boks">👧</div>
+        <div>
+          <div class="navn-tekst">Julia</div>
+          <div class="boble">Hm … jeg vet at den starter med 20 %, men jeg forstår ikke hvordan det blir 100 %.</div>
+        </div>
+      </div>
+    </div>
+
+    <h3 style="font-family:'Baloo 2',cursive;color:var(--grape);margin-bottom:0.6rem;">Slik øker batteriet på sparkesykkelen</h3>
+
+    <div class="steg-rekke" id="stegRekke"></div>
+
+    <div class="aha-boks">
+      <div class="aha-tittel">🧑 Tiago: 💡 Aha!</div>
+      <p>På hvert steg legger vi til 20 %. Derfor øker batteriet helt til 100 %.</p>
+    </div>
+
+    <div class="oppsummering">
+      ⭐ På hvert steg øker batteriet med 20 %.<br>Derfor går batteriet fra 20 % til 100 %.
+    </div>
+
+    <div class="regnestykke-boks">
+      ⭐ 20 % + 20 % + 20 % + 20 % + 20 % = 100 %<br>
+      <span style="font-size:0.85rem;color:var(--muted);">(5 steg)</span>
+    </div>
+
+    <div class="dialog">
+      <div class="snakk julia">
+        <div class="navn-boks">👧</div>
+        <div>
+          <div class="navn-tekst">Julia</div>
+          <div class="boble">😊 Nå skjønner jeg! Hvert steg betyr at vi legger til 20 %. Da blir batteriet fullt – 100 %!</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ===== SE ===== -->
+  <div class="panel" id="p-se">
+    <div class="bilde-wrap" id="bildeWrap">
+      <img src="sparke.png" alt="Sparkesykkel batteriindikator"
+           onerror="this.outerHTML='<div class=\'bilde-mangler\'>Last opp «sparke.png» på GitHub, så vises bildet her 🛴</div>'">
+    </div>
+    <div class="bilde-hint">🔍 Trykk på bildet for å se det stort</div>
+  </div>
+
+  <!-- ===== PRØV SELV ===== -->
+  <div class="panel" id="p-prov">
+    <div id="oppgaveListe"></div>
+    <button class="send-btn" id="sendSvar">Send til mamma 💌</button>
+    <div class="send-ok" id="sendOk">✓ Sendt til mamma</div>
+  </div>
+</main>
+
+<div class="leser" id="leser">
+  <div class="leser-bar"><button class="leser-lukk" onclick="lukkLeser()">✕ Lukk</button></div>
+  <div class="leser-scroll"><img id="leserImg" src="" alt=""></div>
+  <div class="leser-tips">Zoom med to fingre 🤏</div>
+</div>
+
+<script>
+const FORMSPREE="https://formspree.io/f/mqeolldg";
+const FELT="Tekst_hun_skrev";
+const $=id=>document.getElementById(id);
+
+/* Bilde-leser */
+const bw=$('bildeWrap');
+if(bw){ bw.onclick=()=>{ const img=bw.querySelector('img'); if(img){ $('leserImg').src=img.src; $('leser').classList.add('open'); } }; }
+function lukkLeser(){ $('leser').classList.remove('open'); }
+
+/* Tabs */
+document.querySelectorAll('.tab').forEach(t=>{
+  t.onclick=()=>{
+    document.querySelectorAll('.tab').forEach(x=>x.classList.remove('aktiv'));
+    document.querySelectorAll('.panel').forEach(x=>x.classList.remove('aktiv'));
+    t.classList.add('aktiv');
+    $('p-'+t.dataset.p).classList.add('aktiv');
+    window.scrollTo({top:0,behavior:'smooth'});
+  };
+});
+
+/* ===== HISTORIEN: bygg steg-rekken (5 steg, sparkesykkel) ===== */
+const STEG_MODELL = [20,40,60,80,100];
+STEG_MODELL.forEach((pst,i)=>{
+  const d=document.createElement('div');
+  d.className='steg';
+  const forrige = i===0 ? 0 : STEG_MODELL[i-1];
+  const regnestykke = i===0 ? "Starter med 20 %" : forrige+" % + 20 % = "+pst+" %";
+  d.innerHTML =
+    '<div class="steg-nr">'+(i+1)+'</div>'+
+    '<div class="steg-bar-wrap">'+
+      '<div class="steg-bar-bg"><div class="steg-bar-fyll" style="width:'+pst+'%"></div></div>'+
+      '<div class="steg-regnestykke">'+regnestykke+'</div>'+
+    '</div>'+
+    '<div class="steg-pst">'+pst+' %</div>';
+  $('stegRekke').appendChild(d);
+});
+
+/* ===== PRØV SELV: 3 nye oppgaver, samme mønster ===== */
+const OPPGAVER = [
+  {
+    ikon:"📱", tittel:"Mobilen til Julia",
+    story:"Julia sin mobil er tom og lades opp. Hvert steg øker med 25 %. Fyll ut alle stegene!",
+    steg_pst:25, antall_steg:4,
+    hjelp:"Legg til 25 % hver gang: 25, så 25+25, så +25 igjen …"
+  },
+  {
+    ikon:"💧", tittel:"Vannflasken til Tiago",
+    story:"Tiago fyller opp vannflasken sin. Hvert steg fylles den med 10 %. Fyll ut alle stegene!",
+    steg_pst:10, antall_steg:10,
+    hjelp:"Legg til 10 % hver gang: 10, 20, 30 … helt til 100."
+  },
+  {
+    ikon:"🎮", tittel:"Energibaren i dataspillet",
+    story:"I dataspillet fylles energibaren opp i tre steg: 33 %, 33 % og 34 % (til sammen 100 %). Fyll ut alle stegene!",
+    steg_liste:[33,66,100],
+    hjelp:"Legg til ca. 33 % hver gang. Det siste steget blir litt større, så det blir nøyaktig 100."
+  },
+];
+
+OPPGAVER.forEach((opg,oi)=>{
+  const stegListe = opg.steg_liste || Array.from({length:opg.antall_steg}, (_,i)=>(i+1)*opg.steg_pst);
+  const kort=document.createElement('div');
+  kort.className='oppgave-kort';
+  let inputsHtml = '<div class="steg-input-rekke">';
+  stegListe.forEach((fasit,i)=>{
+    inputsHtml += '<div class="steg-input">'+
+      '<div class="steg-nr">'+(i+1)+'</div>'+
+      '<input type="number" inputmode="numeric" data-oi="'+oi+'" data-si="'+i+'" data-fasit="'+fasit+'" placeholder="?">'+
+      '<span class="pst-tegn">%</span>'+
+      '</div>';
+  });
+  inputsHtml += '</div>';
+  kort.innerHTML =
+    '<div class="oppgave-tittel">'+opg.ikon+' '+opg.tittel+'</div>'+
+    '<div class="oppgave-story">'+opg.story+'</div>'+
+    inputsHtml+
+    '<button class="sjekk-btn" data-oi="'+oi+'">Sjekk svarene ✓</button>'+
+    '<div class="tilbakemelding" id="tilb-'+oi+'"></div>'+
+    '<button class="hjelp-btn" data-oi="'+oi+'">Trenger du hjelp? 💡</button>'+
+    '<div class="hjelp-tekst" id="hjelp-'+oi+'">'+opg.hjelp+'</div>';
+  $('oppgaveListe').appendChild(kort);
+});
+
+document.querySelectorAll('.sjekk-btn').forEach(btn=>{
+  btn.onclick=()=>{
+    const oi = btn.dataset.oi;
+    const inputs = document.querySelectorAll('input[data-oi="'+oi+'"]');
+    let alleRiktig = true, alleUtfylt = true;
+    inputs.forEach(inp=>{
+      const svar = inp.value.trim();
+      if(svar===''){ alleUtfylt=false; return; }
+      const fasit = inp.dataset.fasit;
+      if(svar===fasit){ inp.classList.add('riktig'); inp.classList.remove('feil'); }
+      else { inp.classList.add('feil'); inp.classList.remove('riktig'); alleRiktig=false; }
+    });
+    const tilb = $('tilb-'+oi);
+    tilb.className='tilbakemelding vis';
+    if(!alleUtfylt){ tilb.className='tilbakemelding vis naer'; tilb.textContent='Fyll ut alle stegene først 🙂'; }
+    else if(alleRiktig){ tilb.className='tilbakemelding vis bra'; tilb.textContent='Riktig! Du fant mønsteret! 🎉'; }
+    else { tilb.className='tilbakemelding vis naer'; tilb.textContent='Nesten! Se på de røde og prøv igjen.'; }
+  };
+});
+document.querySelectorAll('.hjelp-btn').forEach(btn=>{
+  btn.onclick=()=>{ $('hjelp-'+btn.dataset.oi).classList.toggle('vis'); };
+});
+
+$('sendSvar').onclick=()=>{
+  let linjer=[];
+  OPPGAVER.forEach((opg,oi)=>{
+    const inputs = document.querySelectorAll('input[data-oi="'+oi+'"]');
+    const svar = Array.from(inputs).map(i=>i.value||'?').join(', ');
+    linjer.push(opg.tittel+': '+svar+' %');
+  });
+  const tekst="MATEMATIKK ANVENDT – Batteriet\n\n"+linjer.join("\n");
+  const fd=new FormData(); fd.append(FELT,tekst);
+  fetch(FORMSPREE,{method:"POST",body:fd,headers:{"Accept":"application/json"}})
+    .then(r=>{if(r.ok)$('sendOk').classList.add('vis');}).catch(()=>{});
+};
+</script>
+</body>
+</html>
