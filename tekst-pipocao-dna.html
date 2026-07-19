@@ -1,0 +1,380 @@
+<!DOCTYPE html>
+<html lang="no">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Pipocão vil vite hvor hun kommer fra – tekst – Edels Verden</title>
+<link href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@600;700;800&family=Nunito:wght@400;600;700&display=swap" rel="stylesheet">
+<style>
+:root{
+  --grape:#7C3AED;--grape-light:#EDE9FE;--berry:#E84A8A;--gronn:#16A34A;--gronn-light:#DCFCE7;
+  --rod:#e17055;--rod-light:#fdeee9;--sun:#D97706;--sun-light:#FEF3C7;
+  --ink:#1E1B4B;--muted:#6B7280;--bg:#FBF7FF;--card:#fff;--line:#E5E7EB;
+  --shadow:0 2px 16px rgba(124,58,237,0.08);
+}
+*{box-sizing:border-box;margin:0;padding:0;}
+body{font-family:'Nunito',sans-serif;background:var(--bg);color:var(--ink);min-height:100vh;padding-bottom:3rem;line-height:1.6;}
+.topbar{background:#fff;padding:0.9rem 1.1rem;display:flex;align-items:center;gap:0.75rem;box-shadow:0 2px 12px rgba(124,58,237,0.06);position:sticky;top:0;z-index:40;}
+.home-btn{text-decoration:none;font-size:1.3rem;background:var(--grape-light);border-radius:12px;padding:0.35rem 0.7rem;}
+.topbar .tittel{font-family:'Baloo 2',cursive;font-weight:800;font-size:1.1rem;color:var(--ink);}
+.hero{text-align:center;padding:1.6rem 1.25rem 1rem;}
+.hero .ikon{font-size:2.6rem;}
+.hero h1{font-family:'Baloo 2',cursive;font-size:1.5rem;font-weight:800;color:var(--grape);margin-top:0.3rem;line-height:1.15;}
+.hero p{color:var(--muted);font-size:0.9rem;margin-top:0.3rem;}
+main{max-width:600px;margin:0 auto;padding:0 1rem;}
+.voksen-merke{background:#f3ecfb;border:2px solid #C9B3DE;border-radius:14px;padding:0.8rem 1rem;margin:0.5rem 0 1rem;font-size:0.88rem;color:#6b4e8e;font-weight:600;text-align:center;}
+.tabs{display:flex;gap:0.4rem;margin:0.5rem 0 1.2rem;position:sticky;top:3.4rem;background:var(--bg);padding:0.6rem 0;z-index:30;}
+.tab{flex:1;font-family:'Baloo 2',cursive;font-size:0.82rem;font-weight:700;padding:0.6rem 0.3rem;border-radius:12px;border:2.5px solid var(--line);background:#fff;color:var(--muted);cursor:pointer;transition:all 0.15s;display:flex;flex-direction:column;align-items:center;gap:2px;}
+.tab .t-ikon{font-size:1.1rem;}
+.tab.aktiv{background:var(--grape);color:#fff;border-color:var(--grape);}
+.panel{display:none;animation:fade 0.3s;}
+.panel.aktiv{display:block;}
+@keyframes fade{from{opacity:0;transform:translateY(6px);}to{opacity:1;transform:translateY(0);}}
+.blokk{background:var(--card);border-radius:16px;box-shadow:var(--shadow);padding:1.2rem 1.3rem;margin-bottom:1rem;}
+.blokk-tittel{font-family:'Baloo 2',cursive;font-weight:700;font-size:0.78rem;color:var(--grape);text-transform:uppercase;letter-spacing:0.5px;margin-bottom:0.7rem;}
+.blokk p{font-size:1.08rem;margin-bottom:0.6rem;}
+.blokk p:last-child{margin-bottom:0;}
+.replikk{background:#fff8f0;border-left:4px solid var(--sun);border-radius:8px;padding:0.5rem 0.8rem;margin:0.4rem 0;font-size:1.05rem;}
+.def{display:block;background:var(--gronn-light);border-left:4px solid var(--gronn);border-radius:8px;padding:0.5rem 0.8rem;margin:0.5rem 0;font-size:0.98rem;color:#15803d;font-style:italic;}
+.ord{background:var(--sun-light);color:var(--sun);font-weight:700;padding:1px 7px;border-radius:6px;border:1.5px solid #F5D98A;cursor:pointer;white-space:nowrap;}
+.ord:hover{filter:brightness(0.96);}
+.les-hjelp{text-align:center;font-size:0.82rem;color:var(--muted);background:#eef6ff;border-radius:10px;padding:0.6rem;margin-bottom:1rem;}
+.bilde-wrap{background:#fff;border-radius:16px;box-shadow:var(--shadow);padding:0.5rem;overflow:hidden;cursor:zoom-in;}
+.bilde-wrap img{width:100%;border-radius:12px;display:block;}
+.bilde-mangler{padding:2.5rem 1rem;text-align:center;color:var(--muted);font-size:0.9rem;}
+.bilde-hint{text-align:center;font-size:0.82rem;color:var(--muted);margin-top:0.6rem;}
+.neste-kapittel{text-align:center;font-size:0.85rem;color:var(--berry);background:#FDF2F8;border:2px dashed #F3BEDB;border-radius:12px;padding:0.7rem;margin-top:1rem;font-weight:700;}
+.leser{display:none;position:fixed;inset:0;background:#1a1830;z-index:100;flex-direction:column;}
+.leser.open{display:flex;}
+.leser-bar{padding:0.8rem 1rem;display:flex;justify-content:flex-end;}
+.leser-lukk{background:#fff;border:none;border-radius:12px;padding:0.5rem 1.1rem;font-family:'Nunito',sans-serif;font-weight:800;font-size:0.9rem;cursor:pointer;}
+.leser-scroll{flex:1;overflow:auto;-webkit-overflow-scrolling:touch;touch-action:pan-x pan-y pinch-zoom;padding:0 0.5rem;}
+.leser-scroll img{width:100%;height:auto;display:block;border-radius:8px;}
+.leser-tips{color:rgba(255,255,255,0.6);text-align:center;font-size:0.78rem;padding:0.6rem;}
+.sporsmal-kort{background:var(--card);border-radius:16px;box-shadow:var(--shadow);padding:1.1rem 1.2rem;margin-bottom:0.9rem;}
+.sporsmal-nr{display:inline-flex;align-items:center;justify-content:center;width:28px;height:28px;background:var(--grape);color:#fff;border-radius:50%;font-family:'Baloo 2',cursive;font-weight:700;font-size:0.85rem;margin-right:0.5rem;flex-shrink:0;}
+.sporsmal-tekst{font-size:1.02rem;font-weight:600;}
+.svar-felt{width:100%;border:2.5px solid var(--line);border-radius:12px;padding:0.8rem;font-family:'Nunito',sans-serif;font-size:1rem;margin-top:0.7rem;resize:vertical;min-height:70px;}
+.svar-felt:focus{outline:none;border-color:var(--grape);}
+.send-btn{display:block;width:100%;background:var(--grape);color:#fff;border:none;border-radius:14px;padding:0.9rem;font-family:'Baloo 2',cursive;font-size:1.05rem;cursor:pointer;margin-top:0.5rem;}
+.send-btn:active{transform:scale(0.99);}
+.send-ok{text-align:center;color:var(--gronn);font-weight:700;font-size:0.9rem;margin-top:0.7rem;display:none;}
+.send-ok.vis{display:block;}
+.hjelp-btn{background:none;border:2px dashed #C9B3DE;color:var(--grape);font-family:'Nunito',sans-serif;font-weight:700;font-size:0.85rem;padding:0.5rem 0.9rem;border-radius:10px;cursor:pointer;margin-top:0.6rem;}
+.hjelp-btn:hover{background:var(--grape-light);}
+.hjelp-boks{display:none;margin-top:0.7rem;border-radius:12px;overflow:hidden;border:2px solid var(--grape-light);}
+.hjelp-boks.vis{display:block;animation:fade 0.3s;}
+.hjelp-rad{padding:0.7rem 0.9rem;font-size:0.92rem;border-bottom:1px solid var(--grape-light);}
+.hjelp-rad:last-child{border-bottom:none;}
+.hjelp-rad .etikett{font-weight:800;font-size:0.72rem;text-transform:uppercase;letter-spacing:0.4px;display:block;margin-bottom:0.25rem;}
+.hjelp-start{background:#eef6ff;}
+.hjelp-start .etikett{color:#2563eb;}
+.hjelp-start .innhold{color:#1e40af;font-style:italic;}
+.hjelp-ordbank{background:var(--sun-light);}
+.hjelp-ordbank .etikett{color:var(--sun);}
+.ordbank-ord{display:inline-block;background:#fff;border:1.5px solid #F5D98A;color:var(--sun);font-weight:700;padding:2px 9px;border-radius:99px;margin:2px 3px;font-size:0.85rem;cursor:pointer;}
+.ordbank-ord:hover{background:#fff8e8;}
+.hjelp-eksempel{background:var(--gronn-light);}
+.hjelp-eksempel .etikett{color:var(--gronn);}
+.hjelp-eksempel .innhold{color:#15803d;font-style:italic;}
+.ord-kort{background:var(--card);border-radius:16px;box-shadow:var(--shadow);padding:1.2rem 1.3rem;margin-bottom:0.9rem;border-left:5px solid var(--sun);}
+.ord-navn{font-family:'Baloo 2',cursive;font-weight:800;font-size:1.4rem;color:var(--sun);}
+.ord-betyr{font-size:1rem;color:#15803d;font-weight:600;margin:0.3rem 0 0.6rem;}
+.ord-eksempel{font-size:0.98rem;color:var(--muted);font-style:italic;background:#f7f5fc;border-radius:10px;padding:0.6rem 0.8rem;}
+.ord-intro{background:var(--sun-light);border-radius:12px;padding:0.8rem 1rem;font-size:0.9rem;color:#8a6d3b;font-weight:600;margin-bottom:1rem;text-align:center;}
+.ukens-repetisjon{background:#eef6ff;border:2px solid #bfdbfe;border-radius:14px;padding:0.9rem 1.1rem;margin-top:0.2rem;}
+.ukens-repetisjon .ur-tittel{font-family:'Baloo 2',cursive;font-weight:800;font-size:0.85rem;color:#2563eb;margin-bottom:0.5rem;display:flex;align-items:center;gap:0.4rem;}
+.ukens-repetisjon .ur-tekst{font-size:0.86rem;color:#1e40af;margin-bottom:0.6rem;}
+.ur-ord{display:inline-block;background:#fff;border:1.5px solid #93c5fd;color:#2563eb;font-weight:700;padding:3px 10px;border-radius:99px;margin:2px 4px 2px 0;font-size:0.85rem;cursor:pointer;}
+.ur-ord:hover{background:#dbeafe;}
+.mini-sjekk{background:#fff;border-radius:16px;box-shadow:0 2px 16px rgba(124,58,237,0.08);padding:1.1rem 1.2rem;margin-bottom:1rem;border:2px solid #DCFCE7;}
+.mini-sjekk .ms-tittel{font-family:'Baloo 2',cursive;font-weight:800;font-size:0.95rem;color:#16A34A;margin-bottom:0.3rem;display:flex;align-items:center;gap:0.4rem;}
+.mini-sjekk .ms-info{font-size:0.82rem;color:#6B7280;margin-bottom:0.9rem;}
+.ms-sp{margin-bottom:1.1rem;}
+.ms-sp:last-child{margin-bottom:0;}
+.ms-q{font-weight:700;font-size:0.98rem;margin-bottom:0.5rem;}
+.ms-alt{display:flex;flex-wrap:wrap;gap:0.5rem;}
+.ms-btn{background:#f7f5fc;border:2px solid #E5E7EB;border-radius:10px;padding:0.5rem 0.9rem;font-family:'Nunito',sans-serif;font-weight:700;font-size:0.9rem;cursor:pointer;color:#1E1B4B;}
+.ms-btn.riktig{background:#DCFCE7;border-color:#16A34A;color:#15803d;}
+.ms-btn.feil{background:#fdeee9;border-color:#e17055;color:#b91c1c;opacity:0.8;}
+.ms-btn:disabled{cursor:default;}
+</style>
+</head>
+<body>
+
+<div class="topbar">
+  <a class="home-btn" href="tekster.html">🐾</a>
+  <span class="tittel">Pipocão vil vite hvor hun kommer fra</span>
+</div>
+
+<div class="hero">
+  <div class="ikon">🐾</div>
+  <h1>Pipocão vil vite hvor hun kommer fra</h1>
+  <p>En historie om familie, blanding og DNA-test · Les · Se · Tenk · Lær ordene</p>
+</div>
+
+<main>
+  <div class="voksen-merke">💛 Dette handler om familie og hvor vi kommer fra. Det er fint å snakke om det sammen med en voksen.</div>
+
+  <div class="tabs">
+    <button class="tab aktiv" data-p="les"><span class="t-ikon">📖</span>Les</button>
+    <button class="tab" data-p="se"><span class="t-ikon">🖼️</span>Se</button>
+    <button class="tab" data-p="tenk"><span class="t-ikon">💬</span>Tenk</button>
+    <button class="tab" data-p="ord"><span class="t-ikon">🎯</span>Ord</button>
+  </div>
+
+  <!-- ===== LES ===== -->
+  <div class="panel aktiv" id="p-les">
+    <div class="les-hjelp">💡 Les rolig. Ta pauser. Trykk på de <span class="ord">gule ordene</span> for å se hva de betyr.</div>
+
+    <div class="blokk">
+      <div class="blokk-tittel">1 · Pipocão lurer på noe</div>
+      <p>Pipocão bor sammen med mammae, Petter og søsteren sin Edel.</p>
+      <div class="replikk">🐾 Pipocão tenkte: — Jeg er norsk … men hvor kommer jeg egentlig fra?</div>
+      <div class="replikk">👩 Mamma svarte: — Du er litt som meg! Jeg er norsk og brasiliansk.</div>
+    </div>
+
+    <div class="blokk">
+      <div class="blokk-tittel">2 · Mammas og pappas hunder</div>
+      <p>👩 — Mammaen din var en <span class="ord" data-d="noe som er satt sammen av flere forskjellige ting">blanding</span> av Jack Russell og Border Collie.</p>
+      <span class="def">🧬 En blanding betyr at noe er satt sammen av flere forskjellige ting.</span>
+      <p>👨 — Pappaen din var en blanding av Kleinspitz og kinesisk nakenhund.</p>
+      <div class="replikk">👨 — Oi! Jeg er en blanding av alt!</div>
+    </div>
+
+    <div class="blokk">
+      <div class="blokk-tittel">3 · Nesten som en brasilianer</div>
+      <p>Pipocão føler seg nesten som en brasilianer, fordi hun er en blanding av så mye.</p>
+      <div class="replikk">🐾 — Det er jo litt kult!</div>
+    </div>
+
+    <div class="blokk">
+      <div class="blokk-tittel">4 · DNA-testen</div>
+      <p>Pipocão og Edel går inn på en DNA-nettside sammen. Nå skal de <span class="ord" data-d="å finne ut mer om noe">undersøke</span> mer om hvor Pipocão kommer fra.</p>
+      <span class="def">🔬 En DNA-test betyr å undersøke hva kroppen er laget av, for å finne ut mer om hvor man kommer fra.</span>
+      <div class="replikk">👩 — Nå skal vi finne ut mer! Dette blir spennende!</div>
+      <div class="replikk">👧 Edel sa: — Du er vår Pipocão uansett.</div>
+      <div class="replikk">👨 — Nå tar jeg testen!</div>
+      <p>Uansett hvor hun kommer fra, er Pipocão en elsket del av familien. ❤️</p>
+    </div>
+
+    <div class="blokk">
+      <div class="blokk-tittel">5 · Mens de venter</div>
+      <p>En dag ringte pappa til Edel: — Kan du komme ned til Oslo sentrum? Jeg må snakke alvorlig med deg.</p>
+      <p>De møttes i sentrum sammen med Pipocão.</p>
+      <div class="replikk">👨 — Jeg er nesten pensjonist. Jeg vil at du skal bli kranfører, sånn som meg.</div>
+      <p>Det var pappas <span class="ord" data-d="noe du ønsker deg sterkt og håper skal skje en dag">drøm</span> for Edel.</p>
+    </div>
+
+    <div class="blokk">
+      <div class="blokk-tittel">6 · Edels egen drøm</div>
+      <p>Edel tenkte seg om.</p>
+      <div class="replikk">👧 — Hmm … jeg vil ikke jobbe som kranfører.</div>
+      <p>Hun sa det hun mente, rolig og tydelig.</p>
+      <div class="replikk">👧 — Jeg liker ikke å jobbe med det. Jeg vil gjøre noe annet.</div>
+      <p>Edel fortalte om sin egen drøm:</p>
+      <div class="replikk">👧 — Jeg vil være <span class="ord" data-d="en person som undersøker og finner ut nye ting">forsker</span> og utforske DNA-et til Pipoka!</div>
+      <span class="def">🔬 En forsker er en person som undersøker og finner ut nye ting.</span>
+      <div class="replikk">👨 — Da må du følge drømmen din, Edel.</div>
+      <p>Pappa lyttet, selv om han hadde tenkt noe annet for henne.</p>
+    </div>
+
+    <div class="blokk">
+      <div class="blokk-tittel">7 · Husk!</div>
+      <p>❤️ Familier kan være en blanding av mange steder og kulturer.</p>
+      <p>❤️ Det er fint å være nysgjerrig på hvor man kommer fra.</p>
+      <p>❤️ Voksne kan ha drømmer for deg, men du får velge din egen drøm.</p>
+      <p>❤️ De som er glad i deg, elsker deg uansett hvem du blir.</p>
+    </div>
+
+    <div class="ukens-repetisjon">
+      <div class="ur-tittel">🔁 Ukens ord – repetisjon</div>
+      <div class="ur-tekst">Disse fire ordene øver vi på hver uke. Trykk på dem for å huske hva de betyr!</div>
+      <span class="ur-ord" data-d="å se nøye på noe">observere</span>
+      <span class="ur-ord" data-d="å finne ut mer om noe">undersøke</span>
+      <span class="ur-ord" data-d="å fortelle nøye hvordan noe er eller ser ut">beskrive</span>
+      <span class="ur-ord" data-d="å gjøre noe lettere å forstå">forklare</span>
+    </div>
+
+    <div class="mini-sjekk">
+      <div class="ms-tittel">✅ Sjekk deg selv</div>
+      <div class="ms-info">Skjønte du teksten? Trykk på svaret du tror er riktig!</div>
+      <div class="ms-sp">
+        <div class="ms-q">1. Hva er mammaen til Pipocão en blanding av?</div>
+        <div class="ms-alt">
+          <button class="ms-btn" data-riktig="true">Jack Russell og Border Collie</button>
+          <button class="ms-btn" data-riktig="false">Puddel og Labrador</button>
+        </div>
+      </div>
+      <div class="ms-sp">
+        <div class="ms-q">2. Hvorfor tar familien en DNA-test på Pipocão?</div>
+        <div class="ms-alt">
+          <button class="ms-btn" data-riktig="true">For å finne ut mer om hvor hun kommer fra</button>
+          <button class="ms-btn" data-riktig="false">For å lære henne triks</button>
+        </div>
+      </div>
+      <div class="ms-sp">
+        <div class="ms-q">3. Hva vil Edel bli når hun blir stor?</div>
+        <div class="ms-alt">
+          <button class="ms-btn" data-riktig="true">Forsker som utforsker DNA</button>
+          <button class="ms-btn" data-riktig="false">Kranfører</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ===== SE ===== -->
+  <div class="panel" id="p-se">
+    <div class="bilde-wrap bilde-klikk" data-src="pipocao-dna-1.png">
+      <img src="pipocao-dna-1.png" alt="Pipocão vil vite hvor hun kommer fra"
+           onerror="this.parentElement.outerHTML='<div class=\'bilde-mangler\'>Last opp «pipocao-dna-1.png» på GitHub, så vises bildet her 🐾</div>'">
+    </div>
+    <div class="bilde-hint">🔍 Trykk på bildet for å se det stort</div>
+
+    <div class="bilde-wrap bilde-klikk" data-src="pipocao-dna-2.png" style="margin-top:1rem;">
+      <img src="pipocao-dna-2.png" alt="Mens vi venter på DNA-resultatet"
+           onerror="this.parentElement.outerHTML='<div class=\'bilde-mangler\'>Last opp «pipocao-dna-2.png» på GitHub, så vises bildet her 🐾</div>'">
+    </div>
+    <div class="bilde-hint">🔍 Trykk på bildet for å se det stort</div>
+    <div class="neste-kapittel">⭐ Neste kapittel: resultatet av DNA-testen kommer snart!</div>
+  </div>
+
+  <!-- ===== TENK ===== -->
+  <div class="panel" id="p-tenk">
+    <div class="ord-intro">💬 Tenk og forklar. Trenger du hjelp? Trykk på knappen under hvert spørsmål.</div>
+    <div id="sporsmalListe"></div>
+    <button class="send-btn" id="sendTenk">Send svarene til mamma 💌</button>
+    <div class="send-ok" id="sendOk">✓ Svarene dine er sendt til mamma</div>
+  </div>
+
+  <!-- ===== ORD ===== -->
+  <div class="panel" id="p-ord">
+    <div class="ord-intro">🎯 Ukens ord – øv på disse fire. Trykk deg gjennom dem flere ganger!</div>
+    <div id="ordListe"></div>
+  </div>
+</main>
+
+<div class="leser" id="leser">
+  <div class="leser-bar"><button class="leser-lukk" onclick="lukkLeser()">✕ Lukk</button></div>
+  <div class="leser-scroll"><img id="leserImg" src="" alt=""></div>
+  <div class="leser-tips">Zoom med to fingre 🤏</div>
+</div>
+
+<script>
+const FORMSPREE="https://formspree.io/f/mqeolldg";
+const FELT="Tekst_hun_skrev";
+const $=id=>document.getElementById(id);
+
+document.querySelectorAll('.bilde-klikk').forEach(bw=>{
+  bw.onclick=()=>{ const img=bw.querySelector('img'); if(img){ $('leserImg').src=img.src; $('leser').classList.add('open'); } };
+});
+function lukkLeser(){ $('leser').classList.remove('open'); }
+
+document.querySelectorAll('.tab').forEach(t=>{
+  t.onclick=()=>{
+    document.querySelectorAll('.tab').forEach(x=>x.classList.remove('aktiv'));
+    document.querySelectorAll('.panel').forEach(x=>x.classList.remove('aktiv'));
+    t.classList.add('aktiv');
+    $('p-'+t.dataset.p).classList.add('aktiv');
+    window.scrollTo({top:0,behavior:'smooth'});
+  };
+});
+document.querySelectorAll('.ord[data-d]').forEach(o=>{
+  o.onclick=()=>{ alert(o.textContent+" = "+o.dataset.d); };
+});
+document.querySelectorAll('.ur-ord[data-d]').forEach(o=>{
+  o.onclick=()=>{ alert(o.textContent+" = "+o.dataset.d); };
+});
+
+const SPORSMAL=[
+  {
+    q:"Hva synes du er spennende med å vite hvor familien din kommer fra?",
+    start:"Jeg synes det er spennende å vite … fordi …",
+    ordbank:["hvor jeg kommer fra","familien min","forskjellige land","spennende"],
+    eksempel:"Jeg synes det er spennende å vite hvor familien min kommer fra, fordi det er en del av hvem jeg er."
+  },
+  {
+    q:"Hva vil du gjerne bli når du blir stor?",
+    start:"Når jeg blir stor, vil jeg gjerne …",
+    ordbank:["forsker","undersøke","lære","jobbe med"],
+    eksempel:"Når jeg blir stor, vil jeg gjerne bli forsker og undersøke ting jeg er nysgjerrig på."
+  },
+  {
+    q:"Hvorfor er det viktig at voksne lytter til drømmene dine, selv om de bestemmer?",
+    start:"Det er viktig fordi …",
+    ordbank:["lytte","egen drøm","respekt","bestemme"],
+    eksempel:"Det er viktig fordi jeg får lyst til å prøve, selv om de voksne bestemmer til slutt."
+  },
+  {
+    q:"Hva betyr det at noen er en «blanding» av mange ting?",
+    start:"Å være en blanding betyr at …",
+    ordbank:["flere ting","sammen","forskjellige","spesiell"],
+    eksempel:"Å være en blanding betyr at man er satt sammen av flere forskjellige ting, og det gjør en spesiell."
+  },
+];
+SPORSMAL.forEach((s,i)=>{
+  const d=document.createElement('div');
+  d.className='sporsmal-kort';
+  const ordChips=s.ordbank.map(o=>'<span class="ordbank-ord" data-ord="'+o+'">'+o+'</span>').join('');
+  d.innerHTML=
+    '<div><span class="sporsmal-nr">'+(i+1)+'</span><span class="sporsmal-tekst">'+s.q+'</span></div>'+
+    '<textarea class="svar-felt" data-q="'+i+'" placeholder="Skriv her …"></textarea>'+
+    '<button class="hjelp-btn" data-h="'+i+'">Trenger du hjelp? 💡</button>'+
+    '<div class="hjelp-boks" id="hjelp-'+i+'">'+
+      '<div class="hjelp-rad hjelp-start"><span class="etikett">✏️ Start slik</span><span class="innhold">'+s.start+'</span></div>'+
+      '<div class="hjelp-rad hjelp-ordbank"><span class="etikett">🔤 Ord du kan bruke (trykk for å sette inn)</span><div>'+ordChips+'</div></div>'+
+      '<div class="hjelp-rad hjelp-eksempel"><span class="etikett">🌟 Et eksempel</span><span class="innhold">«'+s.eksempel+'»</span></div>'+
+    '</div>';
+  $('sporsmalListe').appendChild(d);
+});
+document.querySelectorAll('.hjelp-btn').forEach(b=>{
+  b.onclick=()=>{
+    const boks=$('hjelp-'+b.dataset.h);
+    const vis=boks.classList.toggle('vis');
+    b.textContent = vis ? "Skjul hjelp 🙈" : "Trenger du hjelp? 💡";
+  };
+});
+document.querySelectorAll('.ordbank-ord').forEach(o=>{
+  o.onclick=()=>{
+    const kort=o.closest('.sporsmal-kort');
+    const felt=kort.querySelector('.svar-felt');
+    felt.value=(felt.value+" "+o.dataset.ord).trim();
+    felt.focus();
+  };
+});
+$('sendTenk').onclick=()=>{
+  let linjer=[];
+  document.querySelectorAll('.svar-felt').forEach(f=>{
+    const i=f.dataset.q; const t=f.value.trim();
+    if(t) linjer.push((parseInt(i)+1)+". "+SPORSMAL[i].q+"\n   → "+t);
+  });
+  const tekst="PIPOCÃO VIL VITE HVOR HUN KOMMER FRA – Tenk og forklar\n\n"+(linjer.length?linjer.join("\n\n"):"(tomt)");
+  const fd=new FormData(); fd.append(FELT,tekst);
+  fetch(FORMSPREE,{method:"POST",body:fd,headers:{"Accept":"application/json"}})
+    .then(r=>{if(r.ok)$('sendOk').classList.add('vis');}).catch(()=>{});
+};
+
+const ORD=[
+  {ord:"blanding", betyr:"noe som er satt sammen av flere forskjellige ting", eksempel:"Pipocão er en blanding av mange hunderaser."},
+  {ord:"undersøke", betyr:"å finne ut mer om noe", eksempel:"Vi kan undersøke DNA-et for å lære mer om hvor Pipocão kommer fra."},
+  {ord:"forsker", betyr:"en person som undersøker og finner ut nye ting", eksempel:"Edel vil bli forsker når hun blir stor."},
+  {ord:"drøm", betyr:"noe du ønsker deg sterkt og håper skal skje en dag", eksempel:"Alle kan ha sin egen drøm."},
+];
+ORD.forEach(o=>{
+  const d=document.createElement('div');
+  d.className='ord-kort';
+  d.innerHTML='<div class="ord-navn">'+o.ord+'</div><div class="ord-betyr">'+o.betyr+'</div><div class="ord-eksempel">«'+o.eksempel+'»</div>';
+  $('ordListe').appendChild(d);
+});
+document.querySelectorAll(".ms-alt").forEach(grp=>{
+  grp.querySelectorAll(".ms-btn").forEach(b=>{
+    b.onclick=()=>{
+      grp.querySelectorAll(".ms-btn").forEach(x=>x.disabled=true);
+      if(b.dataset.riktig==="true"){ b.classList.add("riktig"); }
+      else{ b.classList.add("feil"); grp.querySelectorAll(".ms-btn").forEach(x=>{if(x.dataset.riktig==="true")x.classList.add("riktig");}); }
+    };
+  });
+});
+</script>
+</body>
+</html>

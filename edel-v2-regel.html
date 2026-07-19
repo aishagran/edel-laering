@@ -1,0 +1,397 @@
+<!DOCTYPE html>
+<html lang="no">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Riktig rekkefølge – Edels Verden</title>
+<link href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@600;700;800&family=Nunito:wght@400;600;700&display=swap" rel="stylesheet">
+<style>
+:root{
+  --grape:#7C3AED;--grape-light:#EDE9FE;--berry:#E84A8A;--gronn:#16A34A;--gronn-light:#DCFCE7;
+  --rod:#e17055;--rod-light:#fdeee9;--sun:#D97706;--sun-light:#FEF3C7;
+  --ink:#1E1B4B;--muted:#6B7280;--bg:#FBF7FF;--card:#fff;--line:#E5E7EB;
+  --shadow:0 2px 16px rgba(124,58,237,0.08);
+}
+*{box-sizing:border-box;margin:0;padding:0;}
+body{font-family:'Nunito',sans-serif;background:var(--bg);color:var(--ink);min-height:100vh;padding-bottom:3rem;line-height:1.6;}
+.topbar{background:#fff;padding:0.9rem 1.1rem;display:flex;align-items:center;gap:0.75rem;box-shadow:0 2px 12px rgba(124,58,237,0.06);position:sticky;top:0;z-index:40;}
+.home-btn{text-decoration:none;font-size:1.3rem;background:var(--grape-light);border-radius:12px;padding:0.35rem 0.7rem;}
+.topbar .tittel{font-family:'Baloo 2',cursive;font-weight:800;font-size:1.1rem;color:var(--ink);}
+.hero{text-align:center;padding:1.6rem 1.25rem 1rem;}
+.hero .ikon{font-size:2.6rem;}
+.hero h1{font-family:'Baloo 2',cursive;font-size:1.7rem;font-weight:800;color:var(--grape);margin-top:0.3rem;line-height:1.15;}
+.hero p{color:var(--muted);font-size:0.9rem;margin-top:0.3rem;}
+main{max-width:600px;margin:0 auto;padding:0 1rem;}
+
+.dagens-banner{max-width:600px;margin:0.5rem auto 1rem;background:linear-gradient(135deg,var(--sun-light),#fff);border:2px solid var(--sun);border-radius:16px;padding:0.8rem 1.1rem;text-align:center;}
+.dagens-banner .dag-tittel{font-family:'Baloo 2',cursive;font-weight:800;font-size:0.98rem;color:var(--sun);}
+.dagens-banner .dag-dato{font-size:0.85rem;color:#8a6d3b;font-weight:700;text-transform:capitalize;}
+
+/* Regel-boks med visuell ordstilling */
+.regel-boks{background:linear-gradient(135deg,#EEF6FF,#fff);border:2px solid #93c5fd;border-radius:18px;padding:1.2rem 1.3rem;margin-bottom:1rem;}
+.regel-tittel{font-family:'Baloo 2',cursive;font-weight:800;font-size:1.05rem;color:#1e40af;margin-bottom:0.6rem;display:flex;align-items:center;gap:0.4rem;}
+.rekkefolge-rad{display:flex;align-items:center;gap:0.4rem;margin:0.5rem 0;flex-wrap:wrap;}
+.rf-boks{background:#fff;border:2px solid var(--line);border-radius:10px;padding:0.4rem 0.7rem;font-weight:700;font-size:0.92rem;}
+.rf-boks.forst{border-color:var(--sun);color:var(--sun);background:var(--sun-light);}
+.rf-boks.verb{border-color:var(--gronn);color:#15803d;background:var(--gronn-light);}
+.rf-boks.subjekt{border-color:var(--grape);color:var(--grape);background:var(--grape-light);}
+.rf-pil{color:var(--muted);font-size:1.1rem;}
+.regel-eks{background:#fff;border-radius:10px;padding:0.6rem 0.9rem;margin-top:0.6rem;font-size:0.98rem;}
+.regel-eks .ja{color:#15803d;font-weight:700;}
+.regel-eks .nei{color:#b91c1c;font-weight:700;text-decoration:line-through;}
+
+.tabs{display:flex;gap:0.4rem;margin:0.5rem 0 1.2rem;position:sticky;top:3.4rem;background:var(--bg);padding:0.6rem 0;z-index:30;}
+.tab{flex:1;font-family:'Baloo 2',cursive;font-size:0.82rem;font-weight:700;padding:0.6rem 0.3rem;border-radius:12px;border:2.5px solid var(--line);background:#fff;color:var(--muted);cursor:pointer;transition:all 0.15s;display:flex;flex-direction:column;align-items:center;gap:2px;}
+.tab .t-ikon{font-size:1.1rem;}
+.tab.aktiv{background:var(--grape);color:#fff;border-color:var(--grape);}
+.panel{display:none;animation:fade 0.3s;}
+.panel.aktiv{display:block;}
+@keyframes fade{from{opacity:0;transform:translateY(6px);}to{opacity:1;transform:translateY(0);}}
+
+/* ===== VELG (velg riktig rekkefølge) ===== */
+.sp-kort{background:var(--card);border-radius:20px;box-shadow:var(--shadow);padding:1.4rem 1.3rem;}
+.sp-teller{text-align:center;font-size:0.85rem;color:var(--muted);font-weight:700;margin-bottom:0.6rem;}
+.sp-intro{font-family:'Baloo 2',cursive;font-size:1rem;margin-bottom:0.8rem;text-align:center;color:var(--muted);}
+.sp-svar{display:block;width:100%;text-align:left;background:#fff;border:3px solid var(--line);border-radius:14px;padding:0.85rem 1rem;margin-bottom:0.7rem;font-family:'Nunito',sans-serif;font-size:1.05rem;font-weight:700;color:var(--ink);cursor:pointer;transition:all 0.15s;}
+.sp-svar:hover{border-color:var(--grape);}
+.sp-svar:disabled{cursor:default;}
+.sp-svar.riktig{border-color:var(--gronn);background:var(--gronn-light);}
+.sp-svar.feil{border-color:var(--rod);background:var(--rod-light);opacity:0.85;}
+.sp-tilbake{margin-top:0.6rem;padding:0.9rem;border-radius:12px;font-weight:600;display:none;font-size:0.96rem;line-height:1.5;}
+.sp-tilbake.vis{display:block;}
+.sp-tilbake.bra{background:var(--gronn-light);color:#15803d;}
+.sp-tilbake.naer{background:#fff8e1;color:#8a6d00;}
+.sp-neste{display:none;width:100%;margin-top:0.9rem;background:var(--grape);color:#fff;border:none;border-radius:14px;padding:0.9rem;font-family:'Baloo 2',cursive;font-size:1.1rem;cursor:pointer;}
+.sp-neste.vis{display:block;}
+.sp-slutt{text-align:center;display:none;}
+.sp-slutt.vis{display:block;}
+.sp-slutt .stj{font-size:3rem;}
+.sp-slutt h2{font-family:'Baloo 2',cursive;color:var(--grape);font-size:1.5rem;margin:0.4rem 0;}
+.sp-poeng{font-family:'Baloo 2',cursive;font-size:2.2rem;color:var(--gronn);margin:0.5rem 0;}
+.sp-nytt{background:var(--sun);color:#fff;border:none;border-radius:14px;padding:0.8rem 1.6rem;font-family:'Baloo 2',cursive;font-size:1rem;cursor:pointer;margin-top:0.6rem;}
+
+/* ===== BYGG (dra ordene i riktig rekkefølge) ===== */
+.bygg-kort{background:var(--card);border-radius:16px;box-shadow:var(--shadow);padding:1.1rem 1.2rem;margin-bottom:0.9rem;}
+.bygg-oppgave{font-size:0.92rem;color:var(--muted);margin-bottom:0.7rem;}
+.bygg-brikker{display:flex;flex-wrap:wrap;gap:0.4rem;margin-bottom:0.8rem;min-height:44px;}
+.brikke{background:var(--sun-light);border:2px solid #F5D98A;color:var(--sun);font-weight:700;padding:0.5rem 0.85rem;border-radius:10px;font-size:0.98rem;cursor:pointer;user-select:none;transition:all 0.15s;}
+.brikke:hover{background:#fff8e8;}
+.brikke.brukt{opacity:0.3;pointer-events:none;}
+.bygg-svar-omraade{background:#f7f5fc;border:2px dashed var(--line);border-radius:12px;padding:0.7rem;min-height:52px;display:flex;flex-wrap:wrap;gap:0.4rem;align-items:center;margin-bottom:0.6rem;}
+.bygg-svar-omraade .brikke-plassert{background:var(--grape-light);border-color:var(--grape);color:var(--grape);cursor:pointer;}
+.bygg-knapper{display:flex;gap:0.5rem;}
+.bygg-sjekk{flex:1;background:var(--grape);color:#fff;border:none;border-radius:12px;padding:0.7rem;font-family:'Baloo 2',cursive;font-size:0.95rem;cursor:pointer;}
+.bygg-nullstill{background:none;border:2px solid var(--line);color:var(--muted);border-radius:12px;padding:0.7rem 1rem;font-family:'Nunito',sans-serif;font-weight:700;font-size:0.9rem;cursor:pointer;}
+.bygg-tilbake{margin-top:0.6rem;padding:0.7rem 0.9rem;border-radius:10px;font-weight:700;font-size:0.9rem;display:none;text-align:center;}
+.bygg-tilbake.vis{display:block;}
+.bygg-tilbake.bra{background:var(--gronn-light);color:#15803d;}
+.bygg-tilbake.naer{background:#fff8e1;color:#8a6d00;}
+.send-btn{display:block;width:100%;background:var(--sun);color:#fff;border:none;border-radius:14px;padding:0.9rem;font-family:'Baloo 2',cursive;font-size:1.05rem;cursor:pointer;margin-top:1rem;}
+.send-ok{text-align:center;color:var(--gronn);font-weight:700;font-size:0.9rem;margin-top:0.7rem;display:none;}
+.send-ok.vis{display:block;}
+</style>
+</head>
+<body>
+
+<div class="topbar">
+  <a class="home-btn" href="index.html">🏠</a>
+  <span class="tittel">Riktig rekkefølge</span>
+</div>
+
+<div class="hero">
+  <div class="ikon">🔀</div>
+  <h1>Riktig rekkefølge</h1>
+  <p>Hva kommer først: verbet eller den som gjør det?</p>
+</div>
+
+<main>
+  <div class="dagens-banner" id="dagensBanner"></div>
+
+  <div class="regel-boks">
+    <div class="regel-tittel">💡 Én enkel regel</div>
+    <p>Når setningen starter med et ord som <span style="color:var(--sun);font-weight:800;">derfor, så, først, etterpå, til slutt</span> — kommer <b>verbet</b> rett etter, FØR den som gjør det.</p>
+    <div class="rekkefolge-rad">
+      <div class="rf-boks forst">Derfor</div>
+      <span class="rf-pil">→</span>
+      <div class="rf-boks verb">må</div>
+      <span class="rf-pil">→</span>
+      <div class="rf-boks subjekt">vi</div>
+      <span class="rf-pil">→</span>
+      <div class="rf-boks">øve mer.</div>
+    </div>
+    <div class="regel-eks">
+      <span class="ja">✅ Derfor må vi øve mer.</span><br>
+      <span class="nei">❌ Derfor vi må øve mer.</span>
+    </div>
+    <div class="regel-eks" style="margin-top:0.5rem;">
+      <span class="ja">✅ Så vant vi kampen.</span><br>
+      <span class="nei">❌ Så vi vant kampen.</span>
+    </div>
+  </div>
+
+  <div class="tabs">
+    <button class="tab aktiv" data-p="velg"><span class="t-ikon">🎯</span>Velg riktig</button>
+    <button class="tab" data-p="bygg"><span class="t-ikon">🧩</span>Bygg selv</button>
+  </div>
+
+  <!-- ===== VELG ===== -->
+  <div class="panel aktiv" id="p-velg">
+    <div class="sp-kort" id="velgKort">
+      <div class="sp-teller" id="velgTeller"></div>
+      <div class="sp-intro">Hvilken setning er riktig?</div>
+      <div id="velgSvar"></div>
+      <div class="sp-tilbake" id="velgTilbake"></div>
+      <button class="sp-neste" id="velgNeste">Neste →</button>
+    </div>
+    <div class="sp-kort sp-slutt" id="velgSlutt">
+      <div class="stj">🌟</div>
+      <h2>Bra jobba, Edel!</h2>
+      <div class="sp-poeng" id="velgPoeng"></div>
+      <p>Nå kan du regelen om rekkefølge! 🔀</p>
+      <button class="sp-nytt" id="velgNytt">Prøv igjen 🔁</button>
+      <div class="send-ok" id="velgSendt">✓ Resultatet er sendt til mamma</div>
+    </div>
+  </div>
+
+  <!-- ===== BYGG ===== -->
+  <div class="panel" id="p-bygg">
+    <div id="byggListe"></div>
+    <button class="send-btn" id="sendBygg">Send til mamma 💌</button>
+    <div class="send-ok" id="byggSendt">✓ Sendt til mamma</div>
+  </div>
+</main>
+
+<script>
+const FORMSPREE="https://formspree.io/f/mqeolldg";
+const FELT="Tekst_hun_skrev";
+const $=id=>document.getElementById(id);
+function bland(a){for(let i=a.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[a[i],a[j]]=[a[j],a[i]];}return a;}
+
+/* ===== DAGENS ØKT: syklisk rotasjon (samme motor som er testet i at-setninger) ===== */
+const ANT_PER_DAG = 8;
+function dagsNummer(){
+  const start = new Date(2024,0,1);
+  const naa = new Date();
+  return Math.floor((naa - start) / (1000*60*60*24));
+}
+function velgDagens(liste, antall, froe, salt){
+  salt = salt || 1;
+  const n = liste.length;
+  const blokkerPerSyklus = Math.ceil(n / antall);
+  const syklus = Math.floor(froe / blokkerPerSyklus);
+  const blokkIndeks = froe % blokkerPerSyklus;
+  const idx = [];
+  for(let k=0;k<n;k++) idx.push(k);
+  let s = (syklus*salt+salt)*2654435761 % 4294967296;
+  for(let i=n-1;i>0;i--){
+    s = (s*1103515245 + 12345) & 0x7fffffff;
+    const j = s % (i+1);
+    [idx[i],idx[j]] = [idx[j],idx[i]];
+  }
+  const start2 = blokkIndeks*antall;
+  const utvalgIdx = idx.slice(start2, Math.min(start2+antall, n));
+  if(utvalgIdx.length < antall){
+    for(let k=0; utvalgIdx.length<antall && k<n; k++){
+      if(!utvalgIdx.includes(idx[k])) utvalgIdx.push(idx[k]);
+    }
+  }
+  return utvalgIdx.map(i=>liste[i]);
+}
+const UKEDAGER = ["søndag","mandag","tirsdag","onsdag","torsdag","fredag","lørdag"];
+const MANEDER = ["januar","februar","mars","april","mai","juni","juli","august","september","oktober","november","desember"];
+(function visBanner(){
+  const d = new Date();
+  const dato = UKEDAGER[d.getDay()] + " " + d.getDate() + ". " + MANEDER[d.getMonth()];
+  $('dagensBanner').innerHTML =
+    '<div class="dag-tittel">🌟 Dagens økt — '+ANT_PER_DAG+' + '+ANT_PER_DAG+' setninger</div>'+
+    '<div class="dag-dato">'+dato+'</div>';
+})();
+const dagensFroe = dagsNummer();
+
+document.querySelectorAll('.tab').forEach(t=>{
+  t.onclick=()=>{
+    document.querySelectorAll('.tab').forEach(x=>x.classList.remove('aktiv'));
+    document.querySelectorAll('.panel').forEach(x=>x.classList.remove('aktiv'));
+    t.classList.add('aktiv');
+    $('p-'+t.dataset.p).classList.add('aktiv');
+    window.scrollTo({top:0,behavior:'smooth'});
+  };
+});
+
+/* ================= VELG: to setninger, én riktig rekkefølge =================
+   Bygget på Edels egne mønstre: hun mestrer "så" allerede, men glipper
+   ofte etter "derfor". Blander begge konnektiver med riktig/feil ordstilling.
+================================================================= */
+const VELG=[
+  { alt:[{t:"Derfor må vi øve mer.",c:true},{t:"Derfor vi må øve mer.",c:false}],
+    rett:"Ja! Etter «derfor» kommer verbet («må») rett etter, før «vi».", naer:"Riktig er «Derfor må vi …» — verbet først." },
+  { alt:[{t:"Så vi vant kampen.",c:false},{t:"Så vant vi kampen.",c:true}],
+    rett:"Riktig! Etter «så» kommer verbet («vant») før «vi».", naer:"Riktig er «Så vant vi …» — verbet først." },
+  { alt:[{t:"Først skal jeg spise.",c:true},{t:"Først jeg skal spise.",c:false}],
+    rett:"Ja! Etter «først» kommer verbet («skal») før «jeg».", naer:"Riktig er «Først skal jeg …» — verbet først." },
+  { alt:[{t:"Etterpå vi lekte sammen.",c:false},{t:"Etterpå lekte vi sammen.",c:true}],
+    rett:"Riktig! Etter «etterpå» kommer verbet («lekte») før «vi».", naer:"Riktig er «Etterpå lekte vi …» — verbet først." },
+  { alt:[{t:"Til slutt ble vi glade.",c:true},{t:"Til slutt vi ble glade.",c:false}],
+    rett:"Ja! Etter «til slutt» kommer verbet («ble») før «vi».", naer:"Riktig er «Til slutt ble vi …» — verbet først." },
+  { alt:[{t:"Derfor hun trente hver dag.",c:false},{t:"Derfor trente hun hver dag.",c:true}],
+    rett:"Riktig! Etter «derfor» kommer verbet («trente») før «hun».", naer:"Riktig er «Derfor trente hun …» — verbet først." },
+  { alt:[{t:"Så ble Pipoka glad.",c:true},{t:"Så Pipoka ble glad.",c:false}],
+    rett:"Ja! Etter «så» kommer verbet («ble») før «Pipoka».", naer:"Riktig er «Så ble Pipoka …» — verbet først." },
+  { alt:[{t:"Derfor vi må hjelpe henne.",c:false},{t:"Derfor må vi hjelpe henne.",c:true}],
+    rett:"Riktig! Etter «derfor» kommer verbet («må») før «vi».", naer:"Riktig er «Derfor må vi …» — verbet først." },
+  { alt:[{t:"Etterpå spiste vi middag.",c:true},{t:"Etterpå vi spiste middag.",c:false}],
+    rett:"Ja! Etter «etterpå» kommer verbet («spiste») før «vi».", naer:"Riktig er «Etterpå spiste vi …» — verbet først." },
+  { alt:[{t:"Til slutt jeg vant kampen.",c:false},{t:"Til slutt vant jeg kampen.",c:true}],
+    rett:"Riktig! Etter «til slutt» kommer verbet («vant») før «jeg».", naer:"Riktig er «Til slutt vant jeg …» — verbet først." },
+  { alt:[{t:"Derfor spiller jeg håndball hver uke.",c:true},{t:"Derfor jeg spiller håndball hver uke.",c:false}],
+    rett:"Ja! Etter «derfor» kommer verbet («spiller») før «jeg».", naer:"Riktig er «Derfor spiller jeg …» — verbet først." },
+  { alt:[{t:"Så vi fant Pipoka.",c:false},{t:"Så fant vi Pipoka.",c:true}],
+    rett:"Riktig! Etter «så» kommer verbet («fant») før «vi».", naer:"Riktig er «Så fant vi …» — verbet først." },
+  { alt:[{t:"Først må jeg gjøre lekser.",c:true},{t:"Først jeg må gjøre lekser.",c:false}],
+    rett:"Ja! Etter «først» kommer verbet («må») før «jeg».", naer:"Riktig er «Først må jeg …» — verbet først." },
+  { alt:[{t:"Derfor de jobbet sammen.",c:false},{t:"Derfor jobbet de sammen.",c:true}],
+    rett:"Riktig! Etter «derfor» kommer verbet («jobbet») før «de».", naer:"Riktig er «Derfor jobbet de …» — verbet først." },
+];
+
+let vn=0,vp=0,vlogg=[];
+const VELG_DAGENS = velgDagens(VELG, ANT_PER_DAG, dagensFroe, 1);
+function visVelg(){
+  const s=VELG_DAGENS[vn];
+  $('velgSlutt').classList.remove('vis');
+  $('velgKort').style.display='block';
+  $('velgTeller').textContent="Setning "+(vn+1)+" av "+VELG_DAGENS.length;
+  $('velgTilbake').className='sp-tilbake';
+  $('velgNeste').className='sp-neste';
+  $('velgSvar').innerHTML='';
+  bland(s.alt.map(a=>({...a}))).forEach(a=>{
+    const b=document.createElement('button');
+    b.className='sp-svar'; b.textContent=a.t;
+    b.onclick=()=>velgSvar(b,a,s);
+    $('velgSvar').appendChild(b);
+  });
+}
+function velgSvar(knapp,alt,s){
+  $('velgSvar').querySelectorAll('.sp-svar').forEach(k=>k.disabled=true);
+  if(alt.c){ knapp.classList.add('riktig'); vp++; $('velgTilbake').className='sp-tilbake vis bra'; $('velgTilbake').textContent=s.rett; }
+  else{ knapp.classList.add('feil'); const r=s.alt.find(a=>a.c).t;
+    $('velgSvar').querySelectorAll('.sp-svar').forEach(k=>{if(k.textContent===r)k.classList.add('riktig');});
+    $('velgTilbake').className='sp-tilbake vis naer'; $('velgTilbake').textContent=s.naer; }
+  vlogg.push((alt.c?"✓":"✗")+" "+alt.t);
+  $('velgNeste').className='sp-neste vis';
+  $('velgNeste').textContent=(vn===VELG_DAGENS.length-1)?"Ferdig 🎉":"Neste →";
+}
+$('velgNeste').onclick=()=>{ vn++; if(vn>=VELG_DAGENS.length) sluttVelg(); else visVelg(); };
+function sluttVelg(){
+  $('velgKort').style.display='none';
+  $('velgSlutt').classList.add('vis');
+  $('velgPoeng').textContent=vp+" av "+VELG_DAGENS.length+" riktige 🎯";
+  const tekst="RIKTIG REKKEFØLGE – Velg riktig\nPoeng: "+vp+"/"+VELG_DAGENS.length+"\n\n"+vlogg.join("\n");
+  const fd=new FormData(); fd.append(FELT,tekst);
+  fetch(FORMSPREE,{method:"POST",body:fd,headers:{"Accept":"application/json"}}).then(r=>{if(r.ok)$('velgSendt').classList.add('vis');}).catch(()=>{});
+}
+$('velgNytt').onclick=()=>{ vn=0;vp=0;vlogg=[]; visVelg(); };
+
+/* ================= BYGG: dra ordene i riktig rekkefølge =================
+   Ordene ligger i FEIL rekkefølge som brikker. Edel trykker dem i riktig
+   rekkefølge (verb-før-subjekt). Bruker klikk (ikke dra-og-slipp) for
+   best mulig støtte på mobil/nettbrett.
+================================================================= */
+const BYGG=[
+  { ord:["Derfor","må","vi","øve","mer"], fasit:["Derfor","må","vi","øve","mer"] },
+  { ord:["Så","ble","hun","glad"], fasit:["Så","ble","hun","glad"] },
+  { ord:["Først","skal","jeg","bade"], fasit:["Først","skal","jeg","bade"] },
+  { ord:["Etterpå","lekte","vi","sammen"], fasit:["Etterpå","lekte","vi","sammen"] },
+  { ord:["Til","slutt","vant","jeg","kampen"], fasit:["Til","slutt","vant","jeg","kampen"] },
+  { ord:["Derfor","trente","hun","hver","dag"], fasit:["Derfor","trente","hun","hver","dag"] },
+  { ord:["Så","fant","vi","Pipoka"], fasit:["Så","fant","vi","Pipoka"] },
+  { ord:["Derfor","jobbet","de","sammen"], fasit:["Derfor","jobbet","de","sammen"] },
+];
+
+const BYGG_DAGENS = velgDagens(BYGG, ANT_PER_DAG, dagensFroe, 7);
+BYGG_DAGENS.forEach((opg,oi)=>{
+  const brikkeliste = bland(opg.ord.map((o,i)=>({t:o, origIdx:i})));
+  let klikkTeller = 0;
+  const kort=document.createElement('div');
+  kort.className='bygg-kort';
+  kort.innerHTML =
+    '<div class="bygg-oppgave">Trykk på ordene i riktig rekkefølge 👇</div>'+
+    '<div class="bygg-svar-omraade" id="omraade-'+oi+'"></div>'+
+    '<div class="bygg-brikker" id="brikker-'+oi+'"></div>'+
+    '<div class="bygg-knapper">'+
+      '<button class="bygg-sjekk" data-oi="'+oi+'">Sjekk ✓</button>'+
+      '<button class="bygg-nullstill" data-oi="'+oi+'">Start på nytt ↺</button>'+
+    '</div>'+
+    '<div class="bygg-tilbake" id="tilb-'+oi+'"></div>';
+  $('byggListe').appendChild(kort);
+
+  const brikkerDiv = kort.querySelector('#brikker-'+oi);
+  const omraadeDiv = kort.querySelector('#omraade-'+oi);
+
+  function tegnBrikker(){
+    brikkerDiv.innerHTML='';
+    brikkeliste.forEach((b,bi)=>{
+      const el=document.createElement('span');
+      el.className='brikke'+(b.plassert?' brukt':'');
+      el.textContent=b.t;
+      el.onclick=()=>{
+        if(b.plassert) return;
+        klikkTeller++;
+        b.plassert=true;
+        b.klikkNr=klikkTeller;
+        tegnBrikker();
+        tegnOmraade();
+      };
+      brikkerDiv.appendChild(el);
+    });
+  }
+  function tegnOmraade(){
+    omraadeDiv.innerHTML='';
+    // Viktig: sorter etter KLIKKREKKEFØLGE (b.klikkNr), ikke etter posisjon i det blandede arrayet
+    brikkeliste.filter(b=>b.plassert).sort((a,b)=>a.klikkNr-b.klikkNr).forEach(b=>{
+      const el=document.createElement('span');
+      el.className='brikke brikke-plassert';
+      el.textContent=b.t;
+      el.onclick=()=>{
+        b.plassert=false;
+        b.klikkNr=null;
+        tegnBrikker();
+        tegnOmraade();
+      };
+      omraadeDiv.appendChild(el);
+    });
+  }
+  tegnBrikker(); tegnOmraade();
+
+  kort.querySelector('.bygg-sjekk').onclick=()=>{
+    const plassertRekkefolge = brikkeliste.filter(b=>b.plassert).sort((a,b)=>a.klikkNr-b.klikkNr).map(b=>b.t);
+    const tilb = kort.querySelector('#tilb-'+oi);
+    tilb.className='bygg-tilbake vis';
+    if(plassertRekkefolge.length !== opg.fasit.length){
+      tilb.className='bygg-tilbake vis naer'; tilb.textContent='Plasser alle ordene først 🙂'; return;
+    }
+    const riktig = plassertRekkefolge.every((t,i)=>t===opg.fasit[i]);
+    if(riktig){ tilb.className='bygg-tilbake vis bra'; tilb.textContent='Riktig rekkefølge! 🎉'; }
+    else { tilb.className='bygg-tilbake vis naer'; tilb.textContent='Nesten! Prøv en annen rekkefølge.'; }
+  };
+  kort.querySelector('.bygg-nullstill').onclick=()=>{
+    brikkeliste.forEach(b=>{ b.plassert=false; b.klikkNr=null; });
+    klikkTeller=0;
+    tegnBrikker(); tegnOmraade();
+    kort.querySelector('#tilb-'+oi).className='bygg-tilbake';
+  };
+});
+
+$('sendBygg').onclick=()=>{
+  let linjer=[];
+  BYGG_DAGENS.forEach((opg,oi)=>{
+    linjer.push(opg.fasit.join(' '));
+  });
+  const tekst="RIKTIG REKKEFØLGE – Bygg selv (fasit-setninger øvd i dag)\n\n"+linjer.join("\n");
+  const fd=new FormData(); fd.append(FELT,tekst);
+  fetch(FORMSPREE,{method:"POST",body:fd,headers:{"Accept":"application/json"}}).then(r=>{if(r.ok)$('byggSendt').classList.add('vis');}).catch(()=>{});
+};
+
+visVelg();
+</script>
+</body>
+</html>
