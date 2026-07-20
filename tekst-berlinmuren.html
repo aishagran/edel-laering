@@ -1,0 +1,329 @@
+<!DOCTYPE html>
+<html lang="no">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Berlinmuren – tekst – Edels Verden</title>
+<link href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@600;700;800&family=Nunito:wght@400;600;700&display=swap" rel="stylesheet">
+<style>
+:root{
+  --grape:#7C3AED;--grape-light:#EDE9FE;--berry:#E84A8A;--gronn:#16A34A;--gronn-light:#DCFCE7;
+  --rod:#e17055;--rod-light:#fdeee9;--sun:#D97706;--sun-light:#FEF3C7;
+  --ink:#1E1B4B;--muted:#6B7280;--bg:#FBF7FF;--card:#fff;--line:#E5E7EB;
+  --shadow:0 2px 16px rgba(124,58,237,0.08);
+}
+*{box-sizing:border-box;margin:0;padding:0;}
+body{font-family:'Nunito',sans-serif;background:var(--bg);color:var(--ink);min-height:100vh;padding-bottom:3rem;line-height:1.6;}
+.topbar{background:#fff;padding:0.9rem 1.1rem;display:flex;align-items:center;gap:0.75rem;box-shadow:0 2px 12px rgba(124,58,237,0.06);position:sticky;top:0;z-index:40;}
+.home-btn{text-decoration:none;font-size:1.3rem;background:var(--grape-light);border-radius:12px;padding:0.35rem 0.7rem;}
+.topbar .tittel{font-family:'Baloo 2',cursive;font-weight:800;font-size:1.1rem;color:var(--ink);}
+.hero{text-align:center;padding:1.6rem 1.25rem 1rem;}
+.hero .ikon{font-size:2.6rem;}
+.hero h1{font-family:'Baloo 2',cursive;font-size:1.7rem;font-weight:800;color:var(--grape);margin-top:0.3rem;line-height:1.15;}
+.hero p{color:var(--muted);font-size:0.9rem;margin-top:0.3rem;}
+main{max-width:600px;margin:0 auto;padding:0 1rem;}
+.tabs{display:flex;gap:0.4rem;margin:0.5rem 0 1.2rem;position:sticky;top:3.4rem;background:var(--bg);padding:0.6rem 0;z-index:30;}
+.tab{flex:1;font-family:'Baloo 2',cursive;font-size:0.82rem;font-weight:700;padding:0.6rem 0.3rem;border-radius:12px;border:2.5px solid var(--line);background:#fff;color:var(--muted);cursor:pointer;transition:all 0.15s;display:flex;flex-direction:column;align-items:center;gap:2px;}
+.tab .t-ikon{font-size:1.1rem;}
+.tab.aktiv{background:var(--grape);color:#fff;border-color:var(--grape);}
+.panel{display:none;animation:fade 0.3s;}
+.panel.aktiv{display:block;}
+@keyframes fade{from{opacity:0;transform:translateY(6px);}to{opacity:1;transform:translateY(0);}}
+.blokk{background:var(--card);border-radius:16px;box-shadow:var(--shadow);padding:1.2rem 1.3rem;margin-bottom:1rem;}
+.blokk-tittel{font-family:'Baloo 2',cursive;font-weight:700;font-size:0.78rem;color:var(--grape);text-transform:uppercase;letter-spacing:0.5px;margin-bottom:0.7rem;}
+.blokk p{font-size:1.08rem;margin-bottom:0.6rem;}
+.blokk p:last-child{margin-bottom:0;}
+.def{display:block;background:var(--gronn-light);border-left:4px solid var(--gronn);border-radius:8px;padding:0.5rem 0.8rem;margin:0.5rem 0;font-size:0.98rem;color:#15803d;font-style:italic;}
+.ord{background:var(--sun-light);color:var(--sun);font-weight:700;padding:1px 7px;border-radius:6px;border:1.5px solid #F5D98A;cursor:pointer;white-space:nowrap;}
+.ord:hover{filter:brightness(0.96);}
+.ord.ukens{background:#EDE9FE;color:var(--grape);border-color:#C9B3DE;}
+.les-hjelp{text-align:center;font-size:0.82rem;color:var(--muted);background:#eef6ff;border-radius:10px;padding:0.6rem;margin-bottom:1rem;}
+.ukens-repetisjon{background:linear-gradient(135deg,#FEF3C7,#fff);border:2px dashed var(--sun);border-radius:16px;padding:1.1rem 1.3rem;margin-bottom:1rem;}
+.ukens-repetisjon .ur-tittel{font-family:'Baloo 2',cursive;font-weight:800;font-size:0.95rem;color:var(--sun);display:flex;align-items:center;gap:0.4rem;margin-bottom:0.5rem;}
+.ukens-repetisjon .ur-info{font-size:0.86rem;color:#8a6d3b;margin-bottom:0.7rem;}
+.ur-ord{display:flex;flex-wrap:wrap;gap:0.5rem;}
+.ur-chip{background:#fff;border:2px solid #F5D98A;border-radius:99px;padding:0.4rem 0.9rem;font-weight:700;color:var(--sun);font-size:0.92rem;cursor:pointer;}
+.ur-chip:hover{background:#fff8e8;}
+.bilde-wrap{background:#fff;border-radius:16px;box-shadow:var(--shadow);padding:0.5rem;overflow:hidden;cursor:zoom-in;}
+.bilde-wrap img{width:100%;border-radius:12px;display:block;}
+.bilde-mangler{padding:2.5rem 1rem;text-align:center;color:var(--muted);font-size:0.9rem;}
+.bilde-hint{text-align:center;font-size:0.82rem;color:var(--muted);margin-top:0.6rem;}
+.leser{display:none;position:fixed;inset:0;background:#1a1830;z-index:100;flex-direction:column;}
+.leser.open{display:flex;}
+.leser-bar{padding:0.8rem 1rem;display:flex;justify-content:flex-end;}
+.leser-lukk{background:#fff;border:none;border-radius:12px;padding:0.5rem 1.1rem;font-family:'Nunito',sans-serif;font-weight:800;font-size:0.9rem;cursor:pointer;}
+.leser-scroll{flex:1;overflow:auto;-webkit-overflow-scrolling:touch;touch-action:pan-x pan-y pinch-zoom;padding:0 0.5rem;}
+.leser-scroll img{width:100%;height:auto;display:block;border-radius:8px;}
+.leser-tips{color:rgba(255,255,255,0.6);text-align:center;font-size:0.78rem;padding:0.6rem;}
+.sporsmal-kort{background:var(--card);border-radius:16px;box-shadow:var(--shadow);padding:1.1rem 1.2rem;margin-bottom:0.9rem;}
+.sporsmal-nr{display:inline-flex;align-items:center;justify-content:center;width:28px;height:28px;background:var(--grape);color:#fff;border-radius:50%;font-family:'Baloo 2',cursive;font-weight:700;font-size:0.85rem;margin-right:0.5rem;flex-shrink:0;}
+.sporsmal-tekst{font-size:1.02rem;font-weight:600;}
+.svar-felt{width:100%;border:2.5px solid var(--line);border-radius:12px;padding:0.8rem;font-family:'Nunito',sans-serif;font-size:1rem;margin-top:0.7rem;resize:vertical;min-height:70px;}
+.svar-felt:focus{outline:none;border-color:var(--grape);}
+.send-btn{display:block;width:100%;background:var(--grape);color:#fff;border:none;border-radius:14px;padding:0.9rem;font-family:'Baloo 2',cursive;font-size:1.05rem;cursor:pointer;margin-top:0.5rem;}
+.send-btn:active{transform:scale(0.99);}
+.send-ok{text-align:center;color:var(--gronn);font-weight:700;font-size:0.9rem;margin-top:0.7rem;display:none;}
+.send-ok.vis{display:block;}
+.hjelp-btn{background:none;border:2px dashed #C9B3DE;color:var(--grape);font-family:'Nunito',sans-serif;font-weight:700;font-size:0.85rem;padding:0.5rem 0.9rem;border-radius:10px;cursor:pointer;margin-top:0.6rem;}
+.hjelp-btn:hover{background:var(--grape-light);}
+.hjelp-boks{display:none;margin-top:0.7rem;border-radius:12px;overflow:hidden;border:2px solid var(--grape-light);}
+.hjelp-boks.vis{display:block;animation:fade 0.3s;}
+.hjelp-rad{padding:0.7rem 0.9rem;font-size:0.92rem;border-bottom:1px solid var(--grape-light);}
+.hjelp-rad:last-child{border-bottom:none;}
+.hjelp-rad .etikett{font-weight:800;font-size:0.72rem;text-transform:uppercase;letter-spacing:0.4px;display:block;margin-bottom:0.25rem;}
+.hjelp-start{background:#eef6ff;}
+.hjelp-start .etikett{color:#2563eb;}
+.hjelp-start .innhold{color:#1e40af;font-style:italic;}
+.hjelp-ordbank{background:var(--sun-light);}
+.hjelp-ordbank .etikett{color:var(--sun);}
+.ordbank-ord{display:inline-block;background:#fff;border:1.5px solid #F5D98A;color:var(--sun);font-weight:700;padding:2px 9px;border-radius:99px;margin:2px 3px;font-size:0.85rem;cursor:pointer;}
+.ordbank-ord:hover{background:#fff8e8;}
+.hjelp-eksempel{background:var(--gronn-light);}
+.hjelp-eksempel .etikett{color:var(--gronn);}
+.hjelp-eksempel .innhold{color:#15803d;font-style:italic;}
+.ord-kort{background:var(--card);border-radius:16px;box-shadow:var(--shadow);padding:1.2rem 1.3rem;margin-bottom:0.9rem;border-left:5px solid var(--grape);}
+.ord-navn{font-family:'Baloo 2',cursive;font-weight:800;font-size:1.4rem;color:var(--grape);}
+.ord-betyr{font-size:1rem;color:#15803d;font-weight:600;margin:0.3rem 0 0.6rem;}
+.ord-eksempel{font-size:0.98rem;color:var(--muted);font-style:italic;background:#f7f5fc;border-radius:10px;padding:0.6rem 0.8rem;}
+.ord-intro{background:var(--grape-light);border-radius:12px;padding:0.8rem 1rem;font-size:0.9rem;color:#5b21b6;font-weight:600;margin-bottom:1rem;text-align:center;}
+.gjenfortelling{background:linear-gradient(135deg,#EEF6FF,#fff);border:2px solid #93c5fd;border-radius:16px;padding:1.2rem 1.3rem;margin-top:1.2rem;}
+.gjenfortelling-tittel{font-family:'Baloo 2',cursive;font-weight:800;color:#1e40af;margin-bottom:0.6rem;}
+.gjenfortelling-ord{display:flex;flex-wrap:wrap;gap:0.4rem;margin:0.6rem 0;}
+.gjenfortelling-chip{background:#fff;border:2px solid #93c5fd;color:#1e40af;font-weight:700;padding:0.35rem 0.8rem;border-radius:99px;font-size:0.9rem;}
+.gjenfortelling-eksempel{background:#fff;border-radius:10px;padding:0.7rem 0.9rem;margin-top:0.7rem;font-size:0.95rem;font-style:italic;color:#1e40af;}
+</style>
+</head>
+<body>
+
+<div class="topbar">
+  <a class="home-btn" href="tekster.html">📖</a>
+  <span class="tittel">Berlinmuren</span>
+</div>
+
+<div class="hero">
+  <div class="ikon">🧱</div>
+  <h1>Berlinmuren</h1>
+  <p>Les · Se · Tenk · Lær ordene</p>
+</div>
+
+<main>
+  <div class="tabs">
+    <button class="tab aktiv" data-p="les"><span class="t-ikon">📖</span>Les</button>
+    <button class="tab" data-p="se"><span class="t-ikon">🖼️</span>Se</button>
+    <button class="tab" data-p="tenk"><span class="t-ikon">💬</span>Tenk</button>
+    <button class="tab" data-p="ord"><span class="t-ikon">🎯</span>Ord</button>
+  </div>
+
+  <!-- ===== LES ===== -->
+  <div class="panel aktiv" id="p-les">
+    <div class="les-hjelp">💡 Les rolig. Ta pauser. Trykk på de <span class="ord">gule ordene</span> for å se hva de betyr.</div>
+
+    <div class="blokk">
+      <div class="blokk-tittel">1 · Et delt land</div>
+      <p>Etter andre verdenskrig ble Tyskland delt i to.</p>
+      <p>Den ene delen het Vest-Tyskland.</p>
+      <p>Den andre delen het Øst-Tyskland.</p>
+    </div>
+
+    <div class="blokk">
+      <div class="blokk-tittel">2 · Folk ville flytte</div>
+      <p>Mange som bodde i Øst-Tyskland ville flytte til Vest-Tyskland.</p>
+      <p>De trodde <span class="ord ukens" data-d="å se nøye på noe">at</span> livet var bedre der.</p>
+      <p>Derfor bygde myndighetene en stor <span class="ord" data-d="en høy vegg som stenger av et sted">mur</span>.</p>
+      <span class="def">🧱 En mur er en høy vegg som stenger av et sted.</span>
+      <p>Muren skulle stoppe folk fra å reise til Vest-Tyskland.</p>
+    </div>
+
+    <div class="blokk">
+      <div class="blokk-tittel">3 · Mange prøvde å rømme</div>
+      <p>Likevel prøvde mange å <span class="ord" data-d="å flykte fra et farlig eller vanskelig sted">rømme</span>.</p>
+      <span class="def">🏃 Å rømme betyr å flykte fra et sted.</span>
+      <p>Noen gravde tunneler under jorden.</p>
+      <p>Noen fløy med en stor luftballong.</p>
+      <p>Andre klatret over muren, med stor risiko.</p>
+    </div>
+
+    <div class="blokk">
+      <div class="blokk-tittel">4 · Hva forskerne kan <span class="ord ukens" data-d="å finne ut mer om noe">undersøke</span> i dag</div>
+      <span class="def">🔍 Å undersøke betyr å finne ut mer om noe.</span>
+      <p>Historikere kan undersøke hvorfor så mange ville rømme.</p>
+      <p>De kan <span class="ord ukens" data-d="å fortelle om noe med ord">beskrive</span> hvordan livet var bak muren.</p>
+      <span class="def">🗣️ Å beskrive betyr å fortelle om noe med ord.</span>
+      <p>Mange klarte å komme seg over muren.</p>
+      <p>Men noen døde da de prøvde.</p>
+    </div>
+
+    <div class="blokk">
+      <div class="blokk-tittel">5 · Muren faller</div>
+      <p>I dag finnes ikke Berlinmuren lenger.</p>
+      <p>Læreren kan <span class="ord ukens" data-d="å gjøre noe lett å forstå">forklare</span> hvorfor muren falt.</p>
+      <span class="def">💡 Å forklare betyr å gjøre noe lett å forstå.</span>
+      <p>Tyskland ble ett land igjen.</p>
+    </div>
+
+    <div class="ukens-repetisjon">
+      <div class="ur-tittel">🔁 Ukens ord – husker du disse?</div>
+      <div class="ur-info">Dette er ordene vi øver på hele uka. Trykk for å se hva de betyr!</div>
+      <div class="ur-ord">
+        <span class="ur-chip" data-d="å se nøye på noe">⭐ observere</span>
+        <span class="ur-chip" data-d="å finne ut mer om noe">⭐ undersøke</span>
+        <span class="ur-chip" data-d="å fortelle om noe med ord">⭐ beskrive</span>
+        <span class="ur-chip" data-d="å gjøre noe lett å forstå">⭐ forklare</span>
+      </div>
+    </div>
+
+    <div class="gjenfortelling">
+      <div class="gjenfortelling-tittel">🗣️ Gjenfortell historien selv</div>
+      <p style="font-size:0.95rem;">Prøv å fortelle historien om Berlinmuren med disse ordene:</p>
+      <div class="gjenfortelling-ord">
+        <span class="gjenfortelling-chip">Først …</span>
+        <span class="gjenfortelling-chip">Så …</span>
+        <span class="gjenfortelling-chip">Etterpå …</span>
+        <span class="gjenfortelling-chip">Men …</span>
+        <span class="gjenfortelling-chip">Derfor …</span>
+        <span class="gjenfortelling-chip">Til slutt …</span>
+      </div>
+      <div class="gjenfortelling-eksempel">
+        «Først ble Tyskland delt i to. Så bygde myndighetene en mur. Men mange mennesker ville rømme. Derfor gravde noen tunneler eller fløy med luftballong. Til slutt ble muren revet.»
+      </div>
+    </div>
+  </div>
+
+  <!-- ===== SE ===== -->
+  <div class="panel" id="p-se">
+    <div class="bilde-wrap" id="bildeWrap">
+      <img src="berlinmuren.png" alt="Berlinmuren"
+           onerror="this.outerHTML='<div class=\'bilde-mangler\'>Last opp «berlinmuren.png» på GitHub, så vises bildet her 🧱</div>'">
+    </div>
+    <div class="bilde-hint">🔍 Trykk på bildet for å se det stort</div>
+  </div>
+
+  <!-- ===== TENK ===== -->
+  <div class="panel" id="p-tenk">
+    <div class="ord-intro">💬 Tenk og forklar. Trenger du hjelp? Trykk på knappen under hvert spørsmål.</div>
+    <div id="sporsmalListe"></div>
+    <button class="send-btn" id="sendTenk">Send svarene til mamma 💌</button>
+    <div class="send-ok" id="sendOk">✓ Svarene dine er sendt til mamma</div>
+  </div>
+
+  <!-- ===== ORD ===== -->
+  <div class="panel" id="p-ord">
+    <div class="ord-intro">🎯 Ukens ord i denne teksten – øv på dem flere ganger!</div>
+    <div id="ordListe"></div>
+  </div>
+</main>
+
+<div class="leser" id="leser">
+  <div class="leser-bar"><button class="leser-lukk" onclick="lukkLeser()">✕ Lukk</button></div>
+  <div class="leser-scroll"><img id="leserImg" src="" alt=""></div>
+  <div class="leser-tips">Zoom med to fingre 🤏</div>
+</div>
+
+<script>
+const FORMSPREE="https://formspree.io/f/mqeolldg";
+const FELT="Tekst_hun_skrev";
+const $=id=>document.getElementById(id);
+
+const bw=$('bildeWrap');
+if(bw){ bw.onclick=()=>{ const img=bw.querySelector('img'); if(img){ $('leserImg').src=img.src; $('leser').classList.add('open'); } }; }
+function lukkLeser(){ $('leser').classList.remove('open'); }
+
+document.querySelectorAll('.tab').forEach(t=>{
+  t.onclick=()=>{
+    document.querySelectorAll('.tab').forEach(x=>x.classList.remove('aktiv'));
+    document.querySelectorAll('.panel').forEach(x=>x.classList.remove('aktiv'));
+    t.classList.add('aktiv');
+    $('p-'+t.dataset.p).classList.add('aktiv');
+    window.scrollTo({top:0,behavior:'smooth'});
+  };
+});
+document.querySelectorAll('.ord[data-d], .ur-chip[data-d]').forEach(o=>{
+  o.onclick=()=>{ alert(o.textContent.replace('⭐ ','')+" = "+o.dataset.d); };
+});
+
+/* TENK — bruker Først/Så/Etterpå/Men/Derfor/Til slutt som skrivestøtte,
+   siden dette er nettopp mønsteret Edel mestrer best (se observasjonsnotat). */
+const SPORSMAL=[
+  {
+    q:"Beskriv hvorfor Tyskland ble delt i to.",
+    start:"Tyskland ble delt fordi …",
+    ordbank:["andre verdenskrig","Vest-Tyskland","Øst-Tyskland","to deler"],
+    eksempel:"Tyskland ble delt fordi krigen var slutt, og landet ble to deler: Vest-Tyskland og Øst-Tyskland."
+  },
+  {
+    q:"Hvorfor bygde myndighetene en mur?",
+    start:"De bygde muren fordi …",
+    ordbank:["folk ville flytte","stoppe","Vest-Tyskland","bedre liv"],
+    eksempel:"De bygde muren fordi mange ville flytte til Vest-Tyskland, og myndighetene ville stoppe dem."
+  },
+  {
+    q:"Beskriv to måter folk prøvde å rømme på.",
+    start:"Noen … Andre …",
+    ordbank:["gravde tunneler","fløy med luftballong","klatret over","stor risiko"],
+    eksempel:"Noen gravde tunneler under jorden. Andre fløy med en stor luftballong."
+  },
+  {
+    q:"Fortell historien med Først, Så, Men og Til slutt. Bruk gjerne eksempelet i Les-fanen som hjelp.",
+    start:"Først … Så … Men … Til slutt …",
+    ordbank:["delt i to","bygde en mur","ville rømme","muren falt"],
+    eksempel:"Først ble Tyskland delt i to. Så bygde myndighetene en mur. Men mange ville rømme. Til slutt ble muren revet."
+  },
+];
+SPORSMAL.forEach((s,i)=>{
+  const d=document.createElement('div');
+  d.className='sporsmal-kort';
+  const ordChips=s.ordbank.map(o=>'<span class="ordbank-ord" data-ord="'+o+'">'+o+'</span>').join('');
+  d.innerHTML=
+    '<div><span class="sporsmal-nr">'+(i+1)+'</span><span class="sporsmal-tekst">'+s.q+'</span></div>'+
+    '<textarea class="svar-felt" data-q="'+i+'" placeholder="Skriv her …"></textarea>'+
+    '<button class="hjelp-btn" data-h="'+i+'">Trenger du hjelp? 💡</button>'+
+    '<div class="hjelp-boks" id="hjelp-'+i+'">'+
+      '<div class="hjelp-rad hjelp-start"><span class="etikett">✏️ Start slik</span><span class="innhold">'+s.start+'</span></div>'+
+      '<div class="hjelp-rad hjelp-ordbank"><span class="etikett">🔤 Ord du kan bruke (trykk for å sette inn)</span><div>'+ordChips+'</div></div>'+
+      '<div class="hjelp-rad hjelp-eksempel"><span class="etikett">🌟 Et eksempel</span><span class="innhold">«'+s.eksempel+'»</span></div>'+
+    '</div>';
+  $('sporsmalListe').appendChild(d);
+});
+document.querySelectorAll('.hjelp-btn').forEach(b=>{
+  b.onclick=()=>{
+    const boks=$('hjelp-'+b.dataset.h);
+    const vis=boks.classList.toggle('vis');
+    b.textContent = vis ? "Skjul hjelp 🙈" : "Trenger du hjelp? 💡";
+  };
+});
+document.querySelectorAll('.ordbank-ord').forEach(o=>{
+  o.onclick=()=>{
+    const kort=o.closest('.sporsmal-kort');
+    const felt=kort.querySelector('.svar-felt');
+    felt.value=(felt.value+" "+o.dataset.ord).trim();
+    felt.focus();
+  };
+});
+$('sendTenk').onclick=()=>{
+  let linjer=[];
+  document.querySelectorAll('.svar-felt').forEach(f=>{
+    const i=f.dataset.q; const t=f.value.trim();
+    if(t) linjer.push((parseInt(i)+1)+". "+SPORSMAL[i].q+"\n   → "+t);
+  });
+  const tekst="BERLINMUREN – Tenk og forklar\n\n"+(linjer.length?linjer.join("\n\n"):"(tomt)");
+  const fd=new FormData(); fd.append(FELT,tekst);
+  fetch(FORMSPREE,{method:"POST",body:fd,headers:{"Accept":"application/json"}})
+    .then(r=>{if(r.ok)$('sendOk').classList.add('vis');}).catch(()=>{});
+};
+
+/* ORD — de 4 ukens ord, med eksempler fra denne teksten */
+const ORD=[
+  {ord:"observere", betyr:"å se nøye på noe", eksempel:"Vi kan observere bilder av muren fra 1961."},
+  {ord:"undersøke", betyr:"å finne ut mer om noe", eksempel:"Historikere kan undersøke hvorfor folk ville rømme."},
+  {ord:"beskrive", betyr:"å fortelle om noe med ord", eksempel:"Kan du beskrive hvordan livet var bak muren?"},
+  {ord:"forklare", betyr:"å gjøre noe lett å forstå", eksempel:"Læreren kan forklare hvorfor muren falt."},
+];
+ORD.forEach(o=>{
+  const d=document.createElement('div');
+  d.className='ord-kort';
+  d.innerHTML='<div class="ord-navn">'+o.ord+'</div><div class="ord-betyr">'+o.betyr+'</div><div class="ord-eksempel">«'+o.eksempel+'»</div>';
+  $('ordListe').appendChild(d);
+});
+</script>
+</body>
+</html>

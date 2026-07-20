@@ -10,7 +10,7 @@
     --lilla:#6c5ce7;--lilla-mork:#5a4bd1;--gronn:#27ae60;--gronn-lys:#eafaf0;
     --rod:#e17055;--rod-lys:#fdeee9;--gul:#f6c945;--bg:#f4f1ea;--kort:#fff;
     --tekst:#2d3436;--gratone:#dfe4ea;
-    --rosa:#e84393;--vietnam:#00b894;--hippie:#a29bfe;--romfart:#0984e3;--laika:#8e44ad;
+    --rosa:#e84393;--vietnam:#00b894;--hippie:#a29bfe;--romfart:#0984e3;--laika:#8e44ad;--berlin:#0d9488;
   }
   *{box-sizing:border-box;margin:0;padding:0;}
   body{font-family:'Nunito',sans-serif;background:var(--bg);color:var(--tekst);line-height:1.5;padding:14px;min-height:100vh;}
@@ -32,11 +32,13 @@
   .tema-pill{font-size:.82rem;font-weight:700;padding:6px 12px;border-radius:99px;border:2px solid var(--gratone);background:#fff;cursor:pointer;transition:all .15s;}
   .tema-pill.aktiv{color:#fff;}
   .tema-pill[data-t="alle"].aktiv{background:var(--lilla);border-color:var(--lilla);}
+  .tema-pill[data-t="akademisk"].aktiv{background:#e67e22;border-color:#e67e22;}
   .tema-pill[data-t="rosa"].aktiv{background:var(--rosa);border-color:var(--rosa);}
   .tema-pill[data-t="vietnam"].aktiv{background:var(--vietnam);border-color:var(--vietnam);}
   .tema-pill[data-t="hippie"].aktiv{background:var(--hippie);border-color:var(--hippie);color:#2d2a4a;}
   .tema-pill[data-t="romfart"].aktiv{background:var(--romfart);border-color:var(--romfart);}
   .tema-pill[data-t="laika"].aktiv{background:var(--laika);border-color:var(--laika);}
+  .tema-pill[data-t="berlin"].aktiv{background:var(--berlin);border-color:var(--berlin);}
 
   /* FLIP CARDS */
   .flip-teller{text-align:center;font-size:.88rem;color:#636e72;margin-bottom:12px;font-weight:600;}
@@ -47,6 +49,7 @@
   .flip-front{border:4px solid var(--lilla);}
   .flip-back{transform:rotateY(180deg);border:4px solid var(--gronn);background:var(--gronn-lys);}
   .flip-tema{font-size:.78rem;font-weight:800;text-transform:uppercase;letter-spacing:.5px;padding:3px 12px;border-radius:99px;margin-bottom:14px;color:#fff;}
+  .flip-alvo{position:absolute;top:14px;right:14px;background:#e67e22;color:#fff;font-size:.72rem;font-weight:800;padding:4px 11px;border-radius:99px;letter-spacing:.3px;}
   .flip-ord{font-family:'Baloo 2',cursive;font-size:2.2rem;color:var(--tekst);line-height:1.1;}
   .flip-hint{font-size:.85rem;color:#999;margin-top:16px;}
   .flip-betyr{font-size:1.15rem;font-weight:700;color:#1e7a45;margin-bottom:14px;}
@@ -98,6 +101,7 @@
     <div class="flip-scene">
       <div class="flip" id="flipCard">
         <div class="flip-side flip-front">
+          <span class="flip-alvo" id="flipAlvo" style="display:none;">⭐ UKENS ORD</span>
           <span class="flip-tema" id="flipTemaF"></span>
           <div class="flip-ord" id="flipOrd"></div>
           <div class="flip-hint">Trykk for å se hva det betyr 👆</div>
@@ -147,6 +151,13 @@ const FELT="Tekst_hun_skrev";
 
 /* 15 ord – 3 per tema. Bokmål. betyr = enkel forklaring, eksempel = setning som viser bruk. */
 const ORD = [
+  // ===== UKENS ORD (ALVO – akademiske skriveord) =====
+  {tema:"akademisk", farge:"#e67e22", alvo:true, ord:"observere", betyr:"å se nøye på noe", eksempel:"Jeg kan observere hva som skjer i klassen."},
+  {tema:"akademisk", farge:"#e67e22", alvo:true, ord:"undersøke", betyr:"å finne ut mer om noe", eksempel:"Vi skal undersøke hvorfor isen smelter."},
+  {tema:"akademisk", farge:"#e67e22", alvo:true, ord:"beskrive", betyr:"å fortelle om noe med ord", eksempel:"Kan du beskrive hvordan hunden ser ut?"},
+  {tema:"akademisk", farge:"#e67e22", alvo:true, ord:"forklare", betyr:"å gjøre noe lett å forstå", eksempel:"Læreren kan forklare oppgaven på nytt."},
+
+  // ===== REPETISJON (allerede lært, temaord) =====
   // ROSA PARKS
   {tema:"rosa", farge:"#e84393", ord:"modig", betyr:"å tørre selv om man er redd", eksempel:"Rosa var modig da hun sa nei på bussen."},
   {tema:"rosa", farge:"#e84393", ord:"urettferdig", betyr:"noe som ikke er rettferdig", eksempel:"Regelen på bussen var urettferdig."},
@@ -161,15 +172,27 @@ const ORD = [
   {tema:"hippie", farge:"#6c5ce7", ord:"kjærlighet", betyr:"å være glad i noen", eksempel:"Hippiene trodde på kjærlighet."},
   // ROMFART
   {tema:"romfart", farge:"#0984e3", ord:"satellitt", betyr:"noe som går i bane rundt jorda", eksempel:"Sputnik var den første satellitten."},
-  {tema:"romfart", farge:"#0984e3", ord:"observere", betyr:"å se nøye på noe", eksempel:"Forskerne kunne observere jorda fra rommet."},
   {tema:"romfart", farge:"#0984e3", ord:"konkurrere", betyr:"å prøve å bli best", eksempel:"USA og Sovjet ville konkurrere om rommet."},
+  {tema:"romfart", farge:"#0984e3", ord:"univers", betyr:"alt som finnes – stjerner, planeter og rommet", eksempel:"Et parallelt univers er en annen versjon av verden."},
+  {tema:"romfart", farge:"#0984e3", ord:"mulighet", betyr:"noe som kanskje kan skje", eksempel:"Hvert valg gir en ny mulighet."},
   // LAIKA
   {tema:"laika", farge:"#8e44ad", ord:"bane", betyr:"en vei rundt jorda i rommet", eksempel:"Laika gikk i bane rundt jorda."},
   {tema:"laika", farge:"#8e44ad", ord:"eksperiment", betyr:"en test for å lære noe nytt", eksempel:"Reisen var et viktig eksperiment."},
   {tema:"laika", farge:"#8e44ad", ord:"omsorg", betyr:"å bry seg om og passe på noen", eksempel:"Dyr fortjener omsorg."},
+  // BERLINMUREN
+  {tema:"berlin", farge:"#0d9488", ord:"myndigheter", betyr:"personer som styrer et land og lager regler", eksempel:"Myndighetene bygde en mur."},
+  {tema:"berlin", farge:"#0d9488", ord:"dele", betyr:"å lage to deler", eksempel:"Tyskland ble delt i to."},
+  {tema:"berlin", farge:"#0d9488", ord:"mur", betyr:"en høy vegg av stein eller betong", eksempel:"Berlinmuren var veldig høy."},
+  {tema:"berlin", farge:"#0d9488", ord:"grense", betyr:"linjen mellom to land eller områder", eksempel:"Muren var en grense."},
+  {tema:"berlin", farge:"#0d9488", ord:"rømme", betyr:"å komme seg bort fra et sted", eksempel:"Mange prøvde å rømme."},
+  {tema:"berlin", farge:"#0d9488", ord:"frihet", betyr:"å kunne velge selv", eksempel:"Mange ønsket frihet."},
+  {tema:"berlin", farge:"#0d9488", ord:"tunnel", betyr:"en vei under bakken", eksempel:"Noen gravde en tunnel."},
+  {tema:"berlin", farge:"#0d9488", ord:"tro", betyr:"å tenke at noe er sant", eksempel:"Jeg tror at muren var urettferdig."},
+  {tema:"berlin", farge:"#0d9488", ord:"håpe", betyr:"å ønske at noe skjer", eksempel:"Jeg håper at alle land kan ha fred."},
+  {tema:"berlin", farge:"#0d9488", ord:"huske", betyr:"å ikke glemme", eksempel:"Vi må huske historien om Berlinmuren."},
 ];
 
-const TEMA_NAVN={alle:"Alle",rosa:"Rosa Parks",vietnam:"Vietnam",hippie:"Hippiene",romfart:"Romfart",laika:"Laika"};
+const TEMA_NAVN={alle:"Alle",akademisk:"⭐ Ukens ord",rosa:"Rosa Parks",vietnam:"Vietnam",hippie:"Hippiene",romfart:"Romfart",laika:"Laika",berlin:"Berlinmuren"};
 const $=id=>document.getElementById(id);
 function bland(a){for(let i=a.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[a[i],a[j]]=[a[j],a[i]];}return a;}
 
@@ -186,7 +209,7 @@ function bytt(hvilken){
 /* ===== TEMA-FILTER (bygges to steder) ===== */
 function byggTemaer(container, aktivtTema, onValg){
   container.innerHTML="";
-  ["alle","rosa","vietnam","hippie","romfart","laika"].forEach(t=>{
+  ["alle","akademisk","rosa","vietnam","hippie","romfart","laika","berlin"].forEach(t=>{
     const b=document.createElement("button");
     b.className="tema-pill"+(t===aktivtTema?" aktiv":"");
     b.dataset.t=t;
@@ -214,6 +237,7 @@ function visFlip(){
   $("flipTeller").textContent="Kort "+(flipIdx+1)+" av "+flipListe.length;
   $("flipTemaF").textContent=TEMA_NAVN[o.tema];
   $("flipTemaF").style.background=o.farge;
+  $("flipAlvo").style.display = o.alvo ? "block" : "none";
   $("flipOrd").textContent=o.ord;
   $("flipBetyr").textContent=o.betyr;
   $("flipEksempel").textContent="«"+o.eksempel+"»";
