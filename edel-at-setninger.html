@@ -67,10 +67,15 @@ main{max-width:600px;margin:0 auto;padding:0 1rem;}
 
 /* ===== BYGG (skrivestøtte) ===== */
 .bygg-kort{background:var(--card);border-radius:16px;box-shadow:var(--shadow);padding:1.1rem 1.2rem;margin-bottom:0.9rem;}
-.bygg-start{font-family:'Baloo 2',cursive;font-size:1.1rem;color:var(--grape);margin-bottom:0.8rem;}
-.bygg-start .at-ord{margin:0 2px;}
-.svar-felt{width:100%;border:2.5px solid var(--line);border-radius:12px;padding:0.8rem;font-family:'Nunito',sans-serif;font-size:1rem;resize:vertical;min-height:60px;}
-.svar-felt:focus{outline:none;border-color:var(--grape);}
+.bygg-modell{background:var(--sun-light);border:2px dashed var(--sun);border-radius:12px;padding:0.7rem 0.9rem;margin-bottom:0.9rem;display:flex;align-items:center;gap:0.6rem;}
+.bygg-modell .modell-ikon{font-size:1.3rem;flex-shrink:0;}
+.bygg-modell .modell-tekst{font-family:'Baloo 2',cursive;font-size:1.05rem;color:#8a6d00;}
+.bygg-skriv-label{font-size:0.82rem;color:var(--muted);font-weight:700;margin-bottom:0.4rem;display:flex;align-items:center;gap:0.4rem;}
+.bygg-svar-boks{display:flex;align-items:stretch;border:2.5px solid var(--line);border-radius:12px;overflow:hidden;transition:border-color 0.15s;}
+.bygg-svar-boks:focus-within{border-color:var(--grape);}
+.bygg-prefiks{background:#f3f0fa;color:var(--grape);font-family:'Baloo 2',cursive;font-weight:700;font-size:1rem;padding:0.8rem 0 0.8rem 0.9rem;display:flex;align-items:center;white-space:nowrap;user-select:none;}
+.svar-felt{flex:1;border:none;padding:0.8rem 0.8rem 0.8rem 0.4rem;font-family:'Nunito',sans-serif;font-size:1rem;resize:vertical;min-height:52px;}
+.svar-felt:focus{outline:none;}
 .ordbank{display:flex;flex-wrap:wrap;gap:0.4rem;margin-top:0.7rem;}
 .ordbank-ord{background:var(--sun-light);border:1.5px solid #F5D98A;color:var(--sun);font-weight:700;padding:0.3rem 0.75rem;border-radius:99px;font-size:0.88rem;cursor:pointer;}
 .ordbank-ord:hover{background:#fff8e8;}
@@ -364,9 +369,14 @@ BYGG_DAGENS.forEach((b,i)=>{
   const d=document.createElement('div');
   d.className='bygg-kort';
   const chips=b.hjelp.map(h=>'<span class="ordbank-ord" data-txt="'+h+'">'+h+'</span>').join('');
+  const startVisning=b.start.replace('at ','<span class="at-ord">at</span> ').replace('fordi ','<span class="at-ord">fordi</span> ');
   d.innerHTML=
-    '<div class="bygg-start">'+b.start.replace('at ','<span class="at-ord">at</span> ').replace('fordi ','<span class="at-ord">fordi</span> ')+'…</div>'+
-    '<textarea class="svar-felt" data-i="'+b._idx+'" data-start="'+b.start+'" placeholder="Fullfør setningen …"></textarea>'+
+    '<div class="bygg-modell"><span class="modell-ikon">📌</span><span class="modell-tekst">'+startVisning+'…</span></div>'+
+    '<div class="bygg-skriv-label">✏️ Skriv resten av setningen din her:</div>'+
+    '<div class="bygg-svar-boks">'+
+      '<span class="bygg-prefiks">'+startVisning+'</span>'+
+      '<textarea class="svar-felt" data-i="'+b._idx+'" data-start="'+b.start+'" rows="1"></textarea>'+
+    '</div>'+
     '<div class="ordbank">'+chips+'</div>';
   $('byggListe').appendChild(d);
 });
