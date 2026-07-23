@@ -5,6 +5,7 @@ const semanasData = [
     subtitulo: "Edel descobre o livro mágico",
     semana: "Semana 1",
     livro: "Den uendelige historien",
+    imagem: "img/uendelige-edel-paineis.png",
     cores: {
       bg: "#f5f3e8",
       accent: "#8b4513",
