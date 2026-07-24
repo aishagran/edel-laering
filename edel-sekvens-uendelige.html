@@ -1,0 +1,763 @@
+<!DOCTYPE html>
+<html lang="no">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Edels Verden - Sekvens: Uma História Sem Fim</title>
+    <link href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@400;600;700&family=Nunito:wght@400;600;700&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Nunito', sans-serif;
+            background: linear-gradient(135deg, #f5f3e8 0%, #fff8e7 100%);
+            padding: 20px;
+            min-height: 100vh;
+        }
+
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 15px;
+            box-shadow: 0 10px 40px rgba(0,0,0,0.1);
+            overflow: hidden;
+        }
+
+        .header {
+            background: linear-gradient(135deg, #8b4513 0%, #a0522d 100%);
+            color: white;
+            padding: 30px;
+            text-align: center;
+        }
+
+        .header h1 {
+            font-family: 'Baloo 2', sans-serif;
+            font-size: 2.2em;
+            margin-bottom: 10px;
+        }
+
+        .header p {
+            font-size: 1.1em;
+            opacity: 0.95;
+        }
+
+        .tabs {
+            display: flex;
+            border-bottom: 3px solid #f0f0f0;
+            background: #fafafa;
+        }
+
+        .tab-btn {
+            flex: 1;
+            padding: 18px;
+            background: none;
+            border: none;
+            cursor: pointer;
+            font-size: 1em;
+            font-weight: 600;
+            font-family: 'Nunito', sans-serif;
+            color: #666;
+            transition: all 0.3s;
+            border-bottom: 4px solid transparent;
+        }
+
+        .tab-btn.active {
+            color: #8b4513;
+            border-bottom-color: #c41e3a;
+        }
+
+        .tab-btn:hover {
+            background: rgba(139, 69, 19, 0.05);
+        }
+
+        .content {
+            padding: 40px;
+            min-height: 600px;
+        }
+
+        .tab-content {
+            display: none;
+            animation: fadeIn 0.4s;
+        }
+
+        .tab-content.active {
+            display: block;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+
+        /* ─── ØVING 1: ORDNE SCENER ─── */
+        .scener-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+            margin-bottom: 30px;
+        }
+
+        .scene-card {
+            background: #f9f6f0;
+            border: 2px solid #e8dcc8;
+            border-radius: 10px;
+            padding: 20px;
+            cursor: move;
+            user-select: none;
+            transition: all 0.3s;
+            touch-action: none;
+        }
+
+        .scene-card:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 8px 20px rgba(0,0,0,0.1);
+            border-color: #c41e3a;
+        }
+
+        .scene-card.dragging {
+            opacity: 0.5;
+            transform: scale(0.95);
+        }
+
+        .scene-number {
+            font-size: 0.9em;
+            color: #999;
+            margin-bottom: 8px;
+            font-weight: 600;
+        }
+
+        .scene-title {
+            font-family: 'Baloo 2', sans-serif;
+            font-size: 1.2em;
+            color: #8b4513;
+            margin-bottom: 10px;
+            font-weight: 700;
+        }
+
+        .scene-text {
+            color: #555;
+            line-height: 1.5;
+            font-size: 0.95em;
+        }
+
+        .ordenar-container {
+            background: #f5f3e8;
+            border: 2px dashed #e8dcc8;
+            border-radius: 10px;
+            padding: 20px;
+            min-height: 400px;
+            margin-bottom: 30px;
+        }
+
+        .ordenar-container h3 {
+            color: #8b4513;
+            margin-bottom: 15px;
+            font-family: 'Baloo 2', sans-serif;
+        }
+
+        .ordenar-lista {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+
+        .ordenar-item {
+            background: white;
+            border-left: 5px solid #c41e3a;
+            padding: 15px;
+            border-radius: 8px;
+            cursor: grab;
+            user-select: none;
+            font-weight: 600;
+            color: #555;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+        }
+
+        .ordenar-item:active {
+            cursor: grabbing;
+        }
+
+        /* ─── ØVING 2: FYLLE BINDEORD ─── */
+        .gap-grid {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 20px;
+        }
+
+        .gap-sentence {
+            background: #f9f6f0;
+            border: 2px solid #e8dcc8;
+            border-radius: 10px;
+            padding: 20px;
+        }
+
+        .gap-text {
+            color: #555;
+            line-height: 1.8;
+            margin-bottom: 15px;
+            font-size: 1em;
+        }
+
+        .gap-button-group {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+        }
+
+        .gap-btn {
+            padding: 10px 15px;
+            background: white;
+            border: 2px solid #c41e3a;
+            color: #c41e3a;
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: 600;
+            font-family: 'Nunito', sans-serif;
+            font-size: 0.95em;
+            transition: all 0.3s;
+        }
+
+        .gap-btn:hover {
+            background: #c41e3a;
+            color: white;
+            transform: translateY(-2px);
+        }
+
+        .gap-btn.used {
+            opacity: 0.4;
+            cursor: not-allowed;
+        }
+
+        .gap-input {
+            display: inline-block;
+            min-width: 120px;
+            padding: 8px 12px;
+            border: 2px solid #8b4513;
+            border-radius: 6px;
+            background: #fff8e7;
+            font-weight: 600;
+            color: #8b4513;
+            font-family: 'Baloo 2', sans-serif;
+            text-align: center;
+        }
+
+        /* ─── ØVING 3: SKRIVE SEKVENS ─── */
+        .write-container {
+            background: #f9f6f0;
+            border: 2px solid #e8dcc8;
+            border-radius: 10px;
+            padding: 25px;
+            margin-bottom: 20px;
+        }
+
+        .write-title {
+            font-family: 'Baloo 2', sans-serif;
+            font-size: 1.3em;
+            color: #8b4513;
+            margin-bottom: 15px;
+            font-weight: 700;
+        }
+
+        .write-prompt {
+            background: white;
+            border-left: 5px solid #c41e3a;
+            padding: 15px;
+            margin-bottom: 15px;
+            border-radius: 8px;
+            color: #555;
+            font-size: 0.95em;
+        }
+
+        .write-area {
+            width: 100%;
+            min-height: 200px;
+            padding: 15px;
+            border: 2px solid #e8dcc8;
+            border-radius: 8px;
+            font-family: 'Nunito', sans-serif;
+            font-size: 1em;
+            resize: vertical;
+            color: #555;
+            line-height: 1.6;
+        }
+
+        .write-area:focus {
+            outline: none;
+            border-color: #8b4513;
+            box-shadow: 0 0 0 3px rgba(139,69,19,0.1);
+        }
+
+        .write-hints {
+            background: #fff8e7;
+            border-left: 4px solid #d97706;
+            padding: 15px;
+            border-radius: 8px;
+            margin-top: 15px;
+            font-size: 0.9em;
+            color: #8b4513;
+        }
+
+        .write-hints strong {
+            display: block;
+            margin-bottom: 10px;
+        }
+
+        .hints-list {
+            list-style: none;
+            padding-left: 0;
+        }
+
+        .hints-list li {
+            padding-left: 20px;
+            position: relative;
+            margin-bottom: 8px;
+        }
+
+        .hints-list li:before {
+            content: "✓";
+            position: absolute;
+            left: 0;
+            color: #d97706;
+            font-weight: bold;
+        }
+
+        .submit-btn {
+            background: linear-gradient(135deg, #8b4513 0%, #a0522d 100%);
+            color: white;
+            padding: 12px 25px;
+            border: none;
+            border-radius: 8px;
+            font-weight: 600;
+            cursor: pointer;
+            font-family: 'Baloo 2', sans-serif;
+            font-size: 1.1em;
+            margin-top: 15px;
+            transition: all 0.3s;
+        }
+
+        .submit-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 18px rgba(139,69,19,0.3);
+        }
+
+        .section-title {
+            font-family: 'Baloo 2', sans-serif;
+            font-size: 1.5em;
+            color: #8b4513;
+            margin-bottom: 25px;
+            padding-bottom: 15px;
+            border-bottom: 3px solid #e8dcc8;
+        }
+
+        .bindeord-bank {
+            background: #f5f3e8;
+            padding: 20px;
+            border-radius: 10px;
+            margin-bottom: 30px;
+        }
+
+        .bindeord-title {
+            font-family: 'Baloo 2', sans-serif;
+            color: #8b4513;
+            margin-bottom: 12px;
+            font-weight: 600;
+        }
+
+        .bindeord-list {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+        }
+
+        .bindeord-tag {
+            background: white;
+            border: 2px solid #8b4513;
+            color: #8b4513;
+            padding: 8px 14px;
+            border-radius: 15px;
+            font-weight: 600;
+            font-size: 0.9em;
+        }
+
+        @media (max-width: 768px) {
+            .header h1 {
+                font-size: 1.8em;
+            }
+
+            .scener-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .tab-btn {
+                font-size: 0.85em;
+                padding: 12px;
+            }
+
+            .content {
+                padding: 20px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>🔗 Sekvens</h1>
+            <p>Uma História Sem Fim — Rekkefølge og bindeord</p>
+        </div>
+
+        <div class="tabs">
+            <button class="tab-btn active" onclick="switchTab('orden')">1️⃣ Ordne</button>
+            <button class="tab-btn" onclick="switchTab('gap')">2️⃣ Fylle</button>
+            <button class="tab-btn" onclick="switchTab('write')">3️⃣ Skrive</button>
+        </div>
+
+        <div class="content">
+            <!-- ØVING 1: ORDNE SCENER -->
+            <div id="orden" class="tab-content active">
+                <div class="section-title">📖 Ordne scenene i riktig rekkefølge</div>
+                
+                <p style="color: #666; margin-bottom: 20px; font-size: 1em; line-height: 1.6;">
+                    Her er 6 scener fra Uma História Sem Fim. <strong>Dra og legg scenene i den riktige rekkefølgen.</strong> 
+                    Hvilken scene kommer først? Hvilken kommer etterpå?
+                </p>
+
+                <div class="scener-grid" id="scenesSource">
+                    <!-- Scenes will be populated by JS -->
+                </div>
+
+                <div class="ordenar-container">
+                    <h3>📋 Riktig rekkefølge:</h3>
+                    <div class="ordenar-lista" id="ordenarDropZone">
+                        <!-- Items will be dragged here -->
+                    </div>
+                </div>
+
+                <button class="submit-btn" onclick="checkOrder()">✓ Sjekk svar</button>
+                <div id="orderFeedback" style="margin-top: 15px; font-weight: 600;"></div>
+            </div>
+
+            <!-- ØVING 2: FYLLE BINDEORD -->
+            <div id="gap" class="tab-content">
+                <div class="section-title">🔗 Hvilken bindeord mangler?</div>
+
+                <div class="bindeord-bank">
+                    <div class="bindeord-title">Bindeord du kan bruke:</div>
+                    <div class="bindeord-list">
+                        <div class="bindeord-tag">først</div>
+                        <div class="bindeord-tag">etterpå</div>
+                        <div class="bindeord-tag">så</div>
+                        <div class="bindeord-tag">fordi</div>
+                        <div class="bindeord-tag">men</div>
+                        <div class="bindeord-tag">til slutt</div>
+                    </div>
+                </div>
+
+                <p style="color: #666; margin-bottom: 20px; font-size: 1em; line-height: 1.6;">
+                    <strong>Les setningene. Velg riktig bindeord fra listen.</strong> 
+                    Hva skal stå på den tomme plassen?
+                </p>
+
+                <div class="gap-grid" id="gapContainer">
+                    <!-- Gap sentences will be populated by JS -->
+                </div>
+
+                <button class="submit-btn" onclick="checkGaps()">✓ Sjekk svar</button>
+                <div id="gapFeedback" style="margin-top: 15px; font-weight: 600;"></div>
+            </div>
+
+            <!-- ØVING 3: SKRIVE SEKVENS -->
+            <div id="write" class="tab-content">
+                <div class="section-title">✍️ Skriv din egen sekvens</div>
+
+                <div class="write-container">
+                    <div class="write-title">Fortell hva som skjer i Historia</div>
+                    
+                    <div class="write-prompt">
+                        📝 <strong>Oppgave:</strong> Du skal fortelle hva som skjer når Edel finner boka. 
+                        Skriv en kort fortelling med minst 3 setninger. 
+                        Bruk bindeord som <strong>først, etterpå, så, fordi, men, til slutt</strong>.
+                    </div>
+
+                    <textarea class="write-area" id="writeText" placeholder="Først... Etterpå... Så..."></textarea>
+
+                    <div class="write-hints">
+                        <strong>💡 Husk:</strong>
+                        <ul class="hints-list">
+                            <li><strong>Først</strong> — hva skjer først i historia?</li>
+                            <li><strong>Etterpå</strong> — hva skjer etter det?</li>
+                            <li><strong>Så</strong> — og så hva?</li>
+                            <li><strong>Fordi</strong> — hvorfor skjer det?</li>
+                            <li><strong>Til slutt</strong> — hvordan slutter historia?</li>
+                        </ul>
+                    </div>
+
+                    <button class="submit-btn" onclick="submitWrite()">✓ Send inn svar</button>
+                    <div id="writeFeedback" style="margin-top: 15px; font-weight: 600;"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Data for scenes (6 main scenes from the story)
+        const scenes = [
+            {
+                order: 1,
+                title: "Edel er hjemme",
+                text: "Edel er hjemme. Moren hennes er død. Hun er trist og alene."
+            },
+            {
+                order: 2,
+                title: "På skolen er det ikke bra",
+                text: "På skolen er noen barn ikke snille med Edel. De ler av henne fordi hun er stille."
+            },
+            {
+                order: 3,
+                title: "Edel finner boka",
+                text: "Edel går inn i en gammel bokhandel. Der finner hun en spesiell bok med rød omslag."
+            },
+            {
+                order: 4,
+                title: "Hun begynner å lese",
+                text: "Edel åpner boka og begynner å lese. Historien virker helt ekte og magisk."
+            },
+            {
+                order: 5,
+                title: "Edel møter Fantasia",
+                text: "Edel leser om landet Fantasia, om Atreyu og det magiske smykket Auryn."
+            },
+            {
+                order: 6,
+                title: "Reisen begynner",
+                text: "Edel – nå Luna – blir klar for oppdraget. Sammen med Atreyu skal hun redde Fantasia."
+            }
+        ];
+
+        // Data for gap sentences
+        const gapSentences = [
+            {
+                text: "<strong>Først</strong> var Edel alene hjemme. <strong>___</strong> gikk hun til bokhandelen.",
+                answer: "Etterpå",
+                options: ["Så", "Etterpå", "Fordi", "Men"]
+            },
+            {
+                text: "Edel likte ikke å være på skolen <strong>fordi</strong> at hun var stille. <strong>___</strong> hun var lei.",
+                answer: "Så",
+                options: ["Så", "Men", "Først", "Til slutt"]
+            },
+            {
+                text: "Hun fant en magisk bok <strong>___</strong> den var spesiell.",
+                answer: "fordi",
+                options: ["etterpå", "men", "fordi", "så"]
+            },
+            {
+                text: "Edel begynte å lese <strong>___</strong> hun glømte tiden.",
+                answer: "så",
+                options: ["fordi", "så", "men", "til slutt"]
+            },
+            {
+                text: "Fantasia var i fare <strong>___</strong> Intet truet landet.",
+                answer: "fordi",
+                options: ["først", "etterpå", "fordi", "til slutt"]
+            }
+        ];
+
+        function switchTab(tabName) {
+            document.querySelectorAll('.tab-content').forEach(tab => {
+                tab.classList.remove('active');
+            });
+            document.querySelectorAll('.tab-btn').forEach(btn => {
+                btn.classList.remove('active');
+            });
+            document.getElementById(tabName).classList.add('active');
+            event.target.classList.add('active');
+
+            // Initialize specific tabs
+            if (tabName === 'orden' && document.getElementById('scenesSource').innerHTML === '') {
+                initOrderTab();
+            } else if (tabName === 'gap' && document.getElementById('gapContainer').innerHTML === '') {
+                initGapTab();
+            }
+        }
+
+        function initOrderTab() {
+            const sourcesDiv = document.getElementById('scenesSource');
+            const shuffled = [...scenes].sort(() => Math.random() - 0.5);
+            
+            shuffled.forEach(scene => {
+                const card = document.createElement('div');
+                card.className = 'scene-card';
+                card.draggable = true;
+                card.dataset.order = scene.order;
+                card.innerHTML = `
+                    <div class="scene-number">Scene ${scene.order}</div>
+                    <div class="scene-title">${scene.title}</div>
+                    <div class="scene-text">${scene.text}</div>
+                `;
+                card.addEventListener('dragstart', dragStart);
+                card.addEventListener('dragend', dragEnd);
+                sourcesDiv.appendChild(card);
+            });
+
+            const dropZone = document.getElementById('ordenarDropZone');
+            dropZone.addEventListener('dragover', dragOver);
+            dropZone.addEventListener('drop', drop);
+        }
+
+        function initGapTab() {
+            const container = document.getElementById('gapContainer');
+            gapSentences.forEach((sentence, idx) => {
+                const div = document.createElement('div');
+                div.className = 'gap-sentence';
+                const optionsHtml = sentence.options.map(opt => 
+                    `<button class="gap-btn" onclick="selectGap(${idx}, '${opt}')">${opt}</button>`
+                ).join('');
+                div.innerHTML = `
+                    <div class="gap-text">${sentence.text}</div>
+                    <div class="gap-button-group">${optionsHtml}</div>
+                    <div id="gapSelected${idx}" style="margin-top: 10px; font-weight: 600; color: #8b4513;"></div>
+                `;
+                container.appendChild(div);
+            });
+        }
+
+        // Drag and drop logic
+        let draggedItem = null;
+
+        function dragStart(e) {
+            draggedItem = this;
+            this.classList.add('dragging');
+        }
+
+        function dragEnd(e) {
+            this.classList.remove('dragging');
+        }
+
+        function dragOver(e) {
+            e.preventDefault();
+        }
+
+        function drop(e) {
+            e.preventDefault();
+            if (draggedItem) {
+                const clone = draggedItem.cloneNode(true);
+                clone.draggable = false;
+                clone.style.cursor = 'default';
+                clone.classList.remove('dragging');
+                document.getElementById('ordenarDropZone').appendChild(clone);
+            }
+        }
+
+        function checkOrder() {
+            const items = document.querySelectorAll('#ordenarDropZone .scene-card');
+            let correct = true;
+            items.forEach((item, idx) => {
+                if (parseInt(item.dataset.order) !== idx + 1) {
+                    correct = false;
+                }
+            });
+
+            const feedback = document.getElementById('orderFeedback');
+            if (correct && items.length === scenes.length) {
+                feedback.innerHTML = '✅ Perfekt! Du ordnet scenene riktig!';
+                feedback.style.color = '#16A34A';
+            } else if (items.length < scenes.length) {
+                feedback.innerHTML = '⏳ Du må legge alle scenene i orden først!';
+                feedback.style.color = '#D97706';
+            } else {
+                feedback.innerHTML = '❌ Ikke helt riktig. Prøv igjen!';
+                feedback.style.color = '#DC2626';
+            }
+        }
+
+        function selectGap(idx, answer) {
+            const selected = document.getElementById(`gapSelected${idx}`);
+            const buttons = document.querySelectorAll('.gap-sentence')[idx].querySelectorAll('.gap-btn');
+            buttons.forEach(btn => btn.classList.remove('used'));
+            
+            const clickedBtn = Array.from(buttons).find(btn => btn.textContent === answer);
+            if (clickedBtn) clickedBtn.classList.add('used');
+            
+            selected.textContent = `Du valgte: "${answer}"`;
+            selected.dataset.answer = answer;
+        }
+
+        function checkGaps() {
+            let correct = 0;
+            gapSentences.forEach((sentence, idx) => {
+                const selected = document.getElementById(`gapSelected${idx}`);
+                if (selected.dataset.answer === sentence.answer) {
+                    correct++;
+                }
+            });
+
+            const feedback = document.getElementById('gapFeedback');
+            const total = gapSentences.length;
+            if (correct === total) {
+                feedback.innerHTML = `✅ Utmerket! Du fikk alle ${total} riktig!`;
+                feedback.style.color = '#16A34A';
+            } else {
+                feedback.innerHTML = `Du fikk ${correct} av ${total} riktig. Prøv igjen!`;
+                feedback.style.color = '#D97706';
+            }
+        }
+
+        async function submitWrite() {
+            const text = document.getElementById('writeText').value;
+            const feedback = document.getElementById('writeFeedback');
+
+            if (text.trim().length < 30) {
+                feedback.innerHTML = '⏳ Skriv en lengre tekst – minst 3 setninger!';
+                feedback.style.color = '#D97706';
+                return;
+            }
+
+            // Check for connectors
+            const hasConnectors = /først|etterpå|så|fordi|men|til slutt/i.test(text);
+
+            if (!hasConnectors) {
+                feedback.innerHTML = '💡 Prøv å bruke bindeord som først, etterpå, så, fordi, til slutt.';
+                feedback.style.color = '#D97706';
+                return;
+            }
+
+            // Send to Formspree
+            feedback.innerHTML = '⏳ Sender...';
+            feedback.style.color = '#8b4513';
+
+            try {
+                const response = await fetch('https://formspree.io/f/mqeolldg', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Accept': 'application/json'
+                    },
+                    body: JSON.stringify({
+                        Tekst_hun_skrev: text,
+                        oppgave: 'Sekvens - Uma História Sem Fim',
+                        dato: new Date().toLocaleString('no-NO')
+                    })
+                });
+
+                if (response.ok) {
+                    feedback.innerHTML = '✅ Bra jobba! Teksten din er sendt til mamma! 🎉';
+                    feedback.style.color = '#16A34A';
+                    document.getElementById('writeText').value = '';
+                } else {
+                    feedback.innerHTML = '❌ Noe gikk galt. Prøv igjen!';
+                    feedback.style.color = '#DC2626';
+                }
+            } catch (error) {
+                feedback.innerHTML = '❌ Kunne ikke sende. Sjekk internett og prøv igjen!';
+                feedback.style.color = '#DC2626';
+            }
+        }
+    </script>
+</body>
+</html>
