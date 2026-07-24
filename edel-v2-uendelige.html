@@ -1,0 +1,378 @@
+<!DOCTYPE html>
+<html lang="no">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>V2-regelen 🔑 – Edels Historie</title>
+<link href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@600;700;800&family=Nunito:wght@400;600;700&display=swap" rel="stylesheet">
+<style>
+:root{
+  --grape:#7C3AED;--grape-light:#EDE9FE;--berry:#E84A8A;--sun:#D97706;--sun-light:#FEF3C7;
+  --ink:#1E1B4B;--muted:#6B7280;--bg:#FBF7FF;--card:#fff;--gold:#D4AF37;
+  --green:#16A34A;--green-light:#DCFCE7;--red:#DC2626;--red-light:#FEE2E2;
+}
+*{box-sizing:border-box;margin:0;padding:0;}
+body{font-family:'Nunito',sans-serif;background:linear-gradient(135deg,#1a1333 0%,#2d1b4e 100%);color:#fff;min-height:100vh;padding-bottom:3rem;}
+
+.topbar{background:#fff;padding:0.9rem 1.1rem;display:flex;align-items:center;gap:0.75rem;box-shadow:0 2px 12px rgba(124,58,237,0.06);position:sticky;top:0;z-index:40;}
+.home-btn{text-decoration:none;font-size:1.3rem;background:var(--grape-light);border-radius:12px;padding:0.35rem 0.7rem;}
+.topbar .tittel{font-family:'Baloo 2',cursive;font-weight:800;font-size:1.15rem;color:var(--ink);}
+
+.hero{text-align:center;padding:1.4rem 1.25rem 0.6rem;}
+.hero h1{font-family:'Baloo 2',cursive;font-size:1.7rem;font-weight:800;color:#f5d0a8;}
+.hero p{color:#c8b8e0;font-size:0.92rem;margin-top:0.3rem;line-height:1.5;max-width:36ch;margin-left:auto;margin-right:auto;}
+
+main{max-width:640px;margin:0 auto;padding:0 1rem;}
+
+/* REGEL-BOKS */
+.regel{background:rgba(212,175,55,0.1);border:2px solid var(--gold);border-radius:16px;padding:1.2rem;margin:1rem 0 1.4rem;}
+.regel-tittel{font-family:'Baloo 2',cursive;font-size:1.15rem;color:#f5d0a8;margin-bottom:0.7rem;text-align:center;}
+.regel-eksempel{background:rgba(255,255,255,0.06);border-radius:10px;padding:0.8rem;margin-top:0.6rem;font-size:1rem;text-align:center;line-height:1.7;}
+.v2-ord{color:var(--gold);font-weight:700;font-family:'Baloo 2',cursive;}
+.regel-forklaring{color:#e8dcf0;font-size:0.88rem;text-align:center;margin-top:0.7rem;line-height:1.5;}
+
+/* TABS */
+.faner{display:flex;gap:0.5rem;margin-bottom:1.2rem;}
+.fane{flex:1;background:rgba(255,255,255,0.06);border:2px solid rgba(212,175,55,0.3);color:#c8b8e0;padding:0.7rem 0.4rem;border-radius:12px;font-family:'Baloo 2',cursive;font-weight:700;font-size:0.82rem;cursor:pointer;text-align:center;transition:all 0.15s;}
+.fane.aktiv{background:var(--gold);color:#1a1333;border-color:var(--gold);}
+
+.ovelse{display:none;}
+.ovelse.aktiv{display:block;animation:inn 0.3s;}
+@keyframes inn{from{opacity:0;}to{opacity:1;}}
+
+.oppgave-teller{text-align:center;color:#f5d0a8;font-weight:700;font-size:0.9rem;margin-bottom:1rem;}
+
+/* KORT */
+.kort{background:rgba(255,255,255,0.06);border:1px solid rgba(212,175,55,0.3);border-radius:16px;padding:1.4rem;margin-bottom:1rem;}
+.kort-intro{color:#c8b8e0;font-size:0.9rem;margin-bottom:1rem;line-height:1.5;}
+
+/* VELG RIKTIG */
+.valg-knapp{width:100%;background:rgba(255,255,255,0.9);border:2px solid rgba(212,175,55,0.3);color:var(--ink);padding:1rem;border-radius:12px;font-family:'Nunito';font-weight:600;font-size:1.05rem;cursor:pointer;margin-bottom:0.8rem;transition:all 0.15s;text-align:left;}
+.valg-knapp:active{transform:scale(0.98);}
+.valg-knapp.riktig{background:var(--green-light);border-color:var(--green);color:var(--green);}
+.valg-knapp.feil{background:var(--red-light);border-color:var(--red);color:var(--red);}
+
+/* BYGG SETNING */
+.bygg-mal{background:rgba(212,175,55,0.1);border-left:4px solid var(--gold);padding:0.9rem;border-radius:8px;color:#e8dcf0;margin-bottom:1rem;font-size:0.9rem;}
+.bygg-svar{min-height:56px;background:rgba(255,255,255,0.9);border:2px dashed var(--gold);border-radius:12px;padding:0.8rem;margin-bottom:1rem;display:flex;flex-wrap:wrap;gap:0.5rem;align-items:center;}
+.bygg-svar:empty::before{content:'Trykk på ordene i riktig rekkefølge...';color:#999;font-size:0.9rem;font-style:italic;}
+.ord-brikke{background:var(--grape);color:#fff;padding:0.5rem 0.9rem;border-radius:10px;font-weight:600;font-size:1rem;cursor:pointer;transition:all 0.15s;border:none;font-family:'Nunito';}
+.ord-brikke:active{transform:scale(0.95);}
+.ord-brikke.brukt{opacity:0.3;pointer-events:none;}
+.brikke-bank{display:flex;flex-wrap:wrap;gap:0.5rem;margin-bottom:1rem;}
+.svar-brikke{background:var(--gold);color:#1a1333;padding:0.5rem 0.9rem;border-radius:10px;font-weight:600;font-size:1rem;cursor:pointer;border:none;font-family:'Nunito';}
+
+/* RETT FEILEN */
+.feil-setning{background:var(--red-light);border:2px solid var(--red);border-radius:12px;padding:1rem;color:var(--red);font-weight:600;font-size:1.05rem;margin-bottom:1rem;text-align:center;}
+.rett-input{width:100%;padding:1rem;border:2px solid var(--gold);border-radius:12px;font-family:'Nunito';font-size:1.05rem;background:rgba(255,255,255,0.95);color:var(--ink);margin-bottom:1rem;}
+.rett-input:focus{outline:none;border-color:var(--berry);}
+
+/* KNAPPER */
+.sjekk-btn{width:100%;background:var(--gold);color:#1a1333;padding:0.9rem;border:none;border-radius:12px;font-family:'Baloo 2',cursive;font-weight:700;font-size:1.05rem;cursor:pointer;transition:all 0.15s;}
+.sjekk-btn:active{transform:scale(0.98);}
+.neste-btn{width:100%;background:var(--grape);color:#fff;padding:0.9rem;border:none;border-radius:12px;font-family:'Baloo 2',cursive;font-weight:700;font-size:1.05rem;cursor:pointer;margin-top:0.8rem;transition:all 0.15s;}
+.tomt-btn{background:rgba(255,255,255,0.1);border:1px solid rgba(212,175,55,0.3);color:#c8b8e0;padding:0.5rem 0.9rem;border-radius:10px;font-weight:600;font-size:0.85rem;cursor:pointer;margin-bottom:1rem;font-family:'Nunito';}
+
+.fasit{margin-top:1rem;padding:1rem;border-radius:12px;font-weight:600;display:none;line-height:1.6;}
+.fasit.vis{display:block;}
+.fasit.riktig-svar{background:var(--green-light);color:var(--green);}
+.fasit.feil-svar{background:var(--red-light);color:var(--red);}
+
+.ferdig{text-align:center;padding:2rem 1rem;}
+.ferdig-emoji{font-size:3.5rem;}
+.ferdig h2{font-family:'Baloo 2',cursive;color:#f5d0a8;font-size:1.5rem;margin:0.8rem 0;}
+.ferdig p{color:#c8b8e0;font-size:1rem;}
+.ferdig-poeng{font-family:'Baloo 2',cursive;font-size:2rem;color:var(--gold);margin:0.8rem 0;}
+
+.footer{text-align:center;font-size:0.8rem;color:#a898c0;margin-top:2rem;padding:1.25rem;line-height:1.6;}
+</style>
+</head>
+<body>
+
+<div class="topbar">
+  <a class="home-btn" href="edels-historie.html">🏠</a>
+  <span class="tittel">🔑 V2-regelen</span>
+</div>
+
+<div class="hero">
+  <h1>Verbet på plass nummer to</h1>
+  <p>Når en setning starter med et bindeord, kommer verbet rett etterpå.</p>
+</div>
+
+<main>
+  <!-- REGEL -->
+  <div class="regel">
+    <div class="regel-tittel">🔑 Nøkkelmannens regel</div>
+    <div class="regel-eksempel">
+      <span class="v2-ord">Så</span> · <span class="v2-ord">fant</span> · vi · Pipoka
+    </div>
+    <div class="regel-forklaring">
+      Etter <strong>Så</strong> kommer verbet <strong>fant</strong> med en gang – så kommer <strong>vi</strong>.<br>
+      Ikke: <span style="text-decoration:line-through;opacity:0.7;">Så vi fant Pipoka</span>
+    </div>
+  </div>
+
+  <!-- TABS -->
+  <div class="faner">
+    <button class="fane aktiv" onclick="byttFane(0)">1️⃣ Velg</button>
+    <button class="fane" onclick="byttFane(1)">2️⃣ Bygg</button>
+    <button class="fane" onclick="byttFane(2)">3️⃣ Rett</button>
+  </div>
+
+  <!-- ØVELSE 1: VELG RIKTIG -->
+  <div class="ovelse aktiv" id="ovelse0">
+    <div class="oppgave-teller" id="teller0"></div>
+    <div class="kort" id="kort0"></div>
+  </div>
+
+  <!-- ØVELSE 2: BYGG SETNING -->
+  <div class="ovelse" id="ovelse1">
+    <div class="oppgave-teller" id="teller1"></div>
+    <div class="kort" id="kort1"></div>
+  </div>
+
+  <!-- ØVELSE 3: RETT FEILEN -->
+  <div class="ovelse" id="ovelse2">
+    <div class="oppgave-teller" id="teller2"></div>
+    <div class="kort" id="kort2"></div>
+  </div>
+</main>
+
+<div class="footer">
+  🔑 V2-regelen · Edels Historie<br>
+  Laget med kjærlighet for Edel ✨
+</div>
+
+<script>
+// ─────── DATA ───────
+const velgOppgaver = [
+  {
+    intro: "Edel og Iris lette etter Pipoka. Hvilken setning er riktig?",
+    riktig: "Så fant vi Pipoka.",
+    feil: "Så vi fant Pipoka."
+  },
+  {
+    intro: "Nøkkelmannen trente hver dag. Hvilken er riktig?",
+    riktig: "Derfor ble han sterk.",
+    feil: "Derfor han ble sterk."
+  },
+  {
+    intro: "Edel var ferdig på skolen. Hvilken er riktig?",
+    riktig: "Etterpå gikk hun hjem.",
+    feil: "Etterpå hun gikk hjem."
+  },
+  {
+    intro: "Iris ville finne sin egen vei. Hvilken er riktig?",
+    riktig: "Først må hun være modig.",
+    feil: "Først hun må være modig."
+  },
+  {
+    intro: "Intet vokste i Fantasia. Hvilken er riktig?",
+    riktig: "Derfor trenger landet håp.",
+    feil: "Derfor landet trenger håp."
+  }
+];
+
+const byggOppgaver = [
+  {
+    mal: "Start med «Så». Hva skjedde etterpå?",
+    ord: ["Så", "åpnet", "Edel", "boken"],
+    riktig: "Så åpnet Edel boken"
+  },
+  {
+    mal: "Start med «Etterpå». Fortell hva Iris gjorde.",
+    ord: ["Etterpå", "lagde", "Iris", "en", "regnbue"],
+    riktig: "Etterpå lagde Iris en regnbue"
+  },
+  {
+    mal: "Start med «Derfor». Hvorfor reiser de sammen?",
+    ord: ["Derfor", "reiser", "de", "sammen"],
+    riktig: "Derfor reiser de sammen"
+  },
+  {
+    mal: "Start med «Først». Hva må Edel gjøre?",
+    ord: ["Først", "må", "Edel", "velge", "en", "vei"],
+    riktig: "Først må Edel velge en vei"
+  }
+];
+
+const rettOppgaver = [
+  {
+    feil: "Så vi fant nøkkelen.",
+    riktig: "Så fant vi nøkkelen.",
+    hint: "Verbet «fant» skal komme rett etter «Så»."
+  },
+  {
+    feil: "Derfor Edel hjalp Fantasia.",
+    riktig: "Derfor hjalp Edel Fantasia.",
+    hint: "Verbet «hjalp» skal komme rett etter «Derfor»."
+  },
+  {
+    feil: "Etterpå de reiste videre.",
+    riktig: "Etterpå reiste de videre.",
+    hint: "Verbet «reiste» skal komme rett etter «Etterpå»."
+  },
+  {
+    feil: "Først Iris fortalte om Vindslottet.",
+    riktig: "Først fortalte Iris om Vindslottet.",
+    hint: "Verbet «fortalte» skal komme rett etter «Først»."
+  }
+];
+
+// ─────── STATE ───────
+let idx = [0, 0, 0];
+let poeng = [0, 0, 0];
+
+// ─────── FANER ───────
+function byttFane(n){
+  document.querySelectorAll('.fane').forEach((f,i)=>f.classList.toggle('aktiv', i===n));
+  document.querySelectorAll('.ovelse').forEach((o,i)=>o.classList.toggle('aktiv', i===n));
+}
+
+// ─────── ØVELSE 1: VELG ───────
+function visVelg(){
+  const i = idx[0];
+  if(i >= velgOppgaver.length){ visFerdig(0, 'kort0'); return; }
+  const o = velgOppgaver[i];
+  document.getElementById('teller0').textContent = `Oppgave ${i+1} av ${velgOppgaver.length}`;
+  // shuffle the two options
+  const alternativer = Math.random() < 0.5 ? [o.riktig, o.feil] : [o.feil, o.riktig];
+  document.getElementById('kort0').innerHTML = `
+    <div class="kort-intro">${o.intro}</div>
+    <button class="valg-knapp" onclick="velgSvar(this, '${o.riktig}')">${alternativer[0]}</button>
+    <button class="valg-knapp" onclick="velgSvar(this, '${o.riktig}')">${alternativer[1]}</button>
+    <div class="fasit" id="fasit0"></div>
+  `;
+}
+
+function velgSvar(btn, riktig){
+  const alle = btn.parentElement.querySelectorAll('.valg-knapp');
+  alle.forEach(b => b.disabled = true);
+  const fasit = document.getElementById('fasit0');
+  if(btn.textContent === riktig){
+    btn.classList.add('riktig');
+    poeng[0]++;
+    fasit.className = 'fasit vis riktig-svar';
+    fasit.innerHTML = '✅ Riktig! Verbet står på plass nummer to.';
+  } else {
+    btn.classList.add('feil');
+    alle.forEach(b => { if(b.textContent === riktig) b.classList.add('riktig'); });
+    fasit.className = 'fasit vis feil-svar';
+    fasit.innerHTML = `💡 Riktig svar: <strong>${riktig}</strong>`;
+  }
+  fasit.innerHTML += '<button class="neste-btn" onclick="nesteVelg()">Neste →</button>';
+}
+
+function nesteVelg(){ idx[0]++; visVelg(); }
+
+// ─────── ØVELSE 2: BYGG ───────
+function visBygg(){
+  const i = idx[1];
+  if(i >= byggOppgaver.length){ visFerdig(1, 'kort1'); return; }
+  const o = byggOppgaver[i];
+  document.getElementById('teller1').textContent = `Oppgave ${i+1} av ${byggOppgaver.length}`;
+  const shuffled = [...o.ord].sort(() => Math.random() - 0.5);
+  let bankHtml = shuffled.map((ord,j) => 
+    `<button class="ord-brikke" data-ord="${ord}" onclick="leggTil(this)">${ord}</button>`
+  ).join('');
+  document.getElementById('kort1').innerHTML = `
+    <div class="bygg-mal">🔑 ${o.mal}</div>
+    <div class="bygg-svar" id="byggSvar"></div>
+    <div class="brikke-bank">${bankHtml}</div>
+    <button class="tomt-btn" onclick="tomBygg()">↺ Start på nytt</button>
+    <button class="sjekk-btn" onclick="sjekkBygg()">Sjekk svar</button>
+    <div class="fasit" id="fasit1"></div>
+  `;
+}
+
+function leggTil(btn){
+  btn.classList.add('brukt');
+  const svar = document.getElementById('byggSvar');
+  const b = document.createElement('button');
+  b.className = 'svar-brikke';
+  b.textContent = btn.dataset.ord;
+  b.onclick = () => { b.remove(); btn.classList.remove('brukt'); };
+  svar.appendChild(b);
+}
+
+function tomBygg(){
+  document.getElementById('byggSvar').innerHTML = '';
+  document.querySelectorAll('#kort1 .ord-brikke').forEach(b => b.classList.remove('brukt'));
+}
+
+function sjekkBygg(){
+  const svar = [...document.querySelectorAll('#byggSvar .svar-brikke')].map(b => b.textContent).join(' ');
+  const o = byggOppgaver[idx[1]];
+  const fasit = document.getElementById('fasit1');
+  if(svar.trim() === o.riktig){
+    poeng[1]++;
+    fasit.className = 'fasit vis riktig-svar';
+    fasit.innerHTML = '✅ Perfekt! Setningen er riktig bygd.';
+  } else {
+    fasit.className = 'fasit vis feil-svar';
+    fasit.innerHTML = `💡 Prøv igjen! Riktig: <strong>${o.riktig}</strong>`;
+  }
+  fasit.innerHTML += '<button class="neste-btn" onclick="nesteBygg()">Neste →</button>';
+}
+
+function nesteBygg(){ idx[1]++; visBygg(); }
+
+// ─────── ØVELSE 3: RETT ───────
+function visRett(){
+  const i = idx[2];
+  if(i >= rettOppgaver.length){ visFerdig(2, 'kort2'); return; }
+  const o = rettOppgaver[i];
+  document.getElementById('teller2').textContent = `Oppgave ${i+1} av ${rettOppgaver.length}`;
+  document.getElementById('kort2').innerHTML = `
+    <div class="kort-intro">Denne setningen har feil rekkefølge. Skriv den riktig!</div>
+    <div class="feil-setning">❌ ${o.feil}</div>
+    <input class="rett-input" id="rettInput" placeholder="Skriv riktig setning her..." autocomplete="off">
+    <button class="tomt-btn" onclick="document.getElementById('hint2').style.display='block'">💡 Hint</button>
+    <div id="hint2" style="display:none;color:#c8b8e0;font-size:0.9rem;margin-bottom:1rem;">${o.hint}</div>
+    <button class="sjekk-btn" onclick="sjekkRett()">Sjekk svar</button>
+    <div class="fasit" id="fasit2"></div>
+  `;
+}
+
+function sjekkRett(){
+  const svar = document.getElementById('rettInput').value.trim().toLowerCase().replace(/[.!]/g,'');
+  const o = rettOppgaver[idx[2]];
+  const riktig = o.riktig.toLowerCase().replace(/[.!]/g,'');
+  const fasit = document.getElementById('fasit2');
+  if(svar === riktig){
+    poeng[2]++;
+    fasit.className = 'fasit vis riktig-svar';
+    fasit.innerHTML = '✅ Riktig! Du satte verbet på rett plass.';
+  } else {
+    fasit.className = 'fasit vis feil-svar';
+    fasit.innerHTML = `💡 Riktig svar: <strong>${o.riktig}</strong>`;
+  }
+  fasit.innerHTML += '<button class="neste-btn" onclick="nesteRett()">Neste →</button>';
+}
+
+function nesteRett(){ idx[2]++; visRett(); }
+
+// ─────── FERDIG ───────
+function visFerdig(fane, kortId){
+  const totaler = [velgOppgaver.length, byggOppgaver.length, rettOppgaver.length];
+  const p = poeng[fane];
+  const t = totaler[fane];
+  let emoji = p === t ? '🌟' : (p >= t/2 ? '😊' : '💪');
+  let melding = p === t ? 'Perfekt! Alt riktig!' : (p >= t/2 ? 'Bra jobba!' : 'Fortsett å øve!');
+  document.getElementById(kortId).innerHTML = `
+    <div class="ferdig">
+      <div class="ferdig-emoji">${emoji}</div>
+      <div class="ferdig-poeng">${p} av ${t}</div>
+      <h2>${melding}</h2>
+      <p>Du kan prøve de andre øvelsene også!</p>
+    </div>
+  `;
+}
+
+// ─────── INIT ───────
+visVelg();
+visBygg();
+visRett();
+</script>
+</body>
+</html>
